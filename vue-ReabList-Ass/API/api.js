@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "@/stores/authentication";
 
 const api = axios.create({
   baseURL:
@@ -10,17 +11,25 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+// REQUEST: add token
+api.interceptors.request.use((config) => {
+  const authStore = useAuthStore();
+  if (authStore.token) {
+    config.headers.Authorization = `Bearer ${authStore.token}`;
+  }
+  return config;
+});
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+// RESPONSE: handle 401
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const authStore = useAuthStore();
+    if (error.response?.status === 401) {
+      authStore.logout();
     }
-
-    return config;
+    return Promise.reject(error);
   },
-  (error) => Promise.reject(error),
 );
 
 export default api;
