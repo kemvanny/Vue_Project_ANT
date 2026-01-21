@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { f } from "vue-router/dist/router-CWoNjPRp.mjs";
-</script>
-
 <template>
     <!-- Sidebar -->
     <aside id="sidebar">
@@ -19,10 +15,7 @@ import { f } from "vue-router/dist/router-CWoNjPRp.mjs";
                 <users /> Users Directory
             </a>
             <a href="#" class="nav-link" data-section="tasks">
-                <check-square /> Global Tasks
-            </a>
-            <a href="#" class="nav-link" data-section="categories">
-                <tag /> Taxonomy
+                 <lock-keyhole /> Access Controls
             </a>
         </nav>
 
@@ -30,9 +23,6 @@ import { f } from "vue-router/dist/router-CWoNjPRp.mjs";
         <nav class="nav flex-column">
             <a href="#" class="nav-link" data-section="reports">
                 <alert-triangle /> Reports Center
-            </a>
-            <a href="#" class="nav-link" data-section="announcements">
-                <megaphone /> Broadcast
             </a>
             <a href="#" class="nav-link" data-section="logs">
                 <file-text /> Audit Trails
