@@ -1,34 +1,28 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
-import api from "../../API/api"; // ← your axios instance with baseURL etc.
+import api from "@/API/api";
 
 export const useAuthStore = defineStore("auth", () => {
-  // ─── PERSISTED STATE ────────────────────────────────────────
   const token = ref(localStorage.getItem("token") || null);
   const user = ref(JSON.parse(localStorage.getItem("user")) || null);
 
-  // ─── SHARED FORM FIELDS ─────────────────────────────────────
   const email = ref("");
   const password = ref("");
-  const rememberMe = ref(false); // can be used later for refresh token strategy
+  const rememberMe = ref(false);
 
-  // ─── REGISTRATION-SPECIFIC FIELDS ───────────────────────────
   const fullName = ref("");
   const confirmPassword = ref("");
   const agreedTerms = ref(false);
 
-  // ─── STATUS & FEEDBACK ──────────────────────────────────────
   const loading = ref(false);
   const error = ref(null);
   const successMessage = ref(null);
 
-  // Auto-attach token to every request if present
   if (token.value) {
     axios.defaults.headers.common.Authorization = `Bearer ${token.value}`;
   }
 
-  // ─── COMPUTED VALIDATION ────────────────────────────────────
   const passwordsMatch = computed(
     () => password.value === confirmPassword.value,
   );
@@ -51,8 +45,6 @@ export const useAuthStore = defineStore("auth", () => {
   });
 
   const isAuthenticated = computed(() => !!token.value && !!user.value);
-
-  // ─── CORE ACTIONS ───────────────────────────────────────────
 
   const register = async () => {
     if (!canRegister.value) return;
@@ -77,7 +69,6 @@ export const useAuthStore = defineStore("auth", () => {
         user.value = data.user || data.data?.user || data.data;
         token.value = data.token || data.access_token;
 
-        // Persist
         localStorage.setItem("user", JSON.stringify(user.value));
         if (token.value) {
           localStorage.setItem("token", token.value);
@@ -86,7 +77,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         successMessage.value = "Account created successfully!";
         resetRegisterForm();
-        return true; // success → can redirect
+        return true;
       }
     } catch (err) {
       error.value =
@@ -111,7 +102,6 @@ export const useAuthStore = defineStore("auth", () => {
       const payload = {
         email: email.value.trim(),
         password: password.value,
-        // rememberMe: rememberMe.value   ← send if your backend supports it
       };
 
       const response = await api.post("/auth/login", payload);
@@ -130,7 +120,7 @@ export const useAuthStore = defineStore("auth", () => {
 
         successMessage.value = "Logged in successfully!";
         resetLoginForm();
-        return true; // success → redirect to dashboard
+        return true;
       }
     } catch (err) {
       error.value =
@@ -152,10 +142,7 @@ export const useAuthStore = defineStore("auth", () => {
     delete axios.defaults.headers.common.Authorization;
     error.value = null;
     successMessage.value = "You have been logged out.";
-    // Optional: router.push('/login') if you have access to router here
   };
-
-  // ─── FORM RESET HELPERS ─────────────────────────────────────
 
   const resetRegisterForm = () => {
     fullName.value = "";
@@ -168,7 +155,6 @@ export const useAuthStore = defineStore("auth", () => {
   const resetLoginForm = () => {
     email.value = "";
     password.value = "";
-    // rememberMe stays as user left it
   };
 
   const clearMessages = () => {
@@ -176,7 +162,6 @@ export const useAuthStore = defineStore("auth", () => {
     successMessage.value = null;
   };
 
-  // ─── EXPOSED API ────────────────────────────────────────────
   return {
     // State
     token,

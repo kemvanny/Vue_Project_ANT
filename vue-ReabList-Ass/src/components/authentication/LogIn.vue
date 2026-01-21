@@ -104,7 +104,6 @@ const auth = useAuthStore();
 const router = useRouter();
 const showPassword = ref(false);
 
-// Clear any messages when the component is loaded
 onMounted(() => {
   auth.clearMessages();
 });
@@ -119,7 +118,6 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-/* ─── YOUR ORIGINAL STYLES PRESERVED ─── */
 * {
   box-sizing: border-box;
   margin: 0;
