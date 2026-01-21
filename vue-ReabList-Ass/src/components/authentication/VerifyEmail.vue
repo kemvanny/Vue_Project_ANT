@@ -4,23 +4,19 @@
       <div class="circle circle-lg"></div>
       <div class="circle circle-md"></div>
       <div class="circle-left"></div>
-
       <div class="brand-content">
         <h1>VERIFY</h1>
-        <h2>{{ !otpSent ? "Confirm Email" : "Security Code" }}</h2>
+        <h2>Confirm Email</h2>
         <p>
-          {{
-            !otpSent
-              ? "Please ensure your email is correct before we send the secure verification code."
-              : "We have sent a 6-digit code to your inbox. Please enter it below."
-          }}
+          Please ensure your email is correct before we send the secure
+          verification code.
         </p>
       </div>
     </div>
 
     <div class="form-section">
       <div class="form-container">
-        <div v-if="!otpSent" class="fade-in">
+        <div class="fade-in">
           <h1 class="fw-bold mb-2">Check Email</h1>
           <p class="subtitle">Is this the correct email for your account?</p>
 
@@ -48,42 +44,10 @@
           </button>
         </div>
 
-        <div v-else class="fade-in">
-          <h1 class="fw-bold mb-2">Verify OTP</h1>
-          <p class="subtitle">
-            Enter the code sent to <strong>{{ auth.email }}</strong>
-          </p>
-
-          <form @submit.prevent="handleVerify" class="signup-form mt-4">
-            <div class="input-group">
-              <label>6-Digit Code</label>
-              <input
-                type="text"
-                v-model="auth.otpCode"
-                placeholder="0 0 0 0 0 0"
-                maxlength="6"
-                class="otp-input"
-                required
-              />
-            </div>
-
-            <button class="create-btn mt-3" :disabled="auth.loading">
-              {{ auth.loading ? "Verifying..." : "Verify Account" }}
-            </button>
-          </form>
-
-          <div class="resend-link">
-            Didn't get it?
-            <a href="#" @click.prevent="handleSendCode">Resend Code</a> or
-            <a href="#" @click.prevent="backToEmailConfirm">Change Email</a>
-          </div>
-        </div>
-
         <p v-if="auth.error" class="error-msg mt-3 text-center">
           {{ auth.error }}
         </p>
       </div>
-
       <div class="bottom-right-circle"></div>
     </div>
   </div>
@@ -96,31 +60,15 @@ import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
 const router = useRouter();
-
-const otpSent = ref(false);
 const isEditing = ref(false);
 
 const handleSendCode = async () => {
   auth.clearMessages();
   const success = await auth.sendOtp();
   if (success) {
-    otpSent.value = true;
-    isEditing.value = false;
+    // Navigate to the new OTP page
+    router.push("/verify-otp");
   }
-};
-
-const handleVerify = async () => {
-  auth.clearMessages();
-  const success = await auth.verifyEmail();
-  if (success) {
-    auth.resetRegisterForm();
-    router.push("/login");
-  }
-};
-
-const backToEmailConfirm = () => {
-  otpSent.value = false;
-  auth.clearMessages();
 };
 </script>
 
@@ -200,7 +148,7 @@ const backToEmailConfirm = () => {
 
 .circle {
   position: absolute;
-  /* background-color: #1a636d; */
+  background-color: #1a636d;
   border-radius: 50%;
   opacity: 0.8;
   animation: float 6s ease-in-out infinite;

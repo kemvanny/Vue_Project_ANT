@@ -134,23 +134,45 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const verifyEmail = async () => {
-    if (otpCode.value.length < 6) {
+    if (otpCode.value.length !== 6 || !/^\d{6}$/.test(otpCode.value)) {
       error.value = "Please enter a valid 6-digit code.";
       return false;
     }
+
     loading.value = true;
-    error.value = null;
+    clearMessages();
+
     try {
-      const response = await api.post("/otp/verify", {
+      const payload = {
         email: email.value.trim(),
-        otp: otpCode.value,
-      });
-      if (response.data.success || response.data.result) {
-        successMessage.value = "Email verified successfully!";
+        code: otpCode.value.trim(), // ← FIXED: using "code" (matches Postman)
+      };
+
+      // ── Debug (remove in production) ────────────────────────
+      console.log("[verifyEmail] Sending payload:", payload);
+      // ────────────────────────────────────────────────────────
+
+      const response = await api.post("/otp/verify", payload);
+
+      // Accept common success patterns
+      if (
+        response.data.success ||
+        response.data.result ||
+        response.status === 201
+      ) {
+        successMessage.value =
+          response.data.message || "Email verified successfully!";
+        // If backend returns new token here, store it:
+        // if (response.data.token) { token.value = response.data.token; ... }
         return true;
       }
+
+      throw new Error("Unexpected response format");
     } catch (err) {
-      error.value = err.response?.data?.message || "Invalid verification code.";
+      error.value =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Invalid or expired code. Please try again or resend.";
       return false;
     } finally {
       loading.value = false;

@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+// import HomeView from "../views/HomeView.vue";
 import Register from "@/components/authentication/Register.vue";
 import LogIn from "@/components/authentication/LogIn.vue";
 
-import AdminDashboardLayout from "@/layouts/AdminDashboardLayout.vue";
+// import AdminDashboardLayout from "@/layouts/AdminDashboardLayout.vue";
 import VerifyEmail from "@/components/authentication/VerifyEmail.vue";
+import VerifyOTP from "@/components/authentication/VerifyOTP.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,9 +26,14 @@ const router = createRouter({
       component: VerifyEmail,
     },
     {
-      path: "/",
-      component: AdminDashboardLayout,
+      path: "/verify-OTP",
+      name: "verify-OTP",
+      component: VerifyOTP,
     },
+    // {
+    //   path: "/",
+    //   component: AdminDashboardLayout,
+    // },
   ],
 });
 

@@ -25,7 +25,7 @@
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
 
-        <form @submit.prevent="auth.register" class="signup-form">
+        <form @submit.prevent="handleRegister" class="signup-form">
           <div class="input-group">
             <label>Full Name</label>
             <input
@@ -104,7 +104,6 @@
             type="submit"
             class="create-btn"
             :disabled="!auth.canRegister || auth.loading"
-            @click.prevent="handleRegister"
           >
             {{ auth.loading ? "Creating..." : "Create Account" }}
           </button>
@@ -140,7 +139,6 @@ const showConfirm = ref(false);
 const handleRegister = async () => {
   const success = await auth.register();
   if (success) {
-    // Redirect to the verification page
     router.push("/verify-email");
   }
 };
