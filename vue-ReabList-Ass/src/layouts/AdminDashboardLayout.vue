@@ -1,9 +1,3 @@
-<script setup>
-import NavbarDashboard from '@/components/admindasboard/NavbarDashboard.vue';
-import SidebarDashboard from '@/components/admindasboard/SidebarDashboard.vue';
-
-</script>
-
 <template>
   <div class="d-flex">
     <!-- Sidebar -->
@@ -15,4 +9,11 @@ import SidebarDashboard from '@/components/admindasboard/SidebarDashboard.vue';
     </div>
   </div>
 </template>
+
+
+<script setup>
+import NavbarDashboard from '@/components/admindasboard/NavbarDashboard.vue';
+import SidebarDashboard from '@/components/admindasboard/SidebarDashboard.vue';
+
+</script>
 
