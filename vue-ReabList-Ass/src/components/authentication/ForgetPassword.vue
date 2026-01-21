@@ -7,89 +7,66 @@
       <div class="circle-left"></div>
 
       <div class="brand-content">
-        <h1>WELCOME BACK</h1>
-        <h2>Your Handle Your Name</h2>
+        <h1>FORGOT PASSWORD</h1>
+        <h2>We've Got You Covered</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua...
+          Enter your email address and we'll send you a secure link to reset
+          your password. You'll be back in your account in no time.
         </p>
       </div>
     </div>
 
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Log In</h1>
+        <h1 class="fw-bold mb-2">Forgot Password?</h1>
         <p class="subtitle">
-          Please enter your credentials to access your account.
+          No worries! Enter your email and we'll send you reset instructions.
         </p>
 
-        <p
-          v-if="auth.error"
-          class="error-msg"
-          style="text-align: center; margin-bottom: 8px"
+        <p v-if="authStore.successMessage" class="success-msg text-center mb-2">
+          {{ authStore.successMessage }}
+        </p>
+
+        <p v-if="authStore.error" class="error-msg text-center mb-2">
+          {{ authStore.error }}
+        </p>
+
+        <form
+          v-if="!authStore.successMessage"
+          @submit.prevent="handleForgotPassword"
+          class="signup-form"
         >
-          {{ auth.error }}
-        </p>
-
-        <form @submit.prevent="handleLogin" class="signup-form">
           <div class="input-group">
-            <label>Email</label>
+            <label>Email Address</label>
             <input
               type="email"
-              v-model="auth.email"
-              placeholder="Enter Your email"
+              v-model="authStore.resetEmail"
+              placeholder="Enter your email"
               required
               autofocus
             />
           </div>
 
-          <div class="input-group">
-            <label>Password</label>
-            <div class="input-wrapper">
-              <input
-                :type="showPassword ? 'text' : 'password'"
-                v-model="auth.password"
-                placeholder="Enter Your password"
-                required
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showPassword = !showPassword"
-              >
-                <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                ></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="form-footer-login">
-            <div class="remember-me">
-              <input type="checkbox" v-model="auth.rememberMe" id="remember" />
-              <label for="remember">Remember me</label>
-            </div>
-            <router-link to="/forget-password" class="forgot-link">
-              Forgot password?
-            </router-link>
-          </div>
-
-          <button class="create-btn" :disabled="!auth.canLogin || auth.loading">
-            {{ auth.loading ? "Signing in..." : "Sign In" }}
+          <button
+            class="create-btn"
+            :disabled="authStore.loading || !isValidEmail"
+          >
+            {{ authStore.loading ? "Sending..." : "Send Reset Link" }}
           </button>
         </form>
 
-        <div class="or-divider">or</div>
-
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-apple"></i></a>
+        <div class="back-to-login">
+          <a href="#" @click.prevent="goBackToLogin">
+            <i class="fas fa-arrow-left"></i> Back to Login
+          </a>
         </div>
 
-        <p class="login-link">
-          Don't have an account? <a href="#">Create one</a>
-        </p>
+        <div class="or-divider">or</div>
+
+        <div class="help-section">
+          <p class="help-text">Need more help?</p>
+          <a href="#" class="contact-link">Contact Support</a>
+        </div>
       </div>
 
       <div class="bottom-right-circle"></div>
@@ -98,25 +75,41 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useAuthStore } from "../../stores/authentication";
+import { computed, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authentication";
 
-const auth = useAuthStore();
 const router = useRouter();
-const showPassword = ref(false);
+const authStore = useAuthStore();
 
-onMounted(() => {
-  auth.clearMessages();
+// Basic email validation
+const isValidEmail = computed(() => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(authStore.resetEmail);
 });
 
-const handleLogin = async () => {
-  const success = await auth.login();
-  if (success) {
-    // router.push('/dashboard');
-    console.log("Logged in successfully!");
-  }
+const handleForgotPassword = async () => {
+  authStore.clearMessages();
+
+  // Call the store action we fixed earlier
+  const success = await authStore.forgotPassword();
+
+  // Note: We DO NOT redirect here.
+  // The user needs to stay here to see the "Link has been sent" message,
+  // then they will go to their email inbox.
 };
+
+const goBackToLogin = () => {
+  authStore.clearMessages();
+  authStore.resetForgotPasswordForm();
+  router.push({ name: "Login" });
+};
+
+onUnmounted(() => {
+  // We keep the success message visible while they check email,
+  // but clear internal loading states if necessary.
+  authStore.loading = false;
+});
 </script>
 
 <style scoped>
@@ -154,7 +147,6 @@ body {
 
 .brand-section {
   flex: 1.15;
-  /* background: #247a85; */
   position: relative;
   display: flex;
   align-items: center;
@@ -194,50 +186,6 @@ body {
   animation: float 7s ease-in-out infinite;
 }
 
-/* Right side – no inner scroll by default */
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px 16px 16px; /* very compact top padding */
-  overflow: hidden; /* ← No inner scroll either */
-  min-height: 0; /* allows shrinking */
-  overflow: hidden;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px; /* narrower = less height needed */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-.circle {
-  position: absolute;
-  background-color: #1a636d;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: float 6s ease-in-out infinite;
-}
-
 .circle-lg {
   width: 850px;
   height: 850px;
@@ -269,21 +217,13 @@ body {
   animation-delay: 2s;
 }
 
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
 .form-section {
   flex: 1;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 20px 16px 16px;
   overflow: hidden;
   min-height: 0;
@@ -341,44 +281,6 @@ body {
   box-shadow: 0 4px 10px rgba(85, 150, 160, 0.1);
 }
 
-.input-wrapper {
-  position: relative;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #247a85;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-/* ─── MODIFIED FOOTER FOR LOGIN ─── */
-.form-footer-login {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.78rem;
-  margin-top: 4px;
-}
-
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #555;
-}
-
-.forgot-link {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-}
-
 .create-btn {
   width: 100%;
   padding: 10px;
@@ -389,6 +291,7 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 6px;
 }
 
 .create-btn:disabled {
@@ -401,11 +304,30 @@ body {
   background: #1a636d;
 }
 
+.back-to-login {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.back-to-login a {
+  color: #247a85;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.back-to-login a:hover {
+  color: #1a636d;
+}
+
 .or-divider {
   text-align: center;
   color: #777;
   font-size: 0.78rem;
-  margin: 10px 0;
+  margin: 14px 0;
   position: relative;
 }
 
@@ -426,33 +348,26 @@ body {
   right: 0;
 }
 
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin: 6px 0;
-}
-.social-icons a {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #f0f7f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  font-size: 1.15rem;
+.help-section {
+  text-align: center;
+  margin-top: 8px;
 }
 
-.login-link {
-  text-align: center;
+.help-text {
+  color: #555;
   font-size: 0.82rem;
-  margin-top: 10px;
+  margin-bottom: 6px;
 }
-.login-link a {
+
+.contact-link {
   color: #247a85;
   font-weight: 600;
   text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
 }
 
 .bottom-right-circle {
@@ -484,7 +399,19 @@ body {
 
 .error-msg {
   color: #d32f2f;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   margin-top: 2px;
+  padding: 8px;
+  background: #ffebee;
+  border-radius: 5px;
+}
+
+.success-msg {
+  color: #2e7d32;
+  font-size: 0.82rem;
+  margin-top: 2px;
+  padding: 8px;
+  background: #e8f5e9;
+  border-radius: 5px;
 }
 </style>

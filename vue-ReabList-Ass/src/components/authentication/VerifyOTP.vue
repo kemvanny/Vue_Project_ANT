@@ -165,11 +165,18 @@ const handleResend = async () => {
 };
 
 const handleVerify = async () => {
-  auth.clearMessages();
-  const success = await auth.verifyEmail();
-  if (success) {
-    auth.resetRegisterForm();
-    router.push("/login");
+  try {
+    // Check if the method exists before calling
+    if (auth.clearMessages) auth.clearMessages();
+
+    const success = await auth.verifyEmail();
+
+    if (success) {
+      auth.resetRegisterForm();
+      router.push("/login");
+    }
+  } catch (err) {
+    console.error("Verification failed:", err);
   }
 };
 </script>

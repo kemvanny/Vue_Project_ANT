@@ -6,6 +6,8 @@ import LogIn from "@/components/authentication/LogIn.vue";
 // import AdminDashboardLayout from "@/layouts/AdminDashboardLayout.vue";
 import VerifyEmail from "@/components/authentication/VerifyEmail.vue";
 import VerifyOTP from "@/components/authentication/VerifyOTP.vue";
+import ForgetPassword from "@/components/authentication/ForgetPassword.vue";
+import ResetPassword from "@/components/authentication/ResetPassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +31,16 @@ const router = createRouter({
       path: "/verify-OTP",
       name: "verify-OTP",
       component: VerifyOTP,
+    },
+    {
+      path: "/forget-password",
+      name: "forget-password",
+      component: ForgetPassword,
+    },
+    {
+      path: "/reset-password",
+      name: "reset-password",
+      component: ResetPassword,
     },
     // {
     //   path: "/",
