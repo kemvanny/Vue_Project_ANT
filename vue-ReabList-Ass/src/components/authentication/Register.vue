@@ -100,7 +100,12 @@
             >
           </div>
 
-          <button class="create-btn" :disabled="!auth.canSubmit">
+          <button
+            type="submit"
+            class="create-btn"
+            :disabled="!auth.canRegister || auth.loading"
+            @click.prevent="handleRegister"
+          >
             {{ auth.loading ? "Creating..." : "Create Account" }}
           </button>
         </form>
@@ -124,10 +129,21 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "../../stores/authentication";
+import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
+const router = useRouter();
+
 const showPassword = ref(false);
 const showConfirm = ref(false);
+
+const handleRegister = async () => {
+  const success = await auth.register();
+  if (success) {
+    // Redirect to the verification page
+    router.push("/verify-email");
+  }
+};
 </script>
 
 <style scoped>
@@ -198,7 +214,6 @@ body {
   opacity: 0.9;
 }
 
-
 .circle {
   position: absolute;
   background: #1a636d;
@@ -206,7 +221,6 @@ body {
   opacity: 0.6;
   animation: float 7s ease-in-out infinite;
 }
-
 
 /* Right side – no inner scroll by default */
 .form-section {

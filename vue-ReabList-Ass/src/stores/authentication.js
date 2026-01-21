@@ -15,6 +15,8 @@ export const useAuthStore = defineStore("auth", () => {
   const confirmPassword = ref("");
   const agreedTerms = ref(false);
 
+  // --- New State for Verification ---
+  const otpCode = ref("");
   const loading = ref(false);
   const error = ref(null);
   const successMessage = ref(null);
@@ -46,8 +48,10 @@ export const useAuthStore = defineStore("auth", () => {
 
   const isAuthenticated = computed(() => !!token.value && !!user.value);
 
+  // --- Existing Actions ---
+
   const register = async () => {
-    if (!canRegister.value) return;
+    if (!canRegister.value) return false; // Return false if validation fails
 
     loading.value = true;
     error.value = null;
@@ -62,72 +66,91 @@ export const useAuthStore = defineStore("auth", () => {
       };
 
       const response = await api.post("/auth/register", payload);
+      const data = response.data;
 
+      if (data.success || data.result) {
+        // Store user data so it's available for the "Confirm Email" screen
+        user.value = data.user || data.data?.user || data.data;
+
+        // Note: We don't necessarily need to set the token yet if
+        // the account is "unverified" in your backend.
+        successMessage.value = "Registration successful!";
+        return true; // This triggers the redirect in your component
+      }
+    } catch (err) {
+      error.value = err.response?.data?.message || "Registration failed.";
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  };
+  const login = async () => {
+    if (!canLogin.value) return;
+    loading.value = true;
+    error.value = null;
+    try {
+      const payload = { email: email.value.trim(), password: password.value };
+      const response = await api.post("/auth/login", payload);
       const data = response.data;
 
       if (data.success || data.result) {
         user.value = data.user || data.data?.user || data.data;
         token.value = data.token || data.access_token;
-
         localStorage.setItem("user", JSON.stringify(user.value));
         if (token.value) {
           localStorage.setItem("token", token.value);
           axios.defaults.headers.common.Authorization = `Bearer ${token.value}`;
         }
-
-        successMessage.value = "Account created successfully!";
-        resetRegisterForm();
         return true;
       }
     } catch (err) {
-      error.value =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Registration failed. Please try again.";
-      console.error("Register failed:", err);
+      error.value = err.response?.data?.message || "Invalid email or password.";
       return false;
     } finally {
       loading.value = false;
     }
   };
 
-  const login = async () => {
-    if (!canLogin.value) return;
+  // --- New Actions for Email Verification ---
 
+  const sendOtp = async () => {
     loading.value = true;
     error.value = null;
-    successMessage.value = null;
-
     try {
-      const payload = {
+      // POST /otp/send requires the email address
+      const response = await api.post("/otp/send", {
         email: email.value.trim(),
-        password: password.value,
-      };
-
-      const response = await api.post("/auth/login", payload);
-
-      const data = response.data;
-
-      if (data.success || data.result) {
-        user.value = data.user || data.data?.user || data.data;
-        token.value = data.token || data.access_token;
-
-        localStorage.setItem("user", JSON.stringify(user.value));
-        if (token.value) {
-          localStorage.setItem("token", token.value);
-          axios.defaults.headers.common.Authorization = `Bearer ${token.value}`;
-        }
-
-        successMessage.value = "Logged in successfully!";
-        resetLoginForm();
+      });
+      if (response.data) {
+        successMessage.value = "Verification code sent!";
         return true;
       }
     } catch (err) {
-      error.value =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Invalid email or password.";
-      console.error("Login failed:", err);
+      error.value = err.response?.data?.message || "Failed to send code.";
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const verifyEmail = async () => {
+    if (otpCode.value.length < 6) {
+      error.value = "Please enter a valid 6-digit code.";
+      return false;
+    }
+    loading.value = true;
+    error.value = null;
+    try {
+      const response = await api.post("/otp/verify", {
+        email: email.value.trim(),
+        otp: otpCode.value,
+      });
+      if (response.data.success || response.data.result) {
+        successMessage.value = "Email verified successfully!";
+        return true;
+      }
+    } catch (err) {
+      error.value = err.response?.data?.message || "Invalid verification code.";
       return false;
     } finally {
       loading.value = false;
@@ -140,8 +163,6 @@ export const useAuthStore = defineStore("auth", () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     delete axios.defaults.headers.common.Authorization;
-    error.value = null;
-    successMessage.value = "You have been logged out.";
   };
 
   const resetRegisterForm = () => {
@@ -150,6 +171,7 @@ export const useAuthStore = defineStore("auth", () => {
     password.value = "";
     confirmPassword.value = "";
     agreedTerms.value = false;
+    otpCode.value = "";
   };
 
   const resetLoginForm = () => {
@@ -157,13 +179,7 @@ export const useAuthStore = defineStore("auth", () => {
     password.value = "";
   };
 
-  const clearMessages = () => {
-    error.value = null;
-    successMessage.value = null;
-  };
-
   return {
-    // State
     token,
     user,
     email,
@@ -172,21 +188,24 @@ export const useAuthStore = defineStore("auth", () => {
     fullName,
     confirmPassword,
     agreedTerms,
+    otpCode,
     loading,
     error,
     successMessage,
-    // Computed
     passwordsMatch,
     canRegister,
     canLogin,
     isAuthenticated,
-    // Actions
     register,
     login,
     logout,
-    clearMessages,
-    // Helpers
+    sendOtp,
+    verifyEmail,
     resetRegisterForm,
     resetLoginForm,
+    clearMessages: () => {
+      error.value = null;
+      successMessage.value = null;
+    },
   };
 });
