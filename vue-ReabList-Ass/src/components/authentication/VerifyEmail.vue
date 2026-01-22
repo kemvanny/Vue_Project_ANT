@@ -70,12 +70,10 @@ const auth = useAuthStore();
 const router = useRouter();
 const isEditing = ref(false);
 
-// 1. Local error state
 const errors = reactive({
   email: "",
 });
 
-// 2. Simple Schema for the email update
 const emailSchema = z
   .string()
   .min(1, "Email cannot be empty")
@@ -83,13 +81,12 @@ const emailSchema = z
 
 const toggleEdit = () => {
   if (isEditing.value) {
-    // 3. Validate when clicking SAVE
     const result = emailSchema.safeParse(auth.email);
     if (!result.success) {
       errors.email = result.error.errors[0].message;
-      return; // Stay in editing mode if invalid
+      return;
     }
-    errors.email = ""; // Clear error if valid
+    errors.email = "";
   }
   isEditing.value = !isEditing.value;
 };
@@ -98,7 +95,6 @@ const handleSendCode = async () => {
   errors.email = "";
   auth.clearMessages();
 
-  // 4. Final safety check before sending
   const result = emailSchema.safeParse(auth.email);
   if (!result.success) {
     errors.email = result.error.errors[0].message;

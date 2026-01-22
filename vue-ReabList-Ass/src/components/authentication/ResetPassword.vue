@@ -90,13 +90,11 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
-// Local validation errors
 const errors = reactive({
   newPassword: "",
   confirmNewPassword: "",
 });
 
-// Zod Schema for Reset Password
 const resetSchema = z
   .object({
     newPassword: z.string().min(8, "Password must be at least 8 characters"),
@@ -120,12 +118,10 @@ onMounted(() => {
 });
 
 const handleReset = async () => {
-  // 1. Clear previous errors
   errors.newPassword = "";
   errors.confirmNewPassword = "";
   authStore.clearMessages();
 
-  // 2. Validate with Zod
   const result = resetSchema.safeParse({
     newPassword: authStore.newPassword,
     confirmNewPassword: authStore.confirmNewPassword,
@@ -139,11 +135,9 @@ const handleReset = async () => {
     return;
   }
 
-  // 3. API Call (Added await)
   const success = authStore.resetPassword();
 
   if (success) {
-    // Optional: wait a moment or show success before redirecting
     router.push("/login");
   }
 };
