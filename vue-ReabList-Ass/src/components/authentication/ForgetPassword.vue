@@ -35,6 +35,7 @@
           v-if="!authStore.successMessage"
           @submit.prevent="handleForgotPassword"
           class="signup-form"
+          novalidate
         >
           <div class="input-group">
             <label>Email Address</label>
@@ -42,14 +43,16 @@
               type="email"
               v-model="authStore.resetEmail"
               placeholder="Enter your email"
-              required
+              :class="{ 'input-error': errors.email }"
               autofocus
             />
+            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
           </div>
 
           <button
+            type="submit"
             class="create-btn"
-            :disabled="authStore.loading || !isValidEmail"
+            :disabled="authStore.loading"
           >
             {{ authStore.loading ? "Sending..." : "Send Reset Link" }}
           </button>
@@ -75,28 +78,47 @@
 </template>
 
 <script setup>
-import { computed, onUnmounted } from "vue";
+import { reactive, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
+import { z } from "zod";
 
 const router = useRouter();
 const authStore = useAuthStore();
 
-// Basic email validation
-const isValidEmail = computed(() => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(authStore.resetEmail);
+const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address"),
+});
+
+const errors = reactive({
+  email: "",
 });
 
 const handleForgotPassword = async () => {
+  errors.email = "";
   authStore.clearMessages();
 
-  // Call the store action we fixed earlier
-  const success = await authStore.forgotPassword();
+  const result = forgotPasswordSchema.safeParse({
+    email: authStore.resetEmail,
+  });
 
-  // Note: We DO NOT redirect here.
-  // The user needs to stay here to see the "Link has been sent" message,
-  // then they will go to their email inbox.
+  if (!result.success) {
+    result.error.issues.forEach((issue) => {
+      if (issue.path[0] === "email") {
+        errors.email = issue.message;
+      }
+    });
+    return;
+  }
+
+  try {
+    await authStore.forgotPassword();
+  } catch (err) {
+    console.error("Forgot password request failed:", err);
+  }
 };
 
 const goBackToLogin = () => {
@@ -106,8 +128,6 @@ const goBackToLogin = () => {
 };
 
 onUnmounted(() => {
-  // We keep the success message visible while they check email,
-  // but clear internal loading states if necessary.
   authStore.loading = false;
 });
 </script>
@@ -154,6 +174,24 @@ body {
   color: white;
   padding: 30px;
   overflow: hidden;
+}
+
+.input-error {
+  border-color: #ff4d4d !important;
+}
+
+.success-msg {
+  color: #28a745;
+  font-size: 0.9rem;
+  background: #e8f5e9;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.error-msg {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 4px;
 }
 
 .brand-content {

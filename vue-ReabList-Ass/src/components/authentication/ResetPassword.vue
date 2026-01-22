@@ -30,7 +30,7 @@
           {{ authStore.error }}
         </p>
 
-        <form @submit.prevent="handleReset" class="signup-form">
+        <form @submit.prevent="handleReset" class="signup-form" novalidate>
           <input type="hidden" v-model="authStore.otpCode" />
 
           <div class="input-group">
@@ -39,8 +39,11 @@
               type="password"
               v-model="authStore.newPassword"
               placeholder="Min. 8 characters"
-              required
+              :class="{ 'input-error': errors.newPassword }"
             />
+            <p v-if="errors.newPassword" class="error-msg-small">
+              {{ errors.newPassword }}
+            </p>
           </div>
 
           <div class="input-group">
@@ -49,13 +52,17 @@
               type="password"
               v-model="authStore.confirmNewPassword"
               placeholder="Repeat new password"
-              required
+              :class="{ 'input-error': errors.confirmNewPassword }"
             />
+            <p v-if="errors.confirmNewPassword" class="error-msg-small">
+              {{ errors.confirmNewPassword }}
+            </p>
           </div>
 
           <button
+            type="submit"
             class="create-btn mt-4"
-            :disabled="!authStore.canResetPassword"
+            :disabled="authStore.loading"
           >
             {{ authStore.loading ? "Resetting..." : "Update Password" }}
           </button>
@@ -74,23 +81,38 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
+import { z } from "zod";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
+// Local validation errors
+const errors = reactive({
+  newPassword: "",
+  confirmNewPassword: "",
+});
+
+// Zod Schema for Reset Password
+const resetSchema = z
+  .object({
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    confirmNewPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords do not match",
+    path: ["confirmNewPassword"],
+  });
+
 onMounted(() => {
-  // Support both common reset link formats:
-  // ?token=xxx
-  // /reset-password/xxx
   const token = route.query.token || route.params.token;
 
   if (token) {
     authStore.otpCode = token;
-    authStore.clearMessages(); // optional: clean previous messages
+    authStore.clearMessages();
   } else {
     authStore.error =
       "Invalid or missing reset token. Please request a new link.";
@@ -98,23 +120,31 @@ onMounted(() => {
 });
 
 const handleReset = async () => {
-  // Extra client-side safety (optional but recommended)
-  if (authStore.newPassword.length < 8) {
-    authStore.error = "Password must be at least 8 characters.";
+  // 1. Clear previous errors
+  errors.newPassword = "";
+  errors.confirmNewPassword = "";
+  authStore.clearMessages();
+
+  // 2. Validate with Zod
+  const result = resetSchema.safeParse({
+    newPassword: authStore.newPassword,
+    confirmNewPassword: authStore.confirmNewPassword,
+  });
+
+  if (!result.success) {
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0];
+      errors[field] = issue.message;
+    });
     return;
   }
 
-  if (authStore.newPassword !== authStore.confirmNewPassword) {
-    authStore.error = "Passwords do not match.";
-    return;
-  }
-
-  const success = await authStore.resetPassword();
+  // 3. API Call (Added await)
+  const success = authStore.resetPassword();
 
   if (success) {
-    setTimeout(() => {
-      router.push("/login");
-    }, 2500);
+    // Optional: wait a moment or show success before redirecting
+    router.push("/login");
   }
 };
 </script>
@@ -140,6 +170,34 @@ body {
   height: 100vh;
   width: 100%;
   overflow: hidden;
+}
+.error-msg-small {
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.input-error {
+  border: 1px solid #ff4d4d !important;
+}
+
+.success-msg {
+  color: #28a745;
+  background-color: #f0fff4;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #c6f6d5;
+}
+
+.back-to-login {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.back-to-login a {
+  text-decoration: none;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 @keyframes float {

@@ -22,17 +22,24 @@
 
           <div class="input-group mt-4">
             <label>Registration Email</label>
-            <div class="email-wrapper" :class="{ 'is-editing': isEditing }">
+            <div
+              class="email-wrapper"
+              :class="{ 'is-editing': isEditing, 'has-error': errors.email }"
+            >
               <input
                 type="email"
                 v-model="auth.email"
                 :disabled="!isEditing"
                 class="confirm-input"
+                @keyup.enter="toggleEdit"
               />
-              <button @click="isEditing = !isEditing" class="edit-btn">
+              <button @click="toggleEdit" class="edit-btn">
                 {{ isEditing ? "SAVE" : "CHANGE" }}
               </button>
             </div>
+            <p v-if="errors.email" class="error-msg-small">
+              {{ errors.email }}
+            </p>
           </div>
 
           <button
@@ -54,26 +61,58 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
+import { z } from "zod";
 
 const auth = useAuthStore();
 const router = useRouter();
 const isEditing = ref(false);
 
+// 1. Local error state
+const errors = reactive({
+  email: "",
+});
+
+// 2. Simple Schema for the email update
+const emailSchema = z
+  .string()
+  .min(1, "Email cannot be empty")
+  .email("Invalid email format");
+
+const toggleEdit = () => {
+  if (isEditing.value) {
+    // 3. Validate when clicking SAVE
+    const result = emailSchema.safeParse(auth.email);
+    if (!result.success) {
+      errors.email = result.error.errors[0].message;
+      return; // Stay in editing mode if invalid
+    }
+    errors.email = ""; // Clear error if valid
+  }
+  isEditing.value = !isEditing.value;
+};
+
 const handleSendCode = async () => {
+  errors.email = "";
   auth.clearMessages();
+
+  // 4. Final safety check before sending
+  const result = emailSchema.safeParse(auth.email);
+  if (!result.success) {
+    errors.email = result.error.errors[0].message;
+    return;
+  }
+
   const success = await auth.sendOtp();
   if (success) {
-    // Navigate to the new OTP page
     router.push("/verify-otp");
   }
 };
 </script>
 
 <style scoped>
-/* Reset & Layout */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -104,6 +143,50 @@ const handleSendCode = async () => {
 .brand-content {
   max-width: 420px;
   z-index: 10;
+}
+.email-wrapper {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #eee;
+  padding: 5px 0;
+  transition: border-color 0.3s ease;
+}
+
+.email-wrapper.is-editing {
+  border-color: #3b82f6; /* Blue border when editing */
+}
+
+.email-wrapper.has-error {
+  border-color: #ff4d4d; /* Red border on error */
+}
+
+.confirm-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  color: #333;
+  outline: none;
+}
+
+.confirm-input:disabled {
+  color: #888;
+}
+
+.edit-btn {
+  background: transparent;
+  border: none;
+  color: #3b82f6;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding-left: 10px;
+}
+
+.error-msg-small {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+  margin-top: 5px;
 }
 
 .brand-content h1 {

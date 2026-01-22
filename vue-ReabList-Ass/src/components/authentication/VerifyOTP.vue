@@ -87,12 +87,10 @@ import { useRouter } from "vue-router";
 const auth = useAuthStore();
 const router = useRouter();
 
-// OTP state - array of 6 digits
 const otpDigits = ref(Array(6).fill(""));
 const otpRefs = ref([]);
 const activeIndex = ref(0);
 
-// Sync OTP digits → store's otpCode
 watch(
   otpDigits,
   (newDigits) => {
@@ -101,7 +99,6 @@ watch(
   { deep: true },
 );
 
-// Focus first input on mount
 onMounted(() => {
   nextTick(() => {
     otpRefs.value[0]?.focus();
@@ -109,8 +106,8 @@ onMounted(() => {
 });
 
 const handleInput = (e, index) => {
-  let value = e.target.value.replace(/\D/g, ""); // keep only digits
-  if (value.length > 1) value = value[0]; // safety
+  let value = e.target.value.replace(/\D/g, "");
+  if (value.length > 1) value = value[0];
 
   otpDigits.value[index] = value;
 
@@ -134,7 +131,6 @@ const handleKeyDown = (e, index) => {
     e.preventDefault();
     otpRefs.value[index + 1]?.focus();
   } else if (!/[0-9]/.test(e.key) && e.key.length === 1) {
-    // Block non-numeric keys (except control keys)
     e.preventDefault();
   }
 };
@@ -158,7 +154,7 @@ const handlePaste = (e) => {
 
 const handleResend = async () => {
   auth.clearMessages();
-  otpDigits.value = Array(6).fill(""); // reset OTP boxes
+  otpDigits.value = Array(6).fill("");
   activeIndex.value = 0;
   await auth.sendOtp();
   nextTick(() => otpRefs.value[0]?.focus());
@@ -166,7 +162,6 @@ const handleResend = async () => {
 
 const handleVerify = async () => {
   try {
-    // Check if the method exists before calling
     if (auth.clearMessages) auth.clearMessages();
 
     const success = await auth.verifyEmail();

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- Left Section -->
     <div class="brand-section">
       <div class="circle circle-lg"></div>
       <div class="circle circle-md"></div>
@@ -16,6 +17,7 @@
       </div>
     </div>
 
+    <!-- Right Section (Form) -->
     <div class="form-section">
       <div class="form-container">
         <h1 class="fw-bold mb-2">Log In</h1>
@@ -31,26 +33,28 @@
           {{ auth.error }}
         </p>
 
+        <!-- Login Form -->
         <form @submit.prevent="handleLogin" class="signup-form">
+          <!-- Email -->
           <div class="input-group">
             <label>Email</label>
             <input
               type="email"
-              v-model="auth.email"
+              v-model="form.email"
               placeholder="Enter Your email"
-              required
               autofocus
             />
+            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
           </div>
 
+          <!-- Password -->
           <div class="input-group">
             <label>Password</label>
             <div class="input-wrapper">
               <input
                 :type="showPassword ? 'text' : 'password'"
-                v-model="auth.password"
+                v-model="form.password"
                 placeholder="Enter Your password"
-                required
               />
               <button
                 type="button"
@@ -62,11 +66,14 @@
                 ></i>
               </button>
             </div>
+            <p v-if="errors.password" class="error-msg">
+              {{ errors.password }}
+            </p>
           </div>
 
           <div class="form-footer-login">
             <div class="remember-me">
-              <input type="checkbox" v-model="auth.rememberMe" id="remember" />
+              <input type="checkbox" v-model="form.rememberMe" id="remember" />
               <label for="remember">Remember me</label>
             </div>
             <router-link to="/forget-password" class="forgot-link">
@@ -74,7 +81,7 @@
             </router-link>
           </div>
 
-          <button class="create-btn" :disabled="!auth.canLogin || auth.loading">
+          <button class="create-btn" :disabled="auth.loading">
             {{ auth.loading ? "Signing in..." : "Sign In" }}
           </button>
         </form>
@@ -88,7 +95,8 @@
         </div>
 
         <p class="login-link">
-          Don't have an account? <a href="#">Create one</a>
+          Don't have an account?
+          <router-link to="/register">Create one</router-link>
         </p>
       </div>
 
@@ -98,23 +106,69 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
+import { z } from "zod";
 
+// --- Auth store ---
 const auth = useAuthStore();
 const router = useRouter();
+
 const showPassword = ref(false);
+
+const form = reactive({
+  email: "",
+  password: "",
+  rememberMe: false,
+});
+
+const loginSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const errors = reactive({
+  email: "",
+  password: "",
+});
 
 onMounted(() => {
   auth.clearMessages();
 });
 
 const handleLogin = async () => {
-  const success = await auth.login();
-  if (success) {
-    // router.push('/dashboard');
-    console.log("Logged in successfully!");
+  errors.email = "";
+  errors.password = "";
+
+  const result = loginSchema.safeParse({
+    email: form.email,
+    password: form.password,
+  });
+
+  if (!result.success) {
+    result.error.issues.forEach((issue) => {
+      const field = issue.path[0];
+      if (field === "email") {
+        errors.email = issue.message;
+      } else if (field === "password") {
+        errors.password = issue.message;
+      }
+    });
+    return;
+  }
+
+  try {
+    auth.email = form.email;
+    auth.password = form.password;
+    auth.rememberMe = form.rememberMe;
+
+    const success = await auth.login();
+    if (success) {
+      router.push("/dashboard");
+    }
+  } catch (err) {
+    console.error("Login failed:", err);
   }
 };
 </script>

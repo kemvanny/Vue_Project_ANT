@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import api from "@/API/api"; // your axios instance
+import api from "@/API/api";
 
 export const useAuthStore = defineStore("auth", () => {
-  // ── State ────────────────────────────────────────────────────────────────
+  // ── State
   const token = ref(localStorage.getItem("token") || null);
   const user = ref(JSON.parse(localStorage.getItem("user")) || null);
 
@@ -16,22 +16,19 @@ export const useAuthStore = defineStore("auth", () => {
   const agreedTerms = ref(false);
 
   // OTP & Reset
-  const otpCode = ref(""); // Used for OTP code OR reset token
+  const otpCode = ref("");
   const resetEmail = ref("");
   const newPassword = ref("");
   const confirmNewPassword = ref("");
 
-  // UI state
   const loading = ref(false);
   const error = ref(null);
   const successMessage = ref(null);
 
-  // ── Init ─────────────────────────────────────────────────────────────────
   if (token.value) {
     api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
   }
 
-  // ── Utility ──────────────────────────────────────────────────────────────
   const clearMessages = () => {
     error.value = null;
     successMessage.value = null;
@@ -58,7 +55,7 @@ export const useAuthStore = defineStore("auth", () => {
     otpCode.value = "";
   };
 
-  // ── Computed ─────────────────────────────────────────────────────────────
+  // ── Computed
   const passwordsMatch = computed(
     () => password.value === confirmPassword.value,
   );
@@ -86,14 +83,14 @@ export const useAuthStore = defineStore("auth", () => {
 
   const canResetPassword = computed(() => {
     return (
-      otpCode.value.trim().length > 0 && // token must exist
+      otpCode.value.trim().length > 0 &&
       newPassword.value.length >= 8 &&
       newPasswordsMatch.value &&
       !loading.value
     );
   });
 
-  // ── Actions ──────────────────────────────────────────────────────────────
+  // ── Actions
 
   const register = async () => {
     if (!canRegister.value) return false;
@@ -169,7 +166,7 @@ export const useAuthStore = defineStore("auth", () => {
     clearMessages();
   };
 
-  // ── OTP ──────────────────────────────────────────────────────────────────
+  // ── OTP
   const sendOtp = async () => {
     loading.value = true;
     clearMessages();
@@ -224,7 +221,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // ── Password Reset ───────────────────────────────────────────────────────
+  // ── Password Reset
   const forgotPassword = async (emailAddress = null) => {
     loading.value = true;
     clearMessages();
@@ -241,6 +238,7 @@ export const useAuthStore = defineStore("auth", () => {
         return true;
       }
     } catch (err) {
+      console.error(err);
       error.value = err.response?.data?.message || "Failed to send reset link.";
       return false;
     } finally {
@@ -248,7 +246,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // NEW: Call this on ResetPassword page mount
   const captureResetToken = (route) => {
     const tokenFromUrl = route.params.token || route.query.token;
     const emailFromUrl = route.query.email;
@@ -285,11 +282,20 @@ export const useAuthStore = defineStore("auth", () => {
       console.log("Sending reset payload:", payload);
 
       const response = await api.post("/auth/reset-password", payload);
+      console.log(response);
 
       if (response.data?.success || response.status === 200) {
         successMessage.value =
-          "Password reset successfully! You can now log in.";
+          "Password reset successfully! Redirecting to login...";
+
+        token.value = null;
+        user.value = null;
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        delete api.defaults.headers.common.Authorization;
+
         resetForgotPasswordForm();
+
         return true;
       }
     } catch (err) {
@@ -306,7 +312,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // ── Export ───────────────────────────────────────────────────────────────
+  // ── Export
   return {
     token,
     user,
