@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Left Brand -->
     <div class="brand-section">
       <div class="circle circle-lg"></div>
       <div class="circle circle-md"></div>
@@ -17,23 +16,27 @@
       </div>
     </div>
 
-    <!-- Right Form -->
     <div class="form-section">
       <div class="form-container">
         <h1 class="fw-bold mb-2">Sign up</h1>
-        <p class="subtitle">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        <p class="subtitle">Join our community by creating a new account.</p>
+
+        <p v-if="auth.error" class="error-msg text-center mb-2">
+          {{ auth.error }}
         </p>
 
-        <form @submit.prevent="auth.register" class="signup-form">
+        <form @submit.prevent="handleRegister" class="signup-form" novalidate>
           <div class="input-group">
             <label>Full Name</label>
             <input
               type="text"
               v-model="auth.fullName"
               placeholder="Enter Your full name"
-              required
+              :class="{ 'input-error': errors.fullName }"
             />
+            <p v-if="errors.fullName" class="error-msg-small">
+              {{ errors.fullName }}
+            </p>
           </div>
 
           <div class="input-group">
@@ -42,8 +45,11 @@
               type="email"
               v-model="auth.email"
               placeholder="Enter Your email"
-              required
+              :class="{ 'input-error': errors.email }"
             />
+            <p v-if="errors.email" class="error-msg-small">
+              {{ errors.email }}
+            </p>
           </div>
 
           <div class="input-group">
@@ -53,7 +59,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 v-model="auth.password"
                 placeholder="Enter Your password"
-                required
+                :class="{ 'input-error': errors.password }"
               />
               <button
                 type="button"
@@ -65,6 +71,9 @@
                 ></i>
               </button>
             </div>
+            <p v-if="errors.password" class="error-msg-small">
+              {{ errors.password }}
+            </p>
           </div>
 
           <div class="input-group">
@@ -74,7 +83,7 @@
                 :type="showConfirm ? 'text' : 'password'"
                 v-model="auth.confirmPassword"
                 placeholder="Enter Your confirm password"
-                required
+                :class="{ 'input-error': errors.confirmPassword }"
               />
               <button
                 type="button"
@@ -84,23 +93,25 @@
                 <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
               </button>
             </div>
-            <p
-              v-if="!auth.passwordsMatch && auth.confirmPassword"
-              class="error-msg"
-            >
-              Passwords do not match
+            <p v-if="errors.confirmPassword" class="error-msg-small">
+              {{ errors.confirmPassword }}
             </p>
           </div>
 
           <div class="form-footer">
-            <input type="checkbox" v-model="auth.agreedTerms" id="terms" />
-            <label for="terms"
-              >I agree to the <a href="#">Terms of Service</a> &
-              <a href="#">Privacy Policy</a>.</label
-            >
+            <div class="checkbox-group">
+              <input type="checkbox" v-model="auth.agreedTerms" id="terms" />
+              <label for="terms">
+                I agree to the <a href="#">Terms of Service</a> &
+                <a href="#">Privacy Policy</a>.
+              </label>
+            </div>
+            <p v-if="errors.agreedTerms" class="error-msg-small">
+              {{ errors.agreedTerms }}
+            </p>
           </div>
 
-          <button class="create-btn" :disabled="!auth.canSubmit">
+          <button type="submit" class="create-btn" :disabled="auth.loading">
             {{ auth.loading ? "Creating..." : "Create Account" }}
           </button>
         </form>
@@ -113,7 +124,10 @@
           <a href="#"><i class="fab fa-apple"></i></a>
         </div>
 
-        <p class="login-link">Already signed up? <a href="#">Go to login</a></p>
+        <p class="login-link">
+          Already signed up?
+          <router-link to="/login">Go to login</router-link>
+        </p>
       </div>
 
       <div class="bottom-right-circle"></div>
@@ -122,12 +136,65 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/authentication";
+import { useRouter } from "vue-router";
+import { z } from "zod";
 
 const auth = useAuthStore();
+const router = useRouter();
+
 const showPassword = ref(false);
 const showConfirm = ref(false);
+
+const errors = reactive({
+  fullName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  agreedTerms: "",
+});
+
+const registerSchema = z
+  .object({
+    fullName: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().min(1, "Email is required").email("Invalid email format"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    agreedTerms: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the terms and conditions" }),
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+const handleRegister = async () => {
+  Object.keys(errors).forEach((key) => (errors[key] = ""));
+  auth.clearMessages();
+
+  const validation = registerSchema.safeParse({
+    fullName: auth.fullName,
+    email: auth.email,
+    password: auth.password,
+    confirmPassword: auth.confirmPassword,
+    agreedTerms: auth.agreedTerms,
+  });
+
+  if (!validation.success) {
+    validation.error.issues.forEach((issue) => {
+      const field = issue.path[0];
+      errors[field] = issue.message;
+    });
+    return;
+  }
+
+  const success = await auth.register();
+  if (success) {
+    router.push("/verify-email");
+  }
+};
 </script>
 
 <style scoped>
@@ -143,14 +210,37 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* ← Critical: blocks outer scroll */
+  overflow: hidden;
 }
 
 .container {
   display: flex;
   height: 100vh;
   width: 100%;
-  overflow: hidden; /* ← No outer scroll allowed */
+  overflow: hidden;
+}
+.error-msg-small {
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.input-error {
+  border: 1px solid #ff4d4d !important;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-msg.text-center {
+  background: #fff0f0;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ffcaca;
+  color: #d32f2f;
 }
 
 @keyframes float {
@@ -198,7 +288,6 @@ body {
   opacity: 0.9;
 }
 
-
 .circle {
   position: absolute;
   background: #1a636d;
@@ -206,7 +295,6 @@ body {
   opacity: 0.6;
   animation: float 7s ease-in-out infinite;
 }
-
 
 /* Right side – no inner scroll by default */
 .form-section {
