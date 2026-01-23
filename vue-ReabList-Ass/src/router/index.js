@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import HomeView from "../views/HomeView.vue";
-import Register from "@/components/authentication/Register.vue";
-import LogIn from "@/components/authentication/LogIn.vue";
+
+import Register from "@/view/authentication/Register.vue";
+import LogIn from "@/view/authentication/LogIn.vue";
 
 // import AdminDashboardLayout from "@/layouts/AdminDashboardLayout.vue";
-import VerifyEmail from "@/components/authentication/VerifyEmail.vue";
-import VerifyOTP from "@/components/authentication/VerifyOTP.vue";
-import ForgetPassword from "@/components/authentication/ForgetPassword.vue";
-import ResetPassword from "@/components/authentication/ResetPassword.vue";
+import VerifyEmail from "@/view/authentication/VerifyEmail.vue";
+import VerifyOTP from "@/view/authentication/VerifyOTP.vue";
+import ForgetPassword from "@/view/authentication/ForgetPassword.vue";
+import ResetPassword from "@/view/authentication/ResetPassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

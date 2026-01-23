@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Left Section -->
     <div class="brand-section">
       <div class="circle circle-lg"></div>
       <div class="circle circle-md"></div>
@@ -8,7 +7,7 @@
       <div class="circle-left"></div>
 
       <div class="brand-content">
-        <h1>WELCOME BACK</h1>
+        <h1>WELCOME</h1>
         <h2>Your Handle Your Name</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -17,44 +16,50 @@
       </div>
     </div>
 
-    <!-- Right Section (Form) -->
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Log In</h1>
-        <p class="subtitle">
-          Please enter your credentials to access your account.
-        </p>
+        <h1 class="fw-bold mb-2">Sign up</h1>
+        <p class="subtitle">Join our community by creating a new account.</p>
 
-        <p
-          v-if="auth.error"
-          class="error-msg"
-          style="text-align: center; margin-bottom: 8px"
-        >
+        <p v-if="auth.error" class="error-msg text-center mb-2">
           {{ auth.error }}
         </p>
 
-        <!-- Login Form -->
-        <form @submit.prevent="handleLogin" class="signup-form">
-          <!-- Email -->
+        <form @submit.prevent="handleRegister" class="signup-form" novalidate>
+          <div class="input-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              v-model="auth.fullName"
+              placeholder="Enter Your full name"
+              :class="{ 'input-error': errors.fullName }"
+            />
+            <p v-if="errors.fullName" class="error-msg-small">
+              {{ errors.fullName }}
+            </p>
+          </div>
+
           <div class="input-group">
             <label>Email</label>
             <input
               type="email"
-              v-model="form.email"
+              v-model="auth.email"
               placeholder="Enter Your email"
-              autofocus
+              :class="{ 'input-error': errors.email }"
             />
-            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
+            <p v-if="errors.email" class="error-msg-small">
+              {{ errors.email }}
+            </p>
           </div>
 
-          <!-- Password -->
           <div class="input-group">
             <label>Password</label>
             <div class="input-wrapper">
               <input
                 :type="showPassword ? 'text' : 'password'"
-                v-model="form.password"
+                v-model="auth.password"
                 placeholder="Enter Your password"
+                :class="{ 'input-error': errors.password }"
               />
               <button
                 type="button"
@@ -66,24 +71,52 @@
                 ></i>
               </button>
             </div>
-            <p v-if="errors.password" class="error-msg">
+            <p v-if="errors.password" class="error-msg-small">
               {{ errors.password }}
             </p>
           </div>
 
-          <div class="form-footer-login">
-            <div class="remember-me">
-              <input type="checkbox" v-model="form.rememberMe" id="remember" />
-              <label for="remember">Remember me</label>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <div class="input-wrapper">
+              <input
+                :type="showConfirm ? 'text' : 'password'"
+                v-model="auth.confirmPassword"
+                placeholder="Enter Your confirm password"
+                :class="{ 'input-error': errors.confirmPassword }"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                @click="showConfirm = !showConfirm"
+              >
+                <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
             </div>
-            <router-link to="/forget-password" class="forgot-link">
-              Forgot password?
-            </router-link>
+            <p v-if="errors.confirmPassword" class="error-msg-small">
+              {{ errors.confirmPassword }}
+            </p>
           </div>
 
-          <button class="create-btn" :disabled="auth.loading">
-            {{ auth.loading ? "Signing in..." : "Sign In" }}
-          </button>
+          <div class="form-footer">
+            <div class="checkbox-group">
+              <input type="checkbox" v-model="auth.agreedTerms" id="terms" />
+              <label for="terms">
+                I agree to the <a href="#">Terms of Service</a> &
+                <a href="#">Privacy Policy</a>.
+              </label>
+            </div>
+            <p v-if="errors.agreedTerms" class="error-msg-small">
+              {{ errors.agreedTerms }}
+            </p>
+          </div>
+
+          <AuthButton
+            :text="'Create Account'"
+            :loading-text="'Creating...'"
+            :loading="auth.loading"
+            @click="handleRegister"
+          />
         </form>
 
         <div class="or-divider">or</div>
@@ -95,8 +128,8 @@
         </div>
 
         <p class="login-link">
-          Don't have an account?
-          <router-link to="/register">Create one</router-link>
+          Already signed up?
+          <router-link to="/login">Go to login</router-link>
         </p>
       </div>
 
@@ -106,69 +139,64 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { useAuthStore } from "../../stores/authentication";
+import { ref, reactive } from "vue";
+import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
+import AuthButton from "../../components/AuthButton.vue";
 
-// --- Auth store ---
 const auth = useAuthStore();
 const router = useRouter();
 
 const showPassword = ref(false);
-
-const form = reactive({
-  email: "",
-  password: "",
-  rememberMe: false,
-});
-
-const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const showConfirm = ref(false);
 
 const errors = reactive({
+  fullName: "",
   email: "",
   password: "",
+  confirmPassword: "",
+  agreedTerms: "",
 });
 
-onMounted(() => {
-  auth.clearMessages();
-});
-
-const handleLogin = async () => {
-  errors.email = "";
-  errors.password = "";
-
-  const result = loginSchema.safeParse({
-    email: form.email,
-    password: form.password,
+const registerSchema = z
+  .object({
+    fullName: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().min(1, "Email is required").email("Invalid email format"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    agreedTerms: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the terms and conditions" }),
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
-  if (!result.success) {
-    result.error.issues.forEach((issue) => {
+const handleRegister = async () => {
+  Object.keys(errors).forEach((key) => (errors[key] = ""));
+  auth.clearMessages();
+
+  const validation = registerSchema.safeParse({
+    fullName: auth.fullName,
+    email: auth.email,
+    password: auth.password,
+    confirmPassword: auth.confirmPassword,
+    agreedTerms: auth.agreedTerms,
+  });
+
+  if (!validation.success) {
+    validation.error.issues.forEach((issue) => {
       const field = issue.path[0];
-      if (field === "email") {
-        errors.email = issue.message;
-      } else if (field === "password") {
-        errors.password = issue.message;
-      }
+      errors[field] = issue.message;
     });
     return;
   }
 
-  try {
-    auth.email = form.email;
-    auth.password = form.password;
-    auth.rememberMe = form.rememberMe;
-
-    const success = await auth.login();
-    if (success) {
-      router.push("/dashboard");
-    }
-  } catch (err) {
-    console.error("Login failed:", err);
+  const success = await auth.register();
+  if (success) {
+    router.push("/verify-email");
   }
 };
 </script>
@@ -195,6 +223,29 @@ body {
   width: 100%;
   overflow: hidden;
 }
+.error-msg-small {
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.input-error {
+  border: 1px solid #ff4d4d !important;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-msg.text-center {
+  background: #fff0f0;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ffcaca;
+  color: #d32f2f;
+}
 
 @keyframes float {
   0%,
@@ -206,6 +257,7 @@ body {
   }
 }
 
+/* Left side */
 .brand-section {
   flex: 1.15;
   /* background: #247a85; */
@@ -323,63 +375,24 @@ body {
   animation-delay: 2s;
 }
 
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px 16px 16px;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-
 .signup-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .input-group {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
+
 .input-group label {
   color: #2f6f77;
   font-weight: 600;
   font-size: 0.78rem;
 }
+
 .input-group input {
   width: 100%;
   padding: 9px 11px;
@@ -392,6 +405,7 @@ body {
 .input-group input:focus {
   background-color: #fff;
   border-color: #5596a0;
+  /* transform: scale(1.01); */
   box-shadow: 0 4px 10px rgba(85, 150, 160, 0.1);
 }
 
@@ -411,23 +425,15 @@ body {
   cursor: pointer;
 }
 
-/* ─── MODIFIED FOOTER FOR LOGIN ─── */
-.form-footer-login {
+.form-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 6px;
   font-size: 0.78rem;
   margin-top: 4px;
 }
 
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #555;
-}
-
-.forgot-link {
+.form-footer a {
   color: #247a85;
   font-weight: 600;
   text-decoration: none;
@@ -443,12 +449,6 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-}
-
-.create-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: #a0c4c9;
 }
 
 .create-btn:hover:not(:disabled) {
@@ -486,6 +486,7 @@ body {
   gap: 16px;
   margin: 6px 0;
 }
+
 .social-icons a {
   width: 38px;
   height: 38px;
@@ -503,6 +504,7 @@ body {
   font-size: 0.82rem;
   margin-top: 10px;
 }
+
 .login-link a {
   color: #247a85;
   font-weight: 600;
@@ -521,6 +523,7 @@ body {
   overflow: hidden;
 }
 
+/* Mobile */
 @media (max-width: 900px) {
   .brand-section {
     display: none;

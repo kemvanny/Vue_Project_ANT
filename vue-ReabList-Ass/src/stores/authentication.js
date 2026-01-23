@@ -102,7 +102,7 @@ export const useAuthStore = defineStore("auth", () => {
         fullname: fullName.value.trim(),
         email: email.value.trim(),
         password: password.value,
-        password_confirmation: confirmPassword.value,
+        confirmPassword: confirmPassword.value,
       };
 
       const response = await api.post("/auth/register", payload);
@@ -115,6 +115,7 @@ export const useAuthStore = defineStore("auth", () => {
         return true;
       }
     } catch (err) {
+      console.log("Registration error:", err.response?.data);
       error.value =
         err.response?.data?.message || "Registration failed. Please try again.";
       return false;
