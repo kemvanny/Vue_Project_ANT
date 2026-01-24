@@ -25,10 +25,10 @@
         >
           <ul class="navbar-nav gap-2 m-auto">
             <li class="nav-item">
-              <router-link class="nav-link nav-link-modern active" :to="{ name: 'homepage' }">Homepage</router-link>
+              <router-link class="nav-link nav-link-modern" :to="{ name: 'homepage' }">Homepage</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-modern" href="#">Features</a>
+              <router-link class="nav-link nav-link-modern" :to="{ name: 'features' }">Features</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link nav-link-modern" :to="{ name: 'aboutUs' }">About Us</router-link>
@@ -37,8 +37,8 @@
 
           <!-- AUTH BUTTONS -->
           <div class="d-flex align-items-center gap-2 mt-4 mt-lg-0">
-            <a href="#" class="btn-login-modern">Login</a>
-            <a href="#" class="btn btn-signup-modern">Sign Up</a>
+            <router-link :to="{ name: 'login' }" class="btn-login-modern">Login</router-link>
+            <router-link :to="{ name: 'register' }" class="btn btn-signup-modern">Sign Up</router-link>
           </div>
         </div>
       </div>
