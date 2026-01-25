@@ -17,13 +17,33 @@
   font-family: "Poppins", "Kantumruy Pro", sans-serif;
 }
 :root {
-  --brand-primary: #13707f;
+  --primary: #13707f;
   --brand-light: #f0f9fa;
   --brand-hover: #0e5661;
   --sidebar-width: 280px;
   --bg-body: #f8fafb;
   --card-radius: 1.25rem;
   --border-color: #edf2f7;
+  --primary-light: #E8F4F5;
+  --primary-hover: #0f5c69;
+  --primary-soft: #f0f9fa;
+  --primary-gradient: linear-gradient(135deg, #13707f 0%, #1e9fb3 100%);
+  --body: #475569;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --text-main: #1f2937;
+  --text-muted: #596a81;
+  --accent: #F7A423;
+  --text-dark: #0f172a;
+  /* --dark: #0F172A; */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --bg-main: #ffffff;
+  --bg-alt: #f8fafc; /* New section background color */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --glass: rgba(255, 255, 255, 0.85);
+  --glass-border2: rgba(6, 182, 212, 0.2);
+  --radius-xl: 40px;
+  --shadow-fire: 0 30px 60px -12px rgba(6, 182, 212, 0.15);
 }
 
 body {
