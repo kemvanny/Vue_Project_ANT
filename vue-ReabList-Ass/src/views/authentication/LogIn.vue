@@ -252,28 +252,27 @@ body {
   animation: float 7s ease-in-out infinite;
 }
 
-/* Right side – no inner scroll by default */
+/* Right side – Form centered */
 .form-section {
   flex: 1;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 20px 16px 16px; /* very compact top padding */
-  overflow: hidden; /* ← No inner scroll either */
-  min-height: 0; /* allows shrinking */
-  overflow: hidden;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow: auto;
+  position: relative;
 }
 
 .form-container {
   width: 100%;
-  max-width: 350px; /* narrower = less height needed */
+  max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  overflow: hidden;
+  gap: 16px;
+  padding: 30px;
+  border-radius: 12px;
 }
 
 .form-container h1 {
@@ -386,17 +385,24 @@ body {
 }
 .input-group input {
   width: 100%;
-  padding: 9px 11px;
-  background: #e8f3f5;
-  border: 2px solid transparent;
-  border-radius: 7px;
-  font-size: 0.88rem;
+  padding: 12px 14px;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
 }
 
 .input-group input:focus {
   background-color: #fff;
-  border-color: #5596a0;
-  box-shadow: 0 4px 10px rgba(85, 150, 160, 0.1);
+  border-color: #247a85;
+  box-shadow: 0 0 0 3px rgba(36, 122, 133, 0.1);
+  outline: none;
 }
 
 .input-wrapper {
