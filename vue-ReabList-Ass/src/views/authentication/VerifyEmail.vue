@@ -101,7 +101,7 @@ const handleSendCode = async () => {
     return;
   }
 
-  const success = await auth.sendOtp();
+  const success = auth.sendOtp();
   if (success) {
     router.push("/verify-otp");
   }

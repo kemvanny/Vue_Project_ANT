@@ -111,9 +111,12 @@
             </p>
           </div>
 
-          <button type="submit" class="create-btn" :disabled="auth.loading">
-            {{ auth.loading ? "Creating..." : "Create Account" }}
-          </button>
+          <AuthButton
+            :text="'Create Account'"
+            :loading-text="'Creating...'"
+            :loading="auth.loading"
+            @click="handleRegister"
+          />
         </form>
 
         <div class="or-divider">or</div>
@@ -137,9 +140,10 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { useAuthStore } from "../../stores/authentication";
+import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
+import AuthButton from "../../components/AuthButton.vue";
 
 const auth = useAuthStore();
 const router = useRouter();

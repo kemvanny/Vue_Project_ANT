@@ -59,16 +59,9 @@
         </form>
 
         <div class="back-to-login">
-          <a href="#" @click.prevent="goBackToLogin">
+          <router-link to="/login">
             <i class="fas fa-arrow-left"></i> Back to Login
-          </a>
-        </div>
-
-        <div class="or-divider">or</div>
-
-        <div class="help-section">
-          <p class="help-text">Need more help?</p>
-          <a href="#" class="contact-link">Contact Support</a>
+          </router-link>
         </div>
       </div>
 
