@@ -259,7 +259,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-center;
   padding: 20px 16px 16px; /* very compact top padding */
   overflow: hidden; /* ← No inner scroll either */
   min-height: 0; /* allows shrinking */

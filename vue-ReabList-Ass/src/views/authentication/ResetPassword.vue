@@ -421,13 +421,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }
