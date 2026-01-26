@@ -37,17 +37,14 @@
           class="signup-form"
           novalidate
         >
-          <div class="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              v-model="authStore.resetEmail"
-              placeholder="Enter your email"
-              :class="{ 'input-error': errors.email }"
-              autofocus
-            />
-            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
-          </div>
+          <AuthInput
+            label="Email Address"
+            type="email"
+            placeholder="Enter your email"
+            v-model="authStore.resetEmail"
+            :error="errors.email"
+            :autofocus="true"
+          />
 
           <button
             type="submit"
@@ -75,6 +72,7 @@ import { reactive, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
+import AuthInput from "../../components/AuthInput.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();

@@ -348,14 +348,12 @@ export const useAuthStore = defineStore("auth", () => {
     resetEmail,
     newPassword,
     confirmNewPassword,
-
     passwordsMatch,
     newPasswordsMatch,
     canRegister,
     canLogin,
     canResetPassword,
     isAuthenticated,
-
     register,
     login,
     logout,
