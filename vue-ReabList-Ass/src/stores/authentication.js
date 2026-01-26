@@ -5,7 +5,7 @@ import api from "@/API/api";
 export const useAuthStore = defineStore("auth", () => {
   // ── State
   const token = ref(localStorage.getItem("token") || null);
-  const user = ref(JSON.parse(localStorage.getItem("user")) || null);
+  const user = ref(null);
 
   const email = ref("");
   const password = ref("");
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore("auth", () => {
   const newPasswordsMatch = computed(
     () => newPassword.value === confirmNewPassword.value,
   );
-  const isAuthenticated = computed(() => !!token.value && !!user.value);
+  const isAuthenticated = computed(() => !!token.value);
 
   const canRegister = computed(() => {
     return (
@@ -102,7 +102,7 @@ export const useAuthStore = defineStore("auth", () => {
         fullname: fullName.value.trim(),
         email: email.value.trim(),
         password: password.value,
-        password_confirmation: confirmPassword.value,
+        confirmPassword: confirmPassword.value,
       };
 
       const response = await api.post("/auth/register", payload);
@@ -115,6 +115,7 @@ export const useAuthStore = defineStore("auth", () => {
         return true;
       }
     } catch (err) {
+      console.log("Registration error:", err.response?.data);
       error.value =
         err.response?.data?.message || "Registration failed. Please try again.";
       return false;
@@ -137,17 +138,37 @@ export const useAuthStore = defineStore("auth", () => {
       const response = await api.post("/auth/login", payload);
       const data = response.data;
 
-      if (data.success || data.result || data.status === 200) {
-        user.value = data.user || data.data?.user || data.data;
-        token.value = data.token || data.access_token;
+      console.log("Login response:", data);
+      console.log("Full response data:", data.data);
 
-        localStorage.setItem("user", JSON.stringify(user.value));
-        localStorage.setItem("token", token.value);
+      if (data.result || data.success || response.status === 200) {
+        // Extract token from data.data object
+        const tokenData = data.data;
+        user.value = tokenData?.user || tokenData;
+        token.value =
+          tokenData?.token ||
+          tokenData?.access_token ||
+          data.token ||
+          data.access_token;
 
-        api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
+        console.log("Token from data.data:", tokenData?.token);
+        console.log("Token value set to:", token.value);
 
-        successMessage.value = "Login successful!";
-        return true;
+        // Store only token in localStorage for security
+        if (token.value) {
+          localStorage.setItem("token", token.value);
+          console.log(
+            "Token saved to localStorage:",
+            localStorage.getItem("token"),
+          );
+
+          api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
+          successMessage.value = "Login successful!";
+          return true;
+        } else {
+          error.value = "No token received from server";
+          return false;
+        }
       }
     } catch (err) {
       error.value = err.response?.data?.message || "Invalid email or password.";
@@ -161,7 +182,6 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = null;
     user.value = null;
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     delete api.defaults.headers.common.Authorization;
     clearMessages();
   };
@@ -291,7 +311,6 @@ export const useAuthStore = defineStore("auth", () => {
         token.value = null;
         user.value = null;
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
         delete api.defaults.headers.common.Authorization;
 
         resetForgotPasswordForm();
