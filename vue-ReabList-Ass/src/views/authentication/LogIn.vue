@@ -21,9 +21,7 @@
     <div class="form-section">
       <div class="form-container">
         <h1 class="fw-bold mb-2">ចូលប្រើប្រាស់</h1>
-        <p class="subtitle">
-          សូមបញ្ចូលព័ត៌មានរបស់អ្នក ដើម្បីចូលប្រើគណនី
-        </p>
+        <p class="subtitle">សូមបញ្ចូលព័ត៌មានរបស់អ្នក ដើម្បីចូលប្រើគណនី</p>
 
         <p
           v-if="auth.error"
@@ -111,12 +109,11 @@ import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
 import AuthButton from "../../components/AuthButton.vue";
+import AuthInput from "../../components/AuthInput.vue";
 
 // --- Auth store ---
 const auth = useAuthStore();
 const router = useRouter();
-
-const showPassword = ref(false);
 
 const form = reactive({
   email: "",
@@ -249,41 +246,6 @@ body {
   animation: float 7s ease-in-out infinite;
 }
 
-/* Right side – Form centered */
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  overflow: auto;
-  position: relative;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 30px;
-  border-radius: 12px;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
 .circle {
   position: absolute;
   background-color: #1a636d;
@@ -323,29 +285,23 @@ body {
   animation-delay: 2s;
 }
 
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
+/* Right side – Form centered */
 .form-section {
   flex: 1;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 20px 16px 16px;
   overflow: hidden;
+  position: relative;
   min-height: 0;
 }
 
 .form-container {
   width: 100%;
-  max-width: 350px;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -358,6 +314,7 @@ body {
   margin-bottom: 4px;
   color: #111;
 }
+
 .subtitle {
   color: #555;
   font-size: 0.82rem;
@@ -517,15 +474,15 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 @media (max-width: 900px) {

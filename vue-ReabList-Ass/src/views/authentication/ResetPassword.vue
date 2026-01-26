@@ -10,8 +10,7 @@
         <h1>កំណត់ពាក្យសម្ងាត់ឡើងវិញ</h1>
         <h2>ការពារសុវត្ថិភាពគណនីរបស់អ្នក</h2>
         <p>
-          អ្នកនៅសល់តែមួយជំហានទៀតប៉ុណ្ណោះ។ 
-          សូមជ្រើសរើសពាក្យសម្ងាត់ថ្មីដែលរឹងមាំ 
+          អ្នកនៅសល់តែមួយជំហានទៀតប៉ុណ្ណោះ។ សូមជ្រើសរើសពាក្យសម្ងាត់ថ្មីដែលរឹងមាំ
           ដើម្បីចូលប្រើប្រាស់កន្លែងធ្វើការរបស់អ្នកឡើងវិញ។
         </p>
       </div>
@@ -65,7 +64,11 @@
             class="create-btn mt-4"
             :disabled="authStore.loading"
           >
-            {{ authStore.loading ? "Resetting..." : "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់" }}
+            {{
+              authStore.loading
+                ? "Resetting..."
+                : "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់"
+            }}
           </button>
         </form>
 
@@ -86,6 +89,7 @@ import { reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
+import AuthInput from "../../components/AuthInput.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -431,13 +435,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }

@@ -32,7 +32,8 @@
               type="text"
               v-model="auth.fullName"
               placeholder="បញ្ចូលឈ្មោះពេញរបស់អ្នក"
-              :class="{ 'input-error': errors.fullName }" />
+              :class="{ 'input-error': errors.fullName }"
+            />
             <p v-if="errors.fullName" class="error-msg-small">
               {{ errors.fullName }}
             </p>
@@ -44,7 +45,8 @@
               type="email"
               v-model="auth.email"
               placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
-              :class="{ 'input-error': errors.email }" />
+              :class="{ 'input-error': errors.email }"
+            />
             <p v-if="errors.email" class="error-msg-small">
               {{ errors.email }}
             </p>
@@ -57,13 +59,16 @@
                 :type="showPassword ? 'text' : 'password'"
                 v-model="auth.password"
                 placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"
-                :class="{ 'input-error': errors.password }" />
+                :class="{ 'input-error': errors.password }"
+              />
               <button
                 type="button"
                 class="toggle-password"
-                @click="showPassword = !showPassword">
+                @click="showPassword = !showPassword"
+              >
                 <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                ></i>
               </button>
             </div>
             <p v-if="errors.password" class="error-msg-small">
@@ -78,11 +83,13 @@
                 :type="showConfirm ? 'text' : 'password'"
                 v-model="auth.confirmPassword"
                 placeholder="បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកម្តងទៀត"
-                :class="{ 'input-error': errors.confirmPassword }" />
+                :class="{ 'input-error': errors.confirmPassword }"
+              />
               <button
                 type="button"
                 class="toggle-password"
-                @click="showConfirm = !showConfirm">
+                @click="showConfirm = !showConfirm"
+              >
                 <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
               </button>
             </div>
@@ -129,17 +136,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
 import AuthButton from "../../components/AuthButton.vue";
+import AuthInput from "../../components/AuthInput.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
-
-const showPassword = ref(false);
-const showConfirm = ref(false);
 
 const errors = reactive({
   fullName: "",
@@ -297,7 +302,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-center;
   padding: 20px 16px 16px; /* very compact top padding */
   overflow: hidden; /* ← No inner scroll either */
   min-height: 0; /* allows shrinking */
@@ -309,7 +314,7 @@ body {
   max-width: 350px; /* narrower = less height needed */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
   min-height: 0;
   overflow: hidden;
 }
@@ -502,13 +507,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }

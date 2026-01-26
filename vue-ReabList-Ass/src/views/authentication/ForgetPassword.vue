@@ -10,8 +10,9 @@
         <h1>ភ្លេចពាក្យសម្ងាត់</h1>
         <h2>កុំបារម្ភ យើងនឹងជួយអ្នក</h2>
         <p>
-          សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់សុវត្ថិភាព 
-          ដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។ អ្នកនឹងអាចចូលប្រើប្រាស់គណនីវិញក្នុងពេលឆាប់ៗនេះ។
+          សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់សុវត្ថិភាព
+          ដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។
+          អ្នកនឹងអាចចូលប្រើប្រាស់គណនីវិញក្នុងពេលឆាប់ៗនេះ។
         </p>
       </div>
     </div>
@@ -20,7 +21,8 @@
       <div class="form-container">
         <h1 class="fw-bold mb-2">ភ្លេចពាក្យសម្ងាត់មែនទេ?</h1>
         <p class="subtitle">
-          កុំបារម្ភ! សូមបញ្ចូលអ៊ីមែលរបស់អ្នក ហើយយើងនឹងផ្ញើការណែនាំអំពីការកំណត់ឡើងវិញ។
+          កុំបារម្ភ! សូមបញ្ចូលអ៊ីមែលរបស់អ្នក
+          ហើយយើងនឹងផ្ញើការណែនាំអំពីការកំណត់ឡើងវិញ។
         </p>
 
         <p v-if="authStore.successMessage" class="success-msg text-center mb-2">
@@ -82,6 +84,7 @@ import { reactive, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
+import AuthInput from "../../components/AuthInput.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -409,13 +412,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }
