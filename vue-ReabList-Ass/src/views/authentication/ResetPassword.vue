@@ -33,31 +33,21 @@
         <form @submit.prevent="handleReset" class="signup-form" novalidate>
           <input type="hidden" v-model="authStore.otpCode" />
 
-          <div class="input-group">
-            <label>New Password</label>
-            <input
-              type="password"
-              v-model="authStore.newPassword"
-              placeholder="Min. 8 characters"
-              :class="{ 'input-error': errors.newPassword }"
-            />
-            <p v-if="errors.newPassword" class="error-msg-small">
-              {{ errors.newPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="New Password"
+            type="password"
+            placeholder="Min. 8 characters"
+            v-model="authStore.newPassword"
+            :error="errors.newPassword"
+          />
 
-          <div class="input-group">
-            <label>Confirm New Password</label>
-            <input
-              type="password"
-              v-model="authStore.confirmNewPassword"
-              placeholder="Repeat new password"
-              :class="{ 'input-error': errors.confirmNewPassword }"
-            />
-            <p v-if="errors.confirmNewPassword" class="error-msg-small">
-              {{ errors.confirmNewPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="Confirm New Password"
+            type="password"
+            placeholder="Repeat new password"
+            v-model="authStore.confirmNewPassword"
+            :error="errors.confirmNewPassword"
+          />
 
           <button
             type="submit"
@@ -85,6 +75,7 @@ import { reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
+import AuthInput from "../../components/AuthInput.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -430,13 +421,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }

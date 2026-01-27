@@ -26,77 +26,37 @@
         </p>
 
         <form @submit.prevent="handleRegister" class="signup-form" novalidate>
-          <div class="input-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              v-model="auth.fullName"
-              placeholder="Enter Your full name"
-              :class="{ 'input-error': errors.fullName }"
-            />
-            <p v-if="errors.fullName" class="error-msg-small">
-              {{ errors.fullName }}
-            </p>
-          </div>
+          <AuthInput
+            label="Full Name"
+            type="text"
+            placeholder="Enter Your full name"
+            v-model="auth.fullName"
+            :error="errors.fullName"
+          />
 
-          <div class="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              v-model="auth.email"
-              placeholder="Enter Your email"
-              :class="{ 'input-error': errors.email }"
-            />
-            <p v-if="errors.email" class="error-msg-small">
-              {{ errors.email }}
-            </p>
-          </div>
+          <AuthInput
+            label="Email"
+            type="email"
+            placeholder="Enter Your email"
+            v-model="auth.email"
+            :error="errors.email"
+          />
 
-          <div class="input-group">
-            <label>Password</label>
-            <div class="input-wrapper">
-              <input
-                :type="showPassword ? 'text' : 'password'"
-                v-model="auth.password"
-                placeholder="Enter Your password"
-                :class="{ 'input-error': errors.password }"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showPassword = !showPassword"
-              >
-                <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                ></i>
-              </button>
-            </div>
-            <p v-if="errors.password" class="error-msg-small">
-              {{ errors.password }}
-            </p>
-          </div>
+          <AuthInput
+            label="Password"
+            type="password"
+            placeholder="Enter Your password"
+            v-model="auth.password"
+            :error="errors.password"
+          />
 
-          <div class="input-group">
-            <label>Confirm Password</label>
-            <div class="input-wrapper">
-              <input
-                :type="showConfirm ? 'text' : 'password'"
-                v-model="auth.confirmPassword"
-                placeholder="Enter Your confirm password"
-                :class="{ 'input-error': errors.confirmPassword }"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showConfirm = !showConfirm"
-              >
-                <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-              </button>
-            </div>
-            <p v-if="errors.confirmPassword" class="error-msg-small">
-              {{ errors.confirmPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="Confirm Password"
+            type="password"
+            placeholder="Enter Your confirm password"
+            v-model="auth.confirmPassword"
+            :error="errors.confirmPassword"
+          />
 
           <div class="form-footer">
             <div class="checkbox-group">
@@ -121,12 +81,6 @@
 
         <div class="or-divider">or</div>
 
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-apple"></i></a>
-        </div>
-
         <p class="login-link">
           Already signed up?
           <router-link to="/login">Go to login</router-link>
@@ -139,17 +93,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
 import AuthButton from "../../components/AuthButton.vue";
+import AuthInput from "../../components/AuthInput.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
-
-const showPassword = ref(false);
-const showConfirm = ref(false);
 
 const errors = reactive({
   fullName: "",
@@ -307,7 +259,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-center;
   padding: 20px 16px 16px; /* very compact top padding */
   overflow: hidden; /* ← No inner scroll either */
   min-height: 0; /* allows shrinking */
@@ -319,7 +271,7 @@ body {
   max-width: 350px; /* narrower = less height needed */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
   min-height: 0;
   overflow: hidden;
 }
@@ -512,13 +464,13 @@ body {
 }
 
 .bottom-right-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  position: fixed;
+  width: 250px;
+  height: 250px;
   background: #247a85;
   border-radius: 50%;
-  bottom: 0px;
-  right: 0px;
+  bottom: -50px;
+  right: -50px;
   z-index: 1;
   overflow: hidden;
 }
