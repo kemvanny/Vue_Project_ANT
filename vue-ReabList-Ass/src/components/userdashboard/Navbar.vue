@@ -17,69 +17,15 @@
           <Moon :size="20" stroke-width="2" />
         </button>
 
-        <div class="user-profile-wrapper" v-if="profileData">
-          <div class="user-details">
-            <p class="user-display-name">{{ profileData.fullname }}</p>
-            <p class="user-display-role">{{ profileData.role.name }}</p>
-          </div>
-          <div class="user-avatar-circle">
-            <img
-              v-if="profileData.avatar"
-              :src="profileData.avatar"
-              :alt="profileData.fullname"
-              class="avatar-image"
-            />
-            <span v-else>{{ getInitials(profileData.fullname) }}</span>
-          </div>
-          <ChevronDown :size="18" class="dropdown-chevron" stroke-width="2.5" />
-        </div>
-
-        <div class="user-profile-wrapper" v-else>
-          <p class="loading-text">Loading...</p>
-        </div>
+        <ProfileDropdown />
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { Search, Moon, ChevronDown } from "lucide-vue-next";
-import api from "@/API/api";
-
-const profileData = ref(null);
-const loading = ref(true);
-const error = ref(null);
-
-const fetchProfileData = async () => {
-  try {
-    loading.value = true;
-    const response = await api.get("/auth/profile");
-    if (response.data.result) {
-      profileData.value = response.data.data;
-    } else {
-      error.value = response.data.message || "Failed to fetch profile";
-    }
-  } catch (err) {
-    console.error("Error fetching profile:", err);
-    error.value = err.message;
-  } finally {
-    loading.value = false;
-  }
-};
-
-const getInitials = (fullname) => {
-  return fullname
-    .split(" ")
-    .map((name) => name.charAt(0))
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-};
-
-onMounted(() => {
-  fetchProfileData();
-});
+import { Search, Moon } from "lucide-vue-next";
+import ProfileDropdown from "./ProfileDropdown.vue";
 </script>
 
 <style scoped>
@@ -97,7 +43,8 @@ onMounted(() => {
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 100;
+  overflow: visible;
 }
 
 .navbar-container {
@@ -105,6 +52,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  overflow: visible;
 }
 
 /* --- Search Section --- */
@@ -150,6 +98,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 30px;
+  overflow: visible;
+  position: relative;
 }
 
 .mode-toggle {
@@ -171,6 +121,12 @@ onMounted(() => {
   color: #0f172a;
 }
 
+/* Profile Dropdown Container */
+.profile-dropdown-container {
+  position: relative;
+  z-index: 1001;
+}
+
 .user-profile-wrapper {
   display: flex;
   align-items: center;
@@ -178,6 +134,15 @@ onMounted(() => {
   padding-left: 28px;
   border-left: 1px solid #f1f5f9;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-profile-wrapper:hover {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 8px;
+  margin-left: 8px;
 }
 
 .user-details {
@@ -215,23 +180,5 @@ onMounted(() => {
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
   overflow: hidden;
-}
-
-.avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.loading-text {
-  margin: 0;
-  font-size: 14px;
-  color: #64748b;
-}
-
-.dropdown-chevron {
-  color: #94a3b8;
-  margin-left: 4px;
 }
 </style>

@@ -5,23 +5,27 @@
       <div class="circle circle-md"></div>
       <div class="circle-left"></div>
       <div class="brand-content">
-        <h1>VERIFY</h1>
-        <h2>Security Code</h2>
-        <p>We have sent a 6-digit code to your inbox. Please enter it below.</p>
+        <h1>ផ្ទៀងផ្ទាត់</h1>
+        <br />
+        <h2>លេខកូដសុវត្ថិភាព</h2>
+        <p>
+          យើងបានផ្ញើលេខកូដ ៦ ខ្ទង់ ទៅកាន់ប្រអប់សំបុត្ររបស់អ្នក។
+          សូមបញ្ចូលលេខកូដនោះនៅខាងក្រោម។
+        </p>
       </div>
     </div>
 
     <div class="form-section">
       <div class="form-container">
         <div class="fade-in">
-          <h1 class="fw-bold mb-2">Verify OTP</h1>
+          <h1 class="fw-bold mb-2">ផ្ទៀងផ្ទាត់ OTP</h1>
           <p class="subtitle">
-            Enter the code sent to <strong>{{ auth.email }}</strong>
+            បញ្ចូលលេខកូដដែលបានផ្ញើទៅកាន់ <strong>{{ auth.email }}</strong>
           </p>
 
           <form @submit.prevent="handleVerify" class="signup-form mt-4">
             <div class="input-group">
-              <label>6-Digit Code</label>
+              <label>លេខកូដ ៦ ខ្ទង់</label>
               <div class="otp-container">
                 <input
                   v-for="(digit, index) in 6"
@@ -56,15 +60,15 @@
               class="create-btn mt-5"
               :disabled="auth.loading || otpDigits.some((d) => !d)"
             >
-              {{ auth.loading ? "Verifying..." : "Verify Account" }}
+              {{ auth.loading ? "ផ្ទៀងផ្ទាត់..." : "ផ្ទៀងផ្ទាត់គណនី" }}
             </button>
           </form>
 
           <div class="resend-link mt-4 text-center">
-            Didn't get it?
-            <a href="#" @click.prevent="handleResend">Resend Code</a> or
+            មិនបានទទួលលេខកូដមែនទេ?
+            <a href="#" @click.prevent="handleResend">ផ្ញើលេខកូដម្តងទៀត</a>ឫ
             <a href="#" @click.prevent="router.push('/confirm-email')"
-              >Change Email</a
+              >ផ្លាស់ប្តូរអ៊ីមែល</a
             >
           </div>
 
@@ -96,7 +100,7 @@ watch(
   (newDigits) => {
     auth.otpCode = newDigits.join("");
   },
-  { deep: true },
+  { deep: true }
 );
 
 onMounted(() => {

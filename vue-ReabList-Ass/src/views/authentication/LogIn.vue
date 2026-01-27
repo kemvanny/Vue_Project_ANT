@@ -20,10 +20,8 @@
     <!-- Right Section (Form) -->
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Log In</h1>
-        <p class="subtitle">
-          Please enter your credentials to access your account.
-        </p>
+        <h1 class="fw-bold mb-2">ចូលប្រើប្រាស់</h1>
+        <p class="subtitle">សូមបញ្ចូលព័ត៌មានរបស់អ្នក ដើម្បីចូលប្រើគណនី</p>
 
         <p
           v-if="auth.error"
@@ -36,47 +34,67 @@
         <!-- Login Form -->
         <form @submit.prevent="handleLogin" class="signup-form">
           <!-- Email -->
-          <AuthInput
-            label="Email"
-            type="email"
-            placeholder="Enter Your email"
-            v-model="form.email"
-            :error="errors.email"
-            :autofocus="true"
-          />
+          <div class="input-group">
+            <label>អ៊ីមែល</label>
+            <input
+              type="email"
+              v-model="form.email"
+              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+              autofocus
+            />
+            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
+          </div>
 
           <!-- Password -->
-          <AuthInput
-            label="Password"
-            type="password"
-            placeholder="Enter Your password"
-            v-model="form.password"
-            :error="errors.password"
-          />
+          <div class="input-group">
+            <label>ពាក្យសម្ងាត់</label>
+            <div class="input-wrapper">
+              <input
+                :type="showPassword ? 'text' : 'ពាក្យសម្ងាត់'"
+                v-model="form.password"
+                placeholder="បញ្ចូលពាក្យសម្ងាត់"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                @click="showPassword = !showPassword"
+              >
+                <i
+                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                ></i>
+              </button>
+            </div>
+            <p v-if="errors.password" class="error-msg">
+              {{ errors.password }}
+            </p>
+          </div>
 
           <div class="form-footer-login">
             <div class="remember-me">
               <input type="checkbox" v-model="form.rememberMe" id="remember" />
-              <label for="remember">Remember me</label>
+              <label for="remember">ចងចាំខ្ញុំ</label>
             </div>
             <router-link to="/forget-password" class="forgot-link">
-              Forgot password?
+              ភ្លេចពាក្យសម្ងាត់?
             </router-link>
           </div>
 
-          <AuthButton
-            :text="'Sign In'"
-            :loading-text="'Signing in...'"
-            :loading="auth.loading"
-            @click="handleLogin"
-          />
+          <button class="create-btn" :disabled="auth.loading">
+            {{ auth.loading ? "ចូលប្រើ..." : "ចូលប្រើ" }}
+          </button>
         </form>
 
-        <div class="or-divider">or</div>
+        <div class="or-divider">ឬ</div>
+
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-google"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-apple"></i></a>
+        </div>
 
         <p class="login-link">
-          Don't have an account?
-          <router-link to="/register">Create one</router-link>
+          មិនទាន់មានគណនីមែនទេ?
+          <router-link to="/register">បង្កើតគណនីថ្មី</router-link>
         </p>
       </div>
 
