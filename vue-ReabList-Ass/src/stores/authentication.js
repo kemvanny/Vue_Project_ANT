@@ -429,13 +429,13 @@ export const useAuthStore = defineStore("auth", () => {
         payload.date_of_birth = profileData.date_of_birth.trim();
       }
 
-      console.log("📤 Updating profile with payload:", payload);
-      console.log("📤 Token exists:", !!token.value);
+      console.log("Updating profile with payload:", payload);
+      console.log("Token exists:", !!token.value);
 
       const response = await api.put("/auth/profile", payload);
 
-      console.log("✅ Update profile response status:", response.status);
-      console.log("✅ Update profile response data:", response.data);
+      console.log("Update profile response status:", response.status);
+      console.log("Update profile response data:", response.data);
 
       if (response.status === 200 || response.data?.result) {
         const responseData =
@@ -443,18 +443,18 @@ export const useAuthStore = defineStore("auth", () => {
         profile.value = responseData;
         user.value = responseData;
         profileSuccess.value = "ទម្រង់បានធ្វើឱ្យទាន់សម័យបានជោគជ័យ!";
-        console.log("✅ Profile updated successfully:", profile.value);
+        console.log("Profile updated successfully:", profile.value);
         return true;
       } else {
         const errorMsg = response.data?.message || "Failed to update profile";
         profileError.value = errorMsg;
-        console.warn("⚠️ Update failed:", errorMsg);
+        console.warn("Update failed:", errorMsg);
         return false;
       }
     } catch (err) {
-      console.error("❌ Update profile error:", err);
-      console.error("❌ Error status:", err.response?.status);
-      console.error("❌ Error data:", err.response?.data);
+      console.error("Update profile error:", err);
+      console.error("Error status:", err.response?.status);
+      console.error("Error data:", err.response?.data);
 
       // Extract error message from API response
       let errorMessage = "បរាជ័យក្នុងការធ្វើឱ្យទាន់សម័យទម្រង់។";
