@@ -22,6 +22,7 @@ import UserDashboard from "@/views/user/UserDashboard.vue";
 import AllTasks from "@/views/user/AllTasks.vue";
 import Pending from "@/views/user/PendingWork.vue";
 import Complete from "@/views/user/CompletedTasks.vue";
+import ProfileDashboard from "@/views/user/ProfileDashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,6 +117,12 @@ const router = createRouter({
           name: "Category",
           component: () => import("@/views/user/CategoryView.vue"),
           props: true,
+          meta: { requiresAuth: true },
+        },
+        {
+          path: "/profile",
+          name: "Profile",
+          component: ProfileDashboard,
           meta: { requiresAuth: true },
         },
       ],

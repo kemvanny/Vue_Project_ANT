@@ -17,14 +17,25 @@ api.interceptors.request.use((config) => {
   if (authStore.token) {
     config.headers.Authorization = `Bearer ${authStore.token}`;
   }
+  console.log(
+    `[API] ${config.method?.toUpperCase()} ${config.url}`,
+    config.data,
+  );
   return config;
 });
 
 // RESPONSE: handle 401
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`[API] Response (${response.status}):`, response.data);
+    return response;
+  },
   (error) => {
     const authStore = useAuthStore();
+    console.error(
+      `[API] Error (${error.response?.status}):`,
+      error.response?.data,
+    );
     if (error.response?.status === 401) {
       authStore.logout();
     }
