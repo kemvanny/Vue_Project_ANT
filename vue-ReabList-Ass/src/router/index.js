@@ -129,20 +129,23 @@ router.beforeEach((to, from, next) => {
 
   document.title = to.name ? `${to.name} - ReabList` : "ReabList";
 
-  // Check authentication from store OR localStorage (for fresh page loads)
   const token = authStore.token || localStorage.getItem("token");
   const isAuthenticated = !!token;
 
-  // If route requires authentication and user is not authenticated
   if (requiresAuth && !isAuthenticated) {
     next("/login");
-  }
-  // If user is trying to access login/register while already authenticated
-  else if ((to.name === "login" || to.name === "register") && isAuthenticated) {
+  } else if (
+    isAuthenticated &&
+    (to.name === "homepage" ||
+      to.name === "login" ||
+      to.name === "register" ||
+      to.name === "verify-email" ||
+      to.name === "verify-OTP" ||
+      to.name === "forget-password" ||
+      to.name === "reset-password")
+  ) {
     next("/dashboard");
-  }
-  // Allow navigation
-  else {
+  } else {
     next();
   }
 });
