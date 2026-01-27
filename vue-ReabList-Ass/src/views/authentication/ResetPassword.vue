@@ -33,43 +33,26 @@
         <form @submit.prevent="handleReset" class="signup-form" novalidate>
           <input type="hidden" v-model="authStore.otpCode" />
 
-          <div class="input-group">
-            <label>ពាក្យសម្ងាត់ថ្មី</label>
-            <input
-              type="password"
-              v-model="authStore.newPassword"
-              placeholder="យ៉ាងហោចណាស់ ៨ តួអក្សរ"
-              :class="{ 'input-error': errors.newPassword }"
-            />
-            <p v-if="errors.newPassword" class="error-msg-small">
-              {{ errors.newPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="ពាក្យសម្ងាត់ថ្មី"
+            type="password"
+            v-model="authStore.newPassword"
+            placeholder="យ៉ាងហោចណាស់ ៨ តួអក្សរ"
+            :error="errors.newPassword" />
 
-          <div class="input-group">
-            <label>បញ្ជាក់ពាក្យសម្ងាត់ថ្មី</label>
-            <input
-              type="password"
-              v-model="authStore.confirmNewPassword"
-              placeholder="វាយពាក្យសម្ងាត់ថ្មីម្តងទៀត"
-              :class="{ 'input-error': errors.confirmNewPassword }"
-            />
-            <p v-if="errors.confirmNewPassword" class="error-msg-small">
-              {{ errors.confirmNewPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី"
+            type="password"
+            v-model="authStore.confirmNewPassword"
+            placeholder="វាយពាក្យសម្ងាត់ថ្មីម្តងទៀត"
+            :error="errors.confirmNewPassword" />
 
-          <button
+          <AuthButton
             type="submit"
-            class="create-btn mt-4"
-            :disabled="authStore.loading"
-          >
-            {{
-              authStore.loading
-                ? "Resetting..."
-                : "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់"
-            }}
-          </button>
+            :text="'ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់'"
+            :loadingText="'Resetting...'"
+            :loading="authStore.loading"
+            :disabled="authStore.loading" />
         </form>
 
         <div class="back-to-login">
@@ -90,6 +73,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
 import AuthInput from "../../components/AuthInput.vue";
+import AuthButton from "../../components/AuthButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -102,8 +86,10 @@ const errors = reactive({
 
 const resetSchema = z
   .object({
-    newPassword: z.string().min(8, "Password must be at least 8 characters"),
-    confirmNewPassword: z.string().min(1, "Please confirm your password"),
+    newPassword: z
+      .string()
+      .min(8, "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ"),
+    confirmNewPassword: z.string().min(1, "សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក។"),
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
     message: "Passwords do not match",
@@ -118,7 +104,7 @@ onMounted(() => {
     authStore.clearMessages();
   } else {
     authStore.error =
-      "Invalid or missing reset token. Please request a new link.";
+      "និមិត្តសញ្ញាកំណត់ឡើងវិញមិនត្រឹមត្រូវ ឬបាត់។ សូមស្នើសុំតំណថ្មី";
   }
 });
 

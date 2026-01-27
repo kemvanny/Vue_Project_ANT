@@ -48,20 +48,19 @@
                       if (el) otpRefs[index] = el;
                     }
                   "
-                  autocomplete="one-time-code"
-                />
+                  autocomplete="one-time-code" />
               </div>
             </div>
 
             <!-- Hidden field synced with store -->
             <input type="hidden" v-model="auth.otpCode" />
 
-            <button
-              class="create-btn mt-5"
+            <AuthButton
+              :text="'ផ្ទៀងផ្ទាត់គណនី'"
+              :loadingText="'ផ្ទៀងផ្ទាត់...'"
+              :loading="auth.loading"
               :disabled="auth.loading || otpDigits.some((d) => !d)"
-            >
-              {{ auth.loading ? "ផ្ទៀងផ្ទាត់..." : "ផ្ទៀងផ្ទាត់គណនី" }}
-            </button>
+              @click="handleVerify" />
           </form>
 
           <div class="resend-link mt-4 text-center">
@@ -87,6 +86,7 @@
 import { ref, watch, onMounted, nextTick } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
+import AuthButton from "../../components/AuthButton.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -100,7 +100,7 @@ watch(
   (newDigits) => {
     auth.otpCode = newDigits.join("");
   },
-  { deep: true }
+  { deep: true },
 );
 
 onMounted(() => {

@@ -26,71 +26,51 @@
         <p
           v-if="auth.error"
           class="error-msg"
-          style="text-align: center; margin-bottom: 8px"
-        >
+          style="text-align: center; margin-bottom: 8px">
           {{ auth.error }}
         </p>
 
         <!-- Login Form -->
         <form @submit.prevent="handleLogin" class="signup-form">
           <!-- Email -->
-          <div class="input-group">
-            <label>អ៊ីមែល</label>
-            <input
-              type="email"
-              v-model="form.email"
-              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
-              autofocus
-            />
-            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
-          </div>
+          <AuthInput
+            label="អ៊ីមែល"
+            type="email"
+            v-model="form.email"
+            placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+            :error="errors.email"
+            autofocus />
 
           <!-- Password -->
-          <div class="input-group">
-            <label>ពាក្យសម្ងាត់</label>
-            <div class="input-wrapper">
-              <input
-                :type="showPassword ? 'text' : 'ពាក្យសម្ងាត់'"
-                v-model="form.password"
-                placeholder="បញ្ចូលពាក្យសម្ងាត់"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showPassword = !showPassword"
-              >
-                <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                ></i>
-              </button>
-            </div>
-            <p v-if="errors.password" class="error-msg">
-              {{ errors.password }}
-            </p>
-          </div>
+          <AuthInput
+            label="ពាក្យសម្ងាត់"
+            type="password"
+            v-model="form.password"
+            placeholder="បញ្ចូលពាក្យសម្ងាត់"
+            :error="errors.password" />
 
+          <!-- Footer -->
           <div class="form-footer-login">
             <div class="remember-me">
-              <input type="checkbox" v-model="form.rememberMe" id="remember" />
-              <label for="remember">ចងចាំខ្ញុំ</label>
+              <input type="checkbox" v-model="form.rememberMe" />
+              <label>ចងចាំខ្ញុំ</label>
             </div>
+
             <router-link to="/forget-password" class="forgot-link">
               ភ្លេចពាក្យសម្ងាត់?
             </router-link>
           </div>
 
-          <button class="create-btn" :disabled="auth.loading">
-            {{ auth.loading ? "ចូលប្រើ..." : "ចូលប្រើ" }}
-          </button>
+          <!-- Button -->
+          <AuthButton
+            text="ចូលប្រើ"
+            loading-text="កំពុងចូល..."
+            :loading="auth.loading" />
         </form>
 
         <div class="or-divider">ឬ</div>
 
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-apple"></i></a>
-        </div>
+       
 
         <p class="login-link">
           មិនទាន់មានគណនីមែនទេ?
@@ -104,14 +84,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
-import AuthButton from "../../components/AuthButton.vue";
 import AuthInput from "../../components/AuthInput.vue";
+import AuthButton from "../../components/AuthButton.vue";
 
-// --- Auth store ---
 const auth = useAuthStore();
 const router = useRouter();
 
@@ -121,14 +100,14 @@ const form = reactive({
   rememberMe: false,
 });
 
-const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
 const errors = reactive({
   email: "",
   password: "",
+});
+
+const loginSchema = z.object({
+  email: z.string().min(1, "អ៊ីមែលត្រូវបានទាមទារ").email("អ៊ីមែលមិនត្រឹមត្រូវ"),
+  password: z.string().min(6, "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 6 តួអក្សរ"),
 });
 
 onMounted(() => {
@@ -139,35 +118,21 @@ const handleLogin = async () => {
   errors.email = "";
   errors.password = "";
 
-  const result = loginSchema.safeParse({
-    email: form.email,
-    password: form.password,
-  });
+  const result = loginSchema.safeParse(form);
 
   if (!result.success) {
     result.error.issues.forEach((issue) => {
-      const field = issue.path[0];
-      if (field === "email") {
-        errors.email = issue.message;
-      } else if (field === "password") {
-        errors.password = issue.message;
-      }
+      errors[issue.path[0]] = issue.message;
     });
     return;
   }
 
-  try {
-    auth.email = form.email;
-    auth.password = form.password;
-    auth.rememberMe = form.rememberMe;
+  auth.email = form.email;
+  auth.password = form.password;
+  auth.rememberMe = form.rememberMe;
 
-    const success = await auth.login();
-    if (success) {
-      router.push("/dashboard");
-    }
-  } catch (err) {
-    console.error("Login failed:", err);
-  }
+  const success = await auth.login();
+  if (success) router.push("/dashboard");
 };
 </script>
 

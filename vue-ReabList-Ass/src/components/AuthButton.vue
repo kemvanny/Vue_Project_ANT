@@ -1,9 +1,9 @@
 <template>
   <button
     class="create-btn"
+    :type="type"
     :disabled="disabled || loading"
-    @click="$emit('click')"
-  >
+    @click="$emit('click')">
     {{ loading ? loadingText : text }}
   </button>
 </template>
@@ -25,6 +25,10 @@ defineProps({
   loading: {
     type: Boolean,
     default: false,
+  },
+  type: {
+    type: String,
+    default: "button",
   },
 });
 

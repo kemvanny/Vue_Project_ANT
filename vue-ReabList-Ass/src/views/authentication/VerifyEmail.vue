@@ -43,12 +43,12 @@
             </p>
           </div>
 
-          <button
-            class="create-btn mt-4"
+          <AuthButton
+            :text="'បាទ/ចាស ផ្ញើលេខកូដ'"
+            :loadingText="'ផ្ញើ...'"
+            :loading="auth.loading"
             :disabled="isEditing || auth.loading"
-            @click="handleSendCode">
-            {{ auth.loading ? "ផ្ញើ..." : "បាទ/ចាស ផ្ញើលេខកូដ" }}
-          </button>
+            @click="handleSendCode" />
         </div>
 
         <p v-if="auth.error" class="error-msg mt-3 text-center">
@@ -65,6 +65,7 @@ import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
+import AuthButton from "../../components/AuthButton.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
