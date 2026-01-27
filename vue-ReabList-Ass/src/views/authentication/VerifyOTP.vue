@@ -1,82 +1,88 @@
 <template>
-  <div class="container">
-    <div class="brand-section">
-      <div class="circle circle-lg"></div>
-      <div class="circle circle-md"></div>
-      <div class="circle-left"></div>
-      <div class="brand-content">
-        <h1>ផ្ទៀងផ្ទាត់</h1>
-        <br />
-        <h2>លេខកូដសុវត្ថិភាព</h2>
-        <p>
-          យើងបានផ្ញើលេខកូដ ៦ ខ្ទង់ ទៅកាន់ប្រអប់សំបុត្ររបស់អ្នក។
-          សូមបញ្ចូលលេខកូដនោះនៅខាងក្រោម។
-        </p>
-      </div>
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="gradient-bg"></div>
+
+    <div class="animation-area">
+      <ul class="box-area">
+        <li v-for="n in 15" :key="n"></li>
+      </ul>
     </div>
 
-    <div class="form-section">
-      <div class="form-container">
-        <div class="fade-in">
-          <h1 class="fw-bold mb-2">ផ្ទៀងផ្ទាត់ OTP</h1>
-          <p class="subtitle">
-            បញ្ចូលលេខកូដដែលបានផ្ញើទៅកាន់ <strong>{{ auth.email }}</strong>
-          </p>
+    <div class="shape shape-1" :style="parallaxStyle(25)"></div>
+    <div class="shape shape-2" :style="parallaxStyle(-25)"></div>
 
-          <form @submit.prevent="handleVerify" class="signup-form mt-4">
-            <div class="input-group">
-              <label>លេខកូដ ៦ ខ្ទង់</label>
-              <div class="otp-container">
-                <input
-                  v-for="(digit, index) in 6"
-                  :key="index"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="[0-9]*"
-                  maxlength="1"
-                  v-model="otpDigits[index]"
-                  @input="handleInput($event, index)"
-                  @keydown="handleKeyDown($event, index)"
-                  @paste="handlePaste"
-                  class="otp-box"
-                  :class="{
-                    filled: otpDigits[index],
-                    active: activeIndex === index,
-                  }"
-                  :ref="
-                    (el) => {
-                      if (el) otpRefs[index] = el;
-                    }
-                  "
-                  autocomplete="one-time-code" />
+    <div class="card glass-card border-0 shadow-2xl rounded-5 overflow-hidden animate-entrance">
+      <div class="row g-0 h-100">
+
+        <div
+          class="col-lg-5 d-none d-lg-flex flex-column align-items-center justify-content-center bg-gradient-teal text-white p-5 position-relative overflow-hidden">
+          <div class="glow-circle" :style="parallaxStyle(-10)"></div>
+          <div class="z-2 text-center content-wrapper">
+            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-security-shield-4392262-3640417.png"
+              alt="OTP Security" class="img-fluid mb-4 floating-3d" :style="parallaxStyle(15)"
+              style="max-height: 250px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));">
+            <h3 class="fw-bold tracking-wide mb-2 text-shadow">សុវត្ថិភាពគណនី</h3>
+            <p class="text-white-50 small px-3">
+              យើងបានផ្ញើលេខកូដសម្ងាត់ទៅកាន់អ៊ីមែលរបស់អ្នក។ សូមពិនិត្យប្រអប់សាររបស់អ្នក។
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-7 bg-white-glass d-flex align-items-center position-relative">
+          <div class="card-body p-4 p-lg-5">
+
+            <div class="mb-4 stagger-1">
+              <h1 class="fw-bold text-dark mb-2 display-6">ផ្ទៀងផ្ទាត់ OTP</h1>
+              <p class="text-muted">
+                បញ្ចូលលេខកូដដែលបានផ្ញើទៅកាន់ <strong class="text-teal">{{ auth.email }}</strong>
+              </p>
+            </div>
+
+            <transition name="shake">
+              <div v-if="auth.error"
+                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ auth.error }}
+              </div>
+            </transition>
+
+            <form @submit.prevent="handleVerify" class="stagger-3">
+
+              <div class="mb-4">
+                <label class="fw-bold text-teal mb-3 small text-uppercase ls-1">លេខកូដ ៦ ខ្ទង់</label>
+
+                <div class="otp-container">
+                  <input v-for="(digit, index) in 6" :key="index" type="text" inputmode="numeric" pattern="[0-9]*"
+                    maxlength="1" v-model="otpDigits[index]" @input="handleInput($event, index)"
+                    @keydown="handleKeyDown($event, index)" @paste="handlePaste" class="otp-box" :class="{
+                      'active': activeIndex === index,
+                      'filled': otpDigits[index] !== ''
+                    }" :ref="(el) => { if (el) otpRefs[index] = el; }" autocomplete="one-time-code" />
+                </div>
+              </div>
+
+              <input type="hidden" v-model="auth.otpCode" />
+
+              <AuthButton :text="'ផ្ទៀងផ្ទាត់គណនី'" :loadingText="'កំពុងផ្ទៀងផ្ទាត់...'" :loading="auth.loading"
+                :disabled="auth.loading || otpDigits.some((d) => !d)" @click="handleVerify"
+                class="stagger-4 w-100 py-3 rounded-4 shadow-sm" />
+            </form>
+
+            <div class="text-center mt-5 small text-muted stagger-5">
+              មិនបានទទួលលេខកូដមែនទេ?
+              <a href="#" @click.prevent="handleResend" class="text-teal fw-bold text-decoration-none mx-1 link-effect">
+                ផ្ញើលេខកូដម្តងទៀត
+              </a>
+              <div class="mt-2">
+                <span class="text-muted">ឬ</span>
+                <a href="#" @click.prevent="router.push('/verify-email')"
+                  class="text-secondary fw-bold text-decoration-none mx-1 link-effect">
+                  ផ្លាស់ប្តូរអ៊ីមែល
+                </a>
               </div>
             </div>
 
-            <!-- Hidden field synced with store -->
-            <input type="hidden" v-model="auth.otpCode" />
-
-            <AuthButton
-              :text="'ផ្ទៀងផ្ទាត់គណនី'"
-              :loadingText="'ផ្ទៀងផ្ទាត់...'"
-              :loading="auth.loading"
-              :disabled="auth.loading || otpDigits.some((d) => !d)"
-              @click="handleVerify" />
-          </form>
-
-          <div class="resend-link mt-4 text-center">
-            មិនបានទទួលលេខកូដមែនទេ?
-            <a href="#" @click.prevent="handleResend">ផ្ញើលេខកូដម្តងទៀត</a>ឫ
-            <a href="#" @click.prevent="router.push('/confirm-email')"
-              >ផ្លាស់ប្តូរអ៊ីមែល</a
-            >
           </div>
-
-          <p v-if="auth.error" class="error-msg mt-3 text-center">
-            {{ auth.error }}
-          </p>
         </div>
-
-        <div class="bottom-right-circle"></div>
       </div>
     </div>
   </div>
@@ -90,6 +96,16 @@ import AuthButton from "../../components/AuthButton.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
+
+// --- PARALLAX LOGIC ---
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const parallaxStyle = (intensity) => {
+  const x = mouseX.value * intensity;
+  const y = mouseY.value * intensity;
+  return { transform: `translate(${x}px, ${y}px)` };
+};
 
 const otpDigits = ref(Array(6).fill(""));
 const otpRefs = ref([]);
@@ -167,9 +183,7 @@ const handleResend = async () => {
 const handleVerify = async () => {
   try {
     if (auth.clearMessages) auth.clearMessages();
-
     const success = await auth.verifyEmail();
-
     if (success) {
       auth.resetRegisterForm();
       router.push("/login");
@@ -181,401 +195,50 @@ const handleVerify = async () => {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  font-family: "Inter", sans-serif;
-}
-
-/* Brand Section (Left) */
-.brand-section {
-  flex: 1.15;
-  /* background: #247a85; */
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 30px;
-  overflow: hidden;
-}
-
-.brand-content {
-  max-width: 420px;
-  z-index: 10;
-}
-
-.brand-content h1 {
-  font-size: clamp(3rem, 7vw, 4.8rem);
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-
-.brand-content h2 {
-  font-size: clamp(1.4rem, 3.8vw, 1.9rem);
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #a8e0e6;
-}
-
-.brand-content p {
-  font-size: 0.92rem;
-  line-height: 1.45;
-  opacity: 0.9;
-}
-
-/* Form Section (Right) */
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
-
-.circle {
-  position: absolute;
-  background-color: #1a636d;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: float 6s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  background-color: #1a636d;
-  top: -250px;
-  left: -150px;
-  animation-delay: 0s;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  background-color: #1a636d;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-sm {
-  width: 280px;
-  height: 280px;
-  bottom: 50px;
-  background-color: #1a636d;
-  right: 3%;
-  animation-delay: 2s;
-}
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-
-/* Input Styles */
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.input-group label {
-  color: #2f6f77;
-  font-weight: 600;
-  font-size: 0.78rem;
-}
-
-/* Email Specific Styling */
-.email-wrapper {
-  display: flex;
-  background: #e8f3f5;
-  border-radius: 7px;
-  padding: 5px 10px;
-  align-items: center;
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.email-wrapper.is-editing {
-  border-color: #247a85;
-  background: white;
-}
-
-.confirm-input {
-  border: none !important;
-  background: transparent !important;
-  flex: 1;
-  padding: 10px;
-  font-weight: 600;
-  color: #333;
-  font-size: 0.88rem;
-}
-
-.edit-btn {
-  background: none;
-  border: none;
-  color: #247a85;
-  font-weight: 800;
-  font-size: 0.7rem;
-  cursor: pointer;
-  padding: 5px;
-}
-
-/* OTP Specific Styling */
-.otp-input {
-  letter-spacing: 12px;
-  text-align: center;
-  font-size: 1.5rem !important;
-  font-weight: bold;
-  color: #247a85;
-  background: #e8f3f5;
-  border: 2px solid transparent;
-  border-radius: 7px;
-  padding: 12px;
-  width: 100%;
-}
-
-.otp-input:focus {
-  background-color: #fff;
-  border-color: #5596a0;
-  outline: none;
-}
-
-/* Buttons */
-.create-btn {
-  width: 100%;
-  padding: 12px;
-  background: #247a85;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.create-btn:hover:not(:disabled) {
-  background: #1a636d;
-}
-
-.create-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Links */
-.resend-link {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.82rem;
-}
-
-.resend-link a {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-/* Decorative Circles & Animations */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-.circle {
-  position: absolute;
-  background: #1a636d;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: float 7s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  top: -250px;
-  left: -150px;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-left {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  background: #1a636d;
-  border-radius: 50%;
-  bottom: 80px;
-  right: 3%;
-  opacity: 0.6;
-  animation: float 6s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.bottom-right-circle {
-  position: fixed;
-  width: 250px;
-  height: 250px;
-  background: #247a85;
-  border-radius: 50%;
-  bottom: -50px;
-  right: -50px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-/* Messaging & Utility */
-.error-msg {
-  color: #d32f2f;
-  font-size: 0.72rem;
-}
-
-.fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 900px) {
-  .brand-section {
-    display: none;
-  }
-  .form-section {
-    padding: 16px;
-  }
-  .bottom-right-circle {
-    display: none;
-  }
-}
-
 .otp-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
-  margin: 16px 0 24px;
 }
 
 .otp-box {
-  width: 52px;
-  height: 64px;
+  width: 100%;
+  max-width: 60px;
+  height: 65px;
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #247a85;
-  background: #f0f7f8;
-  border: 2px solid #d1e5e8;
+  color: #1a636d;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
   border-radius: 12px;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease-in-out;
   caret-color: #247a85;
 }
 
-.otp-box:focus {
+.otp-box:focus,
+.otp-box.active {
   outline: none;
   border-color: #247a85;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(36, 122, 133, 0.18);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(36, 122, 133, 0.15);
+  transform: translateY(-2px);
 }
 
 .otp-box.filled {
-  background: #e3f0f2;
-  border-color: #a8e0e6;
-  color: #1a636d;
+  background: #e0f2f1;
+  border-color: #80cbc4;
 }
 
-.otp-box.active {
-  border-color: #247a85;
-  background: white;
-}
-
-/* Optional: make it look more "modern flat" */
-.otp-box {
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-/* Mobile adjustments */
 @media (max-width: 500px) {
   .otp-box {
-    width: 44px;
-    height: 56px;
-    font-size: 1.7rem;
+    height: 55px;
+    font-size: 1.5rem;
+    max-width: 45px;
   }
+
   .otp-container {
-    gap: 8px;
+    gap: 5px;
   }
-}
-
-/* ──────────────────────────────────────────────
-   Keep your existing button, label, error-msg, resend-link, etc. styles
-──────────────────────────────────────────────── */
-
-.create-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.input-group label {
-  color: #2f6f77;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-  display: block;
 }
 </style>

@@ -1,24 +1,13 @@
 <template>
-  <div class="input-group">
+  <div class="mb-4 stagger-2 modern-input-group">
     <label>{{ label }}</label>
-    <div :class="{ 'input-wrapper': type === 'password' }">
-      <input
-        :type="computedType"
-        :value="modelValue"
-        :placeholder="placeholder"
-        @input="$emit('update:modelValue', $event.target.value)"
-        :class="{ 'input-error': error }"
-        :required="required"
-        :autofocus="autofocus"
-      />
-      <button
-        v-if="type === 'password'"
-        type="button"
-        class="toggle-password"
-        @click="showPassword = !showPassword"
-        :aria-label="showPassword ? 'Hide password' : 'Show password'"
-      >
-        <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+    <div class="input-group input-group-lg modern-input" :class="{ 'input-wrapper': type === 'password' }">
+      <input :type="computedType" :value="modelValue" :placeholder="placeholder"
+        @input="$emit('update:modelValue', $event.target.value)" :class="{ 'input-error': error }" :required="required"
+        :autofocus="autofocus">
+      <button v-if="type === 'password'" type="button" class="toggle-password" @click="showPassword = !showPassword"
+        :aria-label="showPassword ? 'Hide password' : 'Show password'">
+        <i class="bi" :class="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
       </button>
     </div>
     <p v-if="error" class="error-msg-small">{{ error }}</p>
@@ -78,6 +67,14 @@ export default {
 </script>
 
 <style scoped>
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
+.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,
+.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select,
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
 .input-group {
   margin-bottom: 5px;
 }
