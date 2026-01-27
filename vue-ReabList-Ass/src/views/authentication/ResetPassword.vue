@@ -7,20 +7,20 @@
       <div class="circle-left"></div>
 
       <div class="brand-content">
-        <h1>RESET PASSWORD</h1>
-        <h2>Secure Your Account</h2>
+        <h1>កំណត់ពាក្យសម្ងាត់ឡើងវិញ</h1>
+        <h2>ការពារសុវត្ថិភាពគណនីរបស់អ្នក</h2>
         <p>
-          You're just one step away. Choose a strong new password to regain
-          access to your workspace.
+          អ្នកនៅសល់តែមួយជំហានទៀតប៉ុណ្ណោះ។ សូមជ្រើសរើសពាក្យសម្ងាត់ថ្មីដែលរឹងមាំ
+          ដើម្បីចូលប្រើប្រាស់កន្លែងធ្វើការរបស់អ្នកឡើងវិញ។
         </p>
       </div>
     </div>
 
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Create New Password</h1>
+        <h1 class="fw-bold mb-2">បង្កើតពាក្យសម្ងាត់ថ្មី</h1>
         <p class="subtitle">
-          Enter your new credentials to secure your account.
+          សូមបញ្ចូលព័ត៌មានសម្ងាត់ថ្មីរបស់អ្នក ដើម្បីការពារសុវត្ថិភាពគណនី។
         </p>
 
         <p v-if="authStore.successMessage" class="success-msg text-center mb-3">
@@ -33,34 +33,48 @@
         <form @submit.prevent="handleReset" class="signup-form" novalidate>
           <input type="hidden" v-model="authStore.otpCode" />
 
-          <AuthInput
-            label="New Password"
-            type="password"
-            placeholder="Min. 8 characters"
-            v-model="authStore.newPassword"
-            :error="errors.newPassword"
-          />
+          <div class="input-group">
+            <label>ពាក្យសម្ងាត់ថ្មី</label>
+            <input
+              type="password"
+              v-model="authStore.newPassword"
+              placeholder="យ៉ាងហោចណាស់ ៨ តួអក្សរ"
+              :class="{ 'input-error': errors.newPassword }"
+            />
+            <p v-if="errors.newPassword" class="error-msg-small">
+              {{ errors.newPassword }}
+            </p>
+          </div>
 
-          <AuthInput
-            label="Confirm New Password"
-            type="password"
-            placeholder="Repeat new password"
-            v-model="authStore.confirmNewPassword"
-            :error="errors.confirmNewPassword"
-          />
+          <div class="input-group">
+            <label>បញ្ជាក់ពាក្យសម្ងាត់ថ្មី</label>
+            <input
+              type="password"
+              v-model="authStore.confirmNewPassword"
+              placeholder="វាយពាក្យសម្ងាត់ថ្មីម្តងទៀត"
+              :class="{ 'input-error': errors.confirmNewPassword }"
+            />
+            <p v-if="errors.confirmNewPassword" class="error-msg-small">
+              {{ errors.confirmNewPassword }}
+            </p>
+          </div>
 
           <button
             type="submit"
             class="create-btn mt-4"
             :disabled="authStore.loading"
           >
-            {{ authStore.loading ? "Resetting..." : "Update Password" }}
+            {{
+              authStore.loading
+                ? "Resetting..."
+                : "ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់"
+            }}
           </button>
         </form>
 
         <div class="back-to-login">
           <router-link to="/login">
-            <i class="fas fa-arrow-left"></i> Back to Login
+            <i class="fas fa-arrow-left"></i>ត្រឡប់ទៅទំព័រចូលប្រើប្រាស់
           </router-link>
         </div>
       </div>

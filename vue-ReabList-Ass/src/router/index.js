@@ -138,9 +138,9 @@ router.beforeEach((to, from, next) => {
     next("/login");
   }
   // If user is trying to access login/register while already authenticated
-  else if ((to.name === "login" || to.name === "register") && isAuthenticated) {
-    next("/dashboard");
-  }
+  // else if ((to.name === "login" || to.name === "register") && isAuthenticated) {
+  //   next("/dashboard");
+  // }
   // Allow navigation
   else {
     next();

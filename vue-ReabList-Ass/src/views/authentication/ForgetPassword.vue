@@ -7,20 +7,22 @@
       <div class="circle-left"></div>
 
       <div class="brand-content">
-        <h1>FORGOT PASSWORD</h1>
-        <h2>We've Got You Covered</h2>
+        <h1>ភ្លេចពាក្យសម្ងាត់</h1>
+        <h2>កុំបារម្ភ យើងនឹងជួយអ្នក</h2>
         <p>
-          Enter your email address and we'll send you a secure link to reset
-          your password. You'll be back in your account in no time.
+          សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់សុវត្ថិភាព
+          ដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ។
+          អ្នកនឹងអាចចូលប្រើប្រាស់គណនីវិញក្នុងពេលឆាប់ៗនេះ។
         </p>
       </div>
     </div>
 
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Forgot Password?</h1>
+        <h1 class="fw-bold mb-2">ភ្លេចពាក្យសម្ងាត់មែនទេ?</h1>
         <p class="subtitle">
-          No worries! Enter your email and we'll send you reset instructions.
+          កុំបារម្ភ! សូមបញ្ចូលអ៊ីមែលរបស់អ្នក
+          ហើយយើងនឹងផ្ញើការណែនាំអំពីការកំណត់ឡើងវិញ។
         </p>
 
         <p v-if="authStore.successMessage" class="success-msg text-center mb-2">
@@ -37,28 +39,38 @@
           class="signup-form"
           novalidate
         >
-          <AuthInput
-            label="Email Address"
-            type="email"
-            placeholder="Enter your email"
-            v-model="authStore.resetEmail"
-            :error="errors.email"
-            :autofocus="true"
-          />
+          <div class="input-group">
+            <label>អាសយដ្ឋានអ៊ីមែល</label>
+            <input
+              type="email"
+              v-model="authStore.resetEmail"
+              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+              :class="{ 'input-error': errors.email }"
+              autofocus
+            />
+            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
+          </div>
 
           <button
             type="submit"
             class="create-btn"
             :disabled="authStore.loading"
           >
-            {{ authStore.loading ? "Sending..." : "Send Reset Link" }}
+            {{ authStore.loading ? "Sending..." : "ផ្ញើតំណភ្ជាប់កំណត់ឡើងវិញ" }}
           </button>
         </form>
 
         <div class="back-to-login">
-          <router-link to="/login">
-            <i class="fas fa-arrow-left"></i> Back to Login
-          </router-link>
+          <a href="#" @click.prevent="goBackToLogin">
+            <i class="fas fa-arrow-left"></i> ត្រឡប់ទៅទំព័រចូលប្រើប្រាស់
+          </a>
+        </div>
+
+        <div class="or-divider">ឬ</div>
+
+        <div class="help-section">
+          <p class="help-text">ត្រូវការជំនួយបន្ថែមមែនទេ?</p>
+          <a href="#" class="contact-link">ទាក់ទងផ្នែកគាំទ្រ</a>
         </div>
       </div>
 

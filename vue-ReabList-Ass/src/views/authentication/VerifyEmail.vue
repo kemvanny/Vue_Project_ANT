@@ -5,11 +5,12 @@
       <div class="circle circle-md"></div>
       <div class="circle-left"></div>
       <div class="brand-content">
-        <h1>VERIFY</h1>
-        <h2>Confirm Email</h2>
+        <h1>ផ្ទៀងផ្ទាត់</h1>
+        <br />
+        <h2>បញ្ជាក់អ៊ីមែល</h2>
         <p>
-          Please ensure your email is correct before we send the secure
-          verification code.
+          សូមពិនិត្យឱ្យច្បាស់ថាអ៊ីមែលរបស់អ្នកត្រឹមត្រូវ
+          មុនពេលយើងផ្ញើលេខកូដផ្ទៀងផ្ទាត់សុវត្ថិភាព
         </p>
       </div>
     </div>
@@ -17,24 +18,24 @@
     <div class="form-section">
       <div class="form-container">
         <div class="fade-in">
-          <h1 class="fw-bold mb-2">Check Email</h1>
-          <p class="subtitle">Is this the correct email for your account?</p>
+          <h1 class="fw-bold mb-2">ពិនិត្យអ៊ីមែល</h1>
+          <p class="subtitle">
+            តើនេះជាអ៊ីមែលត្រឹមត្រូវសម្រាប់គណនីរបស់អ្នកមែនទេ?
+          </p>
 
           <div class="input-group mt-4">
-            <label>Registration Email</label>
+            <label>អ៊ីមែលដែលបានចុះឈ្មោះ</label>
             <div
               class="email-wrapper"
-              :class="{ 'is-editing': isEditing, 'has-error': errors.email }"
-            >
+              :class="{ 'is-editing': isEditing, 'has-error': errors.email }">
               <input
                 type="email"
                 v-model="auth.email"
                 :disabled="!isEditing"
                 class="confirm-input"
-                @keyup.enter="toggleEdit"
-              />
+                @keyup.enter="toggleEdit" />
               <button @click="toggleEdit" class="edit-btn">
-                {{ isEditing ? "SAVE" : "CHANGE" }}
+                {{ isEditing ? "រក្សាទុក" : "ផ្លាស់ប្តូរ" }}
               </button>
             </div>
             <p v-if="errors.email" class="error-msg-small">
@@ -45,9 +46,8 @@
           <button
             class="create-btn mt-4"
             :disabled="isEditing || auth.loading"
-            @click="handleSendCode"
-          >
-            {{ auth.loading ? "Sending..." : "Yes, Send Code" }}
+            @click="handleSendCode">
+            {{ auth.loading ? "ផ្ញើ..." : "បាទ/ចាស ផ្ញើលេខកូដ" }}
           </button>
         </div>
 

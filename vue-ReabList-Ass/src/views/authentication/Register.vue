@@ -7,7 +7,7 @@
       <div class="circle-left"></div>
 
       <div class="brand-content">
-        <h1>WELCOME</h1>
+        <h1>សូមស្វាគមន៍</h1>
         <h2>Your Handle Your Name</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -18,52 +18,92 @@
 
     <div class="form-section">
       <div class="form-container">
-        <h1 class="fw-bold mb-2">Sign up</h1>
-        <p class="subtitle">Join our community by creating a new account.</p>
+        <h1 class="fw-bold mb-2">ចុះឈ្មោះ</h1>
+        <p class="subtitle">ចូលរួមជាមួយប្រព័ន្ធរបស់យើង ដោយបង្កើតគណនីថ្មី.</p>
 
         <p v-if="auth.error" class="error-msg text-center mb-2">
           {{ auth.error }}
         </p>
 
         <form @submit.prevent="handleRegister" class="signup-form" novalidate>
-          <AuthInput
-            label="Full Name"
-            type="text"
-            placeholder="Enter Your full name"
-            v-model="auth.fullName"
-            :error="errors.fullName"
-          />
+          <div class="input-group">
+            <label>ឈ្មោះពេញ</label>
+            <input
+              type="text"
+              v-model="auth.fullName"
+              placeholder="បញ្ចូលឈ្មោះពេញរបស់អ្នក"
+              :class="{ 'input-error': errors.fullName }"
+            />
+            <p v-if="errors.fullName" class="error-msg-small">
+              {{ errors.fullName }}
+            </p>
+          </div>
 
-          <AuthInput
-            label="Email"
-            type="email"
-            placeholder="Enter Your email"
-            v-model="auth.email"
-            :error="errors.email"
-          />
+          <div class="input-group">
+            <label>អ៊ីមែល</label>
+            <input
+              type="email"
+              v-model="auth.email"
+              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+              :class="{ 'input-error': errors.email }"
+            />
+            <p v-if="errors.email" class="error-msg-small">
+              {{ errors.email }}
+            </p>
+          </div>
 
-          <AuthInput
-            label="Password"
-            type="password"
-            placeholder="Enter Your password"
-            v-model="auth.password"
-            :error="errors.password"
-          />
+          <div class="input-group">
+            <label>ពាក្យសម្ងាត់</label>
+            <div class="input-wrapper">
+              <input
+                :type="showPassword ? 'text' : 'password'"
+                v-model="auth.password"
+                placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"
+                :class="{ 'input-error': errors.password }"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                @click="showPassword = !showPassword"
+              >
+                <i
+                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                ></i>
+              </button>
+            </div>
+            <p v-if="errors.password" class="error-msg-small">
+              {{ errors.password }}
+            </p>
+          </div>
 
-          <AuthInput
-            label="Confirm Password"
-            type="password"
-            placeholder="Enter Your confirm password"
-            v-model="auth.confirmPassword"
-            :error="errors.confirmPassword"
-          />
+          <div class="input-group">
+            <label>បញ្ជាក់ពាក្យសម្ងាត់</label>
+            <div class="input-wrapper">
+              <input
+                :type="showConfirm ? 'text' : 'password'"
+                v-model="auth.confirmPassword"
+                placeholder="បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកម្តងទៀត"
+                :class="{ 'input-error': errors.confirmPassword }"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                @click="showConfirm = !showConfirm"
+              >
+                <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+              </button>
+            </div>
+            <p v-if="errors.confirmPassword" class="error-msg-small">
+              {{ errors.confirmPassword }}
+            </p>
+          </div>
 
           <div class="form-footer">
             <div class="checkbox-group">
               <input type="checkbox" v-model="auth.agreedTerms" id="terms" />
               <label for="terms">
-                I agree to the <a href="#">Terms of Service</a> &
-                <a href="#">Privacy Policy</a>.
+                ខ្ញុំយល់ព្រមតាម <a href="#">លក្ខខណ្ឌប្រើប្រាស់</a> &
+                <a href="#">និង គោលការណ៍ឯកជនភាព។</a>.
               </label>
             </div>
             <p v-if="errors.agreedTerms" class="error-msg-small">
@@ -71,19 +111,22 @@
             </p>
           </div>
 
-          <AuthButton
-            :text="'Create Account'"
-            :loading-text="'Creating...'"
-            :loading="auth.loading"
-            @click="handleRegister"
-          />
+          <button type="submit" class="create-btn" :disabled="auth.loading">
+            {{ auth.loading ? "បង្កើតគណនី..." : "បង្កើតគណនី" }}
+          </button>
         </form>
 
-        <div class="or-divider">or</div>
+        <div class="or-divider">ឬ</div>
+
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-google"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-apple"></i></a>
+        </div>
 
         <p class="login-link">
-          Already signed up?
-          <router-link to="/login">Go to login</router-link>
+          មានគណនីរួចហើយមែនទេ?
+          <router-link to="/login">ចូលប្រើប្រាស់</router-link>
         </p>
       </div>
 
