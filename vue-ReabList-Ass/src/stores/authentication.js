@@ -17,6 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   // OTP & Reset
   const otpCode = ref("");
+  const resetMode = ref(false);
   const resetEmail = ref("");
   const newPassword = ref("");
   const confirmNewPassword = ref("");
@@ -40,7 +41,10 @@ export const useAuthStore = defineStore("auth", () => {
     password.value = "";
     confirmPassword.value = "";
     agreedTerms.value = false;
-    otpCode.value = "";
+    if (!resetMode.value) {
+      otpCode.value = "";
+    }
+    resetMode.value = false;
   };
 
   const resetLoginForm = () => {
@@ -253,18 +257,17 @@ export const useAuthStore = defineStore("auth", () => {
       const payload = {
         email: (emailAddress || resetEmail.value || email.value).trim(),
       };
-      const response = await api.post("/auth/forget-password", payload);
+      const response = await api.post("/otp/send", payload);
 
       if (response.data?.success || response.status === 200) {
-        successMessage.value =
-          "តំណ​កំណត់​ពាក្យ​សម្ងាត់​ឡើងវិញ​បាន​ផ្ញើ​ទៅ​អ៊ីមែល​របស់​អ្នក!";
+        successMessage.value = "លេខកូដផ្ទៀងផ្ទាត់បានផ្ញើទៅអ៊ីមែលរបស់អ្នក!";
         resetEmail.value = payload.email;
+        resetMode.value = true;
         return true;
       }
     } catch (err) {
       console.error(err);
-      error.value =
-        err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើតំណកំណត់ឡើងវិញ។";
+      error.value = err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើលេខកូដ។";
       return false;
     } finally {
       loading.value = false;
@@ -347,6 +350,7 @@ export const useAuthStore = defineStore("auth", () => {
     confirmPassword,
     agreedTerms,
     otpCode,
+    resetMode,
     loading,
     error,
     successMessage,

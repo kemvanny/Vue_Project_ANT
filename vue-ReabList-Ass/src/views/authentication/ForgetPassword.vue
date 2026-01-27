@@ -113,7 +113,10 @@ const handleForgotPassword = async () => {
   }
 
   try {
-    await authStore.forgotPassword();
+    const success = await authStore.forgotPassword();
+    if (success) {
+      router.push("/verify-otp");
+    }
   } catch (err) {
     console.error("Forgot password request failed:", err);
   }
@@ -122,7 +125,7 @@ const handleForgotPassword = async () => {
 const goBackToLogin = () => {
   authStore.clearMessages();
   authStore.resetForgotPasswordForm();
-  router.push({ name: "Login" });
+  router.push({ name: "login" });
 };
 
 onUnmounted(() => {
