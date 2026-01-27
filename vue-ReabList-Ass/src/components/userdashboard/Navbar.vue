@@ -4,10 +4,10 @@
       <div class="search-area">
         <div class="search-input-group">
           <Search :size="19" class="search-icon" stroke-width="2" />
-          <input 
-            type="text" 
-            placeholder="Search tasks, descriptions, or tags..." 
-            class="header-search" 
+          <input
+            type="text"
+            placeholder="Search tasks, descriptions, or tags..."
+            class="header-search"
           />
         </div>
       </div>
@@ -17,31 +17,23 @@
           <Moon :size="20" stroke-width="2" />
         </button>
 
-        <div class="user-profile-wrapper">
-          <div class="user-details">
-            <p class="user-display-name">Alexander Reab</p>
-            <p class="user-display-role">Admin Manager</p>
-          </div>
-          <div class="user-avatar-circle">
-            <span>AR</span>
-          </div>
-          <ChevronDown :size="18" class="dropdown-chevron" stroke-width="2.5" />
-        </div>
+        <ProfileDropdown />
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { Search, Moon, ChevronDown } from 'lucide-vue-next';
+import { Search, Moon } from "lucide-vue-next";
+import ProfileDropdown from "./ProfileDropdown.vue";
 </script>
 
 <style scoped>
 /* Importing a clean font similar to your reference */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .reab-navbar {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   height: 85px;
   background-color: #ffffff;
   border-bottom: 1px solid #f1f5f9;
@@ -51,7 +43,8 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 100;
+  overflow: visible;
 }
 
 .navbar-container {
@@ -59,8 +52,8 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  overflow: visible;
 }
-
 
 /* --- Search Section --- */
 .search-input-group {
@@ -105,6 +98,8 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   display: flex;
   align-items: center;
   gap: 30px;
+  overflow: visible;
+  position: relative;
 }
 
 .mode-toggle {
@@ -126,6 +121,12 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   color: #0f172a;
 }
 
+/* Profile Dropdown Container */
+.profile-dropdown-container {
+  position: relative;
+  z-index: 1001;
+}
+
 .user-profile-wrapper {
   display: flex;
   align-items: center;
@@ -133,6 +134,15 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   padding-left: 28px;
   border-left: 1px solid #f1f5f9;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-profile-wrapper:hover {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding-left: 20px;
+  padding-right: 8px;
+  margin-left: 8px;
 }
 
 .user-details {
@@ -169,10 +179,6 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   font-weight: 700;
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
-}
-
-.dropdown-chevron {
-  color: #94a3b8;
-  margin-left: 4px;
+  overflow: hidden;
 }
 </style>
