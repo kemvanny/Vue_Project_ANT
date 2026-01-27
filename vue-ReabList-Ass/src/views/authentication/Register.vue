@@ -26,77 +26,33 @@
         </p>
 
         <form @submit.prevent="handleRegister" class="signup-form" novalidate>
-          <div class="input-group">
-            <label>ឈ្មោះពេញ</label>
-            <input
-              type="text"
-              v-model="auth.fullName"
-              placeholder="បញ្ចូលឈ្មោះពេញរបស់អ្នក"
-              :class="{ 'input-error': errors.fullName }"
-            />
-            <p v-if="errors.fullName" class="error-msg-small">
-              {{ errors.fullName }}
-            </p>
-          </div>
+          <AuthInput
+            label="ឈ្មោះពេញ"
+            type="text"
+            v-model="auth.fullName"
+            placeholder="បញ្ចូលឈ្មោះពេញរបស់អ្នក"
+            :error="errors.fullName" />
 
-          <div class="input-group">
-            <label>អ៊ីមែល</label>
-            <input
-              type="email"
-              v-model="auth.email"
-              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
-              :class="{ 'input-error': errors.email }"
-            />
-            <p v-if="errors.email" class="error-msg-small">
-              {{ errors.email }}
-            </p>
-          </div>
+          <AuthInput
+            label="អ៊ីមែល"
+            type="email"
+            v-model="auth.email"
+            placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+            :error="errors.email" />
 
-          <div class="input-group">
-            <label>ពាក្យសម្ងាត់</label>
-            <div class="input-wrapper">
-              <input
-                :type="showPassword ? 'text' : 'password'"
-                v-model="auth.password"
-                placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"
-                :class="{ 'input-error': errors.password }"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showPassword = !showPassword"
-              >
-                <i
-                  :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                ></i>
-              </button>
-            </div>
-            <p v-if="errors.password" class="error-msg-small">
-              {{ errors.password }}
-            </p>
-          </div>
+          <AuthInput
+            label="ពាក្យសម្ងាត់"
+            type="password"
+            v-model="auth.password"
+            placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"
+            :error="errors.password" />
 
-          <div class="input-group">
-            <label>បញ្ជាក់ពាក្យសម្ងាត់</label>
-            <div class="input-wrapper">
-              <input
-                :type="showConfirm ? 'text' : 'password'"
-                v-model="auth.confirmPassword"
-                placeholder="បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកម្តងទៀត"
-                :class="{ 'input-error': errors.confirmPassword }"
-              />
-              <button
-                type="button"
-                class="toggle-password"
-                @click="showConfirm = !showConfirm"
-              >
-                <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-              </button>
-            </div>
-            <p v-if="errors.confirmPassword" class="error-msg-small">
-              {{ errors.confirmPassword }}
-            </p>
-          </div>
+          <AuthInput
+            label="បញ្ជាក់ពាក្យសម្ងាត់"
+            type="password"
+            v-model="auth.confirmPassword"
+            placeholder="បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកម្តងទៀត"
+            :error="errors.confirmPassword" />
 
           <div class="form-footer">
             <div class="checkbox-group">
@@ -111,18 +67,15 @@
             </p>
           </div>
 
-          <button type="submit" class="create-btn" :disabled="auth.loading">
-            {{ auth.loading ? "បង្កើតគណនី..." : "បង្កើតគណនី" }}
-          </button>
+          <AuthButton
+            type="submit"
+            :text="'បង្កើតគណនី'"
+            :loadingText="'បង្កើតគណនី...'"
+            :loading="auth.loading"
+            :disabled="auth.loading" />
         </form>
 
         <div class="or-divider">ឬ</div>
-
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-apple"></i></a>
-        </div>
 
         <p class="login-link">
           មានគណនីរួចហើយមែនទេ?
@@ -156,16 +109,19 @@ const errors = reactive({
 
 const registerSchema = z
   .object({
-    fullName: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().min(1, "Email is required").email("Invalid email format"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
+    fullName: z.string().min(2, "ឈ្មោះត្រូវតែមានយ៉ាងហោចណាស់ 2 តួអក្សរ"),
+    email: z
+      .string()
+      .min(1, "អ៊ីមែលត្រូវបានទាមទារ")
+      .email("ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ"),
+    password: z.string().min(8, "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ"),
+    confirmPassword: z.string().min(1, "សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក។"),
     agreedTerms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept the terms and conditions" }),
+      errorMap: () => ({ message: "អ្នកត្រូវតែទទួលយកលក្ខខណ្ឌ" }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។",
     path: ["confirmPassword"],
   });
 
@@ -302,7 +258,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-center;
+  justify-content: center;
   padding: 20px 16px 16px; /* very compact top padding */
   overflow: hidden; /* ← No inner scroll either */
   min-height: 0; /* allows shrinking */

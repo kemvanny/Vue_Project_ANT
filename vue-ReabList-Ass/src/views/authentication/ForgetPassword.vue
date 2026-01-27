@@ -37,27 +37,21 @@
           v-if="!authStore.successMessage"
           @submit.prevent="handleForgotPassword"
           class="signup-form"
-          novalidate
-        >
-          <div class="input-group">
-            <label>អាសយដ្ឋានអ៊ីមែល</label>
-            <input
-              type="email"
-              v-model="authStore.resetEmail"
-              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
-              :class="{ 'input-error': errors.email }"
-              autofocus
-            />
-            <p v-if="errors.email" class="error-msg">{{ errors.email }}</p>
-          </div>
+          novalidate>
+          <AuthInput
+            label="អាសយដ្ឋានអ៊ីមែល"
+            type="email"
+            v-model="authStore.resetEmail"
+            placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+            :error="errors.email"
+            autofocus />
 
-          <button
+          <AuthButton
             type="submit"
-            class="create-btn"
-            :disabled="authStore.loading"
-          >
-            {{ authStore.loading ? "Sending..." : "ផ្ញើតំណភ្ជាប់កំណត់ឡើងវិញ" }}
-          </button>
+            :text="'ផ្ញើតំណភ្ជាប់កំណត់ឡើងវិញ'"
+            :loadingText="'Sending...'"
+            :loading="authStore.loading"
+            :disabled="authStore.loading" />
         </form>
 
         <div class="back-to-login">
@@ -85,6 +79,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
 import AuthInput from "../../components/AuthInput.vue";
+import AuthButton from "../../components/AuthButton.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();

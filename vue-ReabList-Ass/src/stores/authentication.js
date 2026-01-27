@@ -111,13 +111,14 @@ export const useAuthStore = defineStore("auth", () => {
       if (data.success || data.result || data.status === 201) {
         user.value = data.user || data.data?.user || data.data;
         successMessage.value =
-          "Registration successful! Please verify your email.";
+          "ការចុះឈ្មោះទទួលបានជោគជ័យ! សូមផ្ទៀងផ្ទាត់អ៊ីមែលរបស់អ្នក។";
         return true;
       }
     } catch (err) {
       console.log("Registration error:", err.response?.data);
       error.value =
-        err.response?.data?.message || "Registration failed. Please try again.";
+        err.response?.data?.message ||
+        "ការចុះឈ្មោះបានបរាជ័យ។ សូមព្យាយាមម្តងទៀត";
       return false;
     } finally {
       loading.value = false;
@@ -163,7 +164,7 @@ export const useAuthStore = defineStore("auth", () => {
           );
 
           api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
-          successMessage.value = "Login successful!";
+          successMessage.value = "ចូលបានជោគជ័យ!";
           return true;
         } else {
           error.value = "No token received from server";
@@ -171,7 +172,8 @@ export const useAuthStore = defineStore("auth", () => {
         }
       }
     } catch (err) {
-      error.value = err.response?.data?.message || "Invalid email or password.";
+      error.value =
+        err.response?.data?.message || "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
       return false;
     } finally {
       loading.value = false;
@@ -197,11 +199,11 @@ export const useAuthStore = defineStore("auth", () => {
       });
 
       if (response.data?.success || response.status === 200) {
-        successMessage.value = "Verification code sent to your email!";
+        successMessage.value = "លេខកូដផ្ទៀងផ្ទាត់បានផ្ញើទៅអ៊ីមែលរបស់អ្នក!";
         return true;
       }
     } catch (err) {
-      error.value = err.response?.data?.message || "Failed to send code.";
+      error.value = err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើលេខកូដ។";
       return false;
     } finally {
       loading.value = false;
@@ -210,7 +212,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const verifyEmail = async () => {
     if (otpCode.value.length !== 6 || !/^\d{6}$/.test(otpCode.value)) {
-      error.value = "Please enter a valid 6-digit code.";
+      error.value = "សូមបញ្ចូលលេខកូដ 6 ខ្ទង់ដែលមានសុពលភាព។";
       return false;
     }
 
@@ -230,11 +232,12 @@ export const useAuthStore = defineStore("auth", () => {
         response.status === 200 ||
         response.status === 201
       ) {
-        successMessage.value = "Email verified successfully!";
+        successMessage.value = "អ៊ីមែលបានផ្ទៀងផ្ទាត់ដោយជោគជ័យ!";
         return true;
       }
     } catch (err) {
-      error.value = err.response?.data?.message || "Invalid or expired code.";
+      error.value =
+        err.response?.data?.message || "លេខកូដមិនត្រឹមត្រូវ ឬផុតកំណត់។";
       return false;
     } finally {
       loading.value = false;
@@ -253,13 +256,15 @@ export const useAuthStore = defineStore("auth", () => {
       const response = await api.post("/auth/forget-password", payload);
 
       if (response.data?.success || response.status === 200) {
-        successMessage.value = "Password reset link sent to your email!";
+        successMessage.value =
+          "តំណ​កំណត់​ពាក្យ​សម្ងាត់​ឡើងវិញ​បាន​ផ្ញើ​ទៅ​អ៊ីមែល​របស់​អ្នក!";
         resetEmail.value = payload.email;
         return true;
       }
     } catch (err) {
       console.error(err);
-      error.value = err.response?.data?.message || "Failed to send reset link.";
+      error.value =
+        err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើតំណកំណត់ឡើងវិញ។";
       return false;
     } finally {
       loading.value = false;
@@ -286,7 +291,7 @@ export const useAuthStore = defineStore("auth", () => {
   const resetPassword = async () => {
     if (!canResetPassword.value) {
       error.value =
-        "Please enter a valid password (min 8 characters) and ensure passwords match.";
+        "សូមបញ្ចូលពាក្យសម្ងាត់ដែលមានសុពលភាព (យ៉ាងហោចណាស់ 8 តួអក្សរ) ហើយត្រូវប្រាកដថាពាក្យសម្ងាត់ត្រូវគ្នា។";
       return false;
     }
 
@@ -306,7 +311,7 @@ export const useAuthStore = defineStore("auth", () => {
 
       if (response.data?.success || response.status === 200) {
         successMessage.value =
-          "Password reset successfully! Redirecting to login...";
+          "កំណត់ពាក្យសម្ងាត់ឡើងវិញដោយជោគជ័យ! បញ្ជូនបន្តទៅការចូល...";
 
         token.value = null;
         user.value = null;
@@ -324,7 +329,7 @@ export const useAuthStore = defineStore("auth", () => {
         err.response?.data?.message ||
         err.response?.data?.error ||
         err.response?.data?.errors?.password?.[0] ||
-        "Reset failed. The link may be invalid or expired.";
+        "ការកំណត់ឡើងវិញបានបរាជ័យ។ តំណអាចមិនត្រឹមត្រូវ ឬផុតកំណត់.";
       return false;
     } finally {
       loading.value = false;
