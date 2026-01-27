@@ -4,10 +4,10 @@
       <div class="search-area">
         <div class="search-input-group">
           <Search :size="19" class="search-icon" stroke-width="2" />
-          <input 
-            type="text" 
-            placeholder="Search tasks, descriptions, or tags..." 
-            class="header-search" 
+          <input
+            type="text"
+            placeholder="Search tasks, descriptions, or tags..."
+            class="header-search"
           />
         </div>
       </div>
@@ -17,15 +17,25 @@
           <Moon :size="20" stroke-width="2" />
         </button>
 
-        <div class="user-profile-wrapper">
+        <div class="user-profile-wrapper" v-if="profileData">
           <div class="user-details">
-            <p class="user-display-name">Alexander Reab</p>
-            <p class="user-display-role">Admin Manager</p>
+            <p class="user-display-name">{{ profileData.fullname }}</p>
+            <p class="user-display-role">{{ profileData.role.name }}</p>
           </div>
           <div class="user-avatar-circle">
-            <span>AR</span>
+            <img
+              v-if="profileData.avatar"
+              :src="profileData.avatar"
+              :alt="profileData.fullname"
+              class="avatar-image"
+            />
+            <span v-else>{{ getInitials(profileData.fullname) }}</span>
           </div>
           <ChevronDown :size="18" class="dropdown-chevron" stroke-width="2.5" />
+        </div>
+
+        <div class="user-profile-wrapper" v-else>
+          <p class="loading-text">Loading...</p>
         </div>
       </div>
     </div>
@@ -33,15 +43,51 @@
 </template>
 
 <script setup>
-import { Search, Moon, ChevronDown } from 'lucide-vue-next';
+import { ref, onMounted } from "vue";
+import { Search, Moon, ChevronDown } from "lucide-vue-next";
+import api from "@/API/api";
+
+const profileData = ref(null);
+const loading = ref(true);
+const error = ref(null);
+
+const fetchProfileData = async () => {
+  try {
+    loading.value = true;
+    const response = await api.get("/auth/profile");
+    if (response.data.result) {
+      profileData.value = response.data.data;
+    } else {
+      error.value = response.data.message || "Failed to fetch profile";
+    }
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+    error.value = err.message;
+  } finally {
+    loading.value = false;
+  }
+};
+
+const getInitials = (fullname) => {
+  return fullname
+    .split(" ")
+    .map((name) => name.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
+
+onMounted(() => {
+  fetchProfileData();
+});
 </script>
 
 <style scoped>
 /* Importing a clean font similar to your reference */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .reab-navbar {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   height: 85px;
   background-color: #ffffff;
   border-bottom: 1px solid #f1f5f9;
@@ -60,7 +106,6 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   align-items: center;
   width: 100%;
 }
-
 
 /* --- Search Section --- */
 .search-input-group {
@@ -169,6 +214,20 @@ import { Search, Moon, ChevronDown } from 'lucide-vue-next';
   font-weight: 700;
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
+  overflow: hidden;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.loading-text {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
 }
 
 .dropdown-chevron {
