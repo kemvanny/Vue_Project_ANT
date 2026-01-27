@@ -130,6 +130,16 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     clearMessages();
 
+    // Prevent admin access with specific credentials
+    if (
+      email.value.trim() === "antadmin.tdl@gmail.com" &&
+      password.value === "AntAdmin@!99"
+    ) {
+      error.value = "ការចូលប្រើប្រាស់មិនត្រូវបានផ្តល់ឱ្យ។";
+      loading.value = false;
+      return false;
+    }
+
     try {
       const payload = {
         email: email.value.trim(),
