@@ -42,7 +42,7 @@
               {{ errors.email }}
             </p>
           </div>
-
+          <br />
           <AuthButton
             :text="'បាទ/ចាស ផ្ញើលេខកូដ'"
             :loadingText="'ផ្ញើ...'"
@@ -102,7 +102,7 @@ const handleSendCode = async () => {
     return;
   }
 
-  const success = auth.sendOtp();
+  const success = await auth.sendOtp();
   if (success) {
     router.push("/verify-otp");
   }

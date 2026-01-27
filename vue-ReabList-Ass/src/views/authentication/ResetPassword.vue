@@ -126,7 +126,7 @@ const handleReset = async () => {
     return;
   }
 
-  const success = authStore.resetPassword();
+  const success = await authStore.resetPassword();
 
   if (success) {
     router.push("/login");
