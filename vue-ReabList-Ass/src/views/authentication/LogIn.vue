@@ -63,14 +63,13 @@
 
           <!-- Button -->
           <AuthButton
+            :type="'submit'"
             text="ចូលប្រើ"
             loading-text="កំពុងចូល..."
             :loading="auth.loading" />
         </form>
 
         <div class="or-divider">ឬ</div>
-
-       
 
         <p class="login-link">
           មិនទាន់មានគណនីមែនទេ?
