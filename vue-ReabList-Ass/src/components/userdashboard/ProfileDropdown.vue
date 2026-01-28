@@ -60,16 +60,7 @@
               <a
                 href="#"
                 class="dropdown-link"
-                data-route="/account"
-                @click="handleNavigation"
-                >Account</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                href="#"
-                class="dropdown-link"
-                data-route="/settings"
+                data-route="/profile/setting"
                 @click="handleNavigation"
                 >Settings</a
               >

@@ -28,7 +28,7 @@
             class="form-control"
             disabled
           />
-          <small class="text-muted">អ៊ីមែលមិនអាចផ្លាស់ប្តូរបានទេ។</small>
+          <!-- <small class="text-muted">អ៊ីមែលមិនអាចផ្លាស់ប្តូរបានទេ។</small> -->
         </div>
 
         <div class="form-group">

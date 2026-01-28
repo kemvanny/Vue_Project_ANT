@@ -254,7 +254,6 @@ const formatDate = (date) => {
 };
 
 const saveSettings = async () => {
-  // This would typically call an API to save settings
   authStore.profileSuccess = "ការកំណត់បានរក្សាទុកបានជោគជ័យ!";
   setTimeout(() => {
     authStore.profileSuccess = null;
@@ -333,7 +332,7 @@ onMounted(() => {
 
 <style scoped>
 .account-settings {
-  max-width: 700px;
+  max-width: 1200px;
 }
 
 .settings-section h3 {
@@ -346,6 +345,7 @@ onMounted(() => {
 }
 
 .setting-card {
+  width: 100%;
   background: #f8f9fa;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
