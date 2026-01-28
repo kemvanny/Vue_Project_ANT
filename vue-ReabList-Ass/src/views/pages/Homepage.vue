@@ -26,7 +26,7 @@
                   href="#"
                   class="btn btn-outline-dark rounded-pill py-3 px-4 d-flex align-items-center gap-2"
                 >
-                  <play-circle/> មើលរបៀបដំណើរការ
+                  <play-circle /> មើលរបៀបដំណើរការ
                 </a>
               </div>
               <div class="d-flex align-items-center gap-3 reveal">
@@ -199,7 +199,7 @@
               </p>
 
               <div class="benefit-item">
-                <shield-check class="text-primary"/>
+                <shield-check class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">សុវត្ថិភាព និងឯកជនភាព</h6>
                   <p class="small mb-0">
@@ -208,7 +208,7 @@
                 </div>
               </div>
               <div class="benefit-item">
-                <smartphone class="text-primary"/>
+                <smartphone class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">Cloud Sync</h6>
                   <p class="small mb-0">
@@ -217,7 +217,7 @@
                 </div>
               </div>
               <div class="benefit-item">
-                <smile class="text-primary"/>
+                <smile class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">ងាយស្រួលប្រើប្រាស់</h6>
                   <p class="small mb-0">
@@ -284,7 +284,7 @@
                     animation: float 4s infinite;
                   "
                 >
-                  <trending-up/>
+                  <trending-up />
                   <span class="fw-bold">បង្កើនផលិតភាព</span>
                 </div>
                 <img

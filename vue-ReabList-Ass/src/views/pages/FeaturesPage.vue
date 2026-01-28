@@ -1,76 +1,63 @@
 <template>
   <div>
     <NavbarLandingPage />
-
-    <!-- Hero Banner -->
     <header class="hero-banner">
       <div class="hero-image-side"></div>
       <div class="container hero-content">
         <div class="row align-items-center">
           <div class="col-lg-6">
-            <span
-              class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
-              style="font-size: 11px"
-              >PRO INVENTORY HUD</span
-            >
-            <h1 class="display-large display-1 mb-4">
-              Your Flow.<br /><span class="gradient-accent">Orchestrated.</span>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
+              style="font-size: 11px">ផ្ទាំងគ្រប់គ្រងសារពើភ័ណ្ឌកម្រិតខ្ពស់</span>
+            <h1 class=" display-3">
+              លំហូរការងាររបស់អ្នក<br />
+              <span style="color: var(--primary);">ត្រូវបានសម្របសម្រួលយ៉ាងល្អ</span>
             </h1>
             <p class="lead mb-5 fw-500 text-muted col-lg-11">
-              The elite inventory and task system for power users. Effortlessly
-              manage stock entries with automated 15-minute Telegram alerts,
-              visual SKU evidence, and real-time process auditing.
+              ប្រព័ន្ធគ្រប់គ្រងសារពើភ័ណ្ឌនិងភារកិច្ចដ៏ទំនើបសម្រាប់អ្នកប្រើប្រាស់កម្រិតខ្ពស់។
+              គ្រប់គ្រងការបញ្ចូលស្តុកយ៉ាងងាយស្រួល
+              ជាមួយនឹងការជូនដំណឹងស្វ័យប្រវត្តិរយៈពេល ១៥ នាទីតាម Telegram, ភស្តុតាង SKU ដែលអាចមើលឃើញ,
+              និងការត្រួតពិនិត្យដំណើរការជាក់ស្តែង។
             </p>
+
             <div class="d-flex gap-3">
-              <a
-                href="index.html"
-                class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
-                style="background: var(--primary)"
-                >Enter Ledger</a
-              >
-              <button
-                class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25"
-              >
-                View Documentation
+              <a href="index.html" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
+                style="background: var(--primary)">ចូលទៅកាន់បញ្ជី</a>
+              <button class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25">
+                មើលឯកសារណែនាំ
               </button>
             </div>
           </div>
           <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
-            <!-- Floating Container with extra nodes -->
             <div class="floating-container">
-              <!-- Secondary Floating Nodes -->
               <div class="floating-node node-1">
-                <i class="fas fa-barcode"></i> SKU:Verified
+                <i class="fas fa-barcode"></i> SKU:Verified (បានផ្ទៀងផ្ទាត់)
               </div>
               <div class="floating-node node-2">
-                <i class="fas fa-exclamation-triangle"></i> Stock Alert
+                <i class="fas fa-exclamation-triangle"></i> ការជូនដំណឹងស្តុក
               </div>
               <div class="floating-node node-3">
-                <i class="fas fa-check-circle"></i> Sync Ready
+                <i class="fas fa-check-circle"></i> ត្រៀមធ្វើសមកាលកម្ម
               </div>
 
-              <!-- Main Ledger Mockup Card -->
               <div class="floating-mockup">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-4"
-                >
-                  <div class="fw-800 text-dark">Today's Ledger</div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="fw-800 text-dark">បញ្ជីប្រចាំថ្ងៃ</div>
                   <i class="fas fa-calendar-alt text-muted"></i>
                 </div>
 
                 <div class="mockup-item">
                   <div class="check-box"></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">Recount Aisle 4</div>
-                    <div class="x-small text-muted">SKU: HD-400 • 2m ago</div>
+                    <div class="fw-700 small">រាប់សារឡើងវិញនៅច្រក ៤</div>
+                    <div class="x-small text-muted">SKU: HD-400 • ២ នាទីមុន</div>
                   </div>
                 </div>
 
                 <div class="mockup-item active">
                   <div class="check-box"><i class="fas fa-check"></i></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">Audit Batch B-101</div>
-                    <div class="x-small text-muted">Telegram Alert Sent</div>
+                    <div class="fw-700 small">ធ្វើសវនកម្មបាច់ B-101</div>
+                    <div class="x-small text-muted">ការជូនដំណឹង Telegram បានផ្ញើ</div>
                   </div>
                   <span class="badge rounded-pill bg-danger x-small">P1</span>
                 </div>
@@ -78,30 +65,25 @@
                 <div class="mockup-item">
                   <div class="check-box"></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">Label Verification</div>
+                    <div class="fw-700 small">ការផ្ទៀងផ្ទាត់ស្លាកសញ្ញា</div>
                     <div class="x-small text-muted">
-                      Attach Evidence (Photo)
+                      ភ្ជាប់ភស្តុតាង (រូបភាព)
                     </div>
                   </div>
                 </div>
 
-                <div
-                  class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center"
-                >
-                  <div class="x-small fw-800 text-primary">85% COMPLETE</div>
+                <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                  <div class="x-small fw-800 text-primary">បញ្ចប់ ៨៥%</div>
                   <div class="d-flex">
-                    <div
-                      style="
+                    <div style="
                         width: 25px;
                         height: 25px;
                         background: #e2e8f0;
                         border-radius: 50%;
                         border: 2px solid white;
                         margin-right: -10px;
-                      "
-                    ></div>
-                    <div
-                      style="
+                      "></div>
+                    <div style="
                         width: 25px;
                         height: 25px;
                         background: var(--primary);
@@ -112,8 +94,7 @@
                         justify-content: center;
                         color: white;
                         font-size: 8px;
-                      "
-                    >
+                      ">
                       +3
                     </div>
                   </div>
@@ -124,52 +105,44 @@
         </div>
       </div>
     </header>
-    <!-- Detailed Bento Features -->
+
     <section class="container feature-container">
       <div class="row g-4">
-        <!-- Feature 1: The Form Logic -->
         <div class="col-lg-8">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-barcode"></i></div>
-            <h3 class="fw-800 mb-3">Professional Data Registry</h3>
+            <h3 class="fw-800 mb-3">ការចុះឈ្មោះទិន្នន័យប្រកបដោយវិជ្ជាជីវៈ</h3>
             <p class="text-muted fw-500 mb-4">
-              ReabList enforces structured data for every inventory movement
-              with full industrial metadata:
+              ReabList អនុវត្តទិន្នន័យដែលមានរចនាសម្ព័ន្ធសម្រាប់រាល់ការផ្លាស់ប្តូរសារពើភ័ណ្ឌ
+              ជាមួយនឹងទិន្នន័យមេតាឧស្សាហកម្មពេញលេញ៖
             </p>
 
             <div class="row g-3">
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span
-                    class="x-small fw-800 text-primary uppercase d-block mb-3"
-                    >Required Schema</span
-                  >
+                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">គ្រោងការណ៍តម្រូវ</span>
                   <div class="d-flex flex-column gap-3 small fw-700 text-muted">
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i> SKU
-                      Identifier & Details
+                      សម្គាល់ & ព័ត៌មានលម្អិត
                     </div>
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i>
-                      Expiry & Arrival Dates
+                      កាលបរិច្ឆេទផុតកំណត់ & មកដល់
                     </div>
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i>
-                      Priority Ranking (P1-P5)
+                      ចំណាត់ថ្នាក់អាទិភាព (P1-P5)
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span
-                    class="x-small fw-800 text-primary uppercase d-block mb-3"
-                    >Registry Lifecycle</span
-                  >
+                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">វដ្តជីវិតនៃការចុះឈ្មោះ</span>
                   <p class="x-small text-muted mb-0">
-                    Perform real-time CRUD operations. Preview your ledger entry
-                    exactly as it will appear in the system before committing
-                    the record.
+                    អនុវត្តប្រតិបត្តិការ CRUD តាមពេលវេលាជាក់ស្តែង។ មើលធាតុបញ្ចូលបញ្ជីរបស់អ្នកជាមុន
+                    ដូចដែលវានឹងបង្ហាញនៅក្នុងប្រព័ន្ធ មុនពេលរក្សាទុកកំណត់ត្រា។
                   </p>
                 </div>
               </div>
@@ -177,97 +150,85 @@
           </div>
         </div>
 
-        <!-- Feature 2: Telegram Notifications -->
         <div class="col-lg-4">
-          <div
-            class="bento-card"
-            style="background: #f0f9ff; border-color: #bae6fd"
-          >
+          <div class="bento-card" style="background: #f0f9ff; border-color: #bae6fd">
             <div class="icon-circle" style="background: #0088cc; color: white">
               <i class="fab fa-telegram"></i>
             </div>
-            <h4 class="fw-800">T-minus 15m Alerts</h4>
+            <h4 class="fw-800">ការជូនដំណឹង ១៥ នាទីមុន</h4>
             <p class="text-muted small">
-              Synchronize your team. Receive a Telegram alert exactly **15
-              minutes before** any inventory audit deadline hits.
+              ធ្វើសមកាលកម្មក្រុមរបស់អ្នក។ ទទួលបានការជូនដំណឹងតាម Telegram យ៉ាងជាក់លាក់ **១៥
+              នាទីមុន** ពេលដល់កាលកំណត់សវនកម្មសារពើភ័ណ្ឌ។
             </p>
 
             <div class="alert-bubble shadow-sm">
               <i class="fab fa-telegram-plane fs-4"></i>
               <div>
                 <p class="mb-0 fw-800 x-small">REAB_ALERTS_BOT</p>
-                <p class="mb-0 small">Alert: Audit Batch B-101 in 15m</p>
+                <p class="mb-0 small">ការជូនដំណឹង: សវនកម្មបាច់ B-101 ក្នុងរយៈពេល ១៥ នាទី</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Feature 3: Visual Assets -->
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-camera"></i></div>
-            <h4 class="fw-800">Visual Evidence Hub</h4>
+            <h4 class="fw-800">មជ្ឈមណ្ឌលភស្តុតាងរូបភាព</h4>
             <p class="text-muted small">
-              Attach image evidence to your stock logs. Document finished counts
-              or damaged goods directly on the entry.
+              ភ្ជាប់ភស្តុតាងរូបភាពទៅនឹងកំណត់ត្រាស្តុករបស់អ្នក។ ធ្វើឯកសារអំពីការរាប់ដែលបានបញ្ចប់
+              ឬទំនិញខូចខាតដោយផ្ទាល់នៅលើធាតុបញ្ចូល។
             </p>
-            <div
-              class="mt-4 p-4 border border-dashed rounded-4 text-center bg-light"
-            >
+            <div class="mt-4 p-4 border border-dashed rounded-4 text-center bg-light">
               <i class="fas fa-cloud-upload-alt text-muted mb-2 fs-3"></i>
-              <p class="x-small text-muted fw-800 mb-0">Drop SKU/Label Image</p>
+              <p class="x-small text-muted fw-800 mb-0">ទម្លាក់រូបភាព SKU/ស្លាកសញ្ញា</p>
             </div>
           </div>
         </div>
 
-        <!-- Feature 4: Analytics -->
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-chart-pie"></i></div>
-            <h4 class="fw-800">Process Auditing</h4>
+            <h4 class="fw-800">សវនកម្មដំណើរការ</h4>
             <p class="text-muted small">
-              Track real-time progress of Batch Reconciliation. Monitor success
-              rates of Pending vs. Resolved SKU checks.
+              តាមដានវឌ្ឍនភាពជាក់ស្តែងនៃការសម្របសម្រួលបាច់។ ត្រួតពិនិត្យអត្រាជោគជ័យ
+              នៃការត្រួតពិនិត្យ SKU ដែលកំពុងរង់ចាំធៀបនឹងដែលបានដោះស្រាយ។
             </p>
             <div class="progress-hud">
               <div class="d-flex justify-content-between x-small fw-800 mb-1">
-                <span>SUCCESS RATE</span>
-                <span class="text-primary">85%</span>
+                <span>អត្រាជោគជ័យ</span>
+                <span class="text-primary">៨៥%</span>
               </div>
-              <div class="bar-container"><div class="bar-fill"></div></div>
+              <div class="bar-container">
+                <div class="bar-fill"></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Feature 5: Profile -->
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-user-shield"></i></div>
-            <h4 class="fw-800">Identity Control</h4>
+            <h4 class="fw-800">ការគ្រប់គ្រងអត្តសញ្ញាណ</h4>
             <p class="text-muted small">
-              Manage operational roles and permissions. Update profile images
-              and security keys to protect your ledger data.
+              គ្រប់គ្រងតួនាទីប្រតិបត្តិការ និងសិទ្ធិ។ ធ្វើបច្ចុប្បន្នភាពរូបភាពប្រវត្តិរូប
+              និងសោសុវត្ថិភាពដើម្បីការពារទិន្នន័យបញ្ជីរបស់អ្នក។
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Call to Action -->
     <section class="container mb-5 pb-5">
       <div class="cta-box text-center shadow-lg">
         <div style="position: relative; z-index: 10">
-          <h2 class="display-5 fw-800 mb-4">Master Your Ledger.</h2>
+          <h2 class="display-5 fw-800 mb-4">គ្រប់គ្រងបញ្ជីរបស់អ្នកឱ្យស្ទាត់ជំនាញ</h2>
           <p class="lead text-muted mb-5 col-lg-6 mx-auto">
-            Elevate your inventory management with high-fidelity tracking. Start
-            your first registry entry today.
+            លើកកម្ពស់ការគ្រប់គ្រងសារពើភ័ណ្ឌរបស់អ្នកជាមួយនឹងការតាមដានដែលមានភាពត្រឹមត្រូវខ្ពស់។
+            ចាប់ផ្តើមចុះបញ្ជីដំបូងរបស់អ្នកនៅថ្ងៃនេះ។
           </p>
-          <a
-            href="index.html"
-            class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
-            style="background: var(--primary)"
-            >Enter Command Center</a
-          >
+          <a href="index.html" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
+            style="background: var(--primary)">ចូលទៅកាន់មជ្ឈមណ្ឌលបញ្ជា</a>
         </div>
       </div>
     </section>
@@ -283,14 +244,22 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 </script>
 
 <style scoped>
+.pill-tag {
+  display: inline-flex;
+  padding: 8px 20px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+}
 /* --- Refined Banner Style --- */
 .hero-banner {
   position: relative;
-  background: radial-gradient(
-    circle at 20% 50%,
-    #f0fdfa 0%,
-    var(--primary-light) 100%
-  );
+  background: radial-gradient(circle at 20% 50%,
+      #f0fdfa 0%,
+      var(--primary-light) 100%);
   min-height: 95vh;
   display: flex;
   align-items: center;
@@ -318,8 +287,7 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   top: 0;
   width: 45%;
   height: 100%;
-  background: url("https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop")
-    center/cover no-repeat;
+  background: url("https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop") center/cover no-repeat;
   z-index: 1;
   mask-image: linear-gradient(to right, transparent, black 40%);
   -webkit-mask-image: linear-gradient(to right, transparent, black 40%);
@@ -332,11 +300,9 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   top: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to right,
-    var(--primary-light) 0%,
-    rgba(236, 254, 255, 0) 60%
-  );
+  background: linear-gradient(to right,
+      var(--primary-light) 0%,
+      rgba(236, 254, 255, 0) 60%);
   z-index: 2;
 }
 
@@ -388,12 +354,14 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   animation-delay: 0s;
   color: var(--primary);
 }
+
 .node-2 {
   bottom: 40px;
   left: -60px;
   animation-delay: -2s;
   color: #f43f5e;
 }
+
 .node-3 {
   top: 120px;
   right: -80px;
@@ -402,23 +370,28 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 }
 
 @keyframes floatMain {
+
   0%,
   100% {
     transform: rotateY(-15deg) rotateX(5deg) translateY(0);
   }
+
   50% {
     transform: rotateY(-10deg) rotateX(3deg) translateY(-25px);
   }
 }
 
 @keyframes floatNode {
+
   0%,
   100% {
     transform: translateY(0) translateX(0);
   }
+
   33% {
     transform: translateY(-15px) translateX(10px);
   }
+
   66% {
     transform: translateY(10px) translateX(-10px);
   }
@@ -458,6 +431,7 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   border-color: var(--primary);
   color: white;
 }
+
 /* --- Navigation --- */
 .nav-glass {
   position: fixed;
@@ -486,6 +460,7 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   opacity: 0.7;
   transition: 0.3s;
 }
+
 .nav-link-custom:hover {
   opacity: 1;
   color: var(--primary);
@@ -584,6 +559,7 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .cta-box {
   background: var(--primary-light);
   border: 1px solid var(--glass-border);
