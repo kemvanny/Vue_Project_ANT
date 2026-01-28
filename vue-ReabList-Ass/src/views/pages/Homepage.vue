@@ -9,8 +9,8 @@
             <div class="col-lg-6">
               <span class="hero-badge">បង្កើនប្រសិទ្ធភាពរបស់អ្នក</span>
               <h1>
-                រៀបចំកិច្ចការ។<br/><span style="color: var(--primary);"
-                  >សម្រួលជីវិតរបស់អ្នក។</span
+                រៀបចំកិច្ចការ<br/><span style="color: var(--primary);"
+                  >សម្រួលជីវិតរបស់អ្នក</span
                 >
               </h1>
               <p class="text-body mb-5">
