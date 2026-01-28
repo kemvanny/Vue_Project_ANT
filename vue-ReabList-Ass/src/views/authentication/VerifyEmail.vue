@@ -1,67 +1,91 @@
 <template>
-  <div class="container">
-    <div class="brand-section">
-      <div class="circle circle-lg"></div>
-      <div class="circle circle-md"></div>
-      <div class="circle-left"></div>
-      <div class="brand-content">
-        <h1>ផ្ទៀងផ្ទាត់</h1>
-        <br />
-        <h2>បញ្ជាក់អ៊ីមែល</h2>
-        <p>
-          សូមពិនិត្យឱ្យច្បាស់ថាអ៊ីមែលរបស់អ្នកត្រឹមត្រូវ
-          មុនពេលយើងផ្ញើលេខកូដផ្ទៀងផ្ទាត់សុវត្ថិភាព
-        </p>
-      </div>
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="gradient-bg"></div>
+
+    <div class="animation-area">
+      <ul class="box-area">
+        <li v-for="n in 15" :key="n"></li>
+      </ul>
     </div>
 
-    <div class="form-section">
-      <div class="form-container">
-        <div class="fade-in">
-          <h1 class="fw-bold mb-2">ពិនិត្យអ៊ីមែល</h1>
-          <p class="subtitle">
-            តើនេះជាអ៊ីមែលត្រឹមត្រូវសម្រាប់គណនីរបស់អ្នកមែនទេ?
-          </p>
+    <div class="shape shape-1" :style="parallaxStyle(25)"></div>
+    <div class="shape shape-2" :style="parallaxStyle(-25)"></div>
 
-          <div class="input-group mt-4">
-            <label>អ៊ីមែលដែលបានចុះឈ្មោះ</label>
-            <div
-              class="email-wrapper"
-              :class="{ 'is-editing': isEditing, 'has-error': errors.email }">
-              <input
-                type="email"
-                v-model="auth.email"
-                :disabled="!isEditing"
-                class="confirm-input"
-                @keyup.enter="toggleEdit" />
-              <button @click="toggleEdit" class="edit-btn">
-                {{ isEditing ? "រក្សាទុក" : "ផ្លាស់ប្តូរ" }}
-              </button>
-            </div>
-            <p v-if="errors.email" class="error-msg-small">
-              {{ errors.email }}
+    <div class="card glass-card border-0 shadow-2xl rounded-5 overflow-hidden animate-entrance">
+      <div class="row g-0 h-100">
+
+        <div
+          class="col-lg-5 d-none d-lg-flex flex-column align-items-center justify-content-center bg-gradient-teal text-white p-5 position-relative overflow-hidden">
+          <div class="glow-circle" :style="parallaxStyle(-10)"></div>
+          <div class="z-2 text-center content-wrapper">
+
+            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-mail-2997198-2491684.png" alt="Email 3D"
+              class="img-fluid mb-4 floating-3d" :style="parallaxStyle(15)"
+              style="max-height: 250px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));">
+
+            <h3 class="fw-bold tracking-wide mb-2 text-shadow">ផ្ទៀងផ្ទាត់អ៊ីមែល</h3>
+            <p class="text-white-50 small px-3">
+              យើងនឹងផ្ញើលេខកូដសុវត្ថិភាពទៅកាន់អ៊ីមែលរបស់អ្នក ដើម្បីបញ្ជាក់អត្តសញ្ញាណ។
             </p>
           </div>
-          <br />
-          <AuthButton
-            :text="'បាទ/ចាស ផ្ញើលេខកូដ'"
-            :loadingText="'ផ្ញើ...'"
-            :loading="auth.loading"
-            :disabled="isEditing || auth.loading"
-            @click="handleSendCode" />
         </div>
 
-        <p v-if="auth.error" class="error-msg mt-3 text-center">
-          {{ auth.error }}
-        </p>
+        <div class="col-lg-7 bg-white-glass d-flex align-items-center position-relative">
+          <div class="card-body p-4 p-lg-5">
+
+            <div class="mb-4 stagger-1">
+              <h2 class="fw-bold text-teal mb-1">ពិនិត្យអ៊ីមែល</h2>
+              <p class="text-muted">តើនេះជាអ៊ីមែលត្រឹមត្រូវសម្រាប់គណនីរបស់អ្នកមែនទេ?</p>
+            </div>
+
+            <transition name="shake">
+              <div v-if="auth.error"
+                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ auth.error }}
+              </div>
+            </transition>
+
+            <div class="mb-4 stagger-2">
+              <label class="form-label small fw-bold text-uppercase text-muted ls-1">អ៊ីមែលដែលបានចុះឈ្មោះ</label>
+
+              <div class="input-group input-group-lg modern-input"
+                :class="{ 'is-invalid': errors.email, 'editing-mode': isEditing }">
+                <span class="input-group-text border-0 bg-transparent text-teal ps-3">
+                  <i class="bi bi-envelope-check-fill"></i>
+                </span>
+
+                <input type="email" class="form-control border-0 bg-transparent ps-2 text-dark fw-semibold"
+                  v-model="auth.email" :disabled="!isEditing" @keyup.enter="toggleEdit" />
+
+                <button class="btn border-0 pe-3 fw-bold small" :class="isEditing ? 'text-success' : 'text-primary'"
+                  type="button" @click="toggleEdit">
+                  <i class="bi me-1" :class="isEditing ? 'bi-check-lg' : 'bi-pencil-square'"></i>
+                  {{ isEditing ? "រក្សាទុក" : "ផ្លាស់ប្តូរ" }}
+                </button>
+              </div>
+
+              <div v-if="errors.email" class="text-danger small mt-1 ms-1">{{ errors.email }}</div>
+            </div>
+
+            <AuthButton :text="'បាទ/ចាស ផ្ញើលេខកូដ'" :loadingText="'កំពុងផ្ញើ...'" :loading="auth.loading"
+              :disabled="isEditing || auth.loading" @click="handleSendCode" class="stagger-3" />
+
+            <div class="text-center mt-4 stagger-4">
+              <router-link to="/register"
+                class="fw-bold text-teal text-decoration-none ms-1 link-effect d-inline-flex align-items-center">
+                <i class="bi bi-arrow-left me-2"></i> ត្រឡប់ក្រោយ
+              </router-link>
+            </div>
+
+          </div>
+        </div>
       </div>
-      <div class="bottom-right-circle"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
@@ -71,17 +95,32 @@ const auth = useAuthStore();
 const router = useRouter();
 const isEditing = ref(false);
 
+// --- PARALLAX LOGIC ---
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const parallaxStyle = (intensity) => {
+  const x = mouseX.value * intensity;
+  const y = mouseY.value * intensity;
+  return { transform: `translate(${x}px, ${y}px)` };
+};
+
 const errors = reactive({
   email: "",
 });
 
 const emailSchema = z
   .string()
-  .min(1, "Email cannot be empty")
-  .email("Invalid email format");
+  .min(1, "សូមបញ្ចូលអ៊ីមែល")
+  .email("ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ");
+
+onMounted(() => {
+  auth.clearMessages();
+});
 
 const toggleEdit = () => {
   if (isEditing.value) {
+    // Validate on Save
     const result = emailSchema.safeParse(auth.email);
     if (!result.success) {
       errors.email = result.error.errors[0].message;
@@ -108,374 +147,3 @@ const handleSendCode = async () => {
   }
 };
 </script>
-
-<style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  font-family: "Inter", sans-serif;
-}
-
-/* Brand Section (Left) */
-.brand-section {
-  flex: 1.15;
-  /* background: #247a85; */
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 30px;
-  overflow: hidden;
-}
-
-.brand-content {
-  max-width: 420px;
-  z-index: 10;
-}
-.email-wrapper {
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid #eee;
-  padding: 5px 0;
-  transition: border-color 0.3s ease;
-}
-
-.email-wrapper.is-editing {
-  border-color: #3b82f6; /* Blue border when editing */
-}
-
-.email-wrapper.has-error {
-  border-color: #ff4d4d; /* Red border on error */
-}
-
-.confirm-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-size: 1.1rem;
-  color: #333;
-  outline: none;
-}
-
-.confirm-input:disabled {
-  color: #888;
-}
-
-.edit-btn {
-  background: transparent;
-  border: none;
-  color: #3b82f6;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding-left: 10px;
-}
-
-.error-msg-small {
-  color: #ff4d4d;
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
-
-.brand-content h1 {
-  font-size: clamp(3rem, 7vw, 4.8rem);
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-
-.brand-content h2 {
-  font-size: clamp(1.4rem, 3.8vw, 1.9rem);
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #a8e0e6;
-}
-
-.brand-content p {
-  font-size: 0.92rem;
-  line-height: 1.45;
-  opacity: 0.9;
-}
-
-/* Form Section (Right) */
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
-
-.circle {
-  position: absolute;
-  background-color: #1a636d;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: float 6s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  background-color: #1a636d;
-  top: -250px;
-  left: -150px;
-  animation-delay: 0s;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  background-color: #1a636d;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-sm {
-  width: 280px;
-  height: 280px;
-  bottom: 50px;
-  background-color: #1a636d;
-  right: 3%;
-  animation-delay: 2s;
-}
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-
-/* Input Styles */
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.input-group label {
-  color: #2f6f77;
-  font-weight: 600;
-  font-size: 0.78rem;
-}
-
-/* Email Specific Styling */
-.email-wrapper {
-  display: flex;
-  background: #e8f3f5;
-  border-radius: 7px;
-  padding: 5px 10px;
-  align-items: center;
-  border: 2px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.email-wrapper.is-editing {
-  border-color: #247a85;
-  background: white;
-}
-
-.confirm-input {
-  border: none !important;
-  background: transparent !important;
-  flex: 1;
-  padding: 10px;
-  font-weight: 600;
-  color: #333;
-  font-size: 0.88rem;
-}
-
-.edit-btn {
-  background: none;
-  border: none;
-  color: #247a85;
-  font-weight: 800;
-  font-size: 0.7rem;
-  cursor: pointer;
-  padding: 5px;
-}
-
-/* OTP Specific Styling */
-.otp-input {
-  letter-spacing: 12px;
-  text-align: center;
-  font-size: 1.5rem !important;
-  font-weight: bold;
-  color: #247a85;
-  background: #e8f3f5;
-  border: 2px solid transparent;
-  border-radius: 7px;
-  padding: 12px;
-  width: 100%;
-}
-
-.otp-input:focus {
-  background-color: #fff;
-  border-color: #5596a0;
-  outline: none;
-}
-
-/* Buttons */
-.create-btn {
-  width: 100%;
-  padding: 12px;
-  background: #247a85;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.create-btn:hover:not(:disabled) {
-  background: #1a636d;
-}
-
-.create-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Links */
-.resend-link {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.82rem;
-}
-
-.resend-link a {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-/* Decorative Circles & Animations */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-.circle {
-  position: absolute;
-  background: #1a636d;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: float 7s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  top: -250px;
-  left: -150px;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-left {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  background: #1a636d;
-  border-radius: 50%;
-  bottom: 80px;
-  right: 3%;
-  opacity: 0.6;
-  animation: float 6s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.bottom-right-circle {
-  position: fixed;
-  width: 250px;
-  height: 250px;
-  background: #247a85;
-  border-radius: 50%;
-  bottom: -50px;
-  right: -50px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-/* Messaging & Utility */
-.error-msg {
-  color: #d32f2f;
-  font-size: 0.72rem;
-}
-
-.fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 900px) {
-  .brand-section {
-    display: none;
-  }
-  .form-section {
-    padding: 16px;
-  }
-  .bottom-right-circle {
-    display: none;
-  }
-}
-</style>

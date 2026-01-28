@@ -1,74 +1,85 @@
 <template>
-  <div class="container">
-    <div class="brand-section">
-      <div class="circle circle-lg"></div>
-      <div class="circle circle-md"></div>
-      <div class="circle circle-sm"></div>
-      <div class="circle-left"></div>
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="gradient-bg"></div>
 
-      <div class="brand-content">
-        <h1>កំណត់ពាក្យសម្ងាត់ឡើងវិញ</h1>
-        <h2>ការពារសុវត្ថិភាពគណនីរបស់អ្នក</h2>
-        <p>
-          អ្នកនៅសល់តែមួយជំហានទៀតប៉ុណ្ណោះ។ សូមជ្រើសរើសពាក្យសម្ងាត់ថ្មីដែលរឹងមាំ
-          ដើម្បីចូលប្រើប្រាស់កន្លែងធ្វើការរបស់អ្នកឡើងវិញ។
-        </p>
-      </div>
+    <div class="animation-area">
+      <ul class="box-area">
+        <li v-for="n in 15" :key="n"></li>
+      </ul>
     </div>
 
-    <div class="form-section">
-      <div class="form-container">
-        <h1 class="fw-bold mb-2">បង្កើតពាក្យសម្ងាត់ថ្មី</h1>
-        <p class="subtitle">
-          សូមបញ្ចូលព័ត៌មានសម្ងាត់ថ្មីរបស់អ្នក ដើម្បីការពារសុវត្ថិភាពគណនី។
-        </p>
+    <div class="shape shape-1" :style="parallaxStyle(25)"></div>
+    <div class="shape shape-2" :style="parallaxStyle(-25)"></div>
 
-        <p v-if="authStore.successMessage" class="success-msg text-center mb-3">
-          {{ authStore.successMessage }}
-        </p>
-        <p v-if="authStore.error" class="error-msg text-center mb-3">
-          {{ authStore.error }}
-        </p>
+    <div class="card glass-card border-0 shadow-2xl rounded-5 overflow-hidden animate-entrance">
+      <div class="row g-0 h-100">
 
-        <form @submit.prevent="handleReset" class="signup-form" novalidate>
-          <input type="hidden" v-model="authStore.otpCode" />
+        <div
+          class="col-lg-5 d-none d-lg-flex flex-column align-items-center justify-content-center bg-gradient-teal text-white p-5 position-relative overflow-hidden">
+          <div class="glow-circle" :style="parallaxStyle(-10)"></div>
+          <div class="z-2 text-center content-wrapper">
+            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-shield-3660524-3051491.png"
+              alt="Security 3D" class="img-fluid mb-4 floating-3d" :style="parallaxStyle(15)"
+              style="max-height: 250px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));">
 
-          <AuthInput
-            label="ពាក្យសម្ងាត់ថ្មី"
-            type="password"
-            v-model="authStore.newPassword"
-            placeholder="យ៉ាងហោចណាស់ ៨ តួអក្សរ"
-            :error="errors.newPassword" />
+            <h3 class="fw-bold tracking-wide mb-2 text-shadow">សុវត្ថិភាពគណនី</h3>
+            <p class="text-white-50 small px-3">
+              ការពារគណនីរបស់អ្នកដោយប្រើពាក្យសម្ងាត់ដែលរឹងមាំនិងមានសុវត្ថិភាព។
+            </p>
+          </div>
+        </div>
 
-          <AuthInput
-            label="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី"
-            type="password"
-            v-model="authStore.confirmNewPassword"
-            placeholder="វាយពាក្យសម្ងាត់ថ្មីម្តងទៀត"
-            :error="errors.confirmNewPassword" />
+        <div class="col-lg-7 bg-white-glass d-flex align-items-center position-relative">
+          <div class="card-body p-4 p-lg-5">
 
-          <AuthButton
-            type="submit"
-            :text="'ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់'"
-            :loadingText="'Resetting...'"
-            :loading="authStore.loading"
-            :disabled="authStore.loading" />
-        </form>
+            <div class="mb-4 stagger-1">
+              <h2 class="fw-bold text-teal mb-1">បង្កើតពាក្យសម្ងាត់ថ្មី</h2>
+              <p class="text-muted">សូមបញ្ចូលពាក្យសម្ងាត់ថ្មីរបស់អ្នកខាងក្រោម។</p>
+            </div>
 
-        <div class="back-to-login">
-          <router-link to="/login">
-            <i class="fas fa-arrow-left"></i>ត្រឡប់ទៅទំព័រចូលប្រើប្រាស់
-          </router-link>
+            <transition name="shake">
+              <div v-if="authStore.successMessage"
+                class="alert alert-success py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center">
+                <i class="bi bi-check-circle-fill me-2"></i>{{ authStore.successMessage }}
+              </div>
+            </transition>
+
+            <transition name="shake">
+              <div v-if="authStore.error"
+                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ authStore.error }}
+              </div>
+            </transition>
+
+            <form @submit.prevent="handleReset" novalidate>
+              <input type="hidden" v-model="authStore.otpCode" />
+
+              <AuthInput label="ពាក្យសម្ងាត់ថ្មី" type="password" v-model="authStore.newPassword"
+                placeholder="យ៉ាងហោចណាស់ ៨ តួអក្សរ" :error="errors.newPassword" class="stagger-3 mb-2" />
+
+              <AuthInput label="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី" type="password" v-model="authStore.confirmNewPassword"
+                placeholder="វាយពាក្យសម្ងាត់ថ្មីម្តងទៀត" :error="errors.confirmNewPassword" class="stagger-4 mb-3" />
+
+              <AuthButton type="submit" :text="'ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់'" :loadingText="'កំពុងផ្លាស់ប្តូរ...'"
+                :loading="authStore.loading" :disabled="authStore.loading" class="stagger-5" />
+            </form>
+
+            <div class="text-center mt-4 stagger-6">
+              <router-link to="/login"
+                class="fw-bold text-teal text-decoration-none ms-1 link-effect d-inline-flex align-items-center">
+                <i class="bi bi-arrow-left me-2"></i> ត្រឡប់ទៅទំព័រចូលប្រើប្រាស់
+              </router-link>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="bottom-right-circle"></div>
   </div>
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
@@ -78,6 +89,16 @@ import AuthButton from "../../components/AuthButton.vue";
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+
+// --- PARALLAX LOGIC ---
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const parallaxStyle = (intensity) => {
+  const x = mouseX.value * intensity;
+  const y = mouseY.value * intensity;
+  return { transform: `translate(${x}px, ${y}px)` };
+};
 
 const errors = reactive({
   newPassword: "",
@@ -92,7 +113,7 @@ const resetSchema = z
     confirmNewPassword: z.string().min(1, "សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក។"),
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "Passwords do not match",
+    message: "ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ",
     path: ["confirmNewPassword"],
   });
 
@@ -133,335 +154,3 @@ const handleReset = async () => {
   }
 };
 </script>
-
-<style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-.container {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-.error-msg-small {
-  color: #ff4d4d;
-  font-size: 0.75rem;
-  margin-top: 4px;
-}
-
-.input-error {
-  border: 1px solid #ff4d4d !important;
-}
-
-.success-msg {
-  color: #28a745;
-  background-color: #f0fff4;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #c6f6d5;
-}
-
-.back-to-login {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.back-to-login a {
-  text-decoration: none;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.brand-section {
-  flex: 1.15;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 30px;
-  overflow: hidden;
-}
-
-.brand-content {
-  max-width: 420px;
-  z-index: 10;
-}
-
-.brand-content h1 {
-  font-size: clamp(3rem, 7vw, 4.8rem);
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-.brand-content h2 {
-  font-size: clamp(1.4rem, 3.8vw, 1.9rem);
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #a8e0e6;
-}
-.brand-content p {
-  font-size: 0.92rem;
-  line-height: 1.45;
-  opacity: 0.9;
-}
-
-.circle {
-  position: absolute;
-  background: #1a636d;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: float 7s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  top: -250px;
-  left: -150px;
-  animation-delay: 0s;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-sm {
-  width: 280px;
-  height: 280px;
-  bottom: 50px;
-  right: 3%;
-  animation-delay: 2s;
-}
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 16px 16px;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.input-group label {
-  color: #2f6f77;
-  font-weight: 600;
-  font-size: 0.78rem;
-}
-.input-group input {
-  width: 100%;
-  padding: 9px 11px;
-  background: #e8f3f5;
-  border: 2px solid transparent;
-  border-radius: 7px;
-  font-size: 0.88rem;
-}
-
-.input-group input:focus {
-  background-color: #fff;
-  border-color: #5596a0;
-  box-shadow: 0 4px 10px rgba(85, 150, 160, 0.1);
-}
-
-.create-btn {
-  width: 100%;
-  padding: 10px;
-  background: #247a85;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-.create-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: #a0c4c9;
-}
-
-.create-btn:hover:not(:disabled) {
-  background: #1a636d;
-}
-
-.back-to-login {
-  text-align: center;
-  margin-top: 12px;
-}
-
-.back-to-login a {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.back-to-login a:hover {
-  color: #1a636d;
-}
-
-.or-divider {
-  text-align: center;
-  color: #777;
-  font-size: 0.78rem;
-  margin: 14px 0;
-  position: relative;
-}
-
-.or-divider::before,
-.or-divider::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 44%;
-  height: 1px;
-  background: #e0ecef;
-  transform: translateY(-50%);
-}
-.or-divider::before {
-  left: 0;
-}
-.or-divider::after {
-  right: 0;
-}
-
-.help-section {
-  text-align: center;
-  margin-top: 8px;
-}
-
-.help-text {
-  color: #555;
-  font-size: 0.82rem;
-  margin-bottom: 6px;
-}
-
-.contact-link {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.85rem;
-}
-
-.contact-link:hover {
-  text-decoration: underline;
-}
-
-.bottom-right-circle {
-  position: fixed;
-  width: 250px;
-  height: 250px;
-  background: #247a85;
-  border-radius: 50%;
-  bottom: -50px;
-  right: -50px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-@media (max-width: 900px) {
-  .brand-section {
-    display: none;
-  }
-  .form-section {
-    padding: 16px 12px 12px;
-  }
-  .form-container {
-    max-width: 100%;
-  }
-  .bottom-right-circle {
-    display: none;
-  }
-}
-
-.error-msg {
-  color: #d32f2f;
-  font-size: 0.82rem;
-  margin-top: 2px;
-  padding: 8px;
-  background: #ffebee;
-  border-radius: 5px;
-}
-
-.success-msg {
-  color: #2e7d32;
-  font-size: 0.82rem;
-  margin-top: 2px;
-  padding: 8px;
-  background: #e8f5e9;
-  border-radius: 5px;
-}
-</style>
