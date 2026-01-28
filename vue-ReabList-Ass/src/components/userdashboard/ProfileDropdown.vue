@@ -48,29 +48,35 @@
         >
           <ul class="dropdown-list">
             <li class="dropdown-item">
-              <a href="#profile" class="dropdown-link" @click="handleNavigation"
+              <a
+                href="#"
+                class="dropdown-link"
+                data-route="/profile"
+                @click="handleNavigation"
                 >Profile Settings</a
               >
             </li>
             <li class="dropdown-item">
-              <a href="#account" class="dropdown-link" @click="handleNavigation"
+              <a
+                href="#"
+                class="dropdown-link"
+                data-route="/account"
+                @click="handleNavigation"
                 >Account</a
               >
             </li>
             <li class="dropdown-item">
               <a
-                href="#settings"
+                href="#"
                 class="dropdown-link"
+                data-route="/settings"
                 @click="handleNavigation"
                 >Settings</a
               >
             </li>
             <li class="dropdown-divider"></li>
             <li class="dropdown-item">
-              <a
-                href="#logout"
-                class="dropdown-link logout"
-                @click="handleLogout"
+              <a href="#" class="dropdown-link logout" @click="handleLogout"
                 >Logout</a
               >
             </li>
@@ -86,8 +92,13 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { useRouter } from "vue-router";
 import { ChevronDown } from "lucide-vue-next";
 import api from "@/API/api";
+import { useAuthStore } from "@/stores/authentication";
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const profileData = ref(null);
 const dropdownOpen = ref(false);
@@ -145,14 +156,27 @@ const closeDropdown = () => {
 
 const handleNavigation = (e) => {
   e.preventDefault();
-  console.log("Navigating to:", e.target.getAttribute("href"));
+  const href = e.target.getAttribute("data-route");
+  if (href) {
+    router.push(href);
+  }
   closeDropdown();
 };
 
-const handleLogout = (e) => {
+const handleLogout = async (e) => {
   e.preventDefault();
-  console.log("Logout clicked");
-  closeDropdown();
+  try {
+    await api.post("/auth/logout");
+    console.log("Logout successful");
+    authStore.logout();
+    router.push("/login");
+  } catch (err) {
+    console.error("Logout error:", err);
+    authStore.logout();
+    router.push("/login");
+  } finally {
+    closeDropdown();
+  }
 };
 
 const handleClickOutside = (e) => {

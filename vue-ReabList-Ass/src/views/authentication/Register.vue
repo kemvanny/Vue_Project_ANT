@@ -1,95 +1,98 @@
 <template>
-  <div class="container">
-    <div class="brand-section">
-      <div class="circle circle-lg"></div>
-      <div class="circle circle-md"></div>
-      <div class="circle circle-sm"></div>
-      <div class="circle-left"></div>
+  <div class="page-wrapper d-flex align-items-center justify-content-center min-vh-100">
+    <div class="gradient-bg"></div>
 
-      <div class="brand-content">
-        <h1>សូមស្វាគមន៍</h1>
-        <h2>Your Handle Your Name</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua...
-        </p>
-      </div>
+    <div class="animation-area">
+      <ul class="box-area">
+        <li v-for="n in 15" :key="n"></li>
+      </ul>
     </div>
 
-    <div class="form-section">
-      <div class="form-container">
-        <h1 class="fw-bold mb-2">ចុះឈ្មោះ</h1>
-        <p class="subtitle">ចូលរួមជាមួយប្រព័ន្ធរបស់យើង ដោយបង្កើតគណនីថ្មី.</p>
+    <div class="shape shape-1" :style="parallaxStyle(25)"></div>
+    <div class="shape shape-2" :style="parallaxStyle(-25)"></div>
 
-        <p v-if="auth.error" class="error-msg text-center mb-2">
-          {{ auth.error }}
-        </p>
+    <div class="card glass-card border-0 shadow-2xl rounded-5 overflow-hidden animate-entrance">
+      <div class="row g-0 h-100">
 
-        <form @submit.prevent="handleRegister" class="signup-form" novalidate>
-          <AuthInput
-            label="ឈ្មោះពេញ"
-            type="text"
-            v-model="auth.fullName"
-            placeholder="បញ្ចូលឈ្មោះពេញរបស់អ្នក"
-            :error="errors.fullName" />
-
-          <AuthInput
-            label="អ៊ីមែល"
-            type="email"
-            v-model="auth.email"
-            placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
-            :error="errors.email" />
-
-          <AuthInput
-            label="ពាក្យសម្ងាត់"
-            type="password"
-            v-model="auth.password"
-            placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"
-            :error="errors.password" />
-
-          <AuthInput
-            label="បញ្ជាក់ពាក្យសម្ងាត់"
-            type="password"
-            v-model="auth.confirmPassword"
-            placeholder="បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នកម្តងទៀត"
-            :error="errors.confirmPassword" />
-
-          <div class="form-footer">
-            <div class="checkbox-group">
-              <input type="checkbox" v-model="auth.agreedTerms" id="terms" />
-              <label for="terms">
-                ខ្ញុំយល់ព្រមតាម <a href="#">លក្ខខណ្ឌប្រើប្រាស់</a> &
-                <a href="#">និង គោលការណ៍ឯកជនភាព។</a>.
-              </label>
-            </div>
-            <p v-if="errors.agreedTerms" class="error-msg-small">
-              {{ errors.agreedTerms }}
+        <div
+          class="col-lg-5 d-none d-lg-flex flex-column align-items-center justify-content-center bg-gradient-teal text-white p-5 position-relative overflow-hidden">
+          <div class="glow-circle" :style="parallaxStyle(-10)"></div>
+          <div class="z-2 text-center content-wrapper">
+            <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-notebook-3814125-3187506.png" alt="Sign Up 3D"
+              class="img-fluid mb-4 floating-3d" :style="parallaxStyle(15)"
+              style="max-height: 250px; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));">
+            <h3 class="fw-bold tracking-wide mb-2 text-shadow">ចាប់ផ្តើមជាមួយយើង</h3>
+            <p class="text-white-50 small px-3">
+              បង្កើតគណនីថ្មីដើម្បីគ្រប់គ្រងការងារ និងជីវិតរបស់អ្នកឱ្យកាន់តែប្រសើរ។
             </p>
           </div>
+        </div>
 
-          <AuthButton
-            type="submit"
-            :text="'បង្កើតគណនី'"
-            :loadingText="'បង្កើតគណនី...'"
-            :loading="auth.loading"
-            :disabled="auth.loading" />
-        </form>
+        <div class="col-lg-7 bg-white-glass d-flex align-items-center position-relative">
+          <div class="card-body p-4 p-lg-5">
 
-        <div class="or-divider">ឬ</div>
+            <div class="mb-4 stagger-1">
+              <h2 class="fw-bold text-teal mb-1">ចុះឈ្មោះគណនី</h2>
+              <p class="text-muted">បំពេញព័ត៌មានខាងក្រោមដើម្បីបង្កើតគណនី។</p>
+            </div>
 
-        <p class="login-link">
-          មានគណនីរួចហើយមែនទេ?
-          <router-link to="/login">ចូលប្រើប្រាស់</router-link>
-        </p>
+            <transition name="shake">
+              <div v-if="auth.error"
+                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ auth.error }}
+              </div>
+            </transition>
+
+            <form @submit.prevent="handleRegister" novalidate>
+
+              <AuthInput label="ឈ្មោះពេញ" type="text" v-model="auth.fullName" placeholder="បញ្ចូលឈ្មោះពេញ"
+                :error="errors.fullName" class="stagger-2 mb-2" />
+
+              <AuthInput label="អ៊ីមែល" type="email" v-model="auth.email" placeholder="បញ្ចូលអ៊ីមែល"
+                :error="errors.email" class="stagger-3 mb-2" />
+
+              <div class="row g-2 stagger-4">
+                <div class="col-md-6">
+                  <AuthInput label="ពាក្យសម្ងាត់" type="password" v-model="auth.password" placeholder="លេខសម្ងាត់"
+                    :error="errors.password" />
+                </div>
+                <div class="col-md-6">
+                  <AuthInput label="បញ្ជាក់ពាក្យសម្ងាត់" type="password" v-model="auth.confirmPassword"
+                    placeholder="បញ្ជាក់លេខសម្ងាត់" :error="errors.confirmPassword" />
+                </div>
+              </div>
+
+              <div class="form-check mt-3 mb-3 stagger-5">
+                <input class="form-check-input" type="checkbox" v-model="auth.agreedTerms" id="terms">
+                <label class="form-check-label text-muted small" for="terms">
+                  ខ្ញុំយល់ព្រមតាម <a href="#" class="text-teal fw-bold text-decoration-none">លក្ខខណ្ឌប្រើប្រាស់</a> និង
+                  <a href="#" class="text-teal fw-bold text-decoration-none">គោលការណ៍ឯកជនភាព</a>
+                </label>
+                <div v-if="errors.agreedTerms" class="text-danger small mt-1">
+                  {{ errors.agreedTerms }}
+                </div>
+              </div>
+
+              <AuthButton type="submit" :text="'បង្កើតគណនី'" :loadingText="'កំពុងបង្កើត...'" :loading="auth.loading"
+                :disabled="auth.loading" class="stagger-6" />
+
+              <div class="text-center mt-4 small text-muted stagger-7">
+                មានគណនីរួចហើយមែនទេ?
+                <router-link to="/login" class="fw-bold text-teal text-decoration-none ms-1 link-effect">
+                  ចូលប្រើប្រាស់
+                </router-link>
+              </div>
+
+            </form>
+          </div>
+        </div>
       </div>
-
-      <div class="bottom-right-circle"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
@@ -98,6 +101,15 @@ import AuthInput from "../../components/AuthInput.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
+
+// --- PARALLAX LOGIC ---
+const mouseX = ref(0);
+const mouseY = ref(0);
+const parallaxStyle = (intensity) => {
+  const x = mouseX.value * intensity;
+  const y = mouseY.value * intensity;
+  return { transform: `translate(${x}px, ${y}px)` };
+};
 
 const errors = reactive({
   fullName: "",
@@ -110,20 +122,21 @@ const errors = reactive({
 const registerSchema = z
   .object({
     fullName: z.string().min(2, "ឈ្មោះត្រូវតែមានយ៉ាងហោចណាស់ 2 តួអក្សរ"),
-    email: z
-      .string()
-      .min(1, "អ៊ីមែលត្រូវបានទាមទារ")
-      .email("ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ"),
+    email: z.string().min(1, "សូមបញ្ចូលអ៊ីមែល").email("ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ"),
     password: z.string().min(8, "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ"),
-    confirmPassword: z.string().min(1, "សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក។"),
+    confirmPassword: z.string().min(1, "សូមបញ្ជាក់ពាក្យសម្ងាត់"),
     agreedTerms: z.literal(true, {
-      errorMap: () => ({ message: "អ្នកត្រូវតែទទួលយកលក្ខខណ្ឌ" }),
+      errorMap: () => ({ message: "អ្នកត្រូវតែយល់ព្រមតាមលក្ខខណ្ឌ" }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។",
+    message: "ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ",
     path: ["confirmPassword"],
   });
+
+onMounted(() => {
+  auth.clearMessages();
+});
 
 const handleRegister = async () => {
   Object.keys(errors).forEach((key) => (errors[key] = ""));
@@ -151,348 +164,3 @@ const handleRegister = async () => {
   }
 };
 </script>
-
-<style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-.container {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-.error-msg-small {
-  color: #ff4d4d;
-  font-size: 0.75rem;
-  margin-top: 4px;
-}
-
-.input-error {
-  border: 1px solid #ff4d4d !important;
-}
-
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.error-msg.text-center {
-  background: #fff0f0;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ffcaca;
-  color: #d32f2f;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Left side */
-.brand-section {
-  flex: 1.15;
-  /* background: #247a85; */
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 30px;
-  overflow: hidden;
-}
-
-.brand-content {
-  max-width: 420px;
-  z-index: 10;
-}
-
-.brand-content h1 {
-  font-size: clamp(3rem, 7vw, 4.8rem);
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-.brand-content h2 {
-  font-size: clamp(1.4rem, 3.8vw, 1.9rem);
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #a8e0e6;
-}
-.brand-content p {
-  font-size: 0.92rem;
-  line-height: 1.45;
-  opacity: 0.9;
-}
-
-.circle {
-  position: absolute;
-  background: #1a636d;
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: float 7s ease-in-out infinite;
-}
-
-/* Right side – no inner scroll by default */
-.form-section {
-  flex: 1;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 16px 16px; /* very compact top padding */
-  overflow: hidden; /* ← No inner scroll either */
-  min-height: 0; /* allows shrinking */
-  overflow: hidden;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 350px; /* narrower = less height needed */
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.form-container h1 {
-  font-size: 2rem;
-  margin-bottom: 4px;
-  color: #111;
-}
-
-.subtitle {
-  color: #555;
-  font-size: 0.82rem;
-  line-height: 1.35;
-  margin-bottom: 6px;
-}
-.circle {
-  position: absolute;
-  background-color: #1a636d;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: float 6s ease-in-out infinite;
-}
-
-.circle-lg {
-  width: 850px;
-  height: 850px;
-  top: -250px;
-  left: -150px;
-  animation-delay: 0s;
-}
-
-.circle-md {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  left: -100px;
-  animation-delay: 1s;
-}
-
-.circle-sm {
-  width: 280px;
-  height: 280px;
-  bottom: 50px;
-  right: 3%;
-  animation-delay: 2s;
-}
-.circle-left {
-  width: 280px;
-  height: 280px;
-  bottom: 80px;
-  right: 3%;
-  animation-delay: 2s;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.input-group label {
-  color: #2f6f77;
-  font-weight: 600;
-  font-size: 0.78rem;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 9px 11px;
-  background: #e8f3f5;
-  border: 2px solid transparent;
-  border-radius: 7px;
-  font-size: 0.88rem;
-}
-
-.input-group input:focus {
-  background-color: #fff;
-  border-color: #5596a0;
-  /* transform: scale(1.01); */
-  box-shadow: 0 4px 10px rgba(85, 150, 160, 0.1);
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #247a85;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-.form-footer {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  font-size: 0.78rem;
-  margin-top: 4px;
-}
-
-.form-footer a {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.create-btn {
-  width: 100%;
-  padding: 10px;
-  background: #247a85;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.create-btn:hover:not(:disabled) {
-  background: #1a636d;
-}
-
-.or-divider {
-  text-align: center;
-  color: #777;
-  font-size: 0.78rem;
-  margin: 10px 0;
-  position: relative;
-}
-
-.or-divider::before,
-.or-divider::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 44%;
-  height: 1px;
-  background: #e0ecef;
-  transform: translateY(-50%);
-}
-.or-divider::before {
-  left: 0;
-}
-.or-divider::after {
-  right: 0;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin: 6px 0;
-}
-
-.social-icons a {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #f0f7f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
-  font-size: 1.15rem;
-}
-
-.login-link {
-  text-align: center;
-  font-size: 0.82rem;
-  margin-top: 10px;
-}
-
-.login-link a {
-  color: #247a85;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.bottom-right-circle {
-  position: fixed;
-  width: 250px;
-  height: 250px;
-  background: #247a85;
-  border-radius: 50%;
-  bottom: -50px;
-  right: -50px;
-  z-index: 1;
-  overflow: hidden;
-}
-
-/* Mobile */
-@media (max-width: 900px) {
-  .brand-section {
-    display: none;
-  }
-  .form-section {
-    padding: 16px 12px 12px;
-  }
-  .form-container {
-    max-width: 100%;
-  }
-  .bottom-right-circle {
-    display: none;
-  }
-}
-
-.error-msg {
-  color: #d32f2f;
-  font-size: 0.72rem;
-  margin-top: 2px;
-}
-</style>
