@@ -265,12 +265,18 @@ export const useAuthStore = defineStore("auth", () => {
       };
       const response = await api.post("/auth/forget-password", payload);
 
-      if (response.data?.success || response.status === 200) {
+      if (
+        response.data?.success ||
+        response.data?.result ||
+        response.status === 200 ||
+        response.status === 201
+      ) {
         successMessage.value =
           "តំណ​កំណត់​ពាក្យ​សម្ងាត់​ឡើងវិញ​បាន​ផ្ញើ​ទៅ​អ៊ីមែល​របស់​អ្នក!";
         resetEmail.value = payload.email;
         return true;
       }
+      return false;
     } catch (err) {
       console.error(err);
       error.value =
