@@ -498,7 +498,7 @@ export const useAuthStore = defineStore("auth", () => {
       formData.append("avatar", file);
 
       console.log("Uploading avatar...");
-      const response = await api.post("/auth/profile/avatar", formData);
+      const response = await api.put("/auth/profile/avatar", formData);
       console.log("Upload avatar response:", response.data);
 
       if (response.status === 200 || response.data?.success) {
