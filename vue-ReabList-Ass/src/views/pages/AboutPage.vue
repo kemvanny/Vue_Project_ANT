@@ -12,8 +12,10 @@
               <span style="color: var(--primary)">ការគិត</span>
             </h1>
             <p class="lead text-muted mb-5">
-              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន ដែលត្រូវបានរចនាឡើងសម្រាប់អ្នកបង្កើត
-              និងអ្នកដែលចង់សម្រេចបានលទ្ធផលខ្ពស់។ ប្រែក្លាយភាពច្របូកច្របល់ទៅជាភាពច្បាស់លាស់ដោយគ្រាន់តែចុចតែម្តង។
+              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន
+              ដែលត្រូវបានរចនាឡើងសម្រាប់អ្នកបង្កើត
+              និងអ្នកដែលចង់សម្រេចបានលទ្ធផលខ្ពស់។
+              ប្រែក្លាយភាពច្របូកច្របល់ទៅជាភាពច្បាស់លាស់ដោយគ្រាន់តែចុចតែម្តង។
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
               <button class="btn-modern">ចាប់ផ្តើមឥឡូវនេះ</button>
@@ -54,7 +56,8 @@
               <span style="color: var(--primary)">ReabList?</span>
             </h2>
             <p class="text-muted fs-5">
-              អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីបញ្ចេញផលិតផលបានលឿនជាងមុន និងគ្រប់គ្រងជីវិតរបស់អ្នកឱ្យកាន់តែប្រសើរ។
+              អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីបញ្ចេញផលិតផលបានលឿនជាងមុន
+              និងគ្រប់គ្រងជីវិតរបស់អ្នកឱ្យកាន់តែប្រសើរ។
             </p>
           </div>
         </div>
@@ -64,7 +67,8 @@
               <div class="benefit-icon"><i class="bi bi-cpu"></i></div>
               <h4>AI ដែលឆ្លាតវៃ</h4>
               <p class="text-muted">
-                ការចាត់ថ្នាក់ដ៏ឆ្លាតវៃ និងការណែនាំអំពីអាទិភាពដោយប្រើគំរូភាសាកម្រិតខ្ពស់។
+                ការចាត់ថ្នាក់ដ៏ឆ្លាតវៃ
+                និងការណែនាំអំពីអាទិភាពដោយប្រើគំរូភាសាកម្រិតខ្ពស់។
               </p>
             </div>
           </div>
@@ -75,7 +79,8 @@
               </div>
               <h4>ធ្វើសមកាលកម្មភ្លាមៗ</h4>
               <p class="text-muted">
-                ការធ្វើបច្ចុប្បន្នភាពដោយរលូនរវាងទូរស័ព្ទ កុំព្យូទ័រ និងគេហទំព័រ ដោយគ្មានភាពរអាក់រអួល។
+                ការធ្វើបច្ចុប្បន្នភាពដោយរលូនរវាងទូរស័ព្ទ កុំព្យូទ័រ និងគេហទំព័រ
+                ដោយគ្មានភាពរអាក់រអួល។
               </p>
             </div>
           </div>
@@ -114,8 +119,8 @@
               <span class="step-visual"></span>
               <h4 class="fw-bold">បង្កើតគណនី</h4>
               <p class="text-muted">
-                ចុះឈ្មោះក្នុងរយៈពេលប៉ុន្មានវិនាទីជាមួយ Google ឬ Magic Link។ មិនមានភាពស្មុគស្មាញ
-                គ្រាន់តែមានភារកិច្ចរបស់អ្នកកំពុងរង់ចាំ។
+                ចុះឈ្មោះក្នុងរយៈពេលប៉ុន្មានវិនាទីជាមួយ Google ឬ Magic Link។
+                មិនមានភាពស្មុគស្មាញ គ្រាន់តែមានភារកិច្ចរបស់អ្នកកំពុងរង់ចាំ។
               </p>
             </div>
           </div>
@@ -126,7 +131,8 @@
               <span class="step-visual"></span>
               <h4 class="fw-bold">កត់ត្រាអ្វីៗគ្រប់យ៉ាង</h4>
               <p class="text-muted">
-                វាយបញ្ចូល ឬនិយាយពីគំនិតរបស់អ្នក។ AI របស់នឹងធ្វើការដាក់ស្លាក កំណត់អាទិភាព
+                វាយបញ្ចូល ឬនិយាយពីគំនិតរបស់អ្នក។ AI របស់នឹងធ្វើការដាក់ស្លាក
+                កំណត់អាទិភាព
                 និងចាត់ថ្នាក់ទិន្នន័យរបស់អ្នកដោយស្វ័យប្រវត្តិភ្លាមៗ។
               </p>
             </div>
@@ -150,7 +156,8 @@
       <div class="container">
         <div class="text-center mb-5" data-fade-up>
           <h2 class="display-6 fw-800">
-            ជួបជាមួយ <span style="color: var(--primary)">អ្នកមានចក្ខុវិស័យរបស់យើង</span>
+            ជួបជាមួយ
+            <span style="color: var(--primary)">អ្នកមានចក្ខុវិស័យរបស់យើង</span>
           </h2>
           <p class="text-muted">អ្នកជំនាញនៅពីក្រោយបទពិសោធន៍ ReabList ។</p>
         </div>
@@ -160,10 +167,10 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=a" class="team-img" alt="Alex" />
               </div>
-              <span class="team-role">នាយកប្រតិបត្តិ & ស្ថាបនិក</span>
-              <h4 class="fw-bold mb-1">Alex Rivers</h4>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Kem Vanny</h4>
               <p class="text-muted small">
-                អ្នកដឹកនាំបច្ចេកវិទ្យាដែលមានបទពិសោធន៍ជាង ១០ ឆ្នាំ។
+                អ្នកដឹកនាំក្រុម​ ReabList
               </p>
             </div>
           </div>
@@ -172,9 +179,11 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=b" class="team-img" alt="Jordan" />
               </div>
-              <span class="team-role">ប្រធានផ្នែកផលិតផល</span>
-              <h4 class="fw-bold mb-1">Jordan Lee</h4>
-              <p class="text-muted small">អ្នកដែលផ្តោតសំខាន់លើ UX និងភាពសាមញ្ញ។</p>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Hean Liza</h4>
+              <p class="text-muted small">
+                សមាជិកផ្នែក UX/UI និង Frontend Development។
+              </p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -182,20 +191,22 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=c" class="team-img" alt="Sarah" />
               </div>
-              <span class="team-role">អ្នករចនាដឹកនាំ</span>
-              <h4 class="fw-bold mb-1">Sarah Chen</h4>
-              <p class="text-muted small">អ្នកឯកទេស UI បែបសាមញ្ញ (Minimalist)។</p>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Tel Sophannara</h4>
+              <p class="text-muted small">
+               សមាជិកផ្នែក UX/UI និង Frontend Development។
+              </p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=d" class="team-img" alt="Michael" />
+                <img :src="socheata" class="team-img" alt="Michael" />
               </div>
-              <span class="team-role">CTO</span>
-              <h4 class="fw-bold mb-1">Michael Scott</h4>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Vit Socheata</h4>
               <p class="text-muted small">
-                ស្ថាបត្យករហេដ្ឋារចនាសម្ព័ន្ធ និងផ្នែកខាងក្រោយ (Backend)។
+                សមាជិកផ្នែក UX/UI និង Frontend Development
               </p>
             </div>
           </div>
@@ -204,9 +215,9 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=e" class="team-img" alt="Emily" />
               </div>
-              <span class="team-role">វិស្វករ AI</span>
-              <h4 class="fw-bold mb-1">Emily Watson</h4>
-              <p class="text-muted small">អ្នកឯកទេស Machine Learning។</p>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Limchhen Revotey</h4>
+              <p class="text-muted small">សមាជិកផ្នែក UX/UI និង Frontend Development</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -214,9 +225,50 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=f" class="team-img" alt="David" />
               </div>
-              <span class="team-role">ប្រធានផ្នែកកំណើន</span>
-              <h4 class="fw-bold mb-1">David Miller</h4>
-              <p class="text-muted small">ពង្រីក ReabList ទៅកាន់ពិភពលោក។</p>
+              <span class="team-role">Frontend & UX/UI</span>
+              <h4 class="fw-bold mb-1">Him Sophearith</h4>
+              <p class="text-muted small">សមាជិកផ្នែក UX/UI និង Frontend Development</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="thank-you" class="thank-you">
+      <div class="container card-thank-you">
+        <div class="row justify-content-center text-center mb-5" data-fade-up>
+          <div class="col-lg-8">
+            <div class="pill-tag">សេចក្តីថ្លែងអំណរគុណ</div>
+            <h2 class="display-5 mb-3">សេចក្តីថ្លែងអំណរគុណចំពោះ</h2>
+            <p class="text-muted fs-5">
+              ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
+              និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT ព្រមទាំងលោកគ្រូ ជិន
+              សុវណ្ណមិនា និងអ្នកគ្រូ  Yoem Sreyyoer ។
+              ក្រុមរបស់យើងមានអារម្មណ៍សោមនស្សរីករាយយ៉ាងខ្លាំងដែលទទួលបានអាហារូបករណ៍លើជំនាញការអភិវឌ្ឍន៍គេហទំព័រនេះ។
+              អាហារូបករណ៍នេះពិតជាបានជួយសម្រាលបន្ទុកហិរញ្ញវត្ថុសម្រាប់ការសិក្សាដល់ក្រុមយើងខ្ញុំទាំងអស់គ្នា។
+              ក្រោមការណែនាំពីលោកគ្រូអ្នកគ្រូ
+              ក្រុមយើងខ្ញុំប្តេជ្ញាខិតខំប្រឹងប្រែងសិក្សាដើម្បីកសាងសមត្ថភាពឱ្យបានខ្លាំងពូកែ
+              ដើម្បីអាចចូលរួមចំណែកជួយដល់សង្គមជាតិទៅថ្ងៃអនាគត។
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4" data-fade-up>
+            <div class="card h-50 card-image-wrapper border-0 shadow-sm">
+              <img :src="logo" alt="Logo" class="card-img-fit" />
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-fade-up>
+            <div class="card h-50 card-image-wrapper border-0 shadow-sm">
+              <img :src="logo2" alt="Logo" class="card-img-fit" />
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-fade-up>
+            <div class="card h-50 card-image-wrapper border-0 shadow-sm">
+              <img :src="logo1" alt="Logo" class="card-img-fit" />
             </div>
           </div>
         </div>
@@ -230,8 +282,11 @@
 <script setup>
 import Footer from "@/components/UserPages/Footer.vue";
 import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
+import logo from "@/assets/images/Logo_MPTC.png";
+import logo1 from "@/assets/images/ANT logo HD.png";
+import logo2 from "@/assets/images/CBRD Fund Logo Final.png";
+import socheata from "@/assets/images/socheata.JPEG";
 </script>
-
 
 <style scoped>
 template {
@@ -279,7 +334,8 @@ template {
 /* ===== HERO ===== */
 .hero-section {
   padding: 180px 0 100px;
-  background: radial-gradient(circle at 90% 10%,
+  background:
+    radial-gradient(circle at 90% 10%,
       rgba(19, 112, 127, 0.1) 0%,
       transparent 40%),
     radial-gradient(circle at 10% 90%,
@@ -492,5 +548,61 @@ template {
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 15px;
+}
+
+/* thanksyou */
+
+.thank-you {
+padding: 120px;
+  position: relative;
+  background: linear-gradient(
+    120deg,
+    #bddee8,
+    #b7e9eacf,
+    #f0bdd9
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  overflow: hidden;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.card-thank-you {
+  padding: 20px 50px;
+  background: #ffffff;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-image-wrapper {
+  overflow: hidden;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  padding: 10px;
+}
+
+.card-img-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.card-img-fit:hover {
+  transform: scale(1.05);
 }
 </style>
