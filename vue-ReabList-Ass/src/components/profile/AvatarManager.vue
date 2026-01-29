@@ -174,7 +174,7 @@ const deleteAvatarConfirmed = async () => {
 
 <style scoped>
 .avatar-manager {
-  max-width: 500px;
+  max-width: 600px;
 }
 
 .avatar-section {
