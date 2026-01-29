@@ -9,14 +9,14 @@
       </div>
 
       <nav>
-        <p class="nav-label">Main Console</p>
+        <p class="nav-label">ផ្ទាំងគ្រប់គ្រងគោល</p>
         <router-link
           :to="{ name: 'Dashboard' }"
           class="reab-nav-link"
           active-class="active"
           exact
         >
-          <i class="fas fa-chart-pie"></i> <span>Productivity Stats</span>
+          <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
         </router-link>
 
         <router-link
@@ -24,7 +24,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-list-ul"></i> <span>All My Tasks</span>
+          <i class="fas fa-list-ul"></i> <span>ភារកិច្ចទាំងអស់</span>
         </router-link>
 
         <router-link
@@ -32,7 +32,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-hourglass-half"></i> <span>Pending Work</span>
+          <i class="fas fa-hourglass-half"></i> <span>ការងារកំពុងរង់ចាំ</span>
         </router-link>
 
         <router-link
@@ -40,26 +40,26 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-circle-check"></i> <span>Completed Tasks</span>
+          <i class="fas fa-circle-check"></i> <span>ភារកិច្ចដែលបានបញ្ចប់</span>
         </router-link>
 
-        <p class="nav-label">Global Actions</p>
+        <p class="nav-label">សកម្មភាពទូទៅ</p>
         <a
           href="#"
           class="reab-nav-link"
           data-bs-toggle="modal"
           data-bs-target="#addTaskModal"
         >
-          <PlusCircle :size="18" /> <span>Create New Task</span>
+          <PlusCircle :size="18" /> <span>បង្កើតភារកិច្ចថ្មី</span>
         </a>
 
-        <p class="nav-label">Fixed Categories</p>
+        <p class="nav-label">ប្រភេទភារកិច្ច</p>
         <router-link
           :to="{ name: 'Category', params: { name: 'Personal' } }"
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-user"></i> <span>Personal</span>
+          <i class="fas fa-user"></i> <span>ផ្ទាល់ខ្លួន</span>
         </router-link>
 
         <router-link
@@ -67,7 +67,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-briefcase"></i> <span>Work</span>
+          <i class="fas fa-briefcase"></i> <span>ការងារ</span>
         </router-link>
 
         <router-link
@@ -75,22 +75,20 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-graduation-cap"></i> <span>Study</span>
+          <i class="fas fa-graduation-cap"></i> <span>ការសិក្សា</span>
         </router-link>
       </nav>
 
       <div class="mt-auto">
         <div class="status-card">
-          <div
-            class="d-flex align-items-center justify-content-center gap-2 mb-2"
-          >
+          <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
             <div class="pulse-status"></div>
-            <p class="status-text">Active Mode</p>
+            <p class="status-text">កំពុងដំណើរការ</p>
           </div>
-          <button class="btn btn-primary btn-refresh">Refresh Sync</button>
+          <button class="btn btn-primary btn-refresh">ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ</button>
         </div>
         <button class="btn-logout" @click="handleLogout">
-          <i class="fas fa-sign-out-alt me-2"></i> Logout
+          <i class="fas fa-sign-out-alt me-2"></i> ចាកចេញ
         </button>
       </div>
     </aside>
@@ -101,11 +99,19 @@
 </script>
 
 <style scoped>
-.main-content {
-  margin-left: 280px;
-  width: calc(100% - 280px);
-  min-height: 100vh;
+.app-container {
+  display: flex;
 }
+
+.main-wrapper {
+  flex: 1;
+}
+
+.chart-wrapper {
+  min-height: 220px;
+  height: 240px;
+}
+
 
 #reab-sidebar {
   width: 280px;

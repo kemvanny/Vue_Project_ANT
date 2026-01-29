@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <form @submit.prevent="submitForm">
     <div class="password-section">
       <h3>ផ្លាស់ប្តូរពាក្យសម្ងាត់</h3>
@@ -459,4 +459,4 @@ const submitForm = async () => {
     justify-content: center;
   }
 }
-</style>
+</style> -->

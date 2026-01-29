@@ -18,9 +18,9 @@ import FeaturesPage from "@/views/pages/FeaturesPage.vue";
 import UserDashboardLayout from "@/layouts/UserDashboardLayout.vue";
 
 // Dashboard Views
-import UserDashboard from "@/views/user/UserDashboard.vue";
 import AllTasks from "@/views/user/AllTasks.vue";
-import Pending from "@/views/user/PendingWork.vue";
+import UserDashboard from "@/views/user/UserDashboard.vue";
+import Pending from "@/views/user/PendingTasks.vue";
 import Complete from "@/views/user/CompletedTasks.vue";
 import ProfileDashboard from "@/views/user/ProfileDashboard.vue";
 
@@ -78,7 +78,7 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/reset-password",
+      path: "/reset-password/:token?",
       name: "reset-password",
       component: ResetPassword,
       meta: { requiresAuth: false },
@@ -92,32 +92,27 @@ const router = createRouter({
           path: "", // localhost:5173/
           name: "Dashboard",
           component: UserDashboard,
-          meta: { requiresAuth: true },
         },
         {
           path: "tasks", // localhost:5173/tasks
           name: "AllTasks",
           component: AllTasks,
-          meta: { requiresAuth: true },
         },
         {
           path: "pending", // localhost:5173/pending
           name: "Pending",
           component: Pending,
-          meta: { requiresAuth: true },
         },
         {
           path: "completed", // localhost:5173/completed
           name: "Completed",
           component: Complete,
-          meta: { requiresAuth: true },
         },
         {
           path: "category/:name",
           name: "Category",
           component: () => import("@/views/user/CategoryView.vue"),
           props: true,
-          meta: { requiresAuth: true },
         },
         {
           path: "/profile",
@@ -131,6 +126,13 @@ const router = createRouter({
           component: () => import("@/components/profile/AccountSettings.vue"),
           meta: { requiresAuth: true },
         },
+        // {
+        //   path: "/profile/changepasswordform",
+        //   name: "ChangePasswordForm",
+        //   component: () =>
+        //     import("@/components/profile/ChangePasswordForm.vue"),
+        //   meta: { requiresAuth: true },
+        // },
       ],
     },
   ],

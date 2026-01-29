@@ -2,14 +2,15 @@
   <nav class="reab-navbar">
     <div class="navbar-container">
       <div class="search-area">
-        <div class="search-input-group">
-          <Search :size="19" class="search-icon" stroke-width="2" />
-          <input
-            type="text"
-            placeholder="Search tasks, descriptions, or tags..."
-            class="header-search"
-          />
-        </div>
+     <div class="search-box">
+        <span class="icon">🔎</span>
+        <input
+          v-model.trim="q"
+          class="search-input"
+          type="text"
+          placeholder="ស្វែងរក (ចំណងជើង / កំណត់ចំណាំ)..."
+        />
+      </div> 
       </div>
 
       <div class="actions-area">
@@ -24,16 +25,16 @@
 </template>
 
 <script setup>
-import { Search, Moon } from "lucide-vue-next";
+import { Search, Moon, ChevronDown } from 'lucide-vue-next';
 import ProfileDropdown from "./ProfileDropdown.vue";
 </script>
 
 <style scoped>
 /* Importing a clean font similar to your reference */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .reab-navbar {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   height: 85px;
   background-color: #ffffff;
   border-bottom: 1px solid #f1f5f9;
@@ -43,8 +44,7 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 100;
-  overflow: visible;
+  z-index: 1000;
 }
 
 .navbar-container {
@@ -52,30 +52,53 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  overflow: visible;
 }
+
 
 /* --- Search Section --- */
-.search-input-group {
-  display: flex;
-  align-items: center;
-  background-color: #f8fafc;
-  padding: 12px 20px;
-  border-radius: 16px;
-  width: 420px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
 
-.search-input-group:focus-within {
-  background-color: #ffffff;
-  border-color: #0d9488;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.05);
+.search-box{
+  flex:1;
+  min-width:480px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#f8fafc;
+  border:2px solid transparent;
+  border-radius:18px;
+  padding:12px 14px;
+  transition:.2s;
 }
+.search-box:focus-within{
+  border-color:#0d9488;
+  background:#fff;
+  box-shadow:0 14px 28px -18px rgba(13,148,136,.5);
+}
+.search-input{
+  width:100%;
+  border:none;
+  outline:none;
+  background:transparent;
+  font-weight:800;
+  color:#0f172a;
+}
+.icon{ opacity:.75; }
 
-.search-icon {
-  color: #94a3b8;
-  margin-right: 14px;
+.chips{ display:flex; gap:8px; flex-wrap:wrap; }
+.chip{
+  border:none;
+  border-radius:999px;
+  padding:10px 14px;
+  background:#f1f5f9;
+  font-weight:900;
+  color:#334155;
+  transition:.18s;
+}
+.chip:hover{ transform:translateY(-1px); }
+.chip.active{
+  background:linear-gradient(135deg,#0d9488 0%,#06b6d4 100%);
+  color:#fff;
+  box-shadow:0 14px 28px -18px rgba(13,148,136,.5);
 }
 
 .header-search {
@@ -98,8 +121,6 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   display: flex;
   align-items: center;
   gap: 30px;
-  overflow: visible;
-  position: relative;
 }
 
 .mode-toggle {
@@ -121,12 +142,6 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   color: #0f172a;
 }
 
-/* Profile Dropdown Container */
-.profile-dropdown-container {
-  position: relative;
-  z-index: 1001;
-}
-
 .user-profile-wrapper {
   display: flex;
   align-items: center;
@@ -134,15 +149,6 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   padding-left: 28px;
   border-left: 1px solid #f1f5f9;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.user-profile-wrapper:hover {
-  background-color: #f8fafc;
-  border-radius: 8px;
-  padding-left: 20px;
-  padding-right: 8px;
-  margin-left: 8px;
 }
 
 .user-details {
@@ -179,6 +185,10 @@ import ProfileDropdown from "./ProfileDropdown.vue";
   font-weight: 700;
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
-  overflow: hidden;
+}
+
+.dropdown-chevron {
+  color: #94a3b8;
+  margin-left: 4px;
 }
 </style>
