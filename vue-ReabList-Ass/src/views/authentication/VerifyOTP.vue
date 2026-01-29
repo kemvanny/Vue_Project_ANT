@@ -185,8 +185,12 @@ const handleVerify = async () => {
     if (auth.clearMessages) auth.clearMessages();
     const success = await auth.verifyEmail();
     if (success) {
-      auth.resetRegisterForm();
-      router.push("/login");
+      if (auth.resetMode) {
+        router.push("/reset-password");
+      } else {
+        auth.resetRegisterForm();
+        router.push("/login");
+      }
     }
   } catch (err) {
     console.error("Verification failed:", err);

@@ -163,7 +163,7 @@ onMounted(() => {
   if (token) {
     authStore.otpCode = token;
     authStore.clearMessages();
-  } else {
+  } else if (!authStore.resetMode) {
     authStore.error =
       "និមិត្តសញ្ញាកំណត់ឡើងវិញមិនត្រឹមត្រូវ ឬបាត់។ សូមស្នើសុំតំណថ្មី";
   }

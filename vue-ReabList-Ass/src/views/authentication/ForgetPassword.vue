@@ -188,10 +188,8 @@ const handleForgotPassword = async () => {
 
   try {
     const success = await authStore.forgotPassword();
-
-    if (success === true) {
-      showSuccessModal.value = true;
-      console.log(success);
+    if (success) {
+      router.push("/verify-otp");
     }
   } catch (err) {
     console.error("Forgot password error:", err);
