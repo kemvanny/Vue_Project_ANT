@@ -28,10 +28,10 @@
             class="form-control"
             disabled
           />
-          <!-- <small class="text-muted">អ៊ីមែលមិនអាចផ្លាស់ប្តូរបានទេ។</small> -->
+          <small class="text-muted">អ៊ីមែលមិនអាចផ្លាស់ប្តូរបានទេ។</small>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="phone" class="form-label">
             <i class="fas fa-phone"></i> លេខទូរស័ព្ទ
           </label>
@@ -42,9 +42,9 @@
             class="form-control"
             placeholder="បញ្ចូលលេខទូរស័ព្ទរបស់អ្នក"
           />
-        </div>
+        </div> -->
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="dob" class="form-label">
             <i class="fas fa-calendar"></i> ថ្ងៃខែឆ្នាំកំណើត
           </label>
@@ -54,10 +54,10 @@
             type="date"
             class="form-control"
           />
-        </div>
+        </div> -->
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="address" class="form-label">
           <i class="fas fa-map-marker-alt"></i> អាសយដ្ឋាន
         </label>
@@ -68,7 +68,7 @@
           placeholder="បញ្ចូលអាសយដ្ឋាននៃលម្អិតរបស់អ្នក"
           rows="3"
         ></textarea>
-      </div>
+      </div> -->
     </div>
 
     <div class="form-actions">
@@ -147,7 +147,7 @@ onMounted(() => {
   font-weight: 700;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #247a85;
 }
 
 .form-grid {
@@ -171,7 +171,7 @@ onMounted(() => {
 
 .form-label i {
   margin-right: 8px;
-  color: #667eea;
+  color: #247a85;
 }
 
 .form-control {
@@ -185,7 +185,7 @@ onMounted(() => {
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #247a85;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -226,7 +226,7 @@ textarea.form-control {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #247a85 0%, #196d78 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
