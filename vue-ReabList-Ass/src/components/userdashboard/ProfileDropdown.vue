@@ -3,8 +3,7 @@
     <button
       class="profile-trigger"
       @click="toggleDropdown"
-      :aria-expanded="dropdownOpen"
-    >
+      :aria-expanded="dropdownOpen">
       <div class="user-details">
         <p class="user-display-name">{{ profileData.fullname }}</p>
         <p class="user-display-role">{{ profileData.role.name }}</p>
@@ -14,29 +13,25 @@
           v-if="profileData.avatar"
           :src="profileData.avatar"
           :alt="profileData.fullname"
-          class="avatar-image"
-        />
+          class="avatar-image" />
         <span v-else>{{ getInitials(profileData.fullname) }}</span>
       </div>
       <ChevronDown
         :size="18"
         class="dropdown-chevron"
         stroke-width="2.5"
-        :class="{ 'chevron-open': dropdownOpen }"
-      />
+        :class="{ 'chevron-open': dropdownOpen }" />
     </button>
 
     <Teleport to="body">
       <Transition
         name="dropdown-fade"
         @enter="onDropdownEnter"
-        @leave="onDropdownLeave"
-      >
+        @leave="onDropdownLeave">
         <div
           v-show="dropdownOpen"
           class="dropdown-backdrop"
-          @click="closeDropdown"
-        ></div>
+          @click="closeDropdown"></div>
       </Transition>
 
       <Transition name="dropdown-slide">
@@ -44,8 +39,7 @@
           v-show="dropdownOpen"
           class="dropdown-menu-wrapper"
           :style="dropdownPosition"
-          @click.stop
-        >
+          @click.stop>
           <ul class="dropdown-list">
             <li class="dropdown-item">
               <a
@@ -60,30 +54,49 @@
               <a
                 href="#"
                 class="dropdown-link"
-                data-route="/account"
-                @click="handleNavigation"
-                >Account</a
-              >
-            </li>
-            <li class="dropdown-item">
-              <a
-                href="#"
-                class="dropdown-link"
-                data-route="/settings"
+                data-route="/profile/setting"
                 @click="handleNavigation"
                 >Settings</a
               >
             </li>
             <li class="dropdown-divider"></li>
-            <li class="dropdown-item">
-              <a href="#" class="dropdown-link logout" @click="handleLogout"
-                >Logout</a
-              >
+            <li class="dropdown-item logout-item">
+              <button class="btn-logout" @click="showLogoutModal = true">
+                <i class="fas fa-sign-out-alt"></i> ចាកចេញ
+              </button>
             </li>
           </ul>
         </div>
       </Transition>
     </Teleport>
+
+    <!-- Logout Confirmation Modal -->
+    <Transition name="fade">
+      <div
+        v-if="showLogoutModal"
+        class="modal-backdrop"
+        @click="showLogoutModal = false">
+        <div class="modal-card" @click.stop>
+          <div class="modal-head">
+            <h3>ចាកចេញ?</h3>
+            <button @click="showLogoutModal = false" class="close-btn">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
+          </div>
+          <div class="modal-foot">
+            <button class="btn-cancel" @click="showLogoutModal = false">
+              បោះបង់
+            </button>
+            <button class="btn-confirm-logout" @click="handleLogout">
+              បាទ/ចាស! ចាកចេញ
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
   <div class="profile-dropdown-wrapper" v-else>
     <p class="loading-text">Loading...</p>
@@ -102,6 +115,7 @@ const authStore = useAuthStore();
 
 const profileData = ref(null);
 const dropdownOpen = ref(false);
+const showLogoutModal = ref(false);
 const triggerRect = ref(null);
 const backdropElement = ref(null);
 
@@ -163,19 +177,20 @@ const handleNavigation = (e) => {
   closeDropdown();
 };
 
-const handleLogout = async (e) => {
-  e.preventDefault();
+const handleLogout = async () => {
   try {
     await api.post("/auth/logout");
     console.log("Logout successful");
     authStore.logout();
+    showLogoutModal.value = false;
+    closeDropdown();
     router.push("/login");
   } catch (err) {
     console.error("Logout error:", err);
     authStore.logout();
-    router.push("/login");
-  } finally {
+    showLogoutModal.value = false;
     closeDropdown();
+    router.push("/login");
   }
 };
 
@@ -364,6 +379,197 @@ onBeforeUnmount(() => {
   height: 1px;
   background-color: #e2e8f0;
   margin: 6px 0;
+}
+
+.logout-item {
+  padding: 6px 8px;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
+}
+
+.btn-logout:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-logout:active {
+  transform: translateY(0);
+}
+
+.btn-logout i {
+  font-size: 14px;
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-card {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid #e2e8f0;
+}
+
+.modal-head h3 {
+  margin: 0;
+  color: #991b1b;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #cbd5e1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.close-btn:hover {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.modal-body {
+  margin-bottom: 24px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.modal-body p {
+  margin: 0;
+}
+
+.modal-foot {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  color: #475569;
+  transition: all 0.3s ease;
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
+}
+
+.btn-cancel:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.btn-confirm-logout {
+  flex: 1;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
+}
+
+.btn-confirm-logout:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+.btn-confirm-logout:active {
+  transform: translateY(0);
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 /* Transitions */
