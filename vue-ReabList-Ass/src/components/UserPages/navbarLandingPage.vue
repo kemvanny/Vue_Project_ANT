@@ -25,20 +25,38 @@
         >
           <ul class="navbar-nav gap-2 m-auto">
             <li class="nav-item">
-              <router-link class="nav-link nav-link-modern" :to="{ name: 'homepage' }">Homepage</router-link>
+              <router-link
+                class="nav-link nav-link-modern"
+                :to="{ name: 'homepage' }"
+                >ទំព័រដើម</router-link
+              >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link nav-link-modern" :to="{ name: 'features' }">Features</router-link>
+              <router-link
+                class="nav-link nav-link-modern"
+                :to="{ name: 'features' }"
+                >មុខងារ</router-link
+              >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link nav-link-modern" :to="{ name: 'aboutUs' }">About Us</router-link>
+              <router-link
+                class="nav-link nav-link-modern"
+                :to="{ name: 'aboutUs' }"
+                >អំពីយើង</router-link
+              >
             </li>
           </ul>
 
           <!-- AUTH BUTTONS -->
           <div class="d-flex align-items-center gap-2 mt-4 mt-lg-0">
-            <router-link :to="{ name: 'login' }" class="btn-login-modern">Login</router-link>
-            <router-link :to="{ name: 'register' }" class="btn btn-signup-modern">Sign Up</router-link>
+            <router-link :to="{ name: 'login' }" class="btn-login-modern"
+              >ចូលប្រើ</router-link
+            >
+            <router-link
+              :to="{ name: 'register' }"
+              class="btn btn-signup-modern"
+              >ចុះឈ្មោះ</router-link
+            >
           </div>
         </div>
       </div>
