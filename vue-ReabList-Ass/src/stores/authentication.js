@@ -275,6 +275,7 @@ export const useAuthStore = defineStore("auth", () => {
         resetMode.value = true;
         return true;
       }
+      return false;
     } catch (err) {
       console.error(err);
       error.value = err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើលេខកូដ។";
