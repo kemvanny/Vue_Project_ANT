@@ -78,18 +78,20 @@
                 v-model="newEmail"
                 type="email"
                 placeholder="បញ្ចូលអុីមែល"
-                class="form-input" />
+                class="form-input"
+              />
             </div>
             <br />
             <div class="action-group">
               <button
                 class="btn-primary"
                 @click="submitChangeEmail"
-                :disabled="authStore.profileLoading">
+                :disabled="authStore.profileLoading"
+              >
                 {{
-                  authStore.profileLoading ? "កំពុងផ្ញើ..." : (
-                    "ផ្ញើលេខកូដផ្ទៀងផ្ទាត់"
-                  )
+                  authStore.profileLoading
+                    ? "កំពុងផ្ញើ..."
+                    : "ផ្ញើលេខកូដផ្ទៀងផ្ទាត់"
                 }}
               </button>
               <button class="btn-ghost" @click="cancelChangeEmail">
@@ -106,18 +108,21 @@
               v-model="verificationCode"
               type="text"
               placeholder="បញ្ចូលលេខ ៦ ខ្ទង់"
-              class="form-input code-input" />
+              class="form-input code-input"
+            />
             <div class="action-group">
               <button
                 class="btn-primary"
                 @click="submitVerifyEmail"
-                :disabled="authStore.profileLoading">
+                :disabled="authStore.profileLoading"
+              >
                 បញ្ជាក់លេខកូដ
               </button>
               <button
                 class="btn-outline"
                 @click="resendEmailCode"
-                :disabled="authStore.profileLoading">
+                :disabled="authStore.profileLoading"
+              >
                 <i class="fas fa-redo"></i> ផ្ញើលេខកូដឡើងវិញ
               </button>
               <button class="btn-ghost" @click="cancelVerifyEmail">
@@ -152,15 +157,18 @@
                   v-model="passwordForm.currentPassword"
                   :type="showCurrentPassword ? 'text' : 'password'"
                   placeholder="បញ្ចូលពាក្យសម្ងាត់បច្ចុប្បន្ន"
-                  class="form-input" />
+                  class="form-input"
+                />
                 <button
                   type="button"
                   class="toggle-password-btn"
-                  @click="showCurrentPassword = !showCurrentPassword">
+                  @click="showCurrentPassword = !showCurrentPassword"
+                >
                   <i
                     :class="
                       showCurrentPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
-                    "></i>
+                    "
+                  ></i>
                 </button>
               </div>
             </div>
@@ -173,15 +181,16 @@
                   v-model="passwordForm.newPassword"
                   :type="showNewPassword ? 'text' : 'password'"
                   placeholder="បញ្ចូលពាក្យសម្ងាត់ថ្មី"
-                  class="form-input" />
+                  class="form-input"
+                />
                 <button
                   type="button"
                   class="toggle-password-btn"
-                  @click="showNewPassword = !showNewPassword">
+                  @click="showNewPassword = !showNewPassword"
+                >
                   <i
-                    :class="
-                      showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
-                    "></i>
+                    :class="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                  ></i>
                 </button>
               </div>
               <div class="password-strength">
@@ -189,7 +198,8 @@
                   :class="[
                     'strength-bar',
                     getPasswordStrength(passwordForm.newPassword),
-                  ]"></span>
+                  ]"
+                ></span>
                 <span class="strength-text">{{
                   getPasswordStrengthText(passwordForm.newPassword)
                 }}</span>
@@ -205,15 +215,18 @@
                   :type="showConfirmPassword ? 'text' : 'password'"
                   :class="{ 'is-invalid': passwordMismatch() }"
                   placeholder="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី"
-                  class="form-input" />
+                  class="form-input"
+                />
                 <button
                   type="button"
                   class="toggle-password-btn"
-                  @click="showConfirmPassword = !showConfirmPassword">
+                  @click="showConfirmPassword = !showConfirmPassword"
+                >
                   <i
                     :class="
                       showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
-                    "></i>
+                    "
+                  ></i>
                 </button>
               </div>
               <small v-if="passwordMismatch()" class="text-danger">
@@ -226,11 +239,12 @@
               <button
                 class="btn-primary"
                 @click="submitChangePassword"
-                :disabled="authStore.profileLoading || passwordMismatch()">
+                :disabled="authStore.profileLoading || passwordMismatch()"
+              >
                 {{
-                  authStore.profileLoading ?
-                    "កំពុងផ្លាស់ប្តូរ..."
-                  : "រក្សាទុកពាក្យសម្ងាត់ថ្មី"
+                  authStore.profileLoading
+                    ? "កំពុងផ្លាស់ប្តូរ..."
+                    : "រក្សាទុកពាក្យសម្ងាត់ថ្មី"
                 }}
               </button>
               <button class="btn-ghost" @click="cancelChangePassword">
@@ -260,7 +274,8 @@
               <input
                 type="checkbox"
                 v-model="settings.emailNotifications"
-                @change="saveSettings" />
+                @change="saveSettings"
+              />
               <span class="slider"></span>
             </label>
           </div>
@@ -278,7 +293,8 @@
               <input
                 type="checkbox"
                 v-model="settings.profilePublic"
-                @change="saveSettings" />
+                @change="saveSettings"
+              />
               <span class="slider"></span>
             </label>
           </div>
@@ -354,7 +370,8 @@
               v-model="deleteConfirmation.email"
               type="email"
               class="form-input"
-              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក" />
+              placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក"
+            />
           </div>
           <div class="modal-foot">
             <button class="btn-ghost" @click="showDeleteModal = false">
@@ -366,7 +383,8 @@
                 deleteConfirmation.email !== authStore.user?.email ||
                 authStore.profileLoading
               "
-              @click="deleteAccountConfirmed">
+              @click="deleteAccountConfirmed"
+            >
               {{ authStore.profileLoading ? "កំពុងលុប..." : "លុបឥឡូវនេះ" }}
             </button>
           </div>
@@ -379,13 +397,15 @@
       <div
         v-if="showEmailChangeConfirmModal"
         class="modal-backdrop"
-        @click="showEmailChangeConfirmModal = false">
+        @click="showEmailChangeConfirmModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>ផ្លាស់ប្តូរអ៊ីមែល?</h3>
             <button
               @click="showEmailChangeConfirmModal = false"
-              class="close-btn">
+              class="close-btn"
+            >
               &times;
             </button>
           </div>
@@ -403,17 +423,19 @@
           <div class="modal-foot">
             <button
               class="btn-ghost"
-              @click="showEmailChangeConfirmModal = false">
+              @click="showEmailChangeConfirmModal = false"
+            >
               បោះបង់
             </button>
             <button
               class="btn-primary"
               @click="confirmEmailChange"
-              :disabled="authStore.profileLoading">
+              :disabled="authStore.profileLoading"
+            >
               {{
-                authStore.profileLoading ? "កំពុងផ្ញើ..." : (
-                  "បាទ/ចាស! ផ្លាស់ប្តូរ"
-                )
+                authStore.profileLoading
+                  ? "កំពុងផ្ញើ..."
+                  : "បាទ/ចាស! ផ្លាស់ប្តូរ"
               }}
             </button>
           </div>
@@ -426,13 +448,15 @@
       <div
         v-if="showEmailVerifyConfirmModal"
         class="modal-backdrop"
-        @click="showEmailVerifyConfirmModal = false">
+        @click="showEmailVerifyConfirmModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>បញ្ជាក់ផ្លាស់ប្តូរអ៊ីមែល?</h3>
             <button
               @click="showEmailVerifyConfirmModal = false"
-              class="close-btn">
+              class="close-btn"
+            >
               &times;
             </button>
           </div>
@@ -447,17 +471,19 @@
           <div class="modal-foot">
             <button
               class="btn-ghost"
-              @click="showEmailVerifyConfirmModal = false">
+              @click="showEmailVerifyConfirmModal = false"
+            >
               បោះបង់
             </button>
             <button
               class="btn-primary"
               @click="confirmEmailVerify"
-              :disabled="authStore.profileLoading">
+              :disabled="authStore.profileLoading"
+            >
               {{
-                authStore.profileLoading ?
-                  "កំពុងផ្ទៀងផ្ទាត់..."
-                : "បាទ/ចាស! បញ្ជាក់"
+                authStore.profileLoading
+                  ? "កំពុងផ្ទៀងផ្ទាត់..."
+                  : "បាទ/ចាស! បញ្ជាក់"
               }}
             </button>
           </div>
@@ -470,7 +496,8 @@
       <div
         v-if="showPasswordConfirmModal"
         class="modal-backdrop"
-        @click="showPasswordConfirmModal = false">
+        @click="showPasswordConfirmModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>ផ្លាស់ប្តូរពាក្យសម្ងាត់?</h3>
@@ -491,11 +518,12 @@
             <button
               class="btn-primary"
               @click="confirmPasswordChange"
-              :disabled="authStore.profileLoading || passwordMismatch()">
+              :disabled="authStore.profileLoading || passwordMismatch()"
+            >
               {{
-                authStore.profileLoading ?
-                  "កំពុងផ្លាស់ប្តូរ..."
-                : "បាទ/ចាស! ផ្លាស់ប្តូរ"
+                authStore.profileLoading
+                  ? "កំពុងផ្លាស់ប្តូរ..."
+                  : "បាទ/ចាស! ផ្លាស់ប្តូរ"
               }}
             </button>
           </div>
@@ -508,7 +536,8 @@
       <div
         v-if="showSettingsSaveModal"
         class="modal-backdrop"
-        @click="showSettingsSaveModal = false">
+        @click="showSettingsSaveModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>រក្សាទុកការកំណត់?</h3>
@@ -536,14 +565,16 @@
       <div
         v-if="showPasswordChangeModal"
         class="modal-backdrop"
-        @click="showPasswordChangeModal = false">
+        @click="showPasswordChangeModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3
               :class="{
                 'success-title': passwordChangeResult.success,
                 'error-title': !passwordChangeResult.success,
-              }">
+              }"
+            >
               {{ passwordChangeResult.success ? "✓ ជោគជ័យ" : "✕ មានបញ្ហា" }}
             </h3>
             <button @click="showPasswordChangeModal = false" class="close-btn">
@@ -555,7 +586,8 @@
               :class="{
                 'success-message': passwordChangeResult.success,
                 'error-message': !passwordChangeResult.success,
-              }">
+              }"
+            >
               {{ passwordChangeResult.message }}
             </p>
           </div>
@@ -564,7 +596,8 @@
               :class="
                 passwordChangeResult.success ? 'btn-primary' : 'btn-danger'
               "
-              @click="showPasswordChangeModal = false">
+              @click="showPasswordChangeModal = false"
+            >
               {{ passwordChangeResult.success ? "ល្អ!" : "ព្យាយាមម្តងទៀត" }}
             </button>
           </div>
@@ -576,10 +609,10 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 import { useRouter } from "vue-router";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const router = useRouter();
 
 const settings = ref({

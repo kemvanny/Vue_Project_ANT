@@ -176,9 +176,15 @@ const parallaxStyle = (intensity) => ({
 
 // ─── Submit ──────────────────────────────────────────
 const handleForgotPassword = async () => {
+  // Reset local and store errors
   errors.email = "";
-  authStore.clearMessages?.() || (authStore.error = null);
+  if (authStore.clearMessages) {
+    authStore.clearMessages();
+  } else {
+    authStore.error = null;
+  }
 
+  // Zod Validation
   const result = schema.safeParse({ email: authStore.resetEmail });
 
   if (!result.success) {
@@ -187,13 +193,17 @@ const handleForgotPassword = async () => {
   }
 
   try {
+    // Await the store action
     const success = await authStore.forgotPassword();
+
+    // Only show modal if the store explicitly returns true
     if (success) {
-      router.push("/verify-otp");
+      showSuccessModal.value = true;
     }
   } catch (err) {
-    console.error("Forgot password error:", err);
-    authStore.error = "មានបញ្ហាបណ្ដោះអាសន្ន។ សូមព្យាយាមម្ដងទៀតនៅពេលក្រោយ។";
+    // This catches unexpected runtime crashes
+    console.error("Critical component error:", err);
+    authStore.error = "មានបញ្ហាបច្ចេកទេស។ សូមព្យាយាមម្ដងទៀត។";
   }
 };
 
@@ -208,6 +218,7 @@ const closeSuccessModal = () => {
   showSuccessModal.value = false;
   authStore.clearMessages?.();
   authStore.resetEmail = "";
+  // router.push("/verify-OTP");
 };
 </script>
 
