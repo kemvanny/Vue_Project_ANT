@@ -9,8 +9,8 @@
             <div class="col-lg-6">
               <span class="hero-badge">បង្កើនប្រសិទ្ធភាពរបស់អ្នក</span>
               <h1>
-                រៀបចំកិច្ចការ<br/><span style="color: var(--primary);"
-                  >សម្រួលជីវិតរបស់អ្នក</span
+                រៀបចំកិច្ចការ។<br /><span style="color: var(--primary)"
+                  >សម្រួលជីវិតរបស់អ្នក។</span
                 >
               </h1>
               <p class="text-body mb-5">
@@ -26,7 +26,7 @@
                   href="#"
                   class="btn btn-outline-dark rounded-pill py-3 px-4 d-flex align-items-center gap-2"
                 >
-                  <i data-lucide="play-circle"></i> មើលរបៀបដំណើរការ
+                  <play-circle /> មើលរបៀបដំណើរការ
                 </a>
               </div>
               <div class="d-flex align-items-center gap-3 reveal">
@@ -199,7 +199,7 @@
               </p>
 
               <div class="benefit-item">
-                <i data-lucide="shield-check" class="text-primary"></i>
+                <shield-check class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">សុវត្ថិភាព និងឯកជនភាព</h6>
                   <p class="small mb-0">
@@ -208,7 +208,7 @@
                 </div>
               </div>
               <div class="benefit-item">
-                <i data-lucide="smartphone" class="text-primary"></i>
+                <smartphone class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">Cloud Sync</h6>
                   <p class="small mb-0">
@@ -217,7 +217,7 @@
                 </div>
               </div>
               <div class="benefit-item">
-                <i data-lucide="smile" class="text-primary"></i>
+                <smile class="text-primary" />
                 <div>
                   <h6 class="mb-1 fw-bold">ងាយស្រួលប្រើប្រាស់</h6>
                   <p class="small mb-0">
@@ -284,7 +284,7 @@
                     animation: float 4s infinite;
                   "
                 >
-                  <i data-lucide="trending-up"></i>
+                  <trending-up />
                   <span class="fw-bold">បង្កើនផលិតភាព</span>
                 </div>
                 <img
@@ -362,6 +362,17 @@ template {
 .floating-img-wrap {
   position: relative;
   animation: float 6s ease-in-out infinite;
+}
+.btn-signup-modern {
+  background: var(--primary);
+  color: white !important;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(19, 112, 127, 0.2);
 }
 
 .floating-img {

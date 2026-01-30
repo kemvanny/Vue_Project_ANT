@@ -2,7 +2,7 @@
   <div class="profile-dashboard">
     <!-- Header -->
     <div class="page-header">
-      <h1>Profile</h1>
+      <h1>ព័ត៍មានគណនី</h1>
       <p class="subtitle">Manage your account Settings and Preferences</p>
     </div>
 
