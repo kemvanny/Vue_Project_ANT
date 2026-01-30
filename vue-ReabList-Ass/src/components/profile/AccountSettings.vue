@@ -40,16 +40,16 @@
         <div class="card-body info-grid">
           <div class="data-row">
             <span class="data-label">ឈ្មោះពេញ</span>
-            <span class="data-value">{{ authStore.user?.fullname }}</span>
+            <span class="data-value">{{ authStore.profile?.fullname }}</span>
           </div>
           <div class="data-row">
             <span class="data-label">អាសយដ្ឋានអ៊ីមែល</span>
-            <span class="data-value">{{ authStore.user?.email }}</span>
+            <span class="data-value">{{ authStore.profile?.email }}</span>
           </div>
           <div class="data-row">
             <span class="data-label">កាលបរិច្ឆេទចូលរួម</span>
             <span class="data-value">{{
-              formatDate(authStore.user?.created_at)
+              formatDate(authStore.profile?.created_at)
             }}</span>
           </div>
         </div>
@@ -364,7 +364,7 @@
           <div class="modal-body">
             <p>
               ដើម្បីបញ្ជាក់ថាអ្នកពិតជាចង់លុប សូមបញ្ចូលអ៊ីមែល
-              <strong>{{ authStore.user?.email }}</strong> ខាងក្រោម៖
+              <strong>{{ authStore.profile?.email }}</strong> ខាងក្រោម៖
             </p>
             <input
               v-model="deleteConfirmation.email"
@@ -380,7 +380,7 @@
             <button
               class="btn-danger"
               :disabled="
-                deleteConfirmation.email !== authStore.user?.email ||
+                deleteConfirmation.email !== authStore.profile?.email ||
                 authStore.profileLoading
               "
               @click="deleteAccountConfirmed"
@@ -815,7 +815,7 @@ const submitChangeEmail = async () => {
   }
 
   // Validation: Email should not be the same as current
-  if (newEmail.value === authStore.user?.email) {
+  if (newEmail.value === authStore.profile?.email) {
     authStore.profileError =
       "អ៊ីមែលថ្មីត្រូវមានភាពខុសប្លែកពីអ៊ីមែលបច្ចុប្បន្ន។";
     console.warn("New email same as current:", newEmail.value);
@@ -833,7 +833,7 @@ const confirmEmailChange = async () => {
   authStore.profileSuccess = null;
 
   console.log("Confirming email change to:", newEmail.value);
-  console.log("Current email:", authStore.user?.email);
+  console.log("Current email:", authStore.profile?.email);
 
   const result = await authStore.changeEmail(newEmail.value);
 
@@ -882,7 +882,7 @@ const confirmEmailVerify = async () => {
 
   if (result) {
     console.log("Email verification successful");
-    console.log("Updated user email:", authStore.user?.email);
+    console.log("Updated user email:", authStore.profile?.email);
 
     // Reset form and close all dialogs
     showVerifyEmail.value = false;
@@ -936,7 +936,9 @@ const resendEmailCode = async () => {
 
 const confirmLogoutAll = async () => {
   showLogoutModal.value = false;
-  authStore.logout();
+  const { useAuthStore } = await import("@/stores/authentication");
+  const authStoreInstance = useAuthStore();
+  authStoreInstance.logout();
   await router.push("/login");
 };
 
@@ -947,19 +949,19 @@ const confirmDeleteAccount = () => {
 const deleteAccountConfirmed = async () => {
   authStore.profileError = null;
 
-  if (deleteConfirmation.value.email !== authStore.user?.email) {
+  if (deleteConfirmation.value.email !== authStore.profile?.email) {
     authStore.profileError =
       "អ៊ីមែលមិនត្រូវគ្នាទេ។ សូមប្រាកដថាអ៊ីមែលត្រឹមត្រូវ។";
     console.warn(
       "Email mismatch. Expected:",
-      authStore.user?.email,
+      authStore.profile?.email,
       "Got:",
       deleteConfirmation.value.email,
     );
     return;
   }
 
-  console.log("Attempting to delete account for:", authStore.user?.email);
+  console.log("Attempting to delete account for:", authStore.profile?.email);
   const result = await authStore.deleteAccount(deleteConfirmation.value.email);
   if (result) {
     console.log("Account deleted successfully");

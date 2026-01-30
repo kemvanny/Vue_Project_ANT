@@ -3,7 +3,8 @@
     <button
       class="profile-trigger"
       @click="toggleDropdown"
-      :aria-expanded="dropdownOpen">
+      :aria-expanded="dropdownOpen"
+    >
       <div class="user-details">
         <p class="user-display-name">{{ profileData.fullname }}</p>
         <p class="user-display-role">{{ profileData.role.name }}</p>
@@ -13,25 +14,29 @@
           v-if="profileData.avatar"
           :src="profileData.avatar"
           :alt="profileData.fullname"
-          class="avatar-image" />
+          class="avatar-image"
+        />
         <span v-else>{{ getInitials(profileData.fullname) }}</span>
       </div>
       <ChevronDown
         :size="18"
         class="dropdown-chevron"
         stroke-width="2.5"
-        :class="{ 'chevron-open': dropdownOpen }" />
+        :class="{ 'chevron-open': dropdownOpen }"
+      />
     </button>
 
     <Teleport to="body">
       <Transition
         name="dropdown-fade"
         @enter="onDropdownEnter"
-        @leave="onDropdownLeave">
+        @leave="onDropdownLeave"
+      >
         <div
           v-show="dropdownOpen"
           class="dropdown-backdrop"
-          @click="closeDropdown"></div>
+          @click="closeDropdown"
+        ></div>
       </Transition>
 
       <Transition name="dropdown-slide">
@@ -39,7 +44,8 @@
           v-show="dropdownOpen"
           class="dropdown-menu-wrapper"
           :style="dropdownPosition"
-          @click.stop>
+          @click.stop
+        >
           <ul class="dropdown-list">
             <li class="dropdown-item">
               <a
@@ -47,7 +53,7 @@
                 class="dropdown-link"
                 data-route="/profile"
                 @click="handleNavigation"
-                >Profile Settings</a
+                >ព័ត៌មានគណនី</a
               >
             </li>
             <li class="dropdown-item">
@@ -56,7 +62,7 @@
                 class="dropdown-link"
                 data-route="/profile/setting"
                 @click="handleNavigation"
-                >Settings</a
+                >ការកំណត់</a
               >
             </li>
             <li class="dropdown-divider"></li>
@@ -75,7 +81,8 @@
       <div
         v-if="showLogoutModal"
         class="modal-backdrop"
-        @click="showLogoutModal = false">
+        @click="showLogoutModal = false"
+      >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>ចាកចេញ?</h3>
@@ -108,9 +115,11 @@ import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ChevronDown } from "lucide-vue-next";
 import api from "@/API/api";
+import { useProfileStore } from "@/stores/profilestore";
 import { useAuthStore } from "@/stores/authentication";
 
 const router = useRouter();
+const profileStore = useProfileStore();
 const authStore = useAuthStore();
 
 const profileData = ref(null);

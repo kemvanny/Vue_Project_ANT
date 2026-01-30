@@ -179,11 +179,11 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const activeModal = ref(null);
 
 const stats = ref({
