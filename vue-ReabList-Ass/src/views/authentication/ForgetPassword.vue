@@ -52,17 +52,6 @@
               <p class="text-muted">បញ្ចូលអ៊ីមែលដើម្បីទទួលតំណភ្ជាប់។</p>
             </div>
 
-            <transition name="shake">
-              <div
-                v-if="authStore.error"
-                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 shadow-sm"
-                role="alert"
-              >
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                {{ authStore.error }}
-              </div>
-            </transition>
-
             <form @submit.prevent="handleForgotPassword" novalidate>
               <AuthInput
                 label="អាសយដ្ឋានអ៊ីមែល"
@@ -74,6 +63,16 @@
                 required
                 class="stagger-2"
               />
+              <transition name="shake">
+                <div
+                  v-if="authStore.error"
+                  class="alert alert-danger py-2 small mb-4 rounded-3 border-0 shadow-sm"
+                  role="alert"
+                >
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  {{ authStore.error }}
+                </div>
+              </transition>
 
               <AuthButton
                 type="submit"

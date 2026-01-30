@@ -35,6 +35,29 @@ export const useAuthStore = defineStore("auth", () => {
     successMessage.value = null;
   };
 
+  // Function to translate common English error messages to Khmer
+  const translateError = (message) => {
+    if (!message) return message;
+
+    const translations = {
+      "Invalid email or password.": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
+      "Invalid email or password": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
+      "Email already exists": "អ៊ីមែលនេះមានរួចហើយ។",
+      "Email not found": "រកមិនឃើញអ៊ីមែលនេះទេ។",
+      "Invalid email": "អ៊ីមែលមិនត្រឹមត្រូវ។",
+      "Password is too weak": "ពាក្យសម្ងាត់ខ្សោយពេក។",
+      "Account not verified": "គណនីមិនទាន់បានផ្ទៀងផ្ទាត់។",
+      "Token expired": "តំណផុតកំណត់។",
+      "Invalid token": "តំណមិនត្រឹមត្រូវ។",
+      "OTP expired": "លេខកូដផ្ទៀងផ្ទាត់ផុតកំណត់។",
+      "Invalid OTP": "លេខកូដផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ។",
+      "Server error": "មានបញ្ហាជាមួយម៉ាស៊ីនបម្រើ។",
+      "Network error": "មានបញ្ហាបណ្តាញ។",
+    };
+
+    return translations[message] || message;
+  };
+
   const resetRegisterForm = () => {
     fullName.value = "";
     email.value = "";
@@ -187,7 +210,8 @@ export const useAuthStore = defineStore("auth", () => {
       }
     } catch (err) {
       error.value =
-        err.response?.data?.message || "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
+        translateError(err.response?.data?.message) ||
+        "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
       return false;
     } finally {
       loading.value = false;
@@ -217,7 +241,9 @@ export const useAuthStore = defineStore("auth", () => {
         return true;
       }
     } catch (err) {
-      error.value = err.response?.data?.message || "បរាជ័យក្នុងការផ្ញើលេខកូដ។";
+      error.value =
+        translateError(err.response?.data?.message) ||
+        "បរាជ័យក្នុងការផ្ញើលេខកូដ។";
       return false;
     } finally {
       loading.value = false;
@@ -298,7 +324,9 @@ export const useAuthStore = defineStore("auth", () => {
         return true; // <--- CRITICAL: Triggers modal even on this specific error
       }
 
-      error.value = err.response?.data?.message || "មានបញ្ហាជាមួយម៉ាស៊ីនបម្រើ";
+      error.value =
+        translateError(err.response?.data?.message) ||
+        "មានបញ្ហាជាមួយម៉ាស៊ីនបម្រើ";
       return false;
     } finally {
       loading.value = false;
@@ -360,9 +388,9 @@ export const useAuthStore = defineStore("auth", () => {
       console.error("RESET ERROR:", err.response?.data);
 
       error.value =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        err.response?.data?.errors?.password?.[0] ||
+        translateError(err.response?.data?.message) ||
+        translateError(err.response?.data?.error) ||
+        translateError(err.response?.data?.errors?.password?.[0]) ||
         "ការកំណត់ឡើងវិញបានបរាជ័យ។ តំណអាចមិនត្រឹមត្រូវ ឬផុតកំណត់.";
       return false;
     } finally {
