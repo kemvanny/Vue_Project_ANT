@@ -1015,7 +1015,7 @@ watch(
 
 .settings-container {
   font-family: "Inter", "Kantumruy Pro", sans-serif;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
   color: #1e293b;
