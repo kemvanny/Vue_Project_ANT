@@ -16,7 +16,7 @@
           active-class="active"
           exact
         >
-          <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
+          <pie-chart/> ផ្ទាំងព័ត៌មាន
         </router-link>
 
         <router-link
@@ -24,7 +24,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-list-ul"></i> <span>ភារកិច្ចទាំងអស់</span>
+          <list/> ភារកិច្ចទាំងអស់
         </router-link>
 
         <router-link
@@ -32,7 +32,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-hourglass-half"></i> <span>ការងារកំពុងរង់ចាំ</span>
+          <hourglass/> ការងារកំពុងរង់ចាំ
         </router-link>
 
         <router-link
@@ -40,7 +40,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-circle-check"></i> <span>ភារកិច្ចដែលបានបញ្ចប់</span>
+          <check-circle/> ភារកិច្ចដែលបានបញ្ចប់
         </router-link>
 
         <p class="nav-label">សកម្មភាពទូទៅ</p>
@@ -50,7 +50,7 @@
           data-bs-toggle="modal"
           data-bs-target="#addTaskModal"
         >
-          <PlusCircle :size="18" /> <span>បង្កើតភារកិច្ចថ្មី</span>
+          <PlusCircle :size="18" /> បង្កើតភារកិច្ចថ្មី
         </a>
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>
@@ -59,7 +59,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-user"></i> <span>ផ្ទាល់ខ្លួន</span>
+          <user/> <span>ផ្ទាល់ខ្លួន</span>
         </router-link>
 
         <router-link
@@ -67,7 +67,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-briefcase"></i> <span>ការងារ</span>
+          <i class="fas fa-briefcase"></i> ការងារ
         </router-link>
 
         <router-link
@@ -75,7 +75,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-graduation-cap"></i> <span>ការសិក្សា</span>
+          <briefcase/> ការសិក្សា
         </router-link>
       </nav>
 
@@ -88,7 +88,7 @@
           <button class="btn btn-primary btn-refresh">ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ</button>
         </div>
         <button class="btn-logout" @click="handleLogout">
-          <i class="fas fa-sign-out-alt me-2"></i> ចាកចេញ
+          <graduation-cap ></graduation-cap> ចាកចេញ
         </button>
       </div>
     </aside>
@@ -162,7 +162,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 800;
-  color: #64748b;
+  color: #94A3B8;
   margin: 24px 0 12px 16px;
 }
 
@@ -175,7 +175,7 @@
   text-decoration: none;
   border-radius: 14px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.95rem;
   margin-bottom: 4px;
   transition: all 0.3s ease;
   position: relative; /* Required for the indicator bar positioning */
