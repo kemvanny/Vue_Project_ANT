@@ -984,7 +984,6 @@ onMounted(() => {
   }
 });
 
-// Auto-dismiss error and success messages after timeout
 watch(
   () => authStore.profileError,
   (newVal) => {
