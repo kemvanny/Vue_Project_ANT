@@ -54,16 +54,6 @@
               </p>
             </div>
 
-            <transition name="shake">
-              <div
-                v-if="auth.error"
-                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center"
-              >
-                <i class="bi bi-exclamation-triangle-fill me-2"></i
-                >{{ auth.error }}
-              </div>
-            </transition>
-
             <div class="mb-4 stagger-2">
               <label
                 class="form-label small fw-bold text-uppercase text-muted ls-1"
@@ -90,6 +80,15 @@
                   :disabled="!isEditing"
                   @keyup.enter="toggleEdit"
                 />
+                <transition name="shake">
+                  <div
+                    v-if="auth.error"
+                    class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center"
+                  >
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i
+                    >{{ auth.error }}
+                  </div>
+                </transition>
 
                 <button
                   class="btn border-0 pe-3 fw-bold small"

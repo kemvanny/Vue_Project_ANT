@@ -60,7 +60,10 @@
         </button>
       </div>
 
-      <div v-if="authStore.profile?.avatar" class="delete-section">
+      <div
+        v-if="authStore.profile?.avatar && !avatarPreview"
+        class="delete-section"
+      >
         <button
           type="button"
           class="btn btn-danger"
@@ -101,9 +104,9 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const emit = defineEmits(["done"]);
 const fileInput = ref(null);
 const avatarPreview = ref(null);
@@ -148,6 +151,7 @@ const uploadAvatar = async () => {
       fileInput.value.value = "";
     }
     emit("done");
+    window.location.reload();
   }
 };
 
@@ -232,13 +236,13 @@ const deleteAvatarConfirmed = async () => {
   color: #333;
   font-size: 1.2rem;
   font-weight: 700;
-  margin: 0;
+  /* margin: 0; */
 }
 
 .avatar-email {
   color: #999;
   font-size: 0.9rem;
-  margin: 5px 0 0 0;
+  /* margin: 0; */
 }
 
 .upload-section {

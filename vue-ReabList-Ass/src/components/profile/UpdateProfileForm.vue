@@ -22,7 +22,7 @@
             <i class="fas fa-envelope"></i> អ៊ីមែល
           </label>
           <input
-            :value="authStore.user?.email"
+            :value="authStore.profile?.email"
             id="email"
             type="email"
             class="form-control"
@@ -90,9 +90,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const emit = defineEmits(["done", "reload"]);
 
 const formData = ref({

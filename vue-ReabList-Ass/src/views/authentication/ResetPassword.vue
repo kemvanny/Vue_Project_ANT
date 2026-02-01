@@ -63,16 +63,6 @@
               </div>
             </transition>
 
-            <transition name="shake">
-              <div
-                v-if="authStore.error"
-                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center"
-              >
-                <i class="bi bi-exclamation-triangle-fill me-2"></i
-                >{{ authStore.error }}
-              </div>
-            </transition>
-
             <form @submit.prevent="handleReset" novalidate>
               <input type="hidden" v-model="authStore.otpCode" />
 
@@ -93,6 +83,15 @@
                 :error="errors.confirmNewPassword"
                 class="stagger-4 mb-3"
               />
+              <transition name="shake">
+                <div
+                  v-if="authStore.error"
+                  class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center"
+                >
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i
+                  >{{ authStore.error }}
+                </div>
+              </transition>
 
               <AuthButton
                 type="submit"
