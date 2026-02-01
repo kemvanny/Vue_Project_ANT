@@ -1,243 +1,222 @@
 <template>
-  <!-- Floating Navbar Container -->
-  <div class="nav-container">
-    <nav class="navbar navbar-expand-lg nav-modern">
-      <div class="container-fluid p-0">
-        <!-- BRAND -->
-        <a class="brand-modern" href="#">
-          <div class="brand-symbol">✓</div>
-          ReabList
+  <div>
+    <div class="nav-wrapper" id="navbar">
+      <nav class="nav-modern">
+        <!-- Brand -->
+        <a href="#" class="brand-area">
+          <div class="brand-logo">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <span class="brand-name"><span class="brand-color">Reab</span>List</span>
         </a>
 
-        <!-- MOBILE TOGGLE -->
-        <button
-          class="navbar-toggler border-0 shadow-none"
-          data-bs-toggle="collapse"
-          data-bs-target="#reabNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- MENU ITEMS -->
-        <div
-          class="collapse navbar-collapse d-lg-flex justify-content-between align-items-center"
-          id="reabNav"
-        >
-          <ul class="navbar-nav gap-2 m-auto">
-            <li class="nav-item">
-              <router-link
-                class="nav-link nav-link-modern"
-                :to="{ name: 'homepage' }"
-                >ទំព័រដើម</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                class="nav-link nav-link-modern"
-                :to="{ name: 'features' }"
-                >មុខងារ</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                class="nav-link nav-link-modern"
-                :to="{ name: 'aboutUs' }"
-                >អំពីយើង</router-link
-              >
-            </li>
-          </ul>
-
-          <!-- AUTH BUTTONS -->
-          <div class="d-flex align-items-center gap-2 mt-4 mt-lg-0">
-            <router-link :to="{ name: 'login' }" class="btn-login-modern"
-              >ចូលប្រើ</router-link
-            >
-            <router-link
-              :to="{ name: 'register' }"
-              class="btn btn-signup-modern"
-              >ចុះឈ្មោះ</router-link
-            >
-          </div>
+        <!-- Navigation Links -->
+        <div class="nav-links-pill">
+          <router-link :to="{name: 'homepage'}" class="nav-link-item">
+            <i class="bi bi-house-door"></i>
+            ទំព័រដើម
+          </router-link>
+          <router-link :to="{name: 'features'}" class="nav-link-item">
+            <i class="bi bi-grid-1x2"></i>
+            មុខងារ
+          </router-link>
+          <router-link :to="{name: 'aboutUs'}" class="nav-link-item">
+            <i class="bi bi-people"></i>
+            អំពីយើង
+          </router-link>
         </div>
-      </div>
-    </nav>
+
+        <!-- Auth Actions -->
+        <div class="nav-actions">
+          <router-link :to="{name: 'login'}" class="btn-login">ចូលប្រើ</router-link>
+          <router-link :to="{name: 'register'}" class="btn-register">
+            <span>ចុះឈ្មោះ</span>
+            <i class="bi bi-arrow-right-short"></i>
+          </router-link>
+        </div>
+      </nav>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* --- New Floating Glass Navbar Styles --- */
-.nav-container {
+/* ================================
+   Glass Navbar (Filter Only)
+================================ */
+.nav-wrapper {
   position: fixed;
-  top: 20px;
+  top: 24px;
   left: 0;
   right: 0;
-  z-index: 1050;
-  padding: 0 15px;
+  z-index: 1000;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .nav-modern {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  padding: 15px 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-  transition: all 0.4s ease;
-  max-width: 1300px;
-  margin: 0 auto;
-}
-
-.nav-modern:hover {
-  box-shadow: 0 12px 32px rgba(19, 112, 127, 0.15);
-  transform: translateY(-2px);
-}
-
-.brand-modern {
+  backdrop-filter: blur(60px) saturate(80%);
+  -webkit-backdrop-filter: blur(2px) saturate(80%);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text-main) !important;
-  font-weight: 800;
-  font-size: 1.5rem;
-  text-decoration: none;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1300px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 
-.brand-symbol {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1491a2, #0f5c69);
+/* ================================
+   Brand
+================================ */
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  padding-left: 12px;
+}
+.brand-color{
+  color: var(--primary);
+}
+
+.brand-logo {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(145deg, #14b8a6, #0d9488);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  font-size: 1.4rem;
+  box-shadow:
+    0 10px 25px rgba(13, 148, 136, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.35s ease;
+}
+
+.brand-area:hover .brand-logo {
+  transform: scale(1.1);
+}
+
+.brand-name {
   font-weight: 900;
-  font-size: 18px;
-  box-shadow: 0 8px 20px rgba(19, 112, 127, 0.25);
-  transition: 0.3s;
-}
-
-.brand-modern:hover .brand-symbol {
-  transform: rotate(-8deg) scale(1.05);
-}
-
-.nav-link-modern {
-  display: flex;
-  align-items: center;
-  color: var(--text-muted) !important;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 8px 16px !important;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.nav-link-modern:hover {
-  color: var(--primary) !important;
-  background: rgba(19, 112, 127, 0.08);
-}
-
-.nav-link-modern.active {
-  color: var(--primary) !important;
-  background: rgba(19, 112, 127, 0.12);
-}
-
-.btn-login-modern {
-  color: var(--text-muted);
-  font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
-  padding: 8px 18px;
-  transition: 0.2s;
-}
-
-.btn-login-modern:hover {
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
   color: var(--text-main);
 }
 
-.btn-signup-modern {
-  background: var(--primary);
-  color: white !important;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 18px;
+/* ================================
+   Nav Links (UNCHANGED ACTIVE)
+================================ */
+.nav-links-pill {
+  display: flex;
+  gap: 6px;
+}
+
+.nav-link-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 17px;
   font-weight: 700;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(19, 112, 127, 0.2);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.25s ease;
 }
 
-.btn-signup-modern:hover {
-  background: var(--primary-hover);
+.nav-link-item i {
+  font-size: 1.25rem;
+}
+
+.nav-link-item:hover {
+  color: #0d9488;
+  background: rgba(13, 148, 136, 0.08);
+  border-radius: 10px;
+  transition: 0.4s;
+
+}
+
+/* CLEAN CLEAN ACTIVE */
+.nav-link-item {
+  position: relative;
+}
+
+.nav-link-item.active {
+  color: #0d9488;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  font-weight: 800;
+  padding: 12px 20px;
+  border-top: 2px solid teal;
+  border-bottom: 2px solid teal;
+  border-radius: 12px;
+}
+
+
+
+/* ================================
+  Actions
+================================ */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-login {
+  padding: 10px 32px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 999px;
+  color: #0d9488;
+  text-decoration: none;
+  background: rgba(13, 148, 136, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-login:hover {
+  background: rgba(13, 148, 136, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(19, 112, 127, 0.25);
 }
 
-/* --- Animation Keyframes --- */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.btn-register {
+  padding: 10px 32px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 999px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  box-shadow: 0 3px 6px rgba(13, 148, 136, 0.55);
+  transition: all 0.3s ease;
 }
 
-@keyframes float-delayed {
-  0% {
-    transform: translateY(0px) translateX(0px);
+.btn-register:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* ================================
+   Responsive
+================================ */
+@media (max-width: 900px) {
+  .nav-links-pill {
+    display: none;
   }
-  50% {
-    transform: translateY(-15px) translateX(10px);
+  .brand-name {
+    display: none;
   }
-  100% {
-    transform: translateY(0px) translateX(0px);
-  }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Scroll Reveal Base Classes */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: all 0.8s ease-out;
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(50px);
-  transition: all 0.8s ease-out;
-}
-
-.reveal-left.active,
-.reveal-right.active {
-  opacity: 1;
-  transform: translateX(0);
 }
 </style>
