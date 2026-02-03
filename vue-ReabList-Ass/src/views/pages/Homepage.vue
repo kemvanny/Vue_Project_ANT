@@ -4,11 +4,19 @@
 
     <div>
       <section class="hero">
+        <div class="hero-bg" ref="heroBg">
+          <span class="bg-circle circle-1"></span>
+          <span class="bg-circle circle-2"></span>
+          <span class="bg-circle circle-3"></span>
+          <span class="bg-circle circle-4"></span>
+          <div class="hero-noise"></div>
+        </div>
+
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-6">
               <span class="hero-badge">បង្កើនប្រសិទ្ធភាពរបស់អ្នក</span>
-              <h1>
+              <h1 class="fw-bold mb-4">
                 រៀបចំកិច្ចការ។<br /><span style="color: var(--primary)"
                   >សម្រួលជីវិតរបស់អ្នក។</span
                 >
@@ -311,24 +319,168 @@
 <script setup>
 import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 import Footer from "@/components/UserPages/Footer.vue";
+
+import { onMounted, onBeforeUnmount, ref } from "vue";
+
+const heroBg = ref(null);
+let handler = null;
+
+onMounted(() => {
+  handler = (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+
+    heroBg.value?.querySelectorAll(".bg-circle").forEach((blob, i) => {
+      const speed = (i + 1) * 0.3;
+      blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+    });
+  };
+
+  window.addEventListener("mousemove", handler);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("mousemove", handler);
+});
 </script>
 
 
 <style scoped>
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 200px 0 120px;
+  background: radial-gradient(
+      1200px circle at 10% 10%,
+      rgba(109, 213, 250, 0.3),
+      transparent 40%
+    ),
+    radial-gradient(
+      1000px circle at 90% 20%,
+      rgba(137, 247, 254, 0.35),
+      transparent 45%
+    ),
+    linear-gradient(135deg, #f8feff 0%, #eafaff 50%, #f6fbff 100%);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 3;
+}
+
+/* background wrapper */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* blobs */
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: 0.65;
+  animation: floatSlow 14s ease-in-out infinite;
+}
+
+/* sync with theme */
+.circle-1 {
+  width: 300px;
+  height: 300px;
+  background: color-mix(in srgb, var(--primary) 70%, white);
+  top: -120px;
+  left: -120px;
+}
+
+.circle-2 {
+  width: 460px;
+  height: 460px;
+  background: color-mix(in srgb, var(--accent) 70%, white);
+  top: 15%;
+  right: -180px;
+  animation-delay: 2s;
+}
+
+.circle-3 {
+  width: 220px;
+  height: 220px;
+  background: color-mix(in srgb, var(--primary) 50%, #7de2d1);
+  bottom: 15%;
+  left: 12%;
+  animation-delay: 4s;
+}
+
+.circle-4 {
+  width: 180px;
+  height: 180px;
+  background: color-mix(in srgb, var(--accent) 50%, #89f7fe);
+  bottom: -80px;
+  right: 30%;
+  animation-delay: 6s;
+}
+
+/* glass layer */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
+  background: rgba(255, 255, 255, 0.35);
+  z-index: 2;
+}
+
+/* noise */
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* animation */
+@keyframes floatSlow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -40px) scale(1.06);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* glow behind hero image */
+.floating-img-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 35%, transparent),
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: -1;
+}
+
 template {
   color: var(--body);
   background-color: white;
   overflow-x: hidden;
 }
 /* Hero */
-.hero {
+/* .hero {
   padding: 200px 0 120px;
-  background: radial-gradient(circle at top right, #e0f2f1 0%, #ffffff 60%);
-}
+  background: radial-gradient(circle at top right, #bafffc 0%, #ecfaff 60%);
+} */
 
 .hero h1 {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 1.1;
+  line-height: 1.3;
   margin-bottom: 1.5rem;
   opacity: 0;
   animation: fadeInScale 0.8s forwards 0.2s;

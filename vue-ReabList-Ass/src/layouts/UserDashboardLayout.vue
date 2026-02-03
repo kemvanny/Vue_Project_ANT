@@ -13,6 +13,8 @@
           @edit-task="openEdit"
         />
       </div>
+
+      <TelegramConnectBot/>
     </main>
 
     <TaskCreate ref="createRef" />
@@ -43,6 +45,7 @@ import Navbar from "@/components/userdashboard/Navbar.vue";
 import TaskCreate from "@/views/user/Task/TaskCreate.vue";
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
+import TelegramConnectBot from "@/components/TelegramConnectBot.vue";
 
 const createRef = ref(null);
 const activeTask = ref(null);
