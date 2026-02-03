@@ -4,138 +4,69 @@ import api from "@/API/api";
 import { useAuthStore } from "./authentication";
 
 export const useProfileStore = defineStore("profile", () => {
-  // ── State
+  // ── State ──
   const profile = ref(null);
   const profileLoading = ref(false);
   const profileError = ref(null);
   const profileSuccess = ref(null);
 
-  // ── Actions
+  // ── Helper: Extract Data ──
+  const extractData = (response) =>
+    response.data.data || response.data.result || response.data;
+
+  // ── Helper: Clear Messages ──
+  const clearMessages = () => {
+    profileError.value = null;
+    profileSuccess.value = null;
+  };
+
+  // ── Actions ──
 
   const getProfile = async () => {
     const authStore = useAuthStore();
-    // Don't fetch if no token
-    if (!authStore.token) {
-      profileError.value = "No authentication token. Please log in.";
-      return null;
-    }
+    if (!authStore.token) return null;
 
     profileLoading.value = true;
     profileError.value = null;
 
     try {
       const response = await api.get("/auth/profile");
-      console.log("Profile response:", response.data);
-
       if (response.status === 200 || response.data?.success) {
-        // Extract data from nested structure: response.data.data or response.data.result or response.data
-        const profileData =
-          response.data.data || response.data.result || response.data;
+        const profileData = extractData(response);
         profile.value = profileData;
         authStore.user = profileData;
-        console.log("Profile loaded successfully:", profile.value);
         return profileData;
-      } else {
-        profileError.value = response.data?.message || "Failed to load profile";
-        return null;
       }
     } catch (err) {
-      console.error("Get profile error:", err);
       profileError.value =
-        err.response?.data?.message ||
-        err.message ||
-        "បរាជ័យក្នុងការទាក់ទងទម្រង់។";
+        err.response?.data?.message || "បរាជ័យក្នុងការទាញយកទិន្នន័យ។";
+      console.error("Get profile error:", err);
     } finally {
       profileLoading.value = false;
     }
   };
 
   const updateProfile = async (profileData) => {
-    const authStore = useAuthStore();
-    // Check if token exists
-    if (!authStore.token) {
-      profileError.value = "No authentication token. Please log in.";
-      return false;
-    }
-
     profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
+    clearMessages();
 
     try {
-      // Build payload - only include fields that the API accepts
-      const payload = {};
-
-      // Always include fullname (required field)
-      if (profileData.fullname && profileData.fullname.trim()) {
-        payload.fullname = profileData.fullname.trim();
-      } else {
-        profileError.value = "Full name is required";
-        profileLoading.value = false;
-        return false;
-      }
-
-      // Optional fields - only add if they have values
-      // Note: API does NOT accept 'bio' field, so we exclude it
-      if (profileData.phone && profileData.phone.trim()) {
-        payload.phone = profileData.phone.trim();
-      }
-
-      if (profileData.address && profileData.address.trim()) {
-        payload.address = profileData.address.trim();
-      }
-
-      if (profileData.date_of_birth && profileData.date_of_birth.trim()) {
-        payload.date_of_birth = profileData.date_of_birth.trim();
-      }
-
-      console.log("Updating profile with payload:", payload);
-      console.log("Token exists:", !!authStore.token);
+      const payload = {
+        fullname: profileData.fullname?.trim(),
+      };
 
       const response = await api.put("/auth/profile", payload);
-
-      console.log("Update profile response status:", response.status);
-      console.log("Update profile response data:", response.data);
-
       if (response.status === 200 || response.data?.result) {
-        const responseData =
-          response.data.data || response.data.result || response.data;
-        profile.value = responseData;
-        authStore.user = responseData;
-        profileSuccess.value = "ទម្រង់បានធ្វើឱ្យទាន់សម័យបានជោគជ័យ!";
-        console.log("Profile updated successfully:", profile.value);
+        const updated = extractData(response);
+        profile.value = updated;
+        useAuthStore().user = updated;
+        profileSuccess.value = "ទម្រង់បានទ្វេឱ្យទាន់សមេយបានជោគជ័យ!";
         return true;
-      } else {
-        const errorMsg = response.data?.message || "Failed to update profile";
-        profileError.value = errorMsg;
-        console.warn("Update failed:", errorMsg);
-        return false;
       }
     } catch (err) {
+      profileError.value =
+        err.response?.data?.message || "បរាជ័យក្នុងការទ្វេឱ្យទាន់សមេយទម្រង់។";
       console.error("Update profile error:", err);
-      console.error("Error status:", err.response?.status);
-      console.error("Error data:", err.response?.data);
-
-      // Extract error message from API response
-      let errorMessage = "បរាជ័យក្នុងការធ្វើឱ្យទាន់សម័យទម្រង់។";
-
-      if (err.response?.data) {
-        const errData = err.response.data;
-        // Check for details array first (contains field-specific errors)
-        if (
-          errData.details &&
-          Array.isArray(errData.details) &&
-          errData.details.length > 0
-        ) {
-          errorMessage = errData.details[0];
-        } else if (errData.message) {
-          errorMessage = errData.message;
-        } else if (errData.error) {
-          errorMessage = errData.error;
-        }
-      }
-
-      profileError.value = errorMessage;
       return false;
     } finally {
       profileLoading.value = false;
@@ -143,48 +74,23 @@ export const useProfileStore = defineStore("profile", () => {
   };
 
   const uploadAvatar = async (file) => {
-    const authStore = useAuthStore();
-    // Check if token exists
-    if (!authStore.token) {
-      profileError.value = "No authentication token. Please log in.";
-      return false;
-    }
-
     profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
+    clearMessages();
 
     try {
       const formData = new FormData();
       formData.append("avatar", file);
+      const response = await api.put("/auth/profile/avatar", formData);
 
-      console.log("Uploading avatar...");
-      const response = await api.put("/auth/profile/avatar", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Upload avatar response:", response.data);
-
-      if (response.status === 200 || response.data?.success) {
-        const responseData =
-          response.data.data || response.data.result || response.data;
-        profile.value = responseData;
-        authStore.user = responseData;
-        profileSuccess.value = "រូបភាពប្រូហ្វាល់បានផ្ទុកបានជោគជ័យ!";
-        console.log("Avatar uploaded successfully");
-        return true;
-      } else {
-        profileError.value =
-          response.data?.message || "Failed to upload avatar";
-        return false;
-      }
+      const updated = extractData(response);
+      profile.value = updated;
+      useAuthStore().user = updated;
+      profileSuccess.value = "រូបភាពប្រូហ្វាល់បានផ្ទុកបានជោគជ័យ!";
+      return true;
     } catch (err) {
-      console.error("Upload avatar error:", err);
       profileError.value =
-        err.response?.data?.message ||
-        err.message ||
-        "បរាជ័យក្នុងការផ្ទុករូបភាព។";
+        err.response?.data?.message || "បរាជ័យក្នុងការផ្ទុករូបភាព។";
+      console.error("Upload avatar error:", err);
       return false;
     } finally {
       profileLoading.value = false;
@@ -192,234 +98,222 @@ export const useProfileStore = defineStore("profile", () => {
   };
 
   const deleteAvatar = async () => {
-    const authStore = useAuthStore();
-    // Check if token exists
-    if (!authStore.token) {
-      profileError.value = "No authentication token. Please log in.";
-      return false;
-    }
-
     profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
+    clearMessages();
 
     try {
       const response = await api.delete("/auth/profile/avatar");
-      console.log("Delete avatar response:", response.data);
-
-      if (response.status === 200 || response.data?.success) {
-        const responseData =
-          response.data.data || response.data.result || response.data;
-        profile.value = responseData;
-        authStore.user = responseData;
-        profileSuccess.value = "រូបភាពប្រូហ្វាល់បានលុបបានជោគជ័យ!";
-        console.log("Avatar deleted successfully");
-        return true;
-      } else {
-        profileError.value =
-          response.data?.message || "Failed to delete avatar";
-        return false;
-      }
+      const updated = extractData(response);
+      profile.value = updated;
+      useAuthStore().user = updated;
+      profileSuccess.value = "រូបភាពប្រូហ្វាល់បានលុបបានជោគជ័យ!";
+      return true;
     } catch (err) {
-      console.error("Delete avatar error:", err);
       profileError.value =
-        err.response?.data?.message ||
-        err.message ||
-        "បរាជ័យក្នុងការលុបរូបភាព។";
+        err.response?.data?.message || "បរាជ័យក្នុងការលុបរូបភាព។";
+      console.error("Delete avatar error:", err);
       return false;
     } finally {
       profileLoading.value = false;
     }
   };
 
-  const changePassword = async (currentPassword, newPass, confirmPass) => {
-    const authStore = useAuthStore();
+  const changePassword = async (
+    currentPassword,
+    newPassword,
+    confirmPassword,
+  ) => {
     profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
+    clearMessages();
 
     try {
-      // Try multiple payload formats for compatibility
-      const payload = {
-        currentPassword: currentPassword,
-        newPassword: newPass,
-        confirmPassword: confirmPass,
-      };
+      // Trim inputs
+      currentPassword = currentPassword?.trim();
+      newPassword = newPassword?.trim();
+      confirmPassword = confirmPassword?.trim();
 
-      console.log("Changing password with payload:", {
-        currentPassword: currentPassword,
-        newPassword: newPass,
-      });
-
-      const response = await api.put("/auth/change-password", payload);
-
-      console.log("Change password response:", response);
-      console.log("Response status:", response.status);
-      console.log("Response data:", response.data);
-
-      if (
-        response.data?.success ||
-        response.data?.result ||
-        response.status === 200 ||
-        response.status === 201
-      ) {
-        profileSuccess.value = "ពាក្យសម្ងាត់បានផ្លាស់ប្តូរបានជោគជ័យ!";
-        profileLoading.value = false;
-        return true;
-      } else {
-        profileError.value =
-          response.data?.message || "បរាជ័យក្នុងការផ្លាស់ប្តូរពាក្យសម្ងាត់។";
-        profileLoading.value = false;
+      // Client-side validation
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        profileError.value = "សូមបំពេញព័ត៌មានទាំងអស់។";
         return false;
       }
-    } catch (err) {
-      console.error("Change password error:", err);
-      console.error("Error response:", err.response);
-      console.error("Error response data:", err.response?.data);
-      console.error("Error status:", err.response?.status);
 
-      // Handle 400 Bad Request
-      if (err.response?.status === 400) {
-        const errorMsg =
-          err.response?.data?.message || err.response?.data?.error;
-        if (errorMsg && errorMsg.includes("current")) {
-          profileError.value = "ពាក្យសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ។";
-        } else if (errorMsg && errorMsg.includes("length")) {
-          profileError.value =
-            "ពាក្យសម្ងាត់ថ្មីត្រូវតែមានយ៉ាងហោចណាស់ ៨ តួអក្សរ។";
-        } else if (errorMsg && errorMsg.includes("match")) {
-          profileError.value = "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។";
-        } else {
-          profileError.value = errorMsg || "សូមបញ្ចូលទិន្នន័យត្រឹមត្រូវ។";
-        }
-      } else {
-        profileError.value =
-          err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "បរាជ័យក្នុងការផ្លាស់ប្តូរពាក្យសម្ងាត់។ សូលឺមព្យាយាម។";
+      if (newPassword !== confirmPassword) {
+        profileError.value = "ពាក្យសម្ងាត់ថ្មីមិនត្រូវគ្នា។";
+        return false;
       }
-      profileLoading.value = false;
+
+      if (newPassword.length < 6) {
+        profileError.value = "ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 6 តួអក្សរ។";
+        return false;
+      }
+
+      const response = await api.put("/auth/change-password", {
+        currentPassword,
+        newPassword,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        profileSuccess.value = "ពាក្យសម្ងាត់បានផ្លាស់ប្តូរបានជោគជ័យ!";
+        return true;
+      }
+
       return false;
+    } catch (err) {
+      profileError.value =
+        err.response?.data?.message || "ការប្តូរពាក្យសម្ងាត់បានបរាជ័យ។";
+      console.error("Change password error:", err);
+      return false;
+    } finally {
+      profileLoading.value = false;
     }
   };
 
   const changeEmail = async (newEmail, password) => {
-    const authStore = useAuthStore();
     profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
+    clearMessages();
 
     try {
-      // 1. Payload must match Postman: 'newEmail' and 'password'
-      const payload = {
-        newEmail: newEmail,
-        password: password,
-      };
+      // Trim inputs
+      newEmail = newEmail?.trim();
+      password = password?.trim();
 
-      // The 'api' instance should already handle the Bearer token in headers
-      const response = await api.post("/auth/change-email", payload);
-
-      // Note: Postman shows 201 Created status
-      if (response.status === 200 || response.status === 201) {
-        profileSuccess.value =
-          "សូមផ្ទៀងផ្ទាត់អ៊ីមែលថ្មីរបស់អ្នក ដើម្បីបញ្ចប់ការផ្លាស់ប្តូរ។";
-        return true;
-      }
-    } catch (err) {
-      profileError.value =
-        err.response?.data?.message || "បរាជ័យក្នុងការផ្លាស់ប្តូរអ៊ីមែល។";
-      return false;
-    } finally {
-      profileLoading.value = false;
-    }
-  };
-
-  const verifyChangeEmail = async (token) => {
-    const authStore = useAuthStore();
-    profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
-
-    try {
-      // 2. Payload must match Postman: key should be 'token', not 'code'
-      const payload = {
-        token: token,
-      };
-
-      const response = await api.post("/auth/verify-change-email", payload);
-
-      if (response.status === 200 || response.status === 201) {
-        // Update local state with the new profile data
-        profile.value = response.data.data || response.data;
-        if (authStore.user) authStore.user.email = profile.value.email;
-
-        profileSuccess.value = "អ៊ីមែលបានផ្លាស់ប្តូរដោយជោគជ័យ!";
-        return true;
-      }
-    } catch (err) {
-      profileError.value =
-        err.response?.data?.message ||
-        "លេខកូដផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ ឬផុតកំណត់។";
-      return false;
-    } finally {
-      profileLoading.value = false;
-    }
-  };
-
-  const deleteAccount = async (email = null) => {
-    const authStore = useAuthStore();
-    profileLoading.value = true;
-    profileError.value = null;
-    profileSuccess.value = null;
-
-    try {
-      const payload = email ? { email: email } : {};
-
-      console.log("Sending delete account request with payload:", payload);
-      const response = await api.post("/auth/delete-account", payload);
-
-      console.log("Delete account response:", response);
-      console.log("Response status:", response.status);
-      console.log("Response data:", response.data);
-
-      if (
-        response.data?.success ||
-        response.data?.result ||
-        response.status === 200 ||
-        response.status === 201
-      ) {
-        profileSuccess.value = "គណនីបានលុបដោយជោគជ័យ។ ផ្តល់ចូលម្តងទៀត...";
-        authStore.logout();
-        profileLoading.value = false;
-        return true;
-      } else {
-        profileError.value =
-          response.data?.message || "បរាជ័យក្នុងការលុបគណនី។ សូមព្យាយាមម្តងទៀត។";
-        profileLoading.value = false;
+      // Client-side validation
+      if (!newEmail || !password) {
+        profileError.value = "សូមបំពេញអ៊ីមែលនិងពាក្យសម្ងាត់។";
         return false;
       }
-    } catch (err) {
-      console.error("Delete account error:", err);
-      console.error("Error response:", err.response);
-      console.error("Error response data:", err.response?.data);
 
+      // Simple email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(newEmail)) {
+        profileError.value = "អ៊ីមែលមិនត្រឹមត្រូវ។";
+        return false;
+      }
+
+      const res = await api.post("/auth/change-email", {
+        newEmail,
+        password,
+      });
+
+      // 201 = created, token/email sent
+      if (res.status === 201 || res.data?.success) {
+        profileSuccess.value =
+          "លេខកូដផ្ទៀងផ្ទាត់ត្រូវបានផ្ញើទៅ " +
+          newEmail +
+          " រួចហើយ។ សូមពិនិត្យប្រអប់ទទួល (និង Spam)។";
+        return true;
+      }
+      return false;
+    } catch (err) {
       profileError.value =
         err.response?.data?.message ||
-        err.response?.data?.error ||
-        err.message ||
-        "បរាជ័យក្នុងការលុបគណនី។ សូមព្យាយាម។";
-      profileLoading.value = false;
+        "មានបញ្ហាក្នុងការស្នើសុំផ្លាស់ប្តូរអ៊ីមែល។";
+      console.error("Change email error:", err);
       return false;
+    } finally {
+      profileLoading.value = false;
     }
   };
 
-  // ── Export
+  const verifyChangeEmail = async (token, newEmail = null) => {
+    profileLoading.value = true;
+    clearMessages();
+
+    try {
+      // Validation
+      if (!token) {
+        profileError.value = "តំណផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ។";
+        return false;
+      }
+
+      // Only send newEmail if your backend actually requires it for validation
+      const payload = newEmail ? { token, newEmail } : { token };
+      const res = await api.post("/auth/verify-change-email", payload);
+
+      if (res.status === 200 && (res.data?.success || res.data?.data)) {
+        // Extract updated profile data from response
+        const updatedData = extractData(res);
+
+        // Update local profile state immediately
+        if (updatedData && updatedData.email) {
+          profile.value = { ...profile.value, ...updatedData };
+          useAuthStore().user = { ...useAuthStore().user, ...updatedData };
+          console.log("Email updated to:", updatedData.email);
+        }
+
+        // Also fetch fresh profile from server to be sure
+        await getProfile();
+
+        profileSuccess.value = "អ៊ីមែលត្រូវបានផ្លាស់ប្តូរជោគជ័យ!";
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      profileError.value =
+        err.response?.data?.message ||
+        "តំណផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ ឬផុតកំណត់ (១៥នាទី)។";
+      console.error("Verify email change error:", err);
+      return false;
+    } finally {
+      profileLoading.value = false;
+    }
+  };
+
+  const deleteAccount = async (email = null, password = null) => {
+    profileLoading.value = true;
+    clearMessages();
+
+    try {
+      // Validation
+      if (!email) {
+        profileError.value = "សូមបញ្ចូលអ៊ីមែលរបស់អ្នក។";
+        return false;
+      }
+
+      if (!password) {
+        profileError.value = "សូមបញ្ចូលពាក្យសម្ងាត់របស់អ្នក។";
+        return false;
+      }
+
+      // Trim inputs
+      email = email.trim();
+      password = password.trim();
+
+      if (email !== profile.value?.email?.trim()) {
+        profileError.value = "អ៊ីមែលមិនត្រូវគ្នា។";
+        return false;
+      }
+
+      const response = await api.post("/auth/delete-account", {
+        password,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        profileSuccess.value = "គណនីត្រូវបានលុបជោគជ័យ។";
+        // Logout the user
+        useAuthStore().logout();
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      profileError.value =
+        err.response?.data?.message || "បរាជ័យក្នុងការលុបគណនី។";
+      console.error("Delete account error:", err);
+      return false;
+    } finally {
+      profileLoading.value = false;
+    }
+  };
+
   return {
     profile,
     profileLoading,
     profileError,
     profileSuccess,
+    clearMessages,
     getProfile,
     updateProfile,
     uploadAvatar,
