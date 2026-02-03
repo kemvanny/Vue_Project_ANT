@@ -2,7 +2,7 @@
   <div class="profile-dashboard">
     <!-- Header -->
     <div class="page-header">
-      <h1>Profile</h1>
+      <h1>ព័ត៍មានគណនី</h1>
       <p class="subtitle">Manage your account Settings and Preferences</p>
     </div>
 
@@ -179,11 +179,11 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const activeModal = ref(null);
 
 const stats = ref({
