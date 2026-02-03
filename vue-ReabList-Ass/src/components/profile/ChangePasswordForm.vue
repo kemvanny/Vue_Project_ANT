@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <form @submit.prevent="submitForm">
     <div class="password-section">
       <h3>ផ្លាស់ប្តូរពាក្យសម្ងាត់</h3>
@@ -9,6 +9,12 @@
           ស្វាគមន៍ឡើងវិញ!
           សូមបញ្ចូលពាក្យសម្ងាត់បច្ចុប្បន្ននិងពាក្យសម្ងាត់ថ្មីដែលចង់ផ្លាស់ប្តូរ។
         </p>
+      </div>
+
+      <!-- Error Alert -->
+      <div v-if="profileStore.profileError" class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ profileStore.profileError }}
       </div>
 
       <div class="form-group">
@@ -144,7 +150,7 @@
         type="submit"
         class="btn btn-primary"
         :disabled="
-          authStore.profileLoading ||
+          profileStore.profileLoading ||
           !formData.currentPassword ||
           !formData.newPassword ||
           !formData.confirmPassword ||
@@ -154,20 +160,39 @@
       >
         <i class="fas fa-check"></i>
         {{
-          authStore.profileLoading
+          profileStore.profileLoading
             ? "កំពុងផ្លាស់ប្តូរ..."
             : "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
         }}
       </button>
+    </div>
+
+    <!-- Success Modal -->
+    <div
+      v-if="showSuccessModal"
+      class="modal-backdrop"
+      @click="closeSuccessModal"
+    >
+      <div class="modal-card" @click.stop>
+        <div class="success-icon-modal">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 class="modal-title">ជោគជ័យ!</h2>
+        <p class="modal-message">
+          ពាក្យសម្ងាត់របស់អ្នកត្រូវបានផ្លាស់ប្តូរដោយជោគជ័យ។
+        </p>
+        <button class="btn-modal-ok" @click="closeSuccessModal">យល់ព្រម</button>
+      </div>
     </div>
   </form>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 
-const authStore = useAuthStore();
+const profileStore = useProfileStore();
+const showSuccessModal = ref(false);
 
 const formData = ref({
   currentPassword: "",
@@ -210,24 +235,35 @@ const strengthText = computed(() => {
 });
 
 const submitForm = async () => {
+  // Clear previous messages
+  profileStore.clearMessages();
+
   if (passwordMismatch.value) {
-    authStore.profileError = "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។";
+    profileStore.profileError = "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។";
     return;
   }
 
-  const result = await authStore.changePassword(
+  const result = await profileStore.changePassword(
     formData.value.currentPassword,
     formData.value.newPassword,
     formData.value.confirmPassword,
   );
 
   if (result) {
+    // Show success modal
+    showSuccessModal.value = true;
+
+    // Clear form
     formData.value = {
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     };
   }
+};
+
+const closeSuccessModal = () => {
+  showSuccessModal.value = false;
 };
 </script>
 
@@ -263,6 +299,39 @@ const submitForm = async () => {
 
 .password-info i {
   font-size: 1.2rem;
+}
+
+/* Alert Styles */
+.alert {
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  animation: slideIn 0.3s ease;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert i {
+  font-size: 1.1rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-group {
@@ -449,6 +518,112 @@ const submitForm = async () => {
   cursor: not-allowed;
 }
 
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-icon-modal {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: scaleIn 0.5s ease;
+}
+
+.success-icon-modal i {
+  font-size: 40px;
+  color: white;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-title {
+  color: #22c55e;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.modal-message {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.btn-modal-ok {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-modal-ok:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
 @media (max-width: 768px) {
   .password-requirements {
     font-size: 0.85rem;
@@ -458,5 +633,9 @@ const submitForm = async () => {
     width: 100%;
     justify-content: center;
   }
+
+  .modal-card {
+    padding: 30px 20px;
+  }
 }
-</style> -->
+</style>
