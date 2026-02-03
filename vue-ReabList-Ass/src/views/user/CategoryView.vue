@@ -13,7 +13,7 @@
         </h1>
 
         <p class="hero-sub">
-          បញ្ជីភារកិច្ចទាំងអស់នៅក្នុងប្រភេទនេះ (Offline)
+          បញ្ជីភារកិច្ចទាំងអស់នៅក្នុងប្រភេទនេះ
         </p>
       </div>
 
@@ -41,28 +41,14 @@
 
     <!-- TOOLBAR -->
     <div class="toolbar">
-
-
       <div class="chips">
-        <button
-          class="chip"
-          :class="{ active: filter === 'all' }"
-          @click="filter = 'all'"
-        >
+        <button class="chip" :class="{ active: filter === 'all' }" @click="filter = 'all'">
           ទាំងអស់
         </button>
-        <button
-          class="chip"
-          :class="{ active: filter === 'progress' }"
-          @click="filter = 'progress'"
-        >
+        <button class="chip" :class="{ active: filter === 'progress' }" @click="filter = 'progress'">
           កំពុងដំណើរការ
         </button>
-        <button
-          class="chip"
-          :class="{ active: filter === 'done' }"
-          @click="filter = 'done'"
-        >
+        <button class="chip" :class="{ active: filter === 'done' }" @click="filter = 'done'">
           បានបញ្ចប់
         </button>
       </div>
@@ -80,7 +66,7 @@
         <div class="empty-icon">🗂️</div>
         <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
         <p class="empty-sub">
-          សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង/ពាក្យស្វែងរក។
+          សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង។
         </p>
 
         <button class="btn-submit-modern empty-btn" @click="createNew">
@@ -88,133 +74,161 @@
         </button>
       </div>
 
-      <!-- Grid -->
-      <div v-else class="task-grid">
-        <div
-          v-for="t in displayTasks"
-          :key="t.id"
-          class="task-card"
-          @click="viewTask(t)"
-        >
-          <div class="card-top">
-            <div class="title-wrap">
-              <div class="task-title text-truncate">{{ t.title }}</div>
-              <div class="task-sub text-truncate">
-                {{ t.notes?.trim() ? t.notes : "មិនមានកំណត់ចំណាំ" }}
-              </div>
-            </div>
-
-            <span class="pill" :class="priorityClass(t.priority)">
-              {{ t.priority || "មធ្យម" }}
-            </span>
-          </div>
-
-          <div class="card-mid">
-            <div class="meta">
-              <span class="meta-badge">📅 {{ t.date || "—" }}</span>
-              <span class="meta-badge">⏰ {{ t.time || "—" }}</span>
-            </div>
-
-            <span class="status" :class="{ done: t.isCompleted }">
-              {{ t.isCompleted ? "បានបញ្ចប់" : "កំពុងដំណើរការ" }}
-            </span>
-          </div>
-
-          <div class="card-bottom">
-            <span class="category-chip">
-              {{ t.category || categoryLabel }}
-            </span>
-
-            <span class="open-hint">ចុចដើម្បីមើល →</span>
-          </div>
-        </div>
+      <!-- ✅ Use same UI as AllTasks -->
+      <div v-else>
+        <BaseTaskTable
+          title="Category Tasks"
+          :tasks="displayTasks"
+          :pageSize="pageSize"
+          @update:pageSize="pageSize = $event"
+          @view="openView"
+          @edit="openEdit"
+          @delete="deleteNote"
+        />
       </div>
     </div>
+
+    <!-- MODALS -->
+    <TaskView
+      ref="viewModalRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @edit-task="openEdit"
+    />
+
+    <TaskUpdate
+      ref="editModalRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @updated="handleUpdated"
+    />
   </div>
 </template>
 
 <script setup>
+import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
+import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
+import TaskView from "@/views/user/Task/TaskView.vue";
+import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
+
+import { useNoteStore } from "@/stores/note";
+
 const route = useRoute();
-const emit = defineEmits(["create-task", "view-task"]);
+const noteStore = useNoteStore();
+const emit = defineEmits(["create-task"]);
 
-const loading = ref(true);
-const tasks = ref([]);
+const filter = ref("all");
+const pageSize = ref(8);
 
-const q = ref("");
-const filter = ref("all"); // all | progress | done
+// modal refs
+const viewModalRef = ref(null);
+const editModalRef = ref(null);
 
-const key = "reablist_tasks";
+// normalize category
+const normalizeCategory = (val) => {
+  const v = String(val || "").trim().toLowerCase();
 
-const loadTasks = () => {
-  const list = JSON.parse(localStorage.getItem(key) || "[]");
-  tasks.value = Array.isArray(list) ? list : [];
+  if (["personal", "ផ្ទាល់ខ្លួន"].includes(v)) return "personal";
+  if (["work", "ការងារ"].includes(v)) return "work";
+  if (["study", "school", "សិក្សា"].includes(v)) return "study";
+
+  return v;
 };
 
-const categoryParam = computed(() => route.params.category ?? "");
+const categoryParam = computed(() => route.params.name ?? "");
+const categoryKey = computed(() => normalizeCategory(categoryParam.value));
 
 const categoryLabel = computed(() => {
-  const c = String(categoryParam.value).toLowerCase();
-  if (c === "personal") return "ផ្ទាល់ខ្លួន";
-  if (c === "work") return "ការងារ";
-  if (c === "study") return "សិក្សា";
+  if (categoryKey.value === "personal") return "ផ្ទាល់ខ្លួន";
+  if (categoryKey.value === "work") return "ការងារ";
+  if (categoryKey.value === "study") return "សិក្សា";
   return String(categoryParam.value || "ទូទៅ");
 });
 
+const loading = computed(() => noteStore.loading);
+
+onMounted(async () => {
+  await noteStore.fetchAllNotes();
+});
+
 const filteredTasks = computed(() => {
-  const wanted = categoryLabel.value;
-  return tasks.value.filter((t) => (t.category || "") === wanted);
+  return (noteStore.notes || []).filter(
+    (t) => normalizeCategory(t.category) === categoryKey.value
+  );
 });
 
 const completedCount = computed(() =>
-  filteredTasks.value.filter((t) => t.isCompleted).length
+  filteredTasks.value.filter((t) => !!t.isCompleted).length
 );
 const inProgressCount = computed(() =>
   filteredTasks.value.filter((t) => !t.isCompleted).length
 );
 
 const displayTasks = computed(() => {
-  const text = q.value.toLowerCase();
+  let list = [...filteredTasks.value];
 
-  let list = filteredTasks.value.filter((t) => {
-    const hay =
-      `${t.title || ""} ${t.notes || ""}`.toLowerCase();
-    return hay.includes(text);
-  });
-
+  // filter chip
   if (filter.value === "progress") list = list.filter((t) => !t.isCompleted);
-  if (filter.value === "done") list = list.filter((t) => t.isCompleted);
+  if (filter.value === "done") list = list.filter((t) => !!t.isCompleted);
+
+  // newest first
+  list.sort((a, b) => {
+    const aKey = `${a.date || ""} ${a.time || ""}`.trim();
+    const bKey = `${b.date || ""} ${b.time || ""}`.trim();
+    return bKey.localeCompare(aKey);
+  });
 
   return list;
 });
 
-const priorityClass = (p) => {
-  if (p === "ខ្ពស់") return "high";
-  if (p === "មធ្យម") return "medium";
-  return "low";
+// create
+const createNew = () => emit("create-task");
+
+// view
+const openView = async (task) => {
+  await noteStore.openNote(task.id);
+  viewModalRef.value?.open();
 };
 
-const createNew = () => emit("create-task");
-const viewTask = (task) => emit("view-task", task);
+// edit
+const openEdit = async (task) => {
+  await noteStore.openNote(task.id);
+  editModalRef.value?.open();
+};
 
-onMounted(() => {
-  loadTasks();
-  loading.value = false;
-});
+// after update
+const handleUpdated = async () => {
+  await noteStore.fetchAllNotes();
+};
 
-watch(categoryParam, () => {
-  loadTasks();
-  q.value = "";
+// delete
+const deleteNote = async (id) => {
+  const ok = confirm("ចង់លុប Note នេះមែនទេ?");
+  if (!ok) return;
+
+  try {
+    await api.delete(`/notes/${id}`);
+    await noteStore.fetchAllNotes();
+  } catch (err) {
+    console.error("delete failed:", err.response?.data || err.message);
+    alert("Delete failed!");
+  }
+};
+
+// reset chip when route changes
+watch(categoryParam, async () => {
   filter.value = "all";
+  if (!noteStore.notes.length) await noteStore.fetchAllNotes();
 });
 </script>
 
 <style scoped>
-/* ======= HERO ======= */
+/* ======= HERO (same style as AllTasks) ======= */
 .category-hero {
-  background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(6, 182, 212, 0.10));
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(6, 182, 212, 0.1));
   border: 1px solid rgba(13, 148, 136, 0.18);
   border-radius: 26px;
   padding: 22px;
@@ -267,10 +281,7 @@ watch(categoryParam, () => {
   margin: 0 0 6px;
   line-height: 1.2;
 }
-
-.hero-accent {
-  color: #0d9488;
-}
+.hero-accent { color: #0d9488; }
 
 .hero-sub {
   margin: 0;
@@ -315,47 +326,17 @@ watch(categoryParam, () => {
   padding: 14px 16px;
 }
 
-/* ======= TOOLBAR ======= */
+/* ======= TOOLBAR chips ======= */
 .toolbar {
   display: flex;
   gap: 12px;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
-.search-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border: 2px solid transparent;
-  border-radius: 18px;
-  padding: 12px 14px;
-  transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
-}
-
-.search-wrap:hover {
-  transform: translateY(-1px);
-  border-color: rgba(13, 148, 136, 0.22);
-  box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.45);
-}
-
-.search-ic { font-size: 14px; }
-
-.search-input {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.chips {
-  display: flex;
-  gap: 8px;
-}
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .chip {
   border: 2px solid rgba(13, 148, 136, 0.18);
@@ -367,19 +348,17 @@ watch(categoryParam, () => {
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-
 .chip:hover {
   transform: translateY(-1px);
   box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.35);
 }
-
 .chip.active {
   border-color: rgba(13, 148, 136, 0.55);
   background: rgba(13, 148, 136, 0.08);
   color: #0d9488;
 }
 
-/* ======= LOADING ======= */
+/* loading */
 .loading {
   display: flex;
   align-items: center;
@@ -396,11 +375,11 @@ watch(categoryParam, () => {
   animation: bounce 0.9s infinite alternate;
 }
 @keyframes bounce {
-  from { transform: translateY(0); opacity: .6; }
+  from { transform: translateY(0); opacity: 0.6; }
   to { transform: translateY(-6px); opacity: 1; }
 }
 
-/* ======= EMPTY ======= */
+/* empty */
 .empty-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -414,135 +393,7 @@ watch(categoryParam, () => {
 .empty-sub { color: #64748b; font-weight: 700; margin: 0 0 16px; }
 .empty-btn { width: auto; padding: 14px 26px; }
 
-/* ======= GRID ======= */
-.task-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-@media (max-width: 1100px) {
-  .category-hero { flex-direction: column; }
-  .hero-right { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .task-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .chips { justify-content: flex-start; flex-wrap: wrap; }
-}
-@media (max-width: 680px) {
-  .task-grid { grid-template-columns: 1fr; }
-}
-
-/* ======= CARD ======= */
-.task-card {
-  background: #fff;
-  border: 1px solid #f1f5f9;
-  border-radius: 22px;
-  padding: 16px;
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  animation: popIn .22s ease-out both;
-}
-@keyframes popIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.task-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(13, 148, 136, 0.25);
-  box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.45);
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.task-title {
-  font-weight: 900;
-  color: #0f172a;
-}
-.task-sub {
-  margin-top: 4px;
-  font-weight: 800;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.card-mid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-}
-
-.meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.meta-badge {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  color: #334155;
-}
-
-/* Priority pill */
-.pill {
-  font-weight: 900;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-.pill.high { background: #fee2e2; color: #dc2626; }
-.pill.medium { background: #fef3c7; color: #d97706; }
-.pill.low { background: #dcfce7; color: #16a34a; }
-
-/* Status */
-.status {
-  font-weight: 900;
-  font-size: 11px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-  color: #ef4444;
-  background: #fff;
-}
-.status.done {
-  color: #0d9488;
-  border-color: rgba(13, 148, 136, 0.25);
-  background: #f0fdfa;
-}
-
-.card-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-}
-
-.category-chip {
-  background: rgba(13, 148, 136, 0.10);
-  color: #0d9488;
-  border: 1px solid rgba(13, 148, 136, 0.18);
-  padding: 7px 10px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 12px;
-}
-
-.open-hint {
-  color: #94a3b8;
-  font-weight: 900;
-  font-size: 12px;
-}
-
-/* Button match CreateTask */
+/* button same as AllTasks */
 .btn-submit-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
   color: #fff;
@@ -557,5 +408,19 @@ watch(categoryParam, () => {
 .btn-submit-modern:hover {
   transform: translateY(-1px);
   box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
+}
+
+/* responsive hero */
+@media (max-width: 1100px) {
+  .category-hero { flex-direction: column; }
+}
+@media (max-width: 680px) {
+  .hero-right { grid-template-columns: 1fr; }
+  .hero-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
 }
 </style>

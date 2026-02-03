@@ -31,7 +31,11 @@
           <div class="notes-area">
             <div class="block-label">កំណត់ចំណាំ</div>
             <div class="notes-paper">
-              <p v-if="task?.notes?.trim()">{{ task.notes }}</p>
+<p v-if="((task?.content ?? task?.notes) || '').trim()">
+  {{ (task?.content ?? task?.notes).trim() }}
+</p>
+
+
               <div v-else class="empty-notes">មិនមានកំណត់ចំណាំបន្ថែម...</div>
             </div>
           </div>
@@ -81,6 +85,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
+import api from "@/API/api";
 
 const props = defineProps({
   task: { type: Object, required: true },
@@ -98,6 +103,39 @@ const priorityClass = computed(() => {
   if (props.task?.priority === "មធ្យម") return "medium";
   return "low";
 });
+
+
+
+const normalizeDate = (val) => {
+  if (!val) return "";
+
+  // already ok: 2026-02-06
+  if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+
+  // API format: 02/06/2026
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+    const [mm, dd, yyyy] = val.split("/");
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  // ISO format: 2026-02-06T00:00:00.000Z
+  if (val.includes("T")) return val.split("T")[0];
+
+  return val;
+};
+
+const normalizeTime = (val) => {
+  if (!val) return "";
+
+  // API: 17:52:00 -> 17:52
+  if (/^\d{2}:\d{2}:\d{2}$/.test(val)) return val.slice(0, 5);
+
+  // already ok: 17:52
+  if (/^\d{2}:\d{2}$/.test(val)) return val;
+
+  return val;
+};
+
 
 const markDone = () => {
   emit("mark-completed", props.task);

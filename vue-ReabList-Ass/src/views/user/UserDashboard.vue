@@ -10,7 +10,7 @@
 
         <h1 class="hero-title">ផ្ទាំងគ្រប់គ្រងភារកិច្ច</h1>
         <p class="hero-sub">
-          ស្ថិតិភារកិច្ច Offline ពេលវេលាពិត (LocalStorage)
+          ស្ថិតិភារកិច្ច Live ពេលវេលាពិត (API)
         </p>
 
         <div class="hero-actions">
@@ -80,7 +80,10 @@
 
         <div class="stat-mini text-dark">{{ inProgressCount }}</div>
 
-        <div class="d-flex align-items-center gap-2 small fw-800" :class="inProgressCount ? 'text-danger' : 'text-success'">
+        <div
+          class="d-flex align-items-center gap-2 small fw-800"
+          :class="inProgressCount ? 'text-danger' : 'text-success'"
+        >
           <Flame v-if="inProgressCount" :size="16" />
           <CheckCircle v-else :size="16" />
           {{ inProgressCount ? "ត្រូវការយកចិត្តទុកដាក់" : "ល្អណាស់! គ្មានការងារកំពុងធ្វើ" }}
@@ -134,8 +137,8 @@
             <div class="d-flex align-items-center gap-3">
               <Server :size="18" class="text-primary" />
               <div>
-                <div class="small fw-900">Offline Storage</div>
-                <div class="x-small fw-700 text-muted">កំពុងប្រើ LocalStorage</div>
+                <div class="small fw-900">API Storage</div>
+                <div class="x-small fw-700 text-muted">កំពុងប្រើ API</div>
               </div>
             </div>
             <span class="status-pill ok">ដំណើរការ</span>
@@ -146,7 +149,7 @@
               <ShieldCheck :size="18" class="text-warning" />
               <div>
                 <div class="small fw-900">សុវត្ថិភាព</div>
-                <div class="x-small fw-700 text-muted">Data នៅក្នុង Browser</div>
+                <div class="x-small fw-700 text-muted">Token/Auth (បើមាន)</div>
               </div>
             </div>
             <span class="status-pill warn">មធ្យម</span>
@@ -165,6 +168,10 @@
         </div>
       </div>
     </div>
+
+    <p v-if="errorMsg" style="color:red;font-weight:900;margin-top:12px;">
+      {{ errorMsg }}
+    </p>
   </div>
 </template>
 
@@ -172,23 +179,72 @@
 import { computed, onMounted, ref } from "vue";
 import { Download, Flame, CalendarCheck, Server, CheckCircle, ShieldCheck } from "lucide-vue-next";
 import ApexChart from "vue3-apexcharts";
+import api from "@/api/api";
 
-const STORAGE_KEY = "reablist_tasks";
+
+
+const API_BASE_URL = "https://ant-g6-todolistit.linkpc.net/api/v1";
+const ENDPOINT = "/notes";
+
+
 const tasks = ref([]);
+const loading = ref(false);
+const errorMsg = ref("");
 
-const loadTasks = () => {
-  const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  tasks.value = Array.isArray(list) ? list : [];
-};
+function isTaskDone(t) {
+  if (typeof t?.isCompleted === "boolean") return t.isCompleted;
+  if (typeof t?.completed === "boolean") return t.completed;
+  if (typeof t?.is_completed === "boolean") return t.is_completed;
+  if (typeof t?.isCompleted === "number") return t.isCompleted === 1;
 
-onMounted(() => {
-  loadTasks();
-});
+  const s = String(t?.status ?? "").toUpperCase();
+  if (["DONE", "COMPLETED", "FINISHED"].includes(s)) return true;
 
+  return false;
+}
+
+
+
+async function fetchTasks() {
+  loading.value = true;
+  try {
+    const res = await api.get("/notes");
+
+    console.log("NOTES FULL RESPONSE:", res.data);
+
+    // ✅ FIX: extract list correctly
+    const payload = res.data?.data;
+
+    const list =
+      payload?.data ||          // data: { data: [] }
+      payload?.notes ||         // data: { notes: [] }
+      payload?.results ||       // data: { results: [] }
+      payload?.items ||         // data: { items: [] }
+      payload ||                // data: []
+      [];
+
+    tasks.value = Array.isArray(list) ? list : [];
+
+    console.log("DASHBOARD NOTES LENGTH:", tasks.value.length);
+  } catch (e) {
+    console.error("Dashboard fetch failed:", e);
+    tasks.value = [];
+  } finally {
+    loading.value = false;
+  }
+}
+
+
+
+
+onMounted(fetchTasks);
+
+// counts
 const totalCount = computed(() => tasks.value.length);
-const doneCount = computed(() => tasks.value.filter(t => t.isCompleted).length);
-const inProgressCount = computed(() => tasks.value.filter(t => !t.isCompleted).length);
+const doneCount = computed(() => tasks.value.filter(isTaskDone).length);
+const inProgressCount = computed(() => tasks.value.filter((t) => !isTaskDone(t)).length);
 
+// efficiency
 const efficiency = computed(() => {
   if (!totalCount.value) return 0;
   return Math.round((doneCount.value / totalCount.value) * 100);
@@ -202,7 +258,7 @@ const efficiencyStatus = computed(() => {
   return "ចាប់ផ្តើម";
 });
 
-/* ===== Chart: 7-day created tasks ===== */
+// chart
 const daysKh = ["ចន្ទ", "អង្គារ", "ពុធ", "ព្រហ", "សុក្រ", "សៅរ៍", "អាទិត្យ"];
 
 const last7Days = () => {
@@ -215,6 +271,13 @@ const last7Days = () => {
   });
 };
 
+function getCreatedAt(t) {
+  const v = t?.createdAt ?? t?.created_at ?? t?.created_date ?? t?.createdDate;
+  if (!v) return null;
+  const d = new Date(v);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 const series = computed(() => {
   const days = last7Days();
   const counts = days.map((day) => {
@@ -223,8 +286,8 @@ const series = computed(() => {
     end.setDate(end.getDate() + 1);
 
     return tasks.value.filter((t) => {
-      const created = t.createdAt ? new Date(t.createdAt) : null;
-      if (!created || isNaN(created.getTime())) return false;
+      const created = getCreatedAt(t);
+      if (!created) return false;
       return created >= start && created < end;
     }).length;
   });
@@ -233,21 +296,12 @@ const series = computed(() => {
 });
 
 const chartOptions = computed(() => ({
-  chart: {
-    type: "area",
-    toolbar: { show: false },
-    sparkline: { enabled: false },
-  },
+  chart: { type: "area", toolbar: { show: false }, sparkline: { enabled: false } },
   colors: ["#0d9488"],
   stroke: { curve: "smooth", width: 3 },
   fill: {
     type: "gradient",
-    gradient: {
-      shadeIntensity: 1,
-      opacityFrom: 0.35,
-      opacityTo: 0.05,
-      stops: [0, 100],
-    },
+    gradient: { shadeIntensity: 1, opacityFrom: 0.35, opacityTo: 0.05, stops: [0, 100] },
   },
   dataLabels: { enabled: false },
   xaxis: {
@@ -260,7 +314,6 @@ const chartOptions = computed(() => ({
   grid: { show: false },
 }));
 
-/* Export */
 const exportTasks = () => {
   const blob = new Blob([JSON.stringify(tasks.value, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -271,6 +324,9 @@ const exportTasks = () => {
   URL.revokeObjectURL(url);
 };
 </script>
+
+
+
 
 <style scoped>
 .fw-900 { font-weight: 900; }

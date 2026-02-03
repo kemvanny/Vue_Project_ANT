@@ -5,22 +5,30 @@
         <label class="label-modern">ចំណងជើង Task</label>
         <input v-model.trim="form.title" class="input-modern" required />
       </div>
+
       <!-- Notes / Content -->
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
         <textarea
-          v-model.trim="form.notes"
+          v-model.trim="form.content"
           class="input-modern"
           rows="3"
           placeholder="សរសេរព័ត៌មានបន្ថែម..."
-        />
+        ></textarea>
       </div>
-
 
       <div class="row g-3">
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
-          <input v-model="form.date" type="date" class="input-modern" required />
+
+          <!-- ✅ prevent past date -->
+          <input
+            v-model="form.date"
+            type="date"
+            class="input-modern"
+            required
+            :min="today"
+          />
         </div>
 
         <div class="col-md-6">
@@ -29,11 +37,7 @@
         </div>
 
         <div class="col-md-6">
-          <BaseSelect
-            label="ប្រភេទ"
-            v-model="form.category"
-            :options="categoryOptions"
-          />
+          <BaseSelect label="ប្រភេទ" v-model="form.category" :options="categoryOptions" />
         </div>
 
         <div class="col-md-6">
@@ -46,25 +50,30 @@
         </div>
       </div>
 
-      <button class="btn-submit-modern mt-3">
-        បញ្ជូលភារកិច្ច
-      </button>
+      <button class="btn-submit-modern mt-3">បញ្ជូលភារកិច្ច</button>
     </form>
   </BaseModal>
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import api from "@/API/api";
+
+const router = useRouter();
+const emit = defineEmits(["created"]);
 
 const modalRef = ref(null);
+
+/** ✅ today date for min */
+const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },
   { value: "សិក្សា", label: "សិក្សា" },
-
 ];
 
 const priorityOptions = [
@@ -75,7 +84,7 @@ const priorityOptions = [
 
 const form = ref({
   title: "",
-  notes: "",
+  content: "",
   date: "",
   time: "",
   category: "ការងារ",
@@ -85,7 +94,7 @@ const form = ref({
 const resetForm = () => {
   form.value = {
     title: "",
-    notes: "",
+    content: "",
     date: "",
     time: "",
     category: "ការងារ",
@@ -93,21 +102,47 @@ const resetForm = () => {
   };
 };
 
-const createTask = () => {
-  const key = "reablist_tasks";
-  const newTask = {
-    id: Date.now(),
-    ...form.value,
-    isCompleted: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+const createTask = async () => {
+  try {
+    // ✅ prevent past date (backend-safe validation)
+    if (form.value.date && form.value.date < today) {
+      alert("មិនអាចជ្រើសរើសកាលបរិច្ឆេទនៅអតីតកាលបានទេ");
+      return;
+    }
 
-  const old = JSON.parse(localStorage.getItem(key) || "[]");
-  old.unshift(newTask);
-  localStorage.setItem(key, JSON.stringify(old));
+    const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
+    const categoryMap = {
+      ផ្ទាល់ខ្លួន: "PERSONAL",
+      ការងារ: "WORK",
+      សិក្សា: "SCHOOL",
+    };
 
-  modalRef.value?.close();
+    const payload = {
+      title: form.value.title,
+      content: form.value.content,
+      date: form.value.date,
+      time: form.value.time,
+      priority: priorityMap[form.value.priority] || "MEDIUM",
+      category: categoryMap[form.value.category] || "WORK",
+    };
+
+    console.log("[API] POST /notes payload:", payload);
+
+    const res = await api.post("/notes", payload);
+    console.log("Created Note:", res.data);
+
+    modalRef.value?.close();
+    resetForm();
+
+    emit("created");
+
+    if (router.currentRoute.value.path !== "/dashboard/tasks") {
+      await router.push("/dashboard/tasks");
+    }
+  } catch (err) {
+    console.error("❌ Create Task Error:", err?.response?.data || err.message);
+    alert(err?.response?.data?.message || "Create Task failed");
+  }
 };
 
 const open = () => {

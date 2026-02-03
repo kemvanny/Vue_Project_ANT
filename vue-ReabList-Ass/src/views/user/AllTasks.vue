@@ -8,19 +8,14 @@
           <span class="brand-name">REABLIST</span>
         </div>
 
-        <h1 class="hero-title">
-          {{ title }}
-        </h1>
-
-        <p class="hero-sub">
-          បញ្ជីភារកិច្ចទាំងអស់ (Offline - LocalStorage)
-        </p>
+        <h1 class="hero-title">{{ title }}</h1>
+        <p class="hero-sub">បញ្ជីភារកិច្ចទាំងអស់</p>
       </div>
 
       <div class="hero-right">
         <div class="hero-stat">
           <div class="stat-label">សរុប</div>
-          <div class="stat-value">{{ filteredTasks.length }}</div>
+          <div class="stat-value">{{ noteStore.notes.length }}</div>
         </div>
 
         <div class="hero-stat">
@@ -41,30 +36,11 @@
 
     <!-- TOOLBAR -->
     <div class="toolbar">
-
-
-      <!-- Dropdown Filters -->
-<div class="filters">
-  <BaseSelect
- 
-    v-model="priorityFilter"
-    :options="priorityOptions"
-  />
-
-  <BaseSelect
- 
-    v-model="categoryFilter"
-    :options="categoryOptions"
-  />
-
-  <BaseSelect
-   
-    v-model="statusFilter"
-    :options="statusOptions"
-  />
-</div>
-
-
+      <div class="filters">
+        <BaseSelect v-model="priorityFilter" :options="priorityOptions" />
+        <BaseSelect v-model="categoryFilter" :options="categoryOptions" />
+        <BaseSelect v-model="statusFilter" :options="statusOptions" />
+      </div>
     </div>
 
     <!-- CONTENT -->
@@ -76,156 +52,156 @@
     <div v-else>
       <!-- Empty state -->
       <div v-if="displayTasks.length === 0" class="empty-box">
-    <div class="empty-icon">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="54"
-    height="54"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M20 7h-9l-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-  </svg>
+        <div class="empty-icon">🗂️</div>
+        <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
+        <p class="empty-sub">សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង។</p>
+      </div>
+
+<div v-else>
+  <BaseTaskTable
+    title="All Tasks"
+    :tasks="displayTasks"
+    :pageSize="pageSize"
+    @update:pageSize="pageSize = $event"
+    @view="openView"
+    @edit="openEdit"
+    @delete="deleteNote"
+  />
 </div>
 
-        <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
-        <p class="empty-sub">
-          សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង/ពាក្យស្វែងរក។
-        </p>
 
 
-      </div>
-
-      <!-- Grid -->
-      <div v-else class="task-grid">
-        <div
-          v-for="t in displayTasks"
-          :key="t.id"
-          class="task-card"
-          @click="viewTask(t)"
-        >
-          <div class="card-top">
-            <div class="title-wrap">
-              <div class="task-title text-truncate">
-                {{ t.title || "មិនមានចំណងជើង" }}
-              </div>
-              <div class="task-sub text-truncate">
-                {{ t.notes?.trim() ? t.notes : "មិនមានកំណត់ចំណាំ" }}
-              </div>
-            </div>
-
-            <span class="pill" :class="priorityClass(t.priority)">
-              {{ t.priority || "មធ្យម" }}
-            </span>
-          </div>
-
-          <div class="card-mid">
-            <div class="meta">
-              <span class="meta-badge">📅 {{ t.date || "—" }}</span>
-              <span class="meta-badge">⏰ {{ t.time || "—" }}</span>
-            </div>
-
-            <span class="status" :class="{ done: t.isCompleted }">
-              {{ t.isCompleted ? "បានបញ្ចប់" : "កំពុងដំណើរការ" }}
-            </span>
-          </div>
-
-          <div class="card-bottom">
-            <span class="category-chip">
-              {{ t.category || "ទូទៅ" }}
-            </span>
-
-            <span class="open-hint">ចុចដើម្បីមើល →</span>
-          </div>
-        </div>
-      </div>
     </div>
+
+<TaskView
+  ref="viewModalRef"
+  v-if="noteStore.selectedNote"
+  :task="noteStore.selectedNote"
+  @edit-task="openEdit"
+/>
+
+<TaskUpdate
+  ref="editModalRef"
+  v-if="noteStore.selectedNote"
+  :task="noteStore.selectedNote"
+  @updated="handleUpdated"
+/>
+
+
   </div>
 </template>
 
 <script setup>
+import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
+
+import { useNoteStore } from "@/stores/note";
+
+import TaskView from "@/views/user/Task/TaskView.vue";
+import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
 
 
 const props = defineProps({
   title: { type: String, default: "ភារកិច្ចទាំងអស់" },
-  tasks: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits(["create-task", "view-task"]);
+const emit = defineEmits(["create-task"]);
 
-const loading = ref(true);
+const noteStore = useNoteStore();
 
-// local search + filters
-const q = ref("");
-const priorityFilter = ref("all"); // all | ខ្ពស់ | មធ្យម | ទាប
-const categoryFilter = ref("all"); // all | ផ្ទាល់ខ្លួន | ការងារ | សិក្សា | ទូទៅ
-const statusFilter = ref("all"); // all | done | pending
+// dropdown filters
+const priorityFilter = ref("all");
+const categoryFilter = ref("all");
+const statusFilter = ref("all");
 
-// tasks source
-const tasks = ref([]);
+// pagination
+const pageSize = ref(8);
+const currentPage = ref(1);
 
-const key = "reablist_tasks";
 
-const loadTasks = () => {
-  // if parent provides tasks, use it
-  if (props.tasks && props.tasks.length) {
-    tasks.value = props.tasks;
-    return;
-  }
+// modal refs
+const viewModalRef = ref(null);
+const editModalRef = ref(null);
 
-  // fallback to localStorage
-  const list = JSON.parse(localStorage.getItem(key) || "[]");
-  tasks.value = Array.isArray(list) ? list : [];
+// load
+onMounted(async () => {
+  await noteStore.fetchAllNotes();
+});
+
+const loading = computed(() => noteStore.loading);
+const tasks = computed(() => noteStore.notes || []);
+
+const completedCount = computed(() => noteStore.completed.length);
+const pendingCount = computed(() => noteStore.pending.length);
+
+// mapper
+const showPriority = (val) => {
+  const v = String(val || "").toUpperCase();
+  if (v === "HIGH" || val === "ខ្ពស់") return "ខ្ពស់";
+  if (v === "MEDIUM" || val === "មធ្យម") return "មធ្យម";
+  if (v === "LOW" || val === "ទាប") return "ទាប";
+  return val || "មធ្យម";
 };
 
-const filteredTasks = computed(() => tasks.value || []);
-
-const completedCount = computed(() =>
-  filteredTasks.value.filter((t) => !!t.isCompleted).length
-);
-
-const pendingCount = computed(() =>
-  filteredTasks.value.filter((t) => !t.isCompleted).length
-);
+const showCategory = (val) => {
+  const v = String(val || "").toUpperCase();
+  if (v === "PERSONAL" || val === "ផ្ទាល់ខ្លួន") return "ផ្ទាល់ខ្លួន";
+  if (v === "WORK" || val === "ការងារ") return "ការងារ";
+  if (v === "SCHOOL" || v === "STUDY" || val === "សិក្សា") return "សិក្សា";
+  return val || "ទូទៅ";
+};
 
 const displayTasks = computed(() => {
-  const text = q.value.toLowerCase();
+  let list = [...tasks.value];
 
-  let list = filteredTasks.value;
+  //  newest first
+  list.sort((a, b) => {
+    const aKey = `${a.date || ""} ${a.time || ""}`.trim();
+    const bKey = `${b.date || ""} ${b.time || ""}`.trim();
+    return bKey.localeCompare(aKey);
+  });
 
-  // Search
-  if (text) {
-    list = list.filter((t) => {
-      const hay = `${t.title || ""} ${t.notes || ""}`.toLowerCase();
-      return hay.includes(text);
-    });
-  }
+  if (statusFilter.value === "done") list = list.filter((t) => !!t.isCompleted);
+  if (statusFilter.value === "pending") list = list.filter((t) => !t.isCompleted);
 
-  // Status filter
-  if (statusFilter.value === "done") {
-    list = list.filter((t) => !!t.isCompleted);
-  } else if (statusFilter.value === "pending") {
-    list = list.filter((t) => !t.isCompleted);
-  }
-
-  // Priority filter
   if (priorityFilter.value !== "all") {
-    list = list.filter((t) => (t.priority || "មធ្យម") === priorityFilter.value);
+    list = list.filter((t) => showPriority(t.priority) === priorityFilter.value);
   }
 
-  // Category filter
   if (categoryFilter.value !== "all") {
-    list = list.filter((t) => (t.category || "ទូទៅ") === categoryFilter.value);
+    list = list.filter((t) => showCategory(t.category) === categoryFilter.value);
   }
 
   return list;
 });
+
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(displayTasks.value.length / pageSize.value))
+);
+
+const paginatedTasks = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  return displayTasks.value.slice(start, start + pageSize.value);
+});
+
+const goPrev = () => {
+  if (currentPage.value > 1) currentPage.value--;
+};
+
+const goNext = () => {
+  if (currentPage.value < totalPages.value) currentPage.value++;
+};
+
+
+
+watch([priorityFilter, categoryFilter, statusFilter], () => {
+  currentPage.value = 1;
+});
+
+
 
 const priorityClass = (p) => {
   if (p === "ខ្ពស់") return "high";
@@ -233,21 +209,65 @@ const priorityClass = (p) => {
   return "low";
 };
 
+// create
 const createNew = () => emit("create-task");
-const viewTask = (task) => emit("view-task", task);
 
-onMounted(() => {
-  loadTasks();
-  loading.value = false;
-});
+//  OPEN VIEW
+const openView = async (task) => {
+  await noteStore.openNote(task.id);
+  viewModalRef.value?.open();
+};
 
-// reload if props.tasks changes
-watch(
-  () => props.tasks,
-  () => loadTasks(),
-  { deep: true }
-);
+//  EDIT (click pencil)
 
+
+const openEdit = async (task) => {
+  await noteStore.openNote(task.id);
+  editModalRef.value?.open();
+};
+
+
+//  VIEW MODAL -> EDIT MODAL
+const fromViewToEdit = async (task) => {
+  // close view
+  viewModalRef.value?.close();
+
+  // open edit
+  await noteStore.openNote(task.id);
+  editModalRef.value?.open();
+};
+
+// MARK DONE FROM VIEW MODAL
+const markCompletedFromView = async (task) => {
+  try {
+    await api.put(`/notes/${task.id}/toggle-complete`);
+    await noteStore.fetchAllNotes();
+  } catch (err) {
+    console.error("toggle failed:", err.response?.data || err.message);
+    alert("Toggle complete failed!");
+  }
+};
+
+// after update
+const handleUpdated = async () => {
+  await noteStore.fetchAllNotes();
+};
+
+// delete
+const deleteNote = async (id) => {
+  const ok = confirm("ចង់លុប Note នេះមែនទេ?");
+  if (!ok) return;
+
+  try {
+    await api.delete(`/notes/${id}`);
+    await noteStore.fetchAllNotes();
+  } catch (err) {
+    console.error("delete failed:", err.response?.data || err.message);
+    alert("Delete failed!");
+  }
+};
+
+// dropdown options
 const priorityOptions = [
   { value: "all", label: "អាទិភាព" },
   { value: "ខ្ពស់", label: "ខ្ពស់" },
@@ -260,7 +280,6 @@ const categoryOptions = [
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },
   { value: "ការងារ", label: "ការងារ" },
   { value: "សិក្សា", label: "សិក្សា" },
- 
 ];
 
 const statusOptions = [
@@ -268,17 +287,53 @@ const statusOptions = [
   { value: "done", label: "បានបញ្ចប់" },
   { value: "pending", label: "កំពុងដំណើរការ" },
 ];
-
 </script>
 
+
 <style scoped>
+
 /* ======= HERO ======= */
+
+/* ===== Modern Card Grid ===== */
+.task-list-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+@media (max-width: 1100px) {
+  .task-grid-modern {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .task-grid-modern {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* pagination footer */
+.pager-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.pager-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .category-hero {
-  background: linear-gradient(
-    135deg,
-    rgba(13, 148, 136, 0.12),
-    rgba(6, 182, 212, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(6, 182, 212, 0.1));
   border: 1px solid rgba(13, 148, 136, 0.18);
   border-radius: 26px;
   padding: 22px;
@@ -286,12 +341,10 @@ const statusOptions = [
   justify-content: space-between;
   gap: 18px;
   margin-bottom: 16px;
-  box-shadow: 0 22px 45px -35px rgba(13, 148, 136, 0.45);
+  box-shadow: 0 3px 5px rgba(131, 160, 157, 0.255);
 }
 
-.hero-left {
-  min-width: 0;
-}
+.hero-left { min-width: 0; }
 
 .brand-pill {
   display: inline-flex;
@@ -315,18 +368,9 @@ const statusOptions = [
 }
 
 @keyframes pulse-ring {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 12px rgba(13, 148, 136, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
-  }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
 }
 
 .brand-name {
@@ -359,7 +403,7 @@ const statusOptions = [
 
 .hero-stat {
   background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(226, 232, 240,  0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 18px;
   padding: 10px 12px;
   text-align: center;
@@ -386,7 +430,6 @@ const statusOptions = [
   padding: 14px 16px;
 }
 
-/* ======= TOOLBAR ======= */
 .toolbar {
   display: flex;
   gap: 12px;
@@ -396,69 +439,16 @@ const statusOptions = [
   flex-wrap: wrap;
 }
 
-.search-wrap {
-  flex: 1;
-  min-width: 240px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border: 2px solid transparent;
-  border-radius: 18px;
-  padding: 12px 14px;
-  transition: box-shadow 0.18s ease, border-color 0.18s ease,
-    transform 0.18s ease;
-}
-
-.search-wrap:hover {
-  transform: translateY(-1px);
-  border-color: rgba(13, 148, 136, 0.22);
-  box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.45);
-}
-
-.search-ic {
-  font-size: 14px;
-}
-
-.search-input {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-weight: 800;
-  color: #0f172a;
-}
-
 .filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 40%;
+}
+@media (max-width: 900px) {
+  .filters { grid-template-columns: 1fr; width: 100%; }
 }
 
-.filter-select {
-  background: #fff;
-  border: 2px solid rgba(13, 148, 136, 0.18);
-  border-radius: 14px;
-  padding: 10px 14px;
-  font-weight: 900;
-  font-size: 12px;
-  color: #0f172a;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease;
-}
-
-.filter-select:hover {
-  transform: translateY(-1px);
-  border-color: rgba(13, 148, 136, 0.45);
-  box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.35);
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #0d9488;
-}
-
-/* ======= LOADING ======= */
 .loading {
   display: flex;
   align-items: center;
@@ -475,17 +465,10 @@ const statusOptions = [
   animation: bounce 0.9s infinite alternate;
 }
 @keyframes bounce {
-  from {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-  to {
-    transform: translateY(-6px);
-    opacity: 1;
-  }
+  from { transform: translateY(0); opacity: 0.6; }
+  to { transform: translateY(-6px); opacity: 1; }
 }
 
-/* ======= EMPTY ======= */
 .empty-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -494,68 +477,26 @@ const statusOptions = [
   text-align: center;
   box-shadow: 0 22px 45px -35px rgba(2, 132, 199, 0.25);
 }
-.empty-icon {
-  font-size: 44px;
-  margin-bottom: 10px;
-}
-.empty-title {
-  font-weight: 900;
-  color: #0f172a;
-  margin: 0 0 8px;
-}
-.empty-sub {
-  color: #64748b;
-  font-weight: 700;
-  margin: 0 0 16px;
-}
-.empty-btn {
-  width: auto;
-  padding: 14px 26px;
-}
+.empty-icon { width: 72px; height: 72px; margin: 0 auto 12px; border-radius: 22px; display: grid; place-items: center; background: rgba(13, 148, 136, 0.10); border: 1px solid rgba(13, 148, 136, 0.18); color: #0d9488; }
+.empty-title { font-weight: 900; color: #0f172a; margin: 0 0 8px; }
+.empty-sub { color: #64748b; font-weight: 700; margin: 0; }
 
-/* ======= GRID ======= */
-.task-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-@media (max-width: 1100px) {
-  .category-hero {
-    flex-direction: column;
-  }
-  .hero-right {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .task-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 680px) {
-  .task-grid {
-    grid-template-columns: 1fr;
-  }
-}
+.task-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1100px) { .category-hero { flex-direction: column; } .task-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .task-grid { grid-template-columns: 1fr; } }
 
-/* ======= CARD ======= */
 .task-card {
   background: #fff;
   border: 1px solid #f1f5f9;
   border-radius: 22px;
   padding: 16px;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
-    border-color 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   animation: popIn 0.22s ease-out both;
 }
 @keyframes popIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .task-card:hover {
   transform: translateY(-2px);
@@ -563,107 +504,26 @@ const statusOptions = [
   box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.45);
 }
 
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.task-title { font-weight: 900; color: #0f172a; }
+.task-sub { margin-top: 4px; font-weight: 800; color: #64748b; font-size: 13px; }
 
-.task-title {
-  font-weight: 900;
-  color: #0f172a;
-}
-.task-sub {
-  margin-top: 4px;
-  font-weight: 800;
-  color: #64748b;
-  font-size: 13px;
-}
+.card-mid { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.meta-badge { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; color: #334155; }
 
-.card-mid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-}
+.pill { font-weight: 900; font-size: 11px; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.high { background: #fee2e2; color: #dc2626; }
+.pill.medium { background: #fef3c7; color: #d97706; }
+.pill.low { background: #dcfce7; color: #16a34a; }
 
-.meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.meta-badge {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  color: #334155;
-}
+.status { font-weight: 900; font-size: 11px; padding: 7px 10px; border-radius: 999px; border: 1px solid #e2e8f0; color: #ef4444; background: #fff; }
+.status.done { color: #0d9488; border-color: rgba(13, 148, 136, 0.25); background: #f0fdfa; }
 
-/* Priority pill */
-.pill {
-  font-weight: 900;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-.pill.high {
-  background: #fee2e2;
-  color: #dc2626;
-}
-.pill.medium {
-  background: #fef3c7;
-  color: #d97706;
-}
-.pill.low {
-  background: #dcfce7;
-  color: #16a34a;
-}
+.card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.category-chip { background: rgba(13, 148, 136, 0.1); color: #0d9488; border: 1px solid rgba(13, 148, 136, 0.18); padding: 7px 10px; border-radius: 999px; font-weight: 900; font-size: 12px; }
+.open-hint { color: #94a3b8; font-weight: 900; font-size: 12px; }
 
-/* Status */
-.status {
-  font-weight: 900;
-  font-size: 11px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-  color: #ef4444;
-  background: #fff;
-}
-.status.done {
-  color: #0d9488;
-  border-color: rgba(13, 148, 136, 0.25);
-  background: #f0fdfa;
-}
-
-.card-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-}
-
-.category-chip {
-  background: rgba(13, 148, 136, 0.1);
-  color: #0d9488;
-  border: 1px solid rgba(13, 148, 136, 0.18);
-  padding: 7px 10px;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 12px;
-}
-
-.open-hint {
-  color: #94a3b8;
-  font-weight: 900;
-  font-size: 12px;
-}
-
-/* Button match CreateTask */
 .btn-submit-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
   color: #fff;
@@ -679,32 +539,24 @@ const statusOptions = [
   transform: translateY(-1px);
   box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
 }
-.empty-icon {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 12px;
-  border-radius: 22px;
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
   display: grid;
   place-items: center;
-  background: rgba(13, 148, 136, 0.10);
-  border: 1px solid rgba(13, 148, 136, 0.18);
-  color: #0d9488;
+  font-weight: 900;
+  transition: 0.15s;
 }
+.icon-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.25); }
+.icon-btn.danger { border-color: rgba(239, 68, 68, 0.25); }
+.icon-btn.danger:hover { background: rgba(239, 68, 68, 0.08); }
 
 
-
-.filters {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  width: 40%;
-}
-
-@media (max-width: 900px) {
-  .filters {
-    grid-template-columns: 1fr;
-  }
-}
 
 
 </style>

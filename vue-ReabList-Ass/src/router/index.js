@@ -114,6 +114,12 @@ const router = createRouter({
           component: () => import("@/views/user/CategoryView.vue"),
           props: true,
         },
+        // {
+        //   path: "/dashboard/category/:category",
+        //   name: "Category",
+        //   component: () => import("@/views/user/CategoryView.vue"),
+        // },
+
         {
           path: "/profile",
           name: "Profile",
