@@ -50,7 +50,7 @@
           data-bs-toggle="modal"
           data-bs-target="#addTaskModal"
         >
-          <PlusCircle :size="18" /> បង្កើតភារកិច្ចថ្មី
+          <PlusCircle  /> បង្កើតភារកិច្ចថ្មី
         </a>
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>
@@ -59,7 +59,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <user/> <span>ផ្ទាល់ខ្លួន</span>
+          <user/> ផ្ទាល់ខ្លួន
         </router-link>
 
         <router-link
@@ -67,7 +67,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <i class="fas fa-briefcase"></i> ការងារ
+          <clipboard/> ការងារ
         </router-link>
 
         <router-link

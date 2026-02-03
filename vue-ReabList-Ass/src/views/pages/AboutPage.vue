@@ -7,7 +7,7 @@
         <div class="row align-items-center g-5">
           <div class="col-lg-6 text-center text-lg-start" data-fade-up>
             <div class="pill-tag">ការគ្រប់គ្រងភារកិច្ចដោយប្រើ AI</div>
-            <h1 class="hero-title">
+            <h1 class="hero-title fw-bold">
               ធ្វើការឱ្យលឿនដូច
               <span style="color: var(--primary)">ការគិត</span>
             </h1>
@@ -18,7 +18,7 @@
               ប្រែក្លាយភាពច្របូកច្របល់ទៅជាភាពច្បាស់លាស់ដោយគ្រាន់តែចុចតែម្តង។
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-              <button class="btn-modern">ចាប់ផ្តើមឥឡូវនេះ</button>
+              <router-link to="/login" class="btn-modern">ចាប់ផ្តើមឥឡូវនេះ</router-link>
               <button class="btn btn-link nav-link-modern d-flex align-items-center justify-content-center gap-2">
                 <i class="bi bi-play-circle fs-4"></i> ទស្សនាការបង្ហាញ
               </button>
@@ -345,7 +345,7 @@ template {
 
 .hero-title {
   font-size: clamp(3rem, 6vw, 5rem);
-  line-height: 1.1;
+  line-height: 1.3;
   margin-bottom: 30px;
   background: linear-gradient(180deg, var(--text-dark) 30%, #475569 100%);
   -webkit-background-clip: text;

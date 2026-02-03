@@ -8,11 +8,11 @@
           <div class="col-lg-6">
             <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
               style="font-size: 11px">ផ្ទាំងគ្រប់គ្រងសារពើភ័ណ្ឌកម្រិតខ្ពស់</span>
-            <h1 class=" display-3">
-              លំហូរការងាររបស់អ្នក<br />
-              <span style="color: var(--primary);">ត្រូវបានសម្របសម្រួលយ៉ាងល្អ</span>
+            <h1 class="fw-bold display-3 mb-5 mt-3">
+              <span>លំហូរការងាររបស់អ្នក</span><br />
+              <span style="color: var(--primary);">បានសម្របសម្រួលយ៉ាងល្អ</span>
             </h1>
-            <p class="lead mb-5 fw-500 text-muted col-lg-11">
+            <p class="lead mb-5 fw-500 text-muted col-lg-11 lh-2">
               ប្រព័ន្ធគ្រប់គ្រងសារពើភ័ណ្ឌនិងភារកិច្ចដ៏ទំនើបសម្រាប់អ្នកប្រើប្រាស់កម្រិតខ្ពស់។
               គ្រប់គ្រងការបញ្ចូលស្តុកយ៉ាងងាយស្រួល
               ជាមួយនឹងការជូនដំណឹងស្វ័យប្រវត្តិរយៈពេល ១៥ នាទីតាម Telegram, ភស្តុតាង SKU ដែលអាចមើលឃើញ,
@@ -20,7 +20,7 @@
             </p>
 
             <div class="d-flex gap-3">
-              <a href="index.html" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
+              <a href="#" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
                 style="background: var(--primary)">ចូលទៅកាន់បញ្ជី</a>
               <button class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25">
                 មើលឯកសារណែនាំ
@@ -227,8 +227,8 @@
             លើកកម្ពស់ការគ្រប់គ្រងសារពើភ័ណ្ឌរបស់អ្នកជាមួយនឹងការតាមដានដែលមានភាពត្រឹមត្រូវខ្ពស់។
             ចាប់ផ្តើមចុះបញ្ជីដំបូងរបស់អ្នកនៅថ្ងៃនេះ។
           </p>
-          <a href="index.html" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
-            style="background: var(--primary)">ចូលទៅកាន់មជ្ឈមណ្ឌលបញ្ជា</a>
+          <router-link to="/login" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
+            style="background: var(--primary)">ចូលទៅកាន់ការប្រើប្រាស់ប្រព័ន្ធ</router-link>
         </div>
       </div>
     </section>
@@ -241,9 +241,13 @@
 <script setup>
 import Footer from "@/components/UserPages/Footer.vue";
 import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
+import Login from "@/views/authentication/Login.vue";
 </script>
 
 <style scoped>
+.lh-2{
+  line-height: 1.8;
+}
 .pill-tag {
   display: inline-flex;
   padding: 8px 20px;
