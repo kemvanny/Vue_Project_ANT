@@ -1,13 +1,31 @@
 <template>
   <div class="mb-4 stagger-2 modern-input-group">
     <label>{{ label }}</label>
-    <div class="input-group input-group-lg modern-input" :class="{ 'input-wrapper': type === 'password' }">
-      <input :type="computedType" :value="modelValue" :placeholder="placeholder"
-        @input="$emit('update:modelValue', $event.target.value)" :class="{ 'input-error': error }" :required="required"
-        :autofocus="autofocus">
-      <button v-if="type === 'password'" type="button" class="toggle-password" @click="showPassword = !showPassword"
-        :aria-label="showPassword ? 'Hide password' : 'Show password'">
-        <i class="bi" :class="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+    <div
+      class="input-group input-group-lg modern-input"
+      :class="{ 'input-wrapper': type === 'password' }"
+    >
+      <input
+        :type="computedType"
+        :value="modelValue"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        @input="$emit('update:modelValue', $event.target.value)"
+        :class="{ 'input-error': error, 'input-disabled': disabled }"
+        :required="required"
+        :autofocus="autofocus"
+      />
+      <button
+        v-if="type === 'password'"
+        type="button"
+        class="toggle-password"
+        @click="showPassword = !showPassword"
+        :aria-label="showPassword ? 'Hide password' : 'Show password'"
+      >
+        <i
+          class="bi"
+          :class="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"
+        ></i>
       </button>
     </div>
     <p v-if="error" class="error-msg-small">{{ error }}</p>
@@ -48,6 +66,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    icon: {
+      type: String,
+      default: "",
+    },
   },
   emits: ["update:modelValue"],
   data() {
@@ -67,10 +93,17 @@ export default {
 </script>
 
 <style scoped>
-.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
-.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,
-.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select,
-.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+.input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n + 3),
+.input-group:not(.has-validation)
+  > .form-floating:not(:last-child)
+  > .form-control,
+.input-group:not(.has-validation)
+  > .form-floating:not(:last-child)
+  > .form-select,
+.input-group:not(.has-validation)
+  > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(
+    .form-floating
+  ) {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
@@ -125,6 +158,16 @@ export default {
 
 .input-group input.input-error:focus {
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Disabled input styling - shows the email clearly but prevents editing */
+.input-group input:disabled,
+.input-group input.input-disabled {
+  background-color: #f0f5f7;
+  color: #2d6a7a;
+  cursor: not-allowed;
+  opacity: 1;
+  border-color: #b8d8e0;
 }
 
 .input-wrapper .toggle-password {

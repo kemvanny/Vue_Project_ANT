@@ -86,6 +86,7 @@
     </div>
 
     <!-- Statistics Section -->
+    <!-- Statistics Section -->
     <div class="statistics-section">
       <h3 class="section-title">សង្ខេបសកម្មភាព</h3>
       <div class="stats-grid">
@@ -178,7 +179,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
@@ -186,10 +187,24 @@ import AvatarManager from "@/components/profile/AvatarManager.vue";
 const authStore = useProfileStore();
 const activeModal = ref(null);
 
-const stats = ref({
-  totalTasks: 142,
-  completedTasks: 128,
-  completionRate: 90,
+const tasks = ref([]);
+
+const loadTasks = () => {
+  const list = JSON.parse(localStorage.getItem("reablist_tasks") || "[]");
+  tasks.value = Array.isArray(list) ? list : [];
+};
+
+const stats = computed(() => {
+  const allTasks = tasks.value;
+  const totalTasks = allTasks.length;
+  const completedTasks = allTasks.filter((t) => !!t.isCompleted).length;
+  const completionRate =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  return {
+    totalTasks,
+    completedTasks,
+    completionRate,
+  };
 });
 
 const preferences = ref({
@@ -221,6 +236,7 @@ const savePreferences = () => {
 
 onMounted(async () => {
   await loadProfile();
+  loadTasks();
   const saved = localStorage.getItem("profilePreferences");
   if (saved) {
     preferences.value = JSON.parse(saved);

@@ -1,9 +1,11 @@
 <template>
   <button
     class="create-btn"
+    :class="{ small: size === 'small' }"
     :type="type"
     :disabled="disabled || loading"
-    @click="$emit('click')">
+    @click="$emit('click')"
+  >
     {{ loading ? loadingText : text }}
   </button>
 </template>
@@ -30,6 +32,11 @@ defineProps({
     type: String,
     default: "button",
   },
+  size: {
+    type: String,
+    default: "large",
+    validator: (value) => ["small", "large"].includes(value),
+  },
 });
 
 defineEmits(["click"]);
@@ -46,6 +53,12 @@ defineEmits(["click"]);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.create-btn.small {
+  width: auto;
+  padding: 5px 10px;
+  font-size: 0.8rem;
 }
 
 .create-btn:disabled {

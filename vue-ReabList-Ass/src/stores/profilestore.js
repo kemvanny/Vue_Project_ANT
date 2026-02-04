@@ -212,7 +212,7 @@ export const useProfileStore = defineStore("profile", () => {
         return false;
       }
 
-      const res = await api.put("/auth/change-email", {
+      const res = await api.post("/auth/change-email", {
         newEmail,
         password,
       });
@@ -316,7 +316,6 @@ export const useProfileStore = defineStore("profile", () => {
       }
 
       const response = await api.post("/auth/delete-account", {
-        email,
         password,
       });
 

@@ -12,9 +12,7 @@
           {{ title }}
         </h1>
 
-        <p class="hero-sub">
-          បញ្ជីភារកិច្ចទាំងអស់ (Offline - LocalStorage)
-        </p>
+        <p class="hero-sub">បញ្ជីភារកិច្ចទាំងអស់ (Offline - LocalStorage)</p>
       </div>
 
       <div class="hero-right">
@@ -41,30 +39,14 @@
 
     <!-- TOOLBAR -->
     <div class="toolbar">
-
-
       <!-- Dropdown Filters -->
-<div class="filters">
-  <BaseSelect
- 
-    v-model="priorityFilter"
-    :options="priorityOptions"
-  />
+      <div class="filters">
+        <BaseSelect v-model="priorityFilter" :options="priorityOptions" />
 
-  <BaseSelect
- 
-    v-model="categoryFilter"
-    :options="categoryOptions"
-  />
+        <BaseSelect v-model="categoryFilter" :options="categoryOptions" />
 
-  <BaseSelect
-   
-    v-model="statusFilter"
-    :options="statusOptions"
-  />
-</div>
-
-
+        <BaseSelect v-model="statusFilter" :options="statusOptions" />
+      </div>
     </div>
 
     <!-- CONTENT -->
@@ -76,28 +58,26 @@
     <div v-else>
       <!-- Empty state -->
       <div v-if="displayTasks.length === 0" class="empty-box">
-    <div class="empty-icon">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="54"
-    height="54"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M20 7h-9l-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-  </svg>
-</div>
+        <div class="empty-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="54"
+            height="54"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M20 7h-9l-2-2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"
+            />
+          </svg>
+        </div>
 
         <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
-        <p class="empty-sub">
-          សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង/ពាក្យស្វែងរក។
-        </p>
-
-
+        <p class="empty-sub">សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង/ពាក្យស្វែងរក។</p>
       </div>
 
       <!-- Grid -->
@@ -151,7 +131,6 @@
 import { computed, onMounted, ref, watch } from "vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 
-
 const props = defineProps({
   title: { type: String, default: "ភារកិច្ចទាំងអស់" },
   tasks: { type: Array, default: () => [] },
@@ -186,12 +165,12 @@ const loadTasks = () => {
 
 const filteredTasks = computed(() => tasks.value || []);
 
-const completedCount = computed(() =>
-  filteredTasks.value.filter((t) => !!t.isCompleted).length
+const completedCount = computed(
+  () => filteredTasks.value.filter((t) => !!t.isCompleted).length,
 );
 
-const pendingCount = computed(() =>
-  filteredTasks.value.filter((t) => !t.isCompleted).length
+const pendingCount = computed(
+  () => filteredTasks.value.filter((t) => !t.isCompleted).length,
 );
 
 const displayTasks = computed(() => {
@@ -245,7 +224,7 @@ onMounted(() => {
 watch(
   () => props.tasks,
   () => loadTasks(),
-  { deep: true }
+  { deep: true },
 );
 
 const priorityOptions = [
@@ -260,7 +239,6 @@ const categoryOptions = [
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },
   { value: "ការងារ", label: "ការងារ" },
   { value: "សិក្សា", label: "សិក្សា" },
- 
 ];
 
 const statusOptions = [
@@ -268,7 +246,6 @@ const statusOptions = [
   { value: "done", label: "បានបញ្ចប់" },
   { value: "pending", label: "កំពុងដំណើរការ" },
 ];
-
 </script>
 
 <style scoped>
@@ -359,7 +336,7 @@ const statusOptions = [
 
 .hero-stat {
   background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(226, 232, 240,  0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 18px;
   padding: 10px 12px;
   text-align: center;
@@ -406,7 +383,9 @@ const statusOptions = [
   border: 2px solid transparent;
   border-radius: 18px;
   padding: 12px 14px;
-  transition: box-shadow 0.18s ease, border-color 0.18s ease,
+  transition:
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
     transform 0.18s ease;
 }
 
@@ -443,7 +422,9 @@ const statusOptions = [
   font-size: 12px;
   color: #0f172a;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
     border-color 0.18s ease;
 }
 
@@ -543,7 +524,9 @@ const statusOptions = [
   border-radius: 22px;
   padding: 16px;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease,
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
     border-color 0.18s ease;
   animation: popIn 0.22s ease-out both;
 }
@@ -672,7 +655,9 @@ const statusOptions = [
   padding: 18px;
   border-radius: 20px;
   font-weight: 800;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
 }
 .btn-submit-modern:hover {
@@ -686,12 +671,10 @@ const statusOptions = [
   border-radius: 22px;
   display: grid;
   place-items: center;
-  background: rgba(13, 148, 136, 0.10);
+  background: rgba(13, 148, 136, 0.1);
   border: 1px solid rgba(13, 148, 136, 0.18);
   color: #0d9488;
 }
-
-
 
 .filters {
   display: grid;
@@ -705,6 +688,4 @@ const statusOptions = [
     grid-template-columns: 1fr;
   }
 }
-
-
 </style>
