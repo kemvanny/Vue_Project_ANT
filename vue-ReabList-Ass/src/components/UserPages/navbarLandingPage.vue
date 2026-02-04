@@ -1,48 +1,142 @@
 <template>
   <div>
+    <!-- NAVBAR -->
     <div class="nav-wrapper" id="navbar">
       <nav class="nav-modern">
+
         <!-- Brand -->
         <a href="#" class="brand-area">
           <div class="brand-logo">
             <i class="bi bi-check-lg"></i>
           </div>
-          <span class="brand-name"><span class="brand-color">Reab</span>List</span>
+          <span class="brand-name">
+            <span class="brand-color">Reab</span>List
+          </span>
         </a>
 
-        <!-- Navigation Links -->
-        <div class="nav-links-pill">
-          <router-link :to="{name: 'homepage'}" class="nav-link-item">
-            <i class="bi bi-house-door"></i>
-            ទំព័រដើម
+        <!-- Desktop Links -->
+        <div class="nav-links-pill desktop-only">
+          <router-link :to="{ name: 'homepage' }" class="nav-link-item">
+            <i class="bi bi-house-door"></i> ទំព័រដើម
           </router-link>
-          <router-link :to="{name: 'features'}" class="nav-link-item">
-            <i class="bi bi-grid-1x2"></i>
-            មុខងារ
+          <router-link :to="{ name: 'features' }" class="nav-link-item">
+            <i class="bi bi-grid-1x2"></i> មុខងារ
           </router-link>
-          <router-link :to="{name: 'aboutUs'}" class="nav-link-item">
-            <i class="bi bi-people"></i>
-            អំពីយើង
+          <router-link :to="{ name: 'aboutUs' }" class="nav-link-item">
+            <i class="bi bi-people"></i> អំពីយើង
           </router-link>
         </div>
 
-        <!-- Auth Actions -->
-        <div class="nav-actions">
-          <router-link :to="{name: 'login'}" class="btn-login">ចូលប្រើ</router-link>
-          <router-link :to="{name: 'register'}" class="btn-register">
+        <!-- Desktop Actions -->
+        <div class="nav-actions desktop-only">
+          <router-link :to="{ name: 'login' }" class="btn-login">ចូលប្រើ</router-link>
+          <router-link :to="{ name: 'register' }" class="btn-register">
             <span>ចុះឈ្មោះ</span>
             <i class="bi bi-arrow-right-short"></i>
           </router-link>
         </div>
+
+        <!-- Hamburger -->
+        <button class="hamburger" @click="menuOpen = true">
+          <i class="bi bi-list"></i>
+        </button>
+
       </nav>
     </div>
+
+    <!-- MOBILE OVERLAY -->
+    <div class="mobile-overlay" :class="{ 'is-active': menuOpen }" @click.self="menuOpen = false">
+      <div class="offcanvas-menu">
+
+        <div class="offcanvas-header">
+          <strong>Menu</strong>
+          <button class="close-btn" @click="menuOpen = false">
+            ✕
+          </button>
+        </div>
+
+        <div class="offcanvas-body">
+          <router-link @click="menuOpen=false" :to="{name:'homepage'}" class="mobile-link">
+            <i class="bi bi-house-door"></i> ទំព័រដើម
+          </router-link>
+
+          <router-link @click="menuOpen=false" :to="{name:'features'}" class="mobile-link">
+            <i class="bi bi-grid-1x2"></i> មុខងារ
+          </router-link>
+
+          <router-link @click="menuOpen=false" :to="{name:'aboutUs'}" class="mobile-link">
+            <i class="bi bi-people"></i> អំពីយើង
+          </router-link>
+
+          <hr class="divider" />
+
+          <router-link @click="menuOpen=false" :to="{name:'login'}" class="mobile-link">
+            <i class="bi bi-box-arrow-in-right"></i> ចូលប្រើ
+          </router-link>
+
+          <router-link
+            @click="menuOpen=false"
+            :to="{name:'register'}"
+            class="mobile-link mobile-btn-reg"
+          >
+            <i class="bi bi-person-plus"></i> ចុះឈ្មោះ
+          </router-link>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const menuOpen = ref(false)
+</script>
+
+
 
 <style scoped>
 /* ================================
    Glass Navbar (Filter Only)
 ================================ */
+
+/* ================================
+   Hamburger
+================================ */
+.hamburger {
+  display: none;
+  background: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #0d9488;
+  font-size: 1.8rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================================
+   Responsive Behavior
+================================ */
+@media (max-width: 900px) {
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .brand-name {
+    display: none;
+  }
+}
+
 .nav-wrapper {
   position: fixed;
   top: 24px;
@@ -219,4 +313,207 @@
     display: none;
   }
 }
+/* ================================
+   RESPONSIVE NAVIGATION (FINAL)
+================================ */
+
+/* Desktop default */
+.hamburger {
+  display: none;
+}
+
+/* ================================
+   Tablet & Mobile (≤1024px)
+================================ */
+@media (max-width: 1024px) {
+
+  /* Hide desktop nav */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Show hamburger */
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Navbar spacing */
+  .nav-modern {
+    padding: 12px 16px;
+    margin: 0 8px;
+  }
+
+  /* Keep brand visible on tablet */
+  .brand-name {
+    display: inline-block !important;
+    font-size: 1.1rem;
+  }
+
+  /* Offcanvas width for tablets */
+  .offcanvas-menu {
+    width: 320px;
+  }
+}
+
+/* ================================
+   Phones (≤768px)
+================================ */
+@media (max-width: 768px) {
+
+  .nav-modern {
+    padding: 10px 14px;
+  }
+
+  /* Offcanvas takes more space */
+  .offcanvas-menu {
+    width: 85%;
+    max-width: 320px;
+  }
+
+  .mobile-link {
+    font-size: 1rem;
+    padding: 14px;
+  }
+}
+
+/* ================================
+   Small Phones (≤480px)
+================================ */
+@media (max-width: 480px) {
+
+  /* Hide brand text */
+  .brand-name {
+    display: none !important;
+  }
+
+  /* Full-height smooth panel */
+  .offcanvas-menu {
+    width: 100%;
+    max-width: none;
+    border-radius: 0;
+  }
+
+  .offcanvas-header {
+    margin-bottom: 24px;
+  }
+
+  .mobile-link {
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+}
+
+.offcanvas-menu {
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-overlay {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* ================================
+   MOBILE OVERLAY
+================================ */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.mobile-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ================================
+   OFFCANVAS MENU
+================================ */
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-overlay.is-active .offcanvas-menu {
+  right: 0;
+}
+
+/* ================================
+   OFFCANVAS HEADER
+================================ */
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+/* Close button */
+.close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f1f5f9;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/* ================================
+   OFFCANVAS BODY
+================================ */
+.offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.mobile-link:hover {
+  background: rgba(13, 148, 136, 0.1);
+  color: #0d9488;
+}
+
+.mobile-btn-reg {
+  justify-content: center;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  color: white;
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 10px 0;
+}
+
+
 </style>
