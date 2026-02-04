@@ -148,6 +148,13 @@ export const useProfileStore = defineStore("profile", () => {
         return false;
       }
 
+      // Check if new password is same as current password
+      if (currentPassword === newPassword) {
+        profileError.value =
+          "ពាក្យសម្ងាត់ថ្មីមិនអាចដូចពាក្យសម្ងាត់បច្ចុប្បន្នបានទេ។";
+        return false;
+      }
+
       const response = await api.put("/auth/change-password", {
         currentPassword,
         newPassword,
@@ -160,8 +167,16 @@ export const useProfileStore = defineStore("profile", () => {
 
       return false;
     } catch (err) {
-      profileError.value =
-        err.response?.data?.message || "ការប្តូរពាក្យសម្ងាត់បានបរាជ័យ។";
+      const errorMessage = err.response?.data?.message;
+      if (errorMessage === "Invalid email or password") {
+        profileError.value = "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
+      } else if (errorMessage === "Password is too weak") {
+        profileError.value = "ពាក្យសម្ងាត់ខ្សោយពេក។";
+      } else if (errorMessage === "Current password is incorrect") {
+        profileError.value = "ពាក្យសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ។";
+      } else {
+        profileError.value = errorMessage || "ការប្តូរពាក្យសម្ងាត់បានបរាជ័យ។";
+      }
       console.error("Change password error:", err);
       return false;
     } finally {
@@ -191,7 +206,13 @@ export const useProfileStore = defineStore("profile", () => {
         return false;
       }
 
-      const res = await api.post("/auth/change-email", {
+      // Check if new email is same as current email
+      if (newEmail.toLowerCase() === profile.value?.email?.toLowerCase()) {
+        profileError.value = "អ៊ីមែលថ្មីមិនអាចដូចអ៊ីមែលបច្ចុប្បន្នបានទេ។";
+        return false;
+      }
+
+      const res = await api.put("/auth/change-email", {
         newEmail,
         password,
       });
@@ -206,9 +227,17 @@ export const useProfileStore = defineStore("profile", () => {
       }
       return false;
     } catch (err) {
-      profileError.value =
-        err.response?.data?.message ||
-        "មានបញ្ហាក្នុងការស្នើសុំផ្លាស់ប្តូរអ៊ីមែល។";
+      const errorMessage = err.response?.data?.message;
+      if (errorMessage === "Email already exists") {
+        profileError.value = "អ៊ីមែលនេះមានរួចហើយ។ សូមជ្រើសរើសអ៊ីមែលផ្សេង។";
+      } else if (errorMessage === "Invalid email or password") {
+        profileError.value = "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
+      } else if (errorMessage === "Email not found") {
+        profileError.value = "អ៊ីមែលមិនត្រូវបានរកឃើញ។";
+      } else {
+        profileError.value =
+          errorMessage || "មានបញ្ហាក្នុងការស្នើសុំផ្លាស់ប្តូរអ៊ីមែល។";
+      }
       console.error("Change email error:", err);
       return false;
     } finally {
@@ -287,6 +316,7 @@ export const useProfileStore = defineStore("profile", () => {
       }
 
       const response = await api.post("/auth/delete-account", {
+        email,
         password,
       });
 
@@ -299,8 +329,16 @@ export const useProfileStore = defineStore("profile", () => {
 
       return false;
     } catch (err) {
-      profileError.value =
-        err.response?.data?.message || "បរាជ័យក្នុងការលុបគណនី។";
+      const errorMessage = err.response?.data?.message;
+      if (errorMessage === "Invalid email or password") {
+        profileError.value = "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
+      } else if (errorMessage === "Account not found") {
+        profileError.value = "គណនីមិនត្រូវបានរកឃើញ។";
+      } else if (errorMessage === "Cannot delete account") {
+        profileError.value = "មិនអាចលុបគណនីបានទេ។";
+      } else {
+        profileError.value = errorMessage || "បរាជ័យក្នុងការលុបគណនី។";
+      }
       console.error("Delete account error:", err);
       return false;
     } finally {

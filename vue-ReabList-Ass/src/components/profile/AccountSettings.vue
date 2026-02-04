@@ -566,7 +566,7 @@
     </div>
 
     <!-- Success Modal -->
-    <!-- <div
+    <div
       v-if="profileStore.profileSuccess"
       class="modal-backdrop"
       @click.self="profileStore.profileSuccess = null"
@@ -596,7 +596,7 @@
           </button>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -770,12 +770,10 @@ const confirmDeleteAccount = async () => {
   }
 };
 
-// Settings handlers
 const saveSettings = () => {
-  console.log("Settings saved:", settings.value);
+  // console.log("Settings saved:", settings.value);
 };
 
-// Handle email verification from URL and show success modal
 onMounted(async () => {
   await profileStore.getProfile();
 
@@ -908,6 +906,7 @@ onMounted(async () => {
   width: 48px;
   height: 48px;
   background: linear-gradient(135deg, #0d9488 0%, #018a7f 100%);
+  color: white;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -1051,6 +1050,7 @@ onMounted(async () => {
   transition: all 0.3s ease;
   border: none;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 }
@@ -1262,28 +1262,12 @@ input:checked + .slider:before {
   color: #dc2626;
 }
 
-.success-icon-modal {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: scaleIn 0.5s ease;
-}
-
-.success-icon-modal i {
-  font-size: 40px;
-  color: white;
-}
-
 .error-icon-modal {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1292,8 +1276,45 @@ input:checked + .slider:before {
 }
 
 .error-icon-modal i {
-  font-size: 40px;
+  font-size: 60px;
   color: white;
+}
+
+.success-icon-modal {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.5s ease;
+}
+
+.success-icon-modal i {
+  font-size: 60px;
+  color: white;
+}
+
+/* Fix button text alignment - update all button styles */
+.btn-primary,
+.btn-outline,
+.btn-danger,
+.btn-ghost {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* Add this to center text */
+  gap: 8px;
+  text-align: center; /* Add this as well */
 }
 
 @keyframes scaleIn {
@@ -1489,6 +1510,7 @@ input:checked + .slider:before {
     width: 40px;
     height: 40px;
     font-size: 18px;
+    color: white;
   }
 
   .card-header h3 {
