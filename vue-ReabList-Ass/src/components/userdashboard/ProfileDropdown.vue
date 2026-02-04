@@ -1,7 +1,9 @@
 <template>
   <div class="profile-dropdown-wrapper" v-if="profileData">
+    <!-- Trigger -->
     <button
       class="profile-trigger"
+      type="button"
       @click="toggleDropdown"
       :aria-expanded="dropdownOpen"
     >
@@ -9,6 +11,7 @@
         <p class="user-display-name">{{ profileData.fullname }}</p>
         <p class="user-display-role">{{ profileData.role.name }}</p>
       </div>
+
       <div class="user-avatar-circle">
         <img
           v-if="profileData.avatar"
@@ -18,6 +21,7 @@
         />
         <span v-else>{{ getInitials(profileData.fullname) }}</span>
       </div>
+
       <ChevronDown
         :size="18"
         class="dropdown-chevron"
@@ -26,17 +30,14 @@
       />
     </button>
 
+    <!-- Dropdown -->
     <Teleport to="body">
-      <Transition
-        name="dropdown-fade"
-        @enter="onDropdownEnter"
-        @leave="onDropdownLeave"
-      >
+      <Transition name="dropdown-fade">
         <div
           v-show="dropdownOpen"
           class="dropdown-backdrop"
           @click="closeDropdown"
-        ></div>
+        />
       </Transition>
 
       <Transition name="dropdown-slide">
@@ -48,26 +49,29 @@
         >
           <ul class="dropdown-list">
             <li class="dropdown-item">
-              <a
-                href="#"
-                class="dropdown-link"
-                data-route="/profile"
-                @click="handleNavigation"
-                >ព័ត៌មានគណនី</a
-              >
+              <a href="#" class="dropdown-link" @click.prevent="go('/profile')">
+                ព័ត៌មានគណនី
+              </a>
             </li>
+
             <li class="dropdown-item">
               <a
                 href="#"
                 class="dropdown-link"
-                data-route="/profile/setting"
-                @click="handleNavigation"
-                >ការកំណត់</a
+                @click.prevent="go('/profile/setting')"
               >
+                ការកំណត់
+              </a>
             </li>
+
             <li class="dropdown-divider"></li>
+
             <li class="dropdown-item logout-item">
-              <button class="btn-logout" @click="showLogoutModal = true">
+              <button
+                type="button"
+                class="btn-logout"
+                @click.stop="openLogoutModal"
+              >
                 <i class="fas fa-sign-out-alt"></i> ចាកចេញ
               </button>
             </li>
@@ -76,167 +80,155 @@
       </Transition>
     </Teleport>
 
-    <!-- Logout Confirmation Modal -->
+    <!-- Logout Modal -->
     <Transition name="fade">
       <div
         v-if="showLogoutModal"
         class="modal-backdrop"
-        @click="showLogoutModal = false"
+        @click.self="closeLogoutModal"
       >
         <div class="modal-card" @click.stop>
           <div class="modal-head">
             <h3>ចាកចេញ?</h3>
-            <button @click="showLogoutModal = false" class="close-btn">
+            <button class="close-btn" @click="closeLogoutModal">
               &times;
             </button>
           </div>
+
           <div class="modal-body">
             <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
           </div>
+
           <div class="modal-foot">
-            <button class="btn-cancel" @click="showLogoutModal = false">
+            <button class="btn-cancel" @click="closeLogoutModal">
               បោះបង់
             </button>
-            <button class="btn-confirm-logout" @click="handleLogout">
-              បាទ/ចាស! ចាកចេញ
+
+            <button
+              type="button"
+              class="btn-confirm-logout"
+              :disabled="isLoggingOut"
+              @click.stop.prevent="handleLogout"
+            >
+              {{ isLoggingOut ? "កំពុងចាកចេញ..." : "បាទ/ចាស! ចាកចេញ" }}
             </button>
           </div>
         </div>
       </div>
     </Transition>
   </div>
-  <div class="profile-dropdown-wrapper" v-else>
+
+  <div v-else class="profile-dropdown-wrapper">
     <p class="loading-text">Loading...</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
-import { useRouter } from "vue-router";
-import { ChevronDown } from "lucide-vue-next";
-import api from "@/API/api";
-import { useProfileStore } from "@/stores/profilestore";
-import { useAuthStore } from "@/stores/authentication";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue"
+import { useRouter } from "vue-router"
+import { ChevronDown } from "lucide-vue-next"
+import api from "@/API/api"
+import { useAuthStore } from "@/stores/authentication"
 
-const router = useRouter();
-const profileStore = useProfileStore();
-const authStore = useAuthStore();
+const router = useRouter()
+const authStore = useAuthStore()
 
-const profileData = ref(null);
-const dropdownOpen = ref(false);
-const showLogoutModal = ref(false);
-const triggerRect = ref(null);
-const backdropElement = ref(null);
+const profileData = ref(null)
+const dropdownOpen = ref(false)
+const showLogoutModal = ref(false)
+const isLoggingOut = ref(false)
+const triggerRect = ref(null)
 
+/* ---------------- PROFILE ---------------- */
 const fetchProfileData = async () => {
   try {
-    const response = await api.get("/auth/profile");
-    if (response.data.result) {
-      profileData.value = response.data.data;
-    }
+    const res = await api.get("/auth/profile")
+    if (res.data?.result) profileData.value = res.data.data
   } catch (err) {
-    console.error("Error fetching profile:", err);
+    console.error(err)
   }
-};
+}
 
-const getInitials = (fullname) => {
-  return fullname
+const getInitials = (name) =>
+  name
     .split(" ")
-    .map((name) => name.charAt(0))
+    .map((n) => n[0])
     .join("")
+    .slice(0, 2)
     .toUpperCase()
-    .slice(0, 2);
-};
 
+/* ---------------- DROPDOWN ---------------- */
 const dropdownPosition = computed(() => {
-  if (!triggerRect.value) return {};
+  if (!triggerRect.value) return {}
   return {
     position: "fixed",
     top: `${triggerRect.value.bottom + 10}px`,
     right: `${window.innerWidth - triggerRect.value.right}px`,
-  };
-});
+  }
+})
 
 const toggleDropdown = () => {
-  if (dropdownOpen.value) {
-    closeDropdown();
-  } else {
-    openDropdown();
-  }
-};
+  dropdownOpen.value ? closeDropdown() : openDropdown()
+}
 
 const openDropdown = () => {
-  const trigger = document.querySelector(".profile-trigger");
-  if (trigger) {
-    triggerRect.value = trigger.getBoundingClientRect();
-  }
-  dropdownOpen.value = true;
-};
+  const trigger = document.querySelector(".profile-trigger")
+  if (trigger) triggerRect.value = trigger.getBoundingClientRect()
+  dropdownOpen.value = true
+}
 
 const closeDropdown = () => {
-  dropdownOpen.value = false;
-};
+  dropdownOpen.value = false
+}
 
-const handleNavigation = (e) => {
-  e.preventDefault();
-  const href = e.target.getAttribute("data-route");
-  if (href) {
-    router.push(href);
-  }
-  closeDropdown();
-};
+const go = (path) => {
+  closeDropdown()
+  router.push(path)
+}
+
+/* ---------------- LOGOUT ---------------- */
+const openLogoutModal = () => {
+  closeDropdown()
+  showLogoutModal.value = true
+}
+
+const closeLogoutModal = () => {
+  showLogoutModal.value = false
+}
 
 const handleLogout = async () => {
+  if (isLoggingOut.value) return
+  isLoggingOut.value = true
+
   try {
-    await api.post("/auth/logout");
-    console.log("Logout successful");
-    authStore.logout();
-    showLogoutModal.value = false;
-    closeDropdown();
-    router.push("/login");
+    await authStore.logout()
+    showLogoutModal.value = false
+    router.replace("/login")
   } catch (err) {
-    console.error("Logout error:", err);
-    authStore.logout();
-    showLogoutModal.value = false;
-    closeDropdown();
-    router.push("/login");
+    console.error("Logout error:", err)
+  } finally {
+    isLoggingOut.value = false
   }
-};
+}
 
+/* ---------------- OUTSIDE CLICK ---------------- */
 const handleClickOutside = (e) => {
-  const wrapper = document.querySelector(".profile-dropdown-wrapper");
-  if (
-    dropdownOpen.value &&
-    wrapper &&
-    !wrapper.contains(e.target) &&
-    e.target.closest(".dropdown-menu-wrapper") === null
-  ) {
-    closeDropdown();
+  const wrapper = document.querySelector(".profile-dropdown-wrapper")
+  if (dropdownOpen.value && wrapper && !wrapper.contains(e.target)) {
+    closeDropdown()
   }
-};
-
-const onDropdownEnter = (el) => {
-  el.style.opacity = "0";
-  el.offsetHeight;
-  el.style.transition = "opacity 0.2s ease";
-  el.style.opacity = "1";
-};
-
-const onDropdownLeave = (el) => {
-  el.style.opacity = "1";
-  el.style.transition = "opacity 0.2s ease";
-  el.style.opacity = "0";
-};
+}
 
 onMounted(() => {
-  fetchProfileData();
-  document.addEventListener("click", handleClickOutside);
-});
+  fetchProfileData()
+  document.addEventListener("click", handleClickOutside)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
+  document.removeEventListener("click", handleClickOutside)
+})
 </script>
+
 
 <style scoped>
 .profile-dropdown-wrapper {
