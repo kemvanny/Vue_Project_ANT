@@ -170,7 +170,9 @@ const handleMouseMove = (e) => {
 };
 
 const parallaxStyle = (intensity) => ({
-  transform: `translate(${mouseX.value * intensity * 100}px, ${mouseY.value * intensity * 100}px)`,
+  transform: `translate(${mouseX.value * intensity * 100}px, ${
+    mouseY.value * intensity * 100
+  }px)`,
 });
 
 // ─── Submit ──────────────────────────────────────────

@@ -15,14 +15,11 @@
 
         <div class="tg-body">
           <p>
-            ភ្ជាប់ Telegram របស់អ្នក ដើម្បីទទួលបានការរំលឹកការងារ ដោយផ្ទាល់នៅក្នុង Telegram។
+            ភ្ជាប់ Telegram របស់អ្នក ដើម្បីទទួលបានការរំលឹកការងារ
+            ដោយផ្ទាល់នៅក្នុង Telegram។
           </p>
 
-          <a
-            :href="telegramLink"
-            target="_blank"
-            class="tg-connect-btn"
-          >
+          <a :href="telegramLink" target="_blank" class="tg-connect-btn">
             <i class="bi bi-telegram"></i>
             ភ្ជាប់ Telegram
           </a>
@@ -37,17 +34,34 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
+import api from "@/API/api";
 
 const open = ref(false);
-const toggle = () => (open.value = !open.value);
 
-const userId = localStorage.getItem("user_id") || "guest";
+const telegramLink = ref("#");
 
-const telegramLink = computed(() => {
-  return `https://t.me/ReabList_bot?start=${userId}`;
+const toggle = () => {
+  open.value = !open.value;
+};
+
+const getLink = async () => {
+  try {
+    const res = await api.post("/users/telegram-link");
+    telegramLink.value = res.data?.data?.url || "#";
+
+  } catch (error) {
+    console.error("Failed to get Telegram link:", error);
+    telegramLink.value = "#";
+  }
+};
+
+onMounted(() => {
+  getLink();
 });
+
 </script>
+
 
 <style scoped>
 .telegram-widget {
@@ -63,11 +77,11 @@ const telegramLink = computed(() => {
   height: 56px;
   border-radius: 50%;
   border: none;
-  background: #229ED9;
+  background: #229ed9;
   color: #fff;
   font-size: 24px;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* Panel */
@@ -78,7 +92,7 @@ const telegramLink = computed(() => {
   width: 320px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
@@ -87,7 +101,7 @@ const telegramLink = computed(() => {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: #229ED9;
+  background: #229ed9;
   color: #fff;
 }
 
@@ -109,7 +123,7 @@ const telegramLink = computed(() => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #229ED9;
+  background: #229ed9;
   color: #fff;
   padding: 12px;
   border-radius: 10px;
