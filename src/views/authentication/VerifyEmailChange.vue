@@ -169,7 +169,6 @@ const parallaxStyle = (intensity) => {
 };
 
 onMounted(() => {
-  // Extract token from URL query
   token.value = route.query.token;
   newEmail.value = route.query.email || "អ៊ីមែលថ្មី";
 
@@ -180,7 +179,6 @@ onMounted(() => {
     }, 3000);
   }
 
-  // Mouse parallax effect
   const handleMouseMove = (e) => {
     mouseX.value = (e.clientX / window.innerWidth - 0.5) * 20;
     mouseY.value = (e.clientY / window.innerHeight - 0.5) * 20;

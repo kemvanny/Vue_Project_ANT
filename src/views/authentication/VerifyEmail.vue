@@ -167,7 +167,6 @@ onMounted(() => {
 
 const toggleEdit = () => {
   if (isEditing.value) {
-    // Validate on Save
     const result = emailSchema.safeParse(auth.email);
     if (!result.success) {
       errors.email = result.error.errors[0].message;
@@ -257,7 +256,6 @@ const handleSendCode = async () => {
   margin-top: 0.25rem;
 }
 
-/* Shake animation for errors */
 @keyframes shake {
   0%,
   100% {

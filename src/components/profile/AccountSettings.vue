@@ -148,7 +148,7 @@
             <i class="fas fa-exclamation-triangle"></i>
           </div>
           <div>
-            <h3>តំបន់ប្រឈឹម</h3>
+            <h3>លុបគណនីរបស់អ្នក</h3>
             <p>សកម្មភាពដែលមិនអាចត្រឡប់វិញបាន។ សូមប្រុងប្រយ័ត្ន។</p>
           </div>
         </div>
@@ -609,7 +609,6 @@ const profileStore = useProfileStore();
 const route = useRoute();
 const router = useRouter();
 
-// Modal states
 const showChangeEmailModal = ref(false);
 const showChangePasswordModal = ref(false);
 const showPasswordSuccessModal = ref(false);
@@ -617,14 +616,12 @@ const showEmailRequestModal = ref(false);
 const showEmailSuccessModal = ref(false);
 const showDeleteModal = ref(false);
 
-// Email change state
 const newEmail = ref("");
 const emailChangePassword = ref("");
 const showEmailChangePassword = ref(false);
 const isEmailChangePending = ref(false);
 const pendingEmail = ref("");
 
-// Password change state
 const passwordForm = ref({
   currentPassword: "",
   newPassword: "",
@@ -634,18 +631,15 @@ const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-// Delete account state
 const deleteConfirmEmail = ref("");
 const deleteConfirmPassword = ref("");
 const showDeletePassword = ref(false);
 
-// Settings state
 const settings = ref({
   emailNotifications: true,
   profilePublic: false,
 });
 
-// Helper functions
 const formatDate = (dateString) => {
   if (!dateString) return "—";
   const date = new Date(dateString);
@@ -670,7 +664,6 @@ const isPasswordFormValid = () => {
   );
 };
 
-// Email change handlers
 const submitChangeEmail = async () => {
   profileStore.clearMessages();
 
@@ -711,7 +704,6 @@ const closeEmailRequestModal = () => {
   showEmailRequestModal.value = false;
 };
 
-// Password change handlers
 const submitChangePassword = async () => {
   profileStore.clearMessages();
 
@@ -747,7 +739,6 @@ const closePasswordSuccessModal = () => {
   showPasswordSuccessModal.value = false;
 };
 
-// Delete account handler
 const confirmDeleteAccount = async () => {
   if (deleteConfirmEmail.value !== profileStore.profile?.email) {
     profileStore.profileError = "អ៊ីមែលមិនត្រឹមត្រូវ។";
@@ -1298,7 +1289,6 @@ input:checked + .slider:before {
   color: white;
 }
 
-/* Fix button text alignment - update all button styles */
 .btn-primary,
 .btn-outline,
 .btn-danger,
@@ -1312,9 +1302,9 @@ input:checked + .slider:before {
   border: none;
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* Add this to center text */
+  justify-content: center;
   gap: 8px;
-  text-align: center; /* Add this as well */
+  text-align: center;
 }
 
 @keyframes scaleIn {

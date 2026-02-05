@@ -3,7 +3,6 @@ import { ref, computed } from "vue";
 import api from "@/API/api";
 
 export const useAuthStore = defineStore("auth", () => {
-  // ── State
   const token = ref(localStorage.getItem("token") || null);
   const user = ref(null);
 
@@ -15,7 +14,6 @@ export const useAuthStore = defineStore("auth", () => {
   const confirmPassword = ref("");
   const agreedTerms = ref(false);
 
-  // OTP & Reset
   const otpCode = ref("");
   const resetMode = ref(false);
   const resetEmail = ref("");
@@ -35,7 +33,6 @@ export const useAuthStore = defineStore("auth", () => {
     successMessage.value = null;
   };
 
-  // Function to translate common English error messages to Khmer
   const translateError = (message) => {
     if (!message) return message;
 
@@ -82,7 +79,6 @@ export const useAuthStore = defineStore("auth", () => {
     otpCode.value = "";
   };
 
-  // ── Computed
   const passwordsMatch = computed(
     () => password.value === confirmPassword.value,
   );
@@ -116,8 +112,6 @@ export const useAuthStore = defineStore("auth", () => {
       !loading.value
     );
   });
-
-  // ── Actions
 
   const register = async () => {
     if (!canRegister.value) return false;
@@ -157,7 +151,6 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     clearMessages();
 
-    // Prevent admin access with specific credentials
     if (
       email.value.trim() === "antadmin.tdl@gmail.com" &&
       password.value === "AntAdmin@!99"
@@ -176,11 +169,10 @@ export const useAuthStore = defineStore("auth", () => {
       const response = await api.post("/auth/login", payload);
       const data = response.data;
 
-      console.log("Login response:", data);
-      console.log("Full response data:", data.data);
+      // console.log("Login response:", data);
+      // console.log("Full response data:", data.data);
 
       if (data.result || data.success || response.status === 200) {
-        // Extract token from data.data object
         const tokenData = data.data;
         user.value = tokenData?.user || tokenData;
         token.value =
@@ -189,10 +181,9 @@ export const useAuthStore = defineStore("auth", () => {
           data.token ||
           data.access_token;
 
-        console.log("Token from data.data:", tokenData?.token);
-        console.log("Token value set to:", token.value);
+        // console.log("Token from data.data:", tokenData?.token);
+        // console.log("Token value set to:", token.value);
 
-        // Store only token in localStorage for security
         if (token.value) {
           localStorage.setItem("token", token.value);
           console.log(
@@ -226,7 +217,6 @@ export const useAuthStore = defineStore("auth", () => {
     clearMessages();
   };
 
-  // ── OTP
   const sendOtp = async () => {
     loading.value = true;
     clearMessages();
@@ -284,12 +274,10 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // ── Password Reset
   const forgotPassword = async (emailAddress = null) => {
     loading.value = true;
     clearMessages();
 
-    // Define payload outside try/catch so it's accessible everywhere
     const emailToUse = (
       emailAddress ||
       resetEmail.value ||
@@ -298,12 +286,10 @@ export const useAuthStore = defineStore("auth", () => {
     const payload = { email: emailToUse };
 
     try {
-      // Make sure this is the correct URL from your Postman
       const response = await api.post("/auth/forget-password", payload);
 
-      // LOG THIS: If you don't see this in console, the code jumped to 'catch'
-      console.log("API Response:", response);
-      console.log("Response data:", response.data);
+      // console.log("API Response:", response);
+      // console.log("Response data:", response.data);
 
       if (
         response.data?.success ||
@@ -311,17 +297,16 @@ export const useAuthStore = defineStore("auth", () => {
         response.status === 200
       ) {
         resetEmail.value = payload.email;
-        return true; // <--- CRITICAL: Your component needs this to show the modal
+        return true;
       }
 
       return false;
     } catch (err) {
       console.error("Store Error Catch:", err);
 
-      // If the error says 'Already verified', we still want to show the modal
       if (err.response?.data?.details === "Email already verified.") {
         resetEmail.value = payload.email;
-        return true; // <--- CRITICAL: Triggers modal even on this specific error
+        return true;
       }
 
       error.value =
@@ -344,10 +329,10 @@ export const useAuthStore = defineStore("auth", () => {
       resetEmail.value = emailFromUrl;
     }
 
-    console.log("Captured reset data:", {
-      token: otpCode.value,
-      email: resetEmail.value,
-    });
+    // console.log("Captured reset data:", {
+    //   token: otpCode.value,
+    //   email: resetEmail.value,
+    // });
   };
 
   const resetPassword = async () => {
@@ -366,10 +351,10 @@ export const useAuthStore = defineStore("auth", () => {
         newPassword: newPassword.value,
       };
 
-      console.log("Sending reset payload:", payload);
+      // console.log("Sending reset payload:", payload);
 
       const response = await api.post("/auth/reset-password", payload);
-      console.log(response);
+      // console.log(response);
 
       if (response.data?.success || response.status === 200) {
         successMessage.value =
@@ -398,7 +383,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // ── Export
   return {
     token,
     user,
