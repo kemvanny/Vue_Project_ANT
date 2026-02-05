@@ -118,13 +118,11 @@ const onFileSelected = (event) => {
 
   if (!file) return;
 
-  // Validate file size (5MB max)
   if (file.size > 5 * 1024 * 1024) {
     authStore.profileError = "ទំហំឯកសារ​ធំលើស 5MB។ សូមជ្រើសរើសឯកសារតូចជាង។";
     return;
   }
 
-  // Validate file type
   if (!file.type.startsWith("image/")) {
     authStore.profileError = "សូមជ្រើសរើសឯកសាររូបភាពដែលមានសុពលភាព។";
     return;
@@ -132,7 +130,6 @@ const onFileSelected = (event) => {
 
   selectedFile.value = file;
 
-  // Create preview
   const reader = new FileReader();
   reader.onload = (e) => {
     avatarPreview.value = e.target.result;

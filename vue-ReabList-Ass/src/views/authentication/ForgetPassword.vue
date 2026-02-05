@@ -18,7 +18,6 @@
       class="card glass-card border-0 shadow-2xl rounded-5 overflow-hidden animate-entrance"
     >
       <div class="row g-0 h-100">
-        <!-- Left decorative side (visible on lg+) -->
         <div
           class="col-lg-5 d-none d-lg-flex flex-column align-items-center justify-content-center bg-gradient-teal text-white p-5 position-relative overflow-hidden"
         >
@@ -163,7 +162,6 @@ const schema = z.object({
     .email("អ៊ីមែលមិនត្រឹមត្រូវ"),
 });
 
-// ─── Parallax ────────────────────────────────────────
 const handleMouseMove = (e) => {
   mouseX.value = (e.clientX - window.innerWidth / 2) / window.innerWidth;
   mouseY.value = (e.clientY - window.innerHeight / 2) / window.innerHeight;
@@ -175,9 +173,7 @@ const parallaxStyle = (intensity) => ({
   }px)`,
 });
 
-// ─── Submit ──────────────────────────────────────────
 const handleForgotPassword = async () => {
-  // Reset local and store errors
   errors.email = "";
   if (authStore.clearMessages) {
     authStore.clearMessages();
@@ -185,7 +181,6 @@ const handleForgotPassword = async () => {
     authStore.error = null;
   }
 
-  // Zod Validation
   const result = schema.safeParse({ email: authStore.resetEmail });
 
   if (!result.success) {
@@ -194,15 +189,12 @@ const handleForgotPassword = async () => {
   }
 
   try {
-    // Await the store action
     const success = await authStore.forgotPassword();
 
-    // Only show modal if the store explicitly returns true
     if (success) {
       showSuccessModal.value = true;
     }
   } catch (err) {
-    // This catches unexpected runtime crashes
     console.error("Critical component error:", err);
     authStore.error = "មានបញ្ហាបច្ចេកទេស។ សូមព្យាយាមម្ដងទៀត។";
   }
@@ -224,7 +216,6 @@ const closeSuccessModal = () => {
 </script>
 
 <style scoped>
-/* ─── Modal & Animation ──────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
