@@ -28,8 +28,9 @@ export const useNoteStore = defineStore("noteStore", () => {
   const error = ref(null);
   const modalOpen = ref(false);
   const modalType = ref("view"); // "view" | "edit"
+  const searchResults = ref([]); 
 
-  // ✅ GETTERS (ប្រើ computed)
+  // ✅ GETTERS (ប្រើ computed) 
   const all = computed(() => notes.value);
   const pending = computed(() => notes.value.filter((n) => !n.isCompleted));
   const completed = computed(() => notes.value.filter((n) => !!n.isCompleted));
@@ -147,6 +148,7 @@ export const useNoteStore = defineStore("noteStore", () => {
     all,
     pending,
     completed,
+    searchResults, 
     // Actions
     fetchNoteById,
     fetchNoteContent,
@@ -155,5 +157,6 @@ export const useNoteStore = defineStore("noteStore", () => {
     closeModal,
     searchNotes,
     clearSearch,
+    
   };
 });
