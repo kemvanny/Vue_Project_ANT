@@ -251,7 +251,7 @@ export const useProfileStore = defineStore("profile", () => {
         if (updatedData && updatedData.email) {
           profile.value = { ...profile.value, ...updatedData };
           useAuthStore().user = { ...useAuthStore().user, ...updatedData };
-          // console.log("Email updated to:", updatedData.email);
+          console.log("Email updated to:", updatedData.email);
         }
 
         await getProfile();
