@@ -45,7 +45,7 @@
                   >
                     <i class="bi bi-eye"></i> មើលលម្អិត
                   </button>
-                  <button @click="$emit('edit', t)" class="dropdown-item">
+                  <button @click="$emit('edit', t)" class="dropdown-item text-primary">
                     <i class="bi bi-pencil"></i> កែប្រែ
                   </button>
                   <div class="divider"></div>
@@ -314,13 +314,12 @@ const priorityClass = (p) => {
   padding: 4px 12px;
   border-radius: 8px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .item-date {
   font-size: 0.82rem;
   color: #94a3b8;
-  font-weight: 600;
 }
 
 /* Dropdown Menu */

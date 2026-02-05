@@ -57,16 +57,6 @@
               </p>
             </div>
 
-            <transition name="shake">
-              <div
-                v-if="auth.error"
-                class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm"
-              >
-                <i class="bi bi-exclamation-triangle-fill me-2"></i
-                >{{ auth.error }}
-              </div>
-            </transition>
-
             <form @submit.prevent="handleLogin">
               <AuthInput
                 label="អ៊ីមែល"
@@ -86,6 +76,15 @@
                 :error="errors.password"
                 class="stagger-3"
               />
+              <transition name="shake">
+                <div
+                  v-if="auth.error"
+                  class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm"
+                >
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i
+                  >{{ auth.error }}
+                </div>
+              </transition>
 
               <div
                 class="d-flex justify-content-between align-items-center mb-4 small stagger-4"
@@ -217,7 +216,9 @@ const handleLogin = async () => {
   max-width: 0;
   overflow: hidden;
   white-space: nowrap;
-  transition: max-width 0.3s ease, margin 0.3s ease;
+  transition:
+    max-width 0.3s ease,
+    margin 0.3s ease;
   font-size: 0.9rem;
   font-weight: 500;
 }

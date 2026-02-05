@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import api from "@/API/api";
 
-// convert API enums to Khmer labels
+// --- HELPERS (ទុកនៅខាងក្រៅ Store) ---
 const toKhPriority = (val) => {
   const v = String(val || "").toUpperCase();
   if (v === "HIGH" || val === "ខ្ពស់") return "ខ្ពស់";
@@ -18,104 +19,141 @@ const toKhCategory = (val) => {
   return val || "ទូទៅ";
 };
 
-export const useNoteStore = defineStore("noteStore", {
-  state: () => ({
-    notes: [],
-    selectedNote: null,
-    loading: false,
-    error: null,
+// --- STORE DEFINITION ---
+export const useNoteStore = defineStore("noteStore", () => {
+  // ✅ STATE (ប្រើ ref)
+  const notes = ref([]);
+  const selectedNote = ref(null);
+  const loading = ref(false);
+  const error = ref(null);
+  const modalOpen = ref(false);
+  const modalType = ref("view"); // "view" | "edit"
 
-    // ✅ modal controller (fix click card not open)
-    modalOpen: false,
-    modalType: "view", // "view" | "edit"
-  }),
+  // ✅ GETTERS (ប្រើ computed)
+  const all = computed(() => notes.value);
+  const pending = computed(() => notes.value.filter((n) => !n.isCompleted));
+  const completed = computed(() => notes.value.filter((n) => !!n.isCompleted));
 
-  getters: {
-    all: (s) => s.notes,
-    pending: (s) => s.notes.filter((n) => !n.isCompleted),
-    completed: (s) => s.notes.filter((n) => !!n.isCompleted),
-  },
+  // ✅ ACTIONS (ប្រើ function)
+  
+  const fetchNoteById = async (id) => {
+    const res = await api.get(`/notes/${id}`);
+    return res.data?.data ?? res.data;
+  };
 
-  actions: {
-    async fetchNoteById(id) {
+  const fetchNoteContent = async (id) => {
+    try {
       const res = await api.get(`/notes/${id}`);
-      return res.data?.data ?? res.data;
-    },
+      const detail = res.data?.data ?? res.data;
+      return detail?.content ?? detail?.notes ?? "";
+    } catch {
+      return "";
+    }
+  };
 
-    async fetchNoteContent(id) {
-      try {
-        const res = await api.get(`/notes/${id}`);
-        const detail = res.data?.data ?? res.data;
-        return detail?.content ?? detail?.notes ?? "";
-      } catch {
-        return "";
-      }
-    },
+  const fetchAllNotes = async () => {
+    loading.value = true;
+    error.value = null;
 
-    async fetchAllNotes() {
-      this.loading = true;
-      this.error = null;
+    try {
+      const res = await api.get("/notes");
+      const payload = res.data?.data;
 
-      try {
-        const res = await api.get("/notes");
-        const payload = res.data?.data;
+      const list = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.data)
+        ? payload.data
+        : Array.isArray(payload?.items)
+        ? payload.items
+        : [];
 
-        const list = Array.isArray(payload)
-          ? payload
-          : Array.isArray(payload?.data)
-          ? payload.data
-          : Array.isArray(payload?.items)
-          ? payload.items
-          : [];
+      // ប្រើ Promise.all ដូចដើមដើម្បីទាញយក Content បន្ថែម
+      const enriched = await Promise.all(
+        list.map(async (t) => {
+          const content = await fetchNoteContent(t.id);
+          return {
+            ...t,
+            content,
+            notes: content,
+            priority: toKhPriority(t.priority),
+            category: toKhCategory(t.category),
+          };
+        })
+      );
 
-        const enriched = await Promise.all(
-          list.map(async (t) => {
-            const content = await this.fetchNoteContent(t.id);
-            return {
-              ...t,
-              content,
-              notes: content,
-              priority: toKhPriority(t.priority),
-              category: toKhCategory(t.category),
-            };
-          })
-        );
+      notes.value = enriched;
+    } catch (err) {
+      error.value = err?.response?.data?.message || err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
 
-        this.notes = enriched;
-      } catch (err) {
-        this.error = err?.response?.data?.message || err.message;
-      } finally {
-        this.loading = false;
-      }
-    },
+  // ✅ LOGIC សម្រាប់ SEARCH
+  const searchNotes = (keyword) => {
+    if (!keyword || keyword.trim() === "") {
+      searchResults.value = [];
+      return;
+    }
+    const q = keyword.toLowerCase().trim();
+    searchResults.value = notes.value.filter((n) => {
+      const title = n.title ? String(n.title).toLowerCase() : "";
+      return title.includes(q);
+    });
+  };
 
-    // ✅ one function to open view/edit modal from any page
-    async openNote(id, type = "view") {
-      this.loading = true;
-      this.modalType = type;
+  const clearSearch = () => { searchResults.value = []; };
+  ///=============================
 
-      try {
-        const detail = await this.fetchNoteById(id);
-        const text = detail?.content ?? detail?.notes ?? "";
+  const openNote = async (id, type = "view") => {
+    loading.value = true;
+    modalType.value = type;
 
-        this.selectedNote = {
-          ...detail,
-          content: text,
-          notes: text,
-          priority: toKhPriority(detail?.priority),
-          category: toKhCategory(detail?.category),
-        };
+    try {
+      const detail = await fetchNoteById(id);
+      const text = detail?.content ?? detail?.notes ?? "";
 
-        // 🔥 this is the key fix
-        this.modalOpen = true;
-      } finally {
-        this.loading = false;
-      }
-    },
+      selectedNote.value = {
+        ...detail,
+        content: text,
+        notes: text,
+        priority: toKhPriority(detail?.priority),
+        category: toKhCategory(detail?.category),
+      };
 
-    closeModal() {
-      this.modalOpen = false;
-      this.modalType = "view";
-    },
-  },
+      modalOpen.value = true;
+    } catch (err) {
+      console.error("Open note failed:", err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const closeModal = () => {
+    modalOpen.value = false;
+    modalType.value = "view";
+  };
+
+  // ✅ RETURN ទាំងអស់ដើម្បីអាចយកទៅប្រើក្នុង Components
+  return {
+    // State
+    notes,
+    selectedNote,
+    loading,
+    error,
+    modalOpen,
+    modalType,
+    // Getters
+    all,
+    pending,
+    completed,
+    // Actions
+    fetchNoteById,
+    fetchNoteContent,
+    fetchAllNotes,
+    openNote,
+    closeModal,
+    searchNotes,
+    clearSearch,
+  };
 });

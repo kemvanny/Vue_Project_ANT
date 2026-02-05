@@ -22,7 +22,7 @@
             <i class="fas fa-envelope"></i> អ៊ីមែល
           </label>
           <input
-            :value="authStore.user?.email"
+            :value="authStore.profile?.email"
             id="email"
             type="email"
             class="form-control"
@@ -90,16 +90,13 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useAuthStore } from "@/stores/authentication";
+import { useProfileStore } from "@/stores/profilestore";
 
-const authStore = useAuthStore();
+const authStore = useProfileStore();
 const emit = defineEmits(["done", "reload"]);
 
 const formData = ref({
   fullname: "",
-  phone: "",
-  address: "",
-  date_of_birth: "",
 });
 
 const loadProfile = async () => {
@@ -112,9 +109,6 @@ const loadProfile = async () => {
   if (authStore.profile) {
     formData.value = {
       fullname: authStore.profile.fullname || "",
-      phone: authStore.profile.phone || "",
-      address: authStore.profile.address || "",
-      date_of_birth: authStore.profile.date_of_birth || "",
     };
     console.log("Form loaded with profile data:", formData.value);
   } else {

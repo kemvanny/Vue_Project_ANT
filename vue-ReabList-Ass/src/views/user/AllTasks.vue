@@ -42,52 +42,43 @@
         <BaseSelect v-model="statusFilter" :options="statusOptions" />
       </div>
     </div>
-
     <!-- CONTENT -->
     <div v-if="loading" class="loading">
       <div class="loading-dot"></div>
       <div>កំពុងផ្ទុក...</div>
     </div>
-
     <div v-else>
-      <!-- Empty state -->
       <div v-if="displayTasks.length === 0" class="empty-box">
         <div class="empty-icon">🗂️</div>
         <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
         <p class="empty-sub">សូមបង្កើតភារកិច្ចថ្មី ឬប្តូរតម្រង។</p>
       </div>
-
-<div v-else>
-  <BaseTaskTable
-    title="All Tasks"
-    :tasks="displayTasks"
-    :pageSize="pageSize"
-    @update:pageSize="pageSize = $event"
-    @view="openView"
-    @edit="openEdit"
-    @delete="deleteNote"
-  />
-</div>
-
-
-
+      <div v-else>
+        <BaseTaskTable
+          title="All Tasks"
+          :tasks="displayTasks"
+          :pageSize="pageSize"
+          @update:pageSize="pageSize = $event"
+          @view="openView"
+          @edit="openEdit"
+          @delete="deleteNote"
+        />
+      </div>
     </div>
 
-<TaskView
-  ref="viewModalRef"
-  v-if="noteStore.selectedNote"
-  :task="noteStore.selectedNote"
-  @edit-task="openEdit"
-/>
+    <TaskView
+      ref="viewModalRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @edit-task="openEdit"
+    />
 
-<TaskUpdate
-  ref="editModalRef"
-  v-if="noteStore.selectedNote"
-  :task="noteStore.selectedNote"
-  @updated="handleUpdated"
-/>
-
-
+    <TaskUpdate
+      ref="editModalRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @updated="handleUpdated"
+    />
   </div>
 </template>
 
@@ -101,7 +92,6 @@ import { useNoteStore } from "@/stores/note";
 
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
-
 
 const props = defineProps({
   title: { type: String, default: "ភារកិច្ចទាំងអស់" },
@@ -119,7 +109,6 @@ const statusFilter = ref("all");
 // pagination
 const pageSize = ref(8);
 const currentPage = ref(1);
-
 
 // modal refs
 const viewModalRef = ref(null);
@@ -164,19 +153,23 @@ const displayTasks = computed(() => {
   });
 
   if (statusFilter.value === "done") list = list.filter((t) => !!t.isCompleted);
-  if (statusFilter.value === "pending") list = list.filter((t) => !t.isCompleted);
+  if (statusFilter.value === "pending")
+    list = list.filter((t) => !t.isCompleted);
 
   if (priorityFilter.value !== "all") {
-    list = list.filter((t) => showPriority(t.priority) === priorityFilter.value);
+    list = list.filter(
+      (t) => showPriority(t.priority) === priorityFilter.value
+    );
   }
 
   if (categoryFilter.value !== "all") {
-    list = list.filter((t) => showCategory(t.category) === categoryFilter.value);
+    list = list.filter(
+      (t) => showCategory(t.category) === categoryFilter.value
+    );
   }
 
   return list;
 });
-
 
 const totalPages = computed(() =>
   Math.max(1, Math.ceil(displayTasks.value.length / pageSize.value))
@@ -195,13 +188,9 @@ const goNext = () => {
   if (currentPage.value < totalPages.value) currentPage.value++;
 };
 
-
-
 watch([priorityFilter, categoryFilter, statusFilter], () => {
   currentPage.value = 1;
 });
-
-
 
 const priorityClass = (p) => {
   if (p === "ខ្ពស់") return "high";
@@ -220,12 +209,10 @@ const openView = async (task) => {
 
 //  EDIT (click pencil)
 
-
 const openEdit = async (task) => {
   await noteStore.openNote(task.id);
   editModalRef.value?.open();
 };
-
 
 //  VIEW MODAL -> EDIT MODAL
 const fromViewToEdit = async (task) => {
@@ -291,7 +278,6 @@ const statusOptions = [
 
 
 <style scoped>
-
 /* ======= HERO ======= */
 
 /* ===== Modern Card Grid ===== */
@@ -300,7 +286,6 @@ const statusOptions = [
   flex-direction: column;
   gap: 12px;
 }
-
 
 @media (max-width: 1100px) {
   .task-grid-modern {
@@ -333,7 +318,11 @@ const statusOptions = [
 }
 
 .category-hero {
-  background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(6, 182, 212, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(13, 148, 136, 0.12),
+    rgba(6, 182, 212, 0.1)
+  );
   border: 1px solid rgba(13, 148, 136, 0.18);
   border-radius: 26px;
   padding: 22px;
@@ -344,7 +333,9 @@ const statusOptions = [
   box-shadow: 0 3px 5px rgba(131, 160, 157, 0.255);
 }
 
-.hero-left { min-width: 0; }
+.hero-left {
+  min-width: 0;
+}
 
 .brand-pill {
   display: inline-flex;
@@ -368,9 +359,18 @@ const statusOptions = [
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6); }
-  70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 12px rgba(13, 148, 136, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+  }
 }
 
 .brand-name {
@@ -446,7 +446,10 @@ const statusOptions = [
   width: 40%;
 }
 @media (max-width: 900px) {
-  .filters { grid-template-columns: 1fr; width: 100%; }
+  .filters {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
 }
 
 .loading {
@@ -465,8 +468,14 @@ const statusOptions = [
   animation: bounce 0.9s infinite alternate;
 }
 @keyframes bounce {
-  from { transform: translateY(0); opacity: 0.6; }
-  to { transform: translateY(-6px); opacity: 1; }
+  from {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
 }
 
 .empty-box {
@@ -477,13 +486,46 @@ const statusOptions = [
   text-align: center;
   box-shadow: 0 22px 45px -35px rgba(2, 132, 199, 0.25);
 }
-.empty-icon { width: 72px; height: 72px; margin: 0 auto 12px; border-radius: 22px; display: grid; place-items: center; background: rgba(13, 148, 136, 0.10); border: 1px solid rgba(13, 148, 136, 0.18); color: #0d9488; }
-.empty-title { font-weight: 900; color: #0f172a; margin: 0 0 8px; }
-.empty-sub { color: #64748b; font-weight: 700; margin: 0; }
+.empty-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 12px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  background: rgba(13, 148, 136, 0.1);
+  border: 1px solid rgba(13, 148, 136, 0.18);
+  color: #0d9488;
+}
+.empty-title {
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+.empty-sub {
+  color: #64748b;
+  font-weight: 700;
+  margin: 0;
+}
 
-.task-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-@media (max-width: 1100px) { .category-hero { flex-direction: column; } .task-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 680px) { .task-grid { grid-template-columns: 1fr; } }
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 1100px) {
+  .category-hero {
+    flex-direction: column;
+  }
+  .task-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .task-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 .task-card {
   background: #fff;
@@ -491,12 +533,19 @@ const statusOptions = [
   border-radius: 22px;
   padding: 16px;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
   animation: popIn 0.22s ease-out both;
 }
 @keyframes popIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 .task-card:hover {
   transform: translateY(-2px);
@@ -504,25 +553,99 @@ const statusOptions = [
   box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.45);
 }
 
-.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.task-title { font-weight: 900; color: #0f172a; }
-.task-sub { margin-top: 4px; font-weight: 800; color: #64748b; font-size: 13px; }
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.task-title {
+  font-weight: 900;
+  color: #0f172a;
+}
+.task-sub {
+  margin-top: 4px;
+  font-weight: 800;
+  color: #64748b;
+  font-size: 13px;
+}
 
-.card-mid { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
-.meta { display: flex; gap: 8px; flex-wrap: wrap; }
-.meta-badge { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; color: #334155; }
+.card-mid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+.meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.meta-badge {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #334155;
+}
 
-.pill { font-weight: 900; font-size: 11px; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
-.pill.high { background: #fee2e2; color: #dc2626; }
-.pill.medium { background: #fef3c7; color: #d97706; }
-.pill.low { background: #dcfce7; color: #16a34a; }
+.pill {
+  font-weight: 900;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill.high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.pill.medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+.pill.low {
+  background: #dcfce7;
+  color: #16a34a;
+}
 
-.status { font-weight: 900; font-size: 11px; padding: 7px 10px; border-radius: 999px; border: 1px solid #e2e8f0; color: #ef4444; background: #fff; }
-.status.done { color: #0d9488; border-color: rgba(13, 148, 136, 0.25); background: #f0fdfa; }
+.status {
+  font-weight: 900;
+  font-size: 11px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  color: #ef4444;
+  background: #fff;
+}
+.status.done {
+  color: #0d9488;
+  border-color: rgba(13, 148, 136, 0.25);
+  background: #f0fdfa;
+}
 
-.card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
-.category-chip { background: rgba(13, 148, 136, 0.1); color: #0d9488; border: 1px solid rgba(13, 148, 136, 0.18); padding: 7px 10px; border-radius: 999px; font-weight: 900; font-size: 12px; }
-.open-hint { color: #94a3b8; font-weight: 900; font-size: 12px; }
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+.category-chip {
+  background: rgba(13, 148, 136, 0.1);
+  color: #0d9488;
+  border: 1px solid rgba(13, 148, 136, 0.18);
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+}
+.open-hint {
+  color: #94a3b8;
+  font-weight: 900;
+  font-size: 12px;
+}
 
 .btn-submit-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
@@ -552,11 +675,14 @@ const statusOptions = [
   font-weight: 900;
   transition: 0.15s;
 }
-.icon-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.25); }
-.icon-btn.danger { border-color: rgba(239, 68, 68, 0.25); }
-.icon-btn.danger:hover { background: rgba(239, 68, 68, 0.08); }
-
-
-
-
+.icon-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -22px rgba(15, 23, 42, 0.25);
+}
+.icon-btn.danger {
+  border-color: rgba(239, 68, 68, 0.25);
+}
+.icon-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
 </style>

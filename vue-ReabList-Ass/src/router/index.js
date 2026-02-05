@@ -132,6 +132,13 @@ const router = createRouter({
           component: () => import("@/components/profile/AccountSettings.vue"),
           meta: { requiresAuth: true },
         },
+        {
+          path: "/verify-change-email",
+          name: "VerifyEmailChange",
+          component: () =>
+            import("@/views/authentication/VerifyEmailChange.vue"),
+          meta: { requiresAuth: true },
+        },
         // {
         //   path: "/profile/changepasswordform",
         //   name: "ChangePasswordForm",
