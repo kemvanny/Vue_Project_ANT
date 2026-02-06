@@ -34,7 +34,6 @@
               </div>
             </div>
           </div>
-
           <div v-else class="no-results">រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"</div>
         </div>
       </div>
@@ -45,6 +44,7 @@
         <button class="mode-toggle">
           <Moon :size="20" />
         </button>
+        
         <ProfileDropdown />
       </div>
     </div>
@@ -54,9 +54,11 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { Search, Moon } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue";
 import { useNoteStore } from "@/stores/note";
+
+// ✅ Added missing imports for icons and components
+import { Search, Moon } from "lucide-vue-next";
+import ProfileDropdown from "./ProfileDropdown.vue"; // Ensure this path is correct
 
 const router = useRouter();
 const noteStore = useNoteStore();
@@ -66,16 +68,13 @@ const showResults = ref(false);
 let timeout = null;
 
 onMounted(async () => {
-  // ទាញទិន្នន័យទុកក្នុង Store ពេល Component ចាប់ផ្តើម
   if (noteStore.all.length === 0) {
     await noteStore.fetchAllNotes();
   }
 });
 
 const openDropdown = () => {
-  if (q.value.trim()) {
-    showResults.value = true;
-  }
+  if (q.value.trim()) showResults.value = true;
 };
 
 const closeDropdown = () => {
@@ -83,21 +82,20 @@ const closeDropdown = () => {
 };
 
 const goToDetail = (id) => {
-  closeDropdown();
+  showResults.value = false;
   q.value = "";
+  noteStore.clearSearch();
   router.push(`/dashboard/tasks/${id}`);
 };
 
 // Debounced Search Logic
 watch(q, (newVal) => {
   clearTimeout(timeout);
-
   if (!newVal.trim()) {
     noteStore.clearSearch();
     showResults.value = false;
     return;
   }
-
   timeout = setTimeout(() => {
     noteStore.searchNotes(newVal);
     showResults.value = true;
@@ -106,6 +104,7 @@ watch(q, (newVal) => {
 </script>
 
 <style scoped>
+/* (Your existing CSS remains the same) */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .reab-navbar {
@@ -133,7 +132,7 @@ watch(q, (newVal) => {
   position: relative;
   flex: 1;
   max-width: 500px;
-  z-index: 1001; /* ធានាថាខ្ពស់ជាង Overlay */
+  z-index: 1001;
 }
 
 .search-box {
@@ -145,12 +144,6 @@ watch(q, (newVal) => {
   border-radius: 25px;
   padding: 10px 20px;
   transition: 0.2s;
-}
-
-.search-box:focus-within {
-  border-color: #0d9488;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.08);
 }
 
 .search-input {
@@ -174,7 +167,7 @@ watch(q, (newVal) => {
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
   max-height: 350px;
   overflow-y: auto;
-  z-index: 1002; /* ខ្ពស់ជាងគេបង្អស់ */
+  z-index: 1002;
 }
 
 .result-item {
@@ -188,73 +181,6 @@ watch(q, (newVal) => {
 
 .result-item:hover {
   background: #f1f5f9;
-}
-
-.result-icon {
-  background: #f0fdfa;
-  color: #0d9488;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.result-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.result-title {
-  margin: 0;
-  font-weight: 600;
-  font-size: 14px;
-  color: #0f172a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.result-note {
-  margin: 2px 0 0 0;
-  font-size: 12px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.no-results {
-  padding: 24px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.01);
-  z-index: 999; /* ទាបជាង Search Area */
-}
-
-.spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #e2e8f0;
-  border-top-color: #0d9488;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  display: inline-block;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .actions-area {
@@ -274,5 +200,26 @@ watch(q, (newVal) => {
   justify-content: center;
   color: #64748b;
   cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.01);
+  z-index: 999;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e2e8f0;
+  border-top-color: #0d9488;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 </style>

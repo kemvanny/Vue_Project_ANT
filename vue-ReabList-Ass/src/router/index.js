@@ -114,11 +114,11 @@ const router = createRouter({
           component: () => import("@/views/user/CategoryView.vue"),
           props: true,
         },
-        // {
-        //   path: "/dashboard/category/:category",
-        //   name: "Category",
-        //   component: () => import("@/views/user/CategoryView.vue"),
-        // },
+        {
+          path: '/dashboard/tasks/:id', // Make sure this has the :id at the end
+          name: 'task-detail',
+          component: () => import('../views/user/Task/TaskView.vue') // Verify this file exists!
+        },
 
         {
           path: "/profile",

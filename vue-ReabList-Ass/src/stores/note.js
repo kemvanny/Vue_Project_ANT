@@ -2,26 +2,26 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import api from "@/API/api";
 
-// --- HELPERS (ទុកនៅខាងក្រៅ Store) ---
+// --- HELPERS (KH MER CONVERSION) ---
 const toKhPriority = (val) => {
   const v = String(val || "").toUpperCase();
-  if (v === "HIGH" || val === "ខ្ពស់") return "ខ្ពស់";
-  if (v === "MEDIUM" || val === "មធ្យម") return "មធ្យម";
-  if (v === "LOW" || val === "ទាប") return "ទាប";
-  return val || "មធ្យម";
+  if (v === "HIGH" || v === "ខ្ពស់") return "ខ្ពស់";
+  if (v === "MEDIUM" || v === "មធ្យម") return "មធ្យម";
+  if (v === "LOW" || v === "ទាប") return "ទាប";
+  return "មធ្យម";
 };
 
 const toKhCategory = (val) => {
   const v = String(val || "").toUpperCase();
-  if (v === "PERSONAL" || val === "ផ្ទាល់ខ្លួន") return "ផ្ទាល់ខ្លួន";
-  if (v === "WORK" || val === "ការងារ") return "ការងារ";
-  if (v === "SCHOOL" || v === "STUDY" || val === "សិក្សា") return "សិក្សា";
-  return val || "ទូទៅ";
+  if (v === "PERSONAL" || v === "ផ្ទាល់ខ្លួន") return "ផ្ទាល់ខ្លួន";
+  if (v === "WORK" || v === "ការងារ") return "ការងារ";
+  if (v === "SCHOOL" || v === "STUDY" || v === "សិក្សា") return "សិក្សា";
+  return "ទូទៅ";
 };
 
 // --- STORE DEFINITION ---
 export const useNoteStore = defineStore("noteStore", () => {
-  // ✅ STATE (ប្រើ ref)
+  // --- STATE ---
   const notes = ref([]);
   const selectedNote = ref(null);
   const loading = ref(false);
@@ -30,18 +30,25 @@ export const useNoteStore = defineStore("noteStore", () => {
   const modalType = ref("view"); // "view" | "edit"
   const searchResults = ref([]); 
 
-  // ✅ GETTERS (ប្រើ computed) 
+  // --- GETTERS ---
   const all = computed(() => notes.value);
   const pending = computed(() => notes.value.filter((n) => !n.isCompleted));
   const completed = computed(() => notes.value.filter((n) => !!n.isCompleted));
 
-  // ✅ ACTIONS (ប្រើ function)
-  
+  // --- ACTIONS ---
+
+  // Get a single note by ID
   const fetchNoteById = async (id) => {
-    const res = await api.get(`/notes/${id}`);
-    return res.data?.data ?? res.data;
+    try {
+      const res = await api.get(`/notes/${id}`);
+      return res.data?.data ?? res.data;
+    } catch (err) {
+      console.error("FetchById Error:", err);
+      return null;
+    }
   };
 
+  // Helper to fetch content for list view (if API doesn't provide it in list)
   const fetchNoteContent = async (id) => {
     try {
       const res = await api.get(`/notes/${id}`);
@@ -52,23 +59,22 @@ export const useNoteStore = defineStore("noteStore", () => {
     }
   };
 
+  // Fetch all notes and enrich with content/Khmer translations
   const fetchAllNotes = async () => {
     loading.value = true;
     error.value = null;
-
     try {
       const res = await api.get("/notes");
-      const payload = res.data?.data;
+      const payload = res.data?.data || res.data;
 
+      // Handle different API response structures
       const list = Array.isArray(payload)
         ? payload
-        : Array.isArray(payload?.data)
-        ? payload.data
         : Array.isArray(payload?.items)
         ? payload.items
         : [];
 
-      // ប្រើ Promise.all ដូចដើមដើម្បីទាញយក Content បន្ថែម
+      // Enrich the data so the UI has everything it needs
       const enriched = await Promise.all(
         list.map(async (t) => {
           const content = await fetchNoteContent(t.id);
@@ -84,13 +90,13 @@ export const useNoteStore = defineStore("noteStore", () => {
 
       notes.value = enriched;
     } catch (err) {
-      error.value = err?.response?.data?.message || err.message;
+      error.value = err?.response?.data?.message || "Error fetching notes";
     } finally {
       loading.value = false;
     }
   };
 
-  // ✅ LOGIC សម្រាប់ SEARCH
+  // Search Logic
   const searchNotes = (keyword) => {
     if (!keyword || keyword.trim() === "") {
       searchResults.value = [];
@@ -103,13 +109,14 @@ export const useNoteStore = defineStore("noteStore", () => {
     });
   };
 
-  const clearSearch = () => { searchResults.value = []; };
-  ///=============================
+  const clearSearch = () => {
+    searchResults.value = [];
+  };
 
+  // Open note for Modal
   const openNote = async (id, type = "view") => {
     loading.value = true;
     modalType.value = type;
-
     try {
       const detail = await fetchNoteById(id);
       const text = detail?.content ?? detail?.notes ?? "";
@@ -132,31 +139,27 @@ export const useNoteStore = defineStore("noteStore", () => {
 
   const closeModal = () => {
     modalOpen.value = false;
-    modalType.value = "view";
+    selectedNote.value = null;
   };
 
-  // ✅ RETURN ទាំងអស់ដើម្បីអាចយកទៅប្រើក្នុង Components
+  // --- RETURN ---
+  // Ensure all these are returned so Components can access them
   return {
-    // State
     notes,
     selectedNote,
     loading,
     error,
     modalOpen,
     modalType,
-    // Getters
+    searchResults,
     all,
     pending,
     completed,
-    searchResults, 
-    // Actions
     fetchNoteById,
-    fetchNoteContent,
     fetchAllNotes,
-    openNote,
-    closeModal,
     searchNotes,
     clearSearch,
-    
+    openNote,
+    closeModal,
   };
 });

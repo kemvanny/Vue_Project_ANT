@@ -1,5 +1,5 @@
 <template>
-  <BaseModal ref="modalRef" id="viewTaskModal" title="ព័ត៌មានលម្អិត" maxWidth="850px">
+  <BaseModal ref="modalRef" id="viewTaskModal" @close="close" title="ព័ត៌មានលម្អិត" maxWidth="850px">
     <div class="view-card-wrapper">
       
       <div class="view-header">
@@ -91,8 +91,13 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
+import { useRoute } from "vue-router"; // Add this
+import { useRouter } from "vue-router"; // Add this for navigation after closing
+import { useNoteStore } from "@/stores/note"; // Add this
 import BaseModal from "@/components/base/BaseModal.vue";
+import { watch } from "vue";
+
 import { 
   Calendar, 
   Clock, 
@@ -103,32 +108,78 @@ import {
   Check 
 } from "lucide-vue-next";
 
-const props = defineProps({
-  task: { type: Object, required: true },
-});
+// 1. Setup Route and Store
+const route = useRoute();
+const noteStore = useNoteStore();
+const router = useRouter();
+
+// 2. We will use the store's selectedNote instead of props
+const task = computed(() => noteStore.selectedNote);
 
 const emit = defineEmits(["mark-completed", "edit-task"]);
 const modalRef = ref(null);
 
+// 3. Auto-open modal when the page loads
+onMounted(async () => {
+  const taskId = route.params.id;
+  
+  // If notes aren't loaded (e.g. after a refresh), load them first
+  if (noteStore.notes.length === 0) {
+    await noteStore.fetchAllNotes();
+  }
+
+  if (taskId) {
+    await noteStore.openNote(taskId);
+    modalRef.value?.open();
+  }
+});
+
 const open = () => modalRef.value?.open();
-const close = () => modalRef.value?.close();
+
+const close = () => {
+  // 1. Close the UI modal
+  if (modalRef.value) {
+    modalRef.value.close();
+  }
+
+  // 2. Clear the data from the store
+  noteStore.selectedNote = null;
+
+  // 3. Force the URL to change and prevent it from staying on the ID
+  router.replace('/dashboard/tasks').then(() => {
+    console.log("Navigation successful, ID should be gone.");
+  });
+};
 defineExpose({ open, close });
 
 const priorityClass = computed(() => {
-  if (props.task?.priority === "ខ្ពស់") return "high";
-  if (props.task?.priority === "មធ្យម") return "medium";
+  if (task.value?.priority === "ខ្ពស់") return "high";
+  if (task.value?.priority === "មធ្យម") return "medium";
   return "low";
 });
 
 const markDone = () => {
-  emit("mark-completed", props.task);
+  emit("mark-completed", task.value);
   close();
 };
 
 const editNow = () => {
-  emit("edit-task", props.task);
+  emit("edit-task", task.value);
   close();
 };
+
+
+// Watch the route: if the ID disappears, close the modal automatically
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (!newId && modalRef.value) {
+      modalRef.value.close();
+      noteStore.selectedNote = null;
+    }
+  }
+);
+
 </script>
 
 <style scoped>
