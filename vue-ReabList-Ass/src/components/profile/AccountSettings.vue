@@ -148,7 +148,7 @@
             <i class="fas fa-exclamation-triangle"></i>
           </div>
           <div>
-            <h3>តំបន់ប្រឈឹម</h3>
+            <h3>លុបគណនីរបស់អ្នក</h3>
             <p>សកម្មភាពដែលមិនអាចត្រឡប់វិញបាន។ សូមប្រុងប្រយ័ត្ន។</p>
           </div>
         </div>
@@ -547,7 +547,7 @@
         </div>
         <div class="modal-body">
           <div class="error-icon-modal mb-4">
-            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-exclamation"></i>
           </div>
           <p class="error-message">
             <strong>{{ profileStore.profileError }}</strong>
@@ -566,7 +566,7 @@
     </div>
 
     <!-- Success Modal -->
-    <!-- <div
+    <div
       v-if="profileStore.profileSuccess"
       class="modal-backdrop"
       @click.self="profileStore.profileSuccess = null"
@@ -580,7 +580,7 @@
         </div>
         <div class="modal-body">
           <div class="success-icon-modal mb-4">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-check"></i>
           </div>
           <p class="success-message">
             <strong>{{ profileStore.profileSuccess }}</strong>
@@ -596,7 +596,7 @@
           </button>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -609,7 +609,6 @@ const profileStore = useProfileStore();
 const route = useRoute();
 const router = useRouter();
 
-// Modal states
 const showChangeEmailModal = ref(false);
 const showChangePasswordModal = ref(false);
 const showPasswordSuccessModal = ref(false);
@@ -617,14 +616,12 @@ const showEmailRequestModal = ref(false);
 const showEmailSuccessModal = ref(false);
 const showDeleteModal = ref(false);
 
-// Email change state
 const newEmail = ref("");
 const emailChangePassword = ref("");
 const showEmailChangePassword = ref(false);
 const isEmailChangePending = ref(false);
 const pendingEmail = ref("");
 
-// Password change state
 const passwordForm = ref({
   currentPassword: "",
   newPassword: "",
@@ -634,18 +631,15 @@ const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-// Delete account state
 const deleteConfirmEmail = ref("");
 const deleteConfirmPassword = ref("");
 const showDeletePassword = ref(false);
 
-// Settings state
 const settings = ref({
   emailNotifications: true,
   profilePublic: false,
 });
 
-// Helper functions
 const formatDate = (dateString) => {
   if (!dateString) return "—";
   const date = new Date(dateString);
@@ -670,7 +664,6 @@ const isPasswordFormValid = () => {
   );
 };
 
-// Email change handlers
 const submitChangeEmail = async () => {
   profileStore.clearMessages();
 
@@ -711,7 +704,6 @@ const closeEmailRequestModal = () => {
   showEmailRequestModal.value = false;
 };
 
-// Password change handlers
 const submitChangePassword = async () => {
   profileStore.clearMessages();
 
@@ -747,7 +739,6 @@ const closePasswordSuccessModal = () => {
   showPasswordSuccessModal.value = false;
 };
 
-// Delete account handler
 const confirmDeleteAccount = async () => {
   if (deleteConfirmEmail.value !== profileStore.profile?.email) {
     profileStore.profileError = "អ៊ីមែលមិនត្រឹមត្រូវ។";
@@ -770,12 +761,10 @@ const confirmDeleteAccount = async () => {
   }
 };
 
-// Settings handlers
 const saveSettings = () => {
-  console.log("Settings saved:", settings.value);
+  // console.log("Settings saved:", settings.value);
 };
 
-// Handle email verification from URL and show success modal
 onMounted(async () => {
   await profileStore.getProfile();
 
@@ -908,6 +897,7 @@ onMounted(async () => {
   width: 48px;
   height: 48px;
   background: linear-gradient(135deg, #0d9488 0%, #018a7f 100%);
+  color: white;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -1051,6 +1041,7 @@ onMounted(async () => {
   transition: all 0.3s ease;
   border: none;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 }
@@ -1262,28 +1253,30 @@ input:checked + .slider:before {
   color: #dc2626;
 }
 
-.success-icon-modal {
-  width: 80px;
-  height: 80px;
+.error-icon-modal {
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: scaleIn 0.5s ease;
-}
-
-.success-icon-modal i {
-  font-size: 40px;
-  color: white;
 }
 
 .error-icon-modal {
-  width: 80px;
-  height: 80px;
+  font-size: 72px;
+  color: white;
+}
+
+.success-icon-modal {
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1291,9 +1284,27 @@ input:checked + .slider:before {
   animation: scaleIn 0.5s ease;
 }
 
-.error-icon-modal i {
-  font-size: 40px;
+.success-icon-modal {
+  font-size: 72px;
   color: white;
+}
+
+.btn-primary,
+.btn-outline,
+.btn-danger,
+.btn-ghost {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
 }
 
 @keyframes scaleIn {
@@ -1489,6 +1500,7 @@ input:checked + .slider:before {
     width: 40px;
     height: 40px;
     font-size: 18px;
+    color: white;
   }
 
   .card-header h3 {
