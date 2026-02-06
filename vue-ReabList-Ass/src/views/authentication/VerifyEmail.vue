@@ -55,58 +55,56 @@
             </div>
 
             <div class="mb-4 stagger-2">
-              <label
-                class="form-label small fw-bold text-uppercase text-muted ls-1"
+              <label class="form-label fw-semibold text-teal mb-2"
                 >អ៊ីមែលដែលបានចុះឈ្មោះ</label
               >
 
-              <div
-                class="input-group input-group-lg modern-input"
-                :class="{
-                  'is-invalid': errors.email,
-                  'editing-mode': isEditing,
-                }"
-              >
-                <span
-                  class="input-group-text border-0 bg-transparent text-teal ps-3"
-                >
-                  <i class="bi bi-envelope-check-fill"></i>
-                </span>
-
-                <input
-                  type="email"
-                  class="form-control border-0 bg-transparent ps-2 text-dark fw-semibold"
-                  v-model="auth.email"
-                  :disabled="!isEditing"
-                  @keyup.enter="toggleEdit"
-                />
-                <transition name="shake">
-                  <div
-                    v-if="auth.error"
-                    class="alert alert-danger py-2 small mb-4 rounded-3 border-0 stagger-2 shadow-sm text-center"
-                  >
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i
-                    >{{ auth.error }}
+              <div class="d-flex gap-2 align-items-start">
+                <div class="flex-grow-1">
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-teal-light border-teal">
+                      <i class="bi bi-envelope-check-fill text-teal"></i>
+                    </span>
+                    <input
+                      type="email"
+                      class="form-control border-teal"
+                      :class="{ 'is-invalid': errors.email }"
+                      v-model="auth.email"
+                      :disabled="!isEditing"
+                      placeholder="your@email.com"
+                      @keyup.enter="toggleEdit"
+                    />
                   </div>
-                </transition>
+                  <div v-if="errors.email" class="invalid-feedback d-block">
+                    {{ errors.email }}
+                  </div>
+                </div>
 
                 <button
-                  class="btn border-0 pe-3 fw-bold small"
-                  :class="isEditing ? 'text-success' : 'text-primary'"
                   type="button"
+                  class="btn btn-outline-primary btn-lg px-4"
+                  :class="
+                    isEditing ? 'btn-outline-success' : 'btn-outline-primary'
+                  "
                   @click="toggleEdit"
                 >
                   <i
-                    class="bi me-1"
+                    class="bi"
                     :class="isEditing ? 'bi-check-lg' : 'bi-pencil-square'"
                   ></i>
                   {{ isEditing ? "រក្សាទុក" : "ផ្លាស់ប្តូរ" }}
                 </button>
               </div>
 
-              <div v-if="errors.email" class="text-danger small mt-1 ms-1">
-                {{ errors.email }}
-              </div>
+              <transition name="shake">
+                <div
+                  v-if="auth.error"
+                  class="alert alert-danger py-2 small mt-3 rounded-3 border-0 shadow-sm text-center"
+                >
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i
+                  >{{ auth.error }}
+                </div>
+              </transition>
             </div>
 
             <AuthButton
@@ -169,7 +167,6 @@ onMounted(() => {
 
 const toggleEdit = () => {
   if (isEditing.value) {
-    // Validate on Save
     const result = emailSchema.safeParse(auth.email);
     if (!result.success) {
       errors.email = result.error.errors[0].message;
@@ -196,3 +193,90 @@ const handleSendCode = async () => {
   }
 };
 </script>
+
+<style scoped>
+.text-teal {
+  color: #2d6a7a;
+}
+
+.bg-teal-light {
+  background-color: #d8e8ea;
+}
+
+.border-teal {
+  border-color: #b8d8e0 !important;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.form-control {
+  border-left: none;
+  background-color: #d8e8ea;
+  color: #333;
+}
+
+.form-control:disabled {
+  background-color: #f0f5f7;
+  color: #2d6a7a;
+  opacity: 1;
+}
+
+.form-control:focus {
+  background-color: #cfe0e5;
+  border-color: #5a9aad;
+  box-shadow: none;
+}
+
+.btn-outline-primary {
+  border-color: #5a9aad;
+  color: #5a9aad;
+}
+
+.btn-outline-primary:hover {
+  background-color: #5a9aad;
+  border-color: #5a9aad;
+  color: white;
+}
+
+.btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-enter-active {
+  animation: shake 0.5s;
+}
+</style>

@@ -23,7 +23,7 @@
           <div class="glow-circle" :style="parallaxStyle(-10)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="https://cdn3d.iconscout.com/3d/free/thumb/free-mail-2997198-2491684.png"
+              src="../../assets/images/verifyEmail.png"
               alt="Email 3D"
               class="img-fluid mb-4 floating-3d"
               :style="parallaxStyle(15)"
@@ -69,7 +69,7 @@
             </div>
 
             <!-- Error State -->
-            <div v-else-if="verificationError" class="text-center stagger-1">
+            <!-- <div v-else-if="verificationError" class="text-center stagger-1">
               <div class="error-icon mb-4">
                 <i class="fas fa-times-circle"></i>
               </div>
@@ -86,7 +86,7 @@
                 <i class="bi bi-arrow-left"></i>
                 ត្រឡប់ទៅការកំណត់
               </router-link>
-            </div>
+            </div> -->
 
             <!-- Loading/Verifying State -->
             <div v-else-if="isVerifying" class="text-center">
@@ -169,7 +169,6 @@ const parallaxStyle = (intensity) => {
 };
 
 onMounted(() => {
-  // Extract token from URL query
   token.value = route.query.token;
   newEmail.value = route.query.email || "អ៊ីមែលថ្មី";
 
@@ -180,7 +179,6 @@ onMounted(() => {
     }, 3000);
   }
 
-  // Mouse parallax effect
   const handleMouseMove = (e) => {
     mouseX.value = (e.clientX / window.innerWidth - 0.5) * 20;
     mouseY.value = (e.clientY / window.innerHeight - 0.5) * 20;

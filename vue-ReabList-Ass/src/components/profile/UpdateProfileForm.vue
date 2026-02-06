@@ -100,7 +100,6 @@ const formData = ref({
 });
 
 const loadProfile = async () => {
-  // If profile is not loaded, fetch it first
   if (!authStore.profile) {
     console.log("Profile not loaded, fetching from API...");
     await authStore.getProfile();
@@ -110,7 +109,7 @@ const loadProfile = async () => {
     formData.value = {
       fullname: authStore.profile.fullname || "",
     };
-    console.log("Form loaded with profile data:", formData.value);
+    // console.log("Form loaded with profile data:", formData.value);
   } else {
     console.warn("No profile data available");
   }

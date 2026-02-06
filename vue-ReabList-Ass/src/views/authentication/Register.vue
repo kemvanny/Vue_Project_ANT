@@ -159,7 +159,6 @@ import AuthInput from "../../components/AuthInput.vue";
 const auth = useAuthStore();
 const router = useRouter();
 
-// --- PARALLAX LOGIC ---
 const mouseX = ref(0);
 const mouseY = ref(0);
 const parallaxStyle = (intensity) => {
