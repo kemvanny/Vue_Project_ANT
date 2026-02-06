@@ -160,7 +160,6 @@ export default {
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
 }
 
-/* Disabled input styling - shows the email clearly but prevents editing */
 .input-group input:disabled,
 .input-group input.input-disabled {
   background-color: #f0f5f7;
