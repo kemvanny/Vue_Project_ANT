@@ -67,7 +67,7 @@
             </li>
             <li class="dropdown-divider"></li>
             <li class="dropdown-item logout-item">
-              <button class="btn-logout" @click="showLogoutModal = true">
+              <button class="btn-logout" @click="openLogoutModal">
                 <i class="fas fa-sign-out-alt"></i> ចាកចេញ
               </button>
             </li>
@@ -77,33 +77,39 @@
     </Teleport>
 
     <!-- Logout Confirmation Modal -->
-    <Transition name="fade">
-      <div
-        v-if="showLogoutModal"
-        class="modal-backdrop"
-        @click="showLogoutModal = false"
-      >
-        <div class="modal-card" @click.stop>
-          <div class="modal-head">
-            <h3>ចាកចេញ?</h3>
-            <button @click="showLogoutModal = false" class="close-btn">
-              &times;
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
-          </div>
-          <div class="modal-foot">
-            <button class="btn-cancel" @click="showLogoutModal = false">
-              បោះបង់
-            </button>
-            <button class="btn-confirm-logout" @click="handleLogout">
-              បាទ/ចាស! ចាកចេញ
-            </button>
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="showLogoutModal"
+          class="modal-backdrop"
+          @click.self="closeLogoutModal"
+        >
+          <div class="modal-card" @click.stop>
+            <div class="modal-head">
+              <h3>ចាកចេញ?</h3>
+              <button @click="closeLogoutModal" class="close-btn">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
+            </div>
+            <div class="modal-foot">
+              <button class="btn-cancel" @click="closeLogoutModal">
+                បោះបង់
+              </button>
+              <button
+                class="btn-confirm-logout"
+                @click="handleLogout"
+                :disabled="isLoggingOut"
+              >
+                {{ isLoggingOut ? "កំពុងដំណើរការ..." : "បាទ/ចាស! ចាកចេញ" }}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+    </Teleport>
   </div>
   <div class="profile-dropdown-wrapper" v-else>
     <p class="loading-text">Loading...</p>
@@ -125,6 +131,7 @@ const authStore = useAuthStore();
 const profileData = ref(null);
 const dropdownOpen = ref(false);
 const showLogoutModal = ref(false);
+const isLoggingOut = ref(false);
 const triggerRect = ref(null);
 const backdropElement = ref(null);
 
@@ -177,6 +184,17 @@ const closeDropdown = () => {
   dropdownOpen.value = false;
 };
 
+const openLogoutModal = () => {
+  showLogoutModal.value = true;
+  closeDropdown();
+};
+
+const closeLogoutModal = () => {
+  if (!isLoggingOut.value) {
+    showLogoutModal.value = false;
+  }
+};
+
 const handleNavigation = (e) => {
   e.preventDefault();
   const href = e.target.getAttribute("data-route");
@@ -187,18 +205,20 @@ const handleNavigation = (e) => {
 };
 
 const handleLogout = async () => {
+  if (isLoggingOut.value) return; // Prevent multiple clicks
+
+  isLoggingOut.value = true;
+
   try {
     await api.post("/auth/logout");
     console.log("Logout successful");
-    authStore.logout();
-    showLogoutModal.value = false;
-    closeDropdown();
-    router.push("/login");
   } catch (err) {
     console.error("Logout error:", err);
+  } finally {
+    // Always logout locally and redirect, even if API call fails
     authStore.logout();
     showLogoutModal.value = false;
-    closeDropdown();
+    isLoggingOut.value = false;
     router.push("/login");
   }
 };
@@ -560,14 +580,19 @@ onBeforeUnmount(() => {
   font-family: "Inter", "Kantumruy Pro", sans-serif;
 }
 
-.btn-confirm-logout:hover {
+.btn-confirm-logout:hover:not(:disabled) {
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
 }
 
-.btn-confirm-logout:active {
+.btn-confirm-logout:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.btn-confirm-logout:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Transitions */

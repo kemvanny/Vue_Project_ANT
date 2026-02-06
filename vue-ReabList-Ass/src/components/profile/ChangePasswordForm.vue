@@ -11,7 +11,6 @@
         </p>
       </div>
 
-      <!-- Error Alert -->
       <div v-if="profileStore.profileError" class="alert alert-danger">
         <i class="fas fa-exclamation-circle"></i>
         {{ profileStore.profileError }}
@@ -167,7 +166,6 @@
       </button>
     </div>
 
-    <!-- Success Modal -->
     <div
       v-if="showSuccessModal"
       class="modal-backdrop"
@@ -235,7 +233,6 @@ const strengthText = computed(() => {
 });
 
 const submitForm = async () => {
-  // Clear previous messages
   profileStore.clearMessages();
 
   if (passwordMismatch.value) {
@@ -250,10 +247,8 @@ const submitForm = async () => {
   );
 
   if (result) {
-    // Show success modal
     showSuccessModal.value = true;
 
-    // Clear form
     formData.value = {
       currentPassword: "",
       newPassword: "",
@@ -301,7 +296,6 @@ const closeSuccessModal = () => {
   font-size: 1.2rem;
 }
 
-/* Alert Styles */
 .alert {
   padding: 12px 15px;
   border-radius: 8px;
@@ -518,7 +512,6 @@ const closeSuccessModal = () => {
   cursor: not-allowed;
 }
 
-/* Modal Styles */
 .modal-backdrop {
   position: fixed;
   top: 0;

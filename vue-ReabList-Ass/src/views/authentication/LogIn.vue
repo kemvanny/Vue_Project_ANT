@@ -224,7 +224,7 @@ const handleLogin = async () => {
 }
 
 .btn-home-floating:hover {
-  background: rgba(20, 184, 166, 0.8); /* Teal background on hover */
+  background: rgba(20, 184, 166, 0.8);
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
@@ -238,7 +238,6 @@ const handleLogin = async () => {
   margin-left: 10px;
 }
 
-/* For mobile: keep it simple */
 @media (max-width: 576px) {
   .btn-home-floating {
     top: 15px;
