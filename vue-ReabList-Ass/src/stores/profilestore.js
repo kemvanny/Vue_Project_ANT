@@ -55,12 +55,12 @@ export const useProfileStore = defineStore("profile", () => {
         const updated = extractData(response);
         profile.value = updated;
         useAuthStore().user = updated;
-        profileSuccess.value = "ទម្រង់បានទ្វេឱ្យទាន់សមេយបានជោគជ័យ!";
+        profileSuccess.value = "ការផ្លាស់ប្តូរឈ្មោះបានជោគជ័យ!";
         return true;
       }
     } catch (err) {
       profileError.value =
-        err.response?.data?.message || "បរាជ័យក្នុងការទ្វេឱ្យទាន់សមេយទម្រង់។";
+        err.response?.data?.message || "បរាជ័យក្នុងការផ្លាស់ប្តូរឈ្មោះ។";
       console.error("Update profile error:", err);
       return false;
     } finally {
