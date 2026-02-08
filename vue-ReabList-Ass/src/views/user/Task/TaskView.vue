@@ -145,11 +145,8 @@ const close = () => {
   // 2. Clear the data from the store
   noteStore.selectedNote = null;
 
-  // 3. Force the URL to change and prevent it from staying on the ID
-  router.replace('/dashboard/tasks').then(() => {
-    console.log("Navigation successful, ID should be gone.");
-  });
 };
+
 defineExpose({ open, close });
 
 const priorityClass = computed(() => {

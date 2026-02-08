@@ -23,6 +23,7 @@ import UserDashboard from "@/views/user/UserDashboard.vue";
 import Pending from "@/views/user/PendingTasks.vue";
 import Complete from "@/views/user/CompletedTasks.vue";
 import ProfileDashboard from "@/views/user/ProfileDashboard.vue";
+import createTask from "@/views/user/Task/TaskCreate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -107,6 +108,11 @@ const router = createRouter({
           path: "completed", // localhost:5173/completed
           name: "Completed",
           component: Complete,
+        },
+        {
+          path: "createTask",
+          name: "createTask",
+          component: createTask
         },
         {
           path: "category/:name",

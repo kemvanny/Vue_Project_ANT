@@ -44,14 +44,11 @@
         </router-link> -->
 
         <p class="nav-label">សកម្មភាពទូទៅ</p>
-        <a
-          href="#"
-          class="reab-nav-link"
-          data-bs-toggle="modal"
-          data-bs-target="#addTaskModal"
-        >
-          <PlusCircle :size="18" /> <span>បង្កើតភារកិច្ចថ្មី</span>
-        </a>
+
+        <div class="reab-nav-link" @click="openCreateTask">
+          <PlusCircle :size="18" />
+          <span>បង្កើតភារកិច្ចថ្មី</span>
+        </div>
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>
         <router-link
@@ -81,21 +78,34 @@
 
       <div class="mt-auto">
         <div class="status-card">
-          <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+          <div
+            class="d-flex align-items-center justify-content-center gap-2 mb-2"
+          >
             <div class="pulse-status"></div>
             <p class="status-text">កំពុងដំណើរការ</p>
           </div>
-          <button class="btn btn-primary btn-refresh">ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ</button>
+          <button class="btn btn-primary btn-refresh">
+            ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ
+          </button>
         </div>
         <button class="btn-logout" @click="handleLogout">
           <i class="fas fa-sign-out-alt me-2"></i> ចាកចេញ
         </button>
       </div>
     </aside>
+    <TaskCreate ref="modalRefs" />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import TaskCreate from '@/views/user/Task/TaskCreate.vue'
+
+const modalRefs = ref(null)
+
+const openCreateTask = () => {
+  modalRefs.value?.open()
+}
 </script>
 
 <style scoped>

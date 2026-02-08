@@ -1,7 +1,7 @@
 <template>
   <div class="card-board">
     <div class="task-grid">
-      <div v-for="t in paginated" :key="t.id" class="task-card">
+      <div v-for="t in visibleTasks" :key="t.id" class="task-card">
         <div class="card-inner">
           <div class="card-header-row">
             <div class="status-tags">
@@ -45,7 +45,10 @@
                   >
                     <i class="bi bi-eye"></i> មើលលម្អិត
                   </button>
-                  <button @click="$emit('edit', t)" class="dropdown-item text-primary">
+                  <button
+                    @click="$emit('edit', t)"
+                    class="dropdown-item text-primary"
+                  >
                     <i class="bi bi-pencil"></i> កែប្រែ
                   </button>
                   <div class="divider"></div>
@@ -62,6 +65,7 @@
 
           <div class="card-content" @click="$emit('view', t)">
             <h4 class="item-title">{{ t.title || "គ្មានចំណងជើង" }}</h4>
+
             <p class="item-desc">
               {{ (t.content || t.notes || "គ្មានការពណ៌នា").trim() }}
             </p>
@@ -69,58 +73,26 @@
 
           <div class="card-bottom">
             <span class="category-tag">{{ showCategory(t.category) }}</span>
-<span class="item-date">
-  {{ formatUserDateTime(t) }}
-</span>
-
+            <span class="item-date">
+              {{ formatUserDateTime(t) }}
+            </span>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="board-pagination">
-      <div class="page-summary">
-        បង្ហាញ {{ paginated.length }} ក្នុងចំណោម {{ tasks.length }}
-      </div>
-      <div class="nav-controls">
-        <button
-          class="nav-btn"
-          :disabled="currentPage === 1"
-          @click="currentPage--"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        <button class="nav-btn active">1</button>
-        <button
-          class="nav-btn"
-          :disabled="currentPage === totalPages"
-          @click="currentPage++"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
   tasks: { type: Array, default: () => [] },
-  pageSize: { type: Number, default: 6 },
 });
 
-const currentPage = ref(1);
 const openMenuId = ref(null);
 
-const totalPages = computed(() =>
-  Math.max(1, Math.ceil(props.tasks.length / props.pageSize))
-);
-const paginated = computed(() => {
-  const start = (currentPage.value - 1) * props.pageSize;
-  return props.tasks.slice(start, start + props.pageSize);
-});
+const visibleTasks = computed(() => props.tasks);
 
 const toggleMenu = (id) => {
   openMenuId.value = openMenuId.value === id ? null : id;
@@ -138,26 +110,20 @@ const showPriority = (val) => {
   if (v === "LOW" || val === "ទាប") return "LOW";
   return "MED";
 };
-// ---- USER Date/Time (deadline/reminder) ----
+
 const parseUserDateTime = (t) => {
-  const dateStr = t?.date; // example: "2026-02-03"
-  const timeStr = t?.time; // example: "09:30"
+  const dateStr = t?.date;
+  const timeStr = t?.time;
 
   if (!dateStr && !timeStr) return null;
-
-  // if only date
   if (dateStr && !timeStr) {
     const d = new Date(dateStr);
     return isNaN(d.getTime()) ? null : d;
   }
-
-  // if date + time
   if (dateStr && timeStr) {
     const d = new Date(`${dateStr}T${timeStr}`);
     return isNaN(d.getTime()) ? null : d;
   }
-
-  // if only time (rare case)
   return null;
 };
 
@@ -171,7 +137,6 @@ const formatUserDateTime = (t) => {
     year: "numeric",
   });
 
-  // show time only if user has time
   if (t?.time) {
     const time = d.toLocaleTimeString("km-KH", {
       hour: "2-digit",
@@ -182,7 +147,6 @@ const formatUserDateTime = (t) => {
 
   return date;
 };
-
 
 const showCategory = (val) => val || "ទូទៅ";
 
@@ -214,7 +178,6 @@ const priorityClass = (p) => {
   transition: all 0.3s ease;
   position: relative;
   box-shadow: 0px 3px 5px rgba(205, 226, 225, 0.23);
-
 }
 
 .task-card:hover {
@@ -305,7 +268,7 @@ const priorityClass = (p) => {
   justify-content: space-between;
   align-items: center;
   padding-top: 15px;
-  border-top: 1px solid #f8fafc;
+  border-top: 1px solid #e5eff9;
 }
 
 .category-tag {
@@ -401,5 +364,4 @@ const priorityClass = (p) => {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 </style>
