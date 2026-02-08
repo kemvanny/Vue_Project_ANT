@@ -29,6 +29,8 @@ export const useNoteStore = defineStore("noteStore", () => {
   const modalOpen = ref(false);
   const modalType = ref("view"); // "view" | "edit"
   const searchResults = ref([]); 
+  const meta = ref({});
+
 
   // --- GETTERS ---
   const all = computed(() => notes.value);
@@ -59,42 +61,37 @@ export const useNoteStore = defineStore("noteStore", () => {
     }
   };
 
-  // Fetch all notes and enrich with content/Khmer translations
-  const fetchAllNotes = async () => {
-    loading.value = true;
-    error.value = null;
-    try {
-      const res = await api.get("/notes");
-      const payload = res.data?.data || res.data;
+const fetchAllNotes = async () => {
+  loading.value = true;
+  try {
+    console.log("🚀 fetchAllNotes CALLED");
 
-      // Handle different API response structures
-      const list = Array.isArray(payload)
-        ? payload
-        : Array.isArray(payload?.items)
-        ? payload.items
-        : [];
+    const res = await api.get("/notes");
+    console.log("📦 RAW API RESPONSE:", res.data);
 
-      // Enrich the data so the UI has everything it needs
-      const enriched = await Promise.all(
-        list.map(async (t) => {
-          const content = await fetchNoteContent(t.id);
-          return {
-            ...t,
-            content,
-            notes: content,
-            priority: toKhPriority(t.priority),
-            category: toKhCategory(t.category),
-          };
-        })
-      );
+    const payload = res.data?.data || res.data;
+    console.log("📦 PAYLOAD:", payload);
 
-      notes.value = enriched;
-    } catch (err) {
-      error.value = err?.response?.data?.message || "Error fetching notes";
-    } finally {
-      loading.value = false;
-    }
-  };
+    // ✅ handle paginated response
+    meta.value = payload.meta || {};
+
+    const list = Array.isArray(payload?.items)
+      ? payload.items
+      : Array.isArray(payload?.notes)
+      ? payload.notes
+      : Array.isArray(payload)
+      ? payload
+      : [];
+
+    console.log("✅ FINAL NOTES LIST:", list);
+
+    notes.value = list;
+  } catch (err) {
+    console.error("❌ fetchAllNotes failed:", err);
+  } finally {
+    loading.value = false;
+  }
+};
 
   // Search Logic
   const searchNotes = (keyword) => {

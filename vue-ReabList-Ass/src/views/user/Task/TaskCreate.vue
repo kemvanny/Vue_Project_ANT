@@ -154,6 +154,30 @@ const close = () => {
   modalRef.value?.close();
 };
 
+
+const validateForm = () => {
+  errors.value = {};
+
+  if (!form.title || !form.title.trim()) {
+    errors.value.title = "សូមបញ្ចូលចំណងជើង";
+  }
+
+  if (!form.content || !form.content.trim()) {
+    errors.value.content = "សូមបញ្ចូលពណ៌នា";
+  }
+
+  if (!form.category) {
+    errors.value.category = "សូមជ្រើសប្រភេទ";
+  }
+
+  if (!form.priority) {
+    errors.value.priority = "សូមជ្រើសអាទិភាព";
+  }
+
+  return Object.keys(errors.value).length === 0;
+};
+
+
 defineExpose({ open, close });
 </script>
 

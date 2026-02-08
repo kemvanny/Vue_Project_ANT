@@ -15,7 +15,7 @@
       <div class="hero-right">
         <div class="hero-stat">
           <div class="stat-label">សរុប</div>
-          <div class="stat-value">{{ noteStore.notes.length }}</div>
+          <div class="stat-value">{{ noteStore.meta?.totalItems || noteStore.notes.length }}</div>
         </div>
 
         <div class="hero-stat">
@@ -56,7 +56,7 @@
       <div v-else>
         <BaseTaskTable
           title="All Tasks"
-          :tasks="displayTasks"
+          :tasks="paginatedTasks"
           :pageSize="pageSize"
           @update:pageSize="pageSize = $event"
           @view="openView"
@@ -79,6 +79,14 @@
       :task="noteStore.selectedNote"
       @updated="handleUpdated"
     />
+    <DeleteConfirmModal
+      :open="showDeleteModal"
+      title="លុបភារកិច្ច?"
+      message="តើអ្នកប្រាកដថាចង់លុបភារកិច្ចនេះមែនទេ?"
+      @confirm="confirmDelete"
+      @cancel="cancelDelete"
+    />
+
   </div>
 </template>
 
@@ -87,6 +95,8 @@ import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
+import DeleteConfirmModal from "@/components/Base/DeleteConfirmModal.vue";
+
 
 import { useNoteStore } from "@/stores/note";
 
@@ -114,10 +124,22 @@ const currentPage = ref(1);
 const viewModalRef = ref(null);
 const editModalRef = ref(null);
 
+// delete modal state
+const showDeleteModal = ref(false);
+const deleteId = ref(null);
+
 // load
 onMounted(async () => {
   await noteStore.fetchAllNotes();
 });
+
+watch(
+  () => noteStore.notes.length,
+  () => {
+    currentPage.value = 1; // 🔥 reset to first page
+  }
+);
+
 
 const loading = computed(() => noteStore.loading);
 const tasks = computed(() => noteStore.notes || []);
@@ -241,18 +263,33 @@ const handleUpdated = async () => {
 };
 
 // delete
-const deleteNote = async (id) => {
-  const ok = confirm("ចង់លុប Note នេះមែនទេ?");
-  if (!ok) return;
+// when user clicks delete
+const deleteNote = (id) => {
+  deleteId.value = id;
+  showDeleteModal.value = true;
+};
 
+// confirm delete from modal
+const confirmDelete = async () => {
   try {
-    await api.delete(`/notes/${id}`);
+    await api.delete(`/notes/${deleteId.value}`);
     await noteStore.fetchAllNotes();
   } catch (err) {
     console.error("delete failed:", err.response?.data || err.message);
-    alert("Delete failed!");
+  } finally {
+    showDeleteModal.value = false;
+    deleteId.value = null;
   }
 };
+
+// cancel delete
+const cancelDelete = () => {
+  showDeleteModal.value = false;
+  deleteId.value = null;
+};
+
+
+
 
 // dropdown options
 const priorityOptions = [

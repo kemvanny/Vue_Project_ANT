@@ -94,6 +94,7 @@ const emit = defineEmits(["updated"]);
 const modalRef = ref(null);
 const error = ref("");
 
+
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },

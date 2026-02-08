@@ -102,6 +102,14 @@
       :task="noteStore.selectedNote"
       @updated="handleUpdated"
     />
+    <DeleteConfirmModal
+      :open="showDeleteModal"
+      title="លុបភារកិច្ច?"
+      message="តើអ្នកប្រាកដថាចង់លុបភារកិច្ចនេះមែនទេ?"
+      @confirm="confirmDelete"
+      @cancel="cancelDelete"
+    />
+
   </div>
 </template>
 
@@ -111,8 +119,11 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
+import DeleteConfirmModal from "@/components/Base/DeleteConfirmModal.vue";
+
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
+
 
 import { useNoteStore } from "@/stores/note";
 
@@ -122,6 +133,10 @@ const emit = defineEmits(["create-task"]);
 
 const filter = ref("all");
 const pageSize = ref(8);
+
+// delete modal state
+const showDeleteModal = ref(false);
+const deleteId = ref(null);
 
 // modal refs
 const viewModalRef = ref(null);
@@ -205,18 +220,28 @@ const handleUpdated = async () => {
 };
 
 // delete
-const deleteNote = async (id) => {
-  const ok = confirm("ចង់លុប Note នេះមែនទេ?");
-  if (!ok) return;
+const deleteNote = (id) => {
+  deleteId.value = id;
+  showDeleteModal.value = true;
+};
 
+const confirmDelete = async () => {
   try {
-    await api.delete(`/notes/${id}`);
+    await api.delete(`/notes/${deleteId.value}`);
     await noteStore.fetchAllNotes();
   } catch (err) {
     console.error("delete failed:", err.response?.data || err.message);
-    alert("Delete failed!");
+  } finally {
+    showDeleteModal.value = false;
+    deleteId.value = null;
   }
 };
+
+const cancelDelete = () => {
+  showDeleteModal.value = false;
+  deleteId.value = null;
+};
+
 
 // reset chip when route changes
 watch(categoryParam, async () => {

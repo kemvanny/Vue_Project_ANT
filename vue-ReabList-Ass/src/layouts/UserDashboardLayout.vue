@@ -17,7 +17,7 @@
       <TelegramConnectBot/>
     </main>
 
-    <TaskCreate ref="createRef"  @created="refreshList" />
+    <TaskCreate ref="createRef"  @created="handleCreated" />
 
     <TaskView
       v-if="activeTask"
@@ -39,6 +39,9 @@
 <script setup>
 import { ref } from "vue";
 
+import { useNoteStore } from "@/stores/note";
+
+
 import Sidebar from "@/components/userdashboard/Sidebar.vue";
 import Navbar from "@/components/userdashboard/Navbar.vue";
 import NoteModals from "@/components/base/NoteModals.vue";
@@ -49,6 +52,7 @@ import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
 import TelegramConnectBot from "@/components/TelegramConnectBot.vue";
 
+const noteStore = useNoteStore();
 
 const createRef = ref(null);
 const activeTask = ref(null);
@@ -65,6 +69,14 @@ const refreshList = () => {
 const openCreate = () => {
   createRef.value?.open();
 };
+
+
+
+const handleCreated = async () => {
+await noteStore.fetchAllNotes();
+};
+
+
 
 const openView = (task) => {
   activeTask.value = task;
