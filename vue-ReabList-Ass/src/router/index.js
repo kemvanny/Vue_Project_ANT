@@ -115,6 +115,12 @@ const router = createRouter({
           props: true,
         },
         {
+          path: '/dashboard/tasks/:id', // Make sure this has the :id at the end
+          name: 'task-detail',
+          component: () => import('../views/user/Task/TaskView.vue') // Verify this file exists!
+        },
+
+        {
           path: "/profile",
           name: "Profile",
           component: ProfileDashboard,

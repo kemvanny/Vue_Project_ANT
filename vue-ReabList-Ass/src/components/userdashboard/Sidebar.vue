@@ -16,7 +16,7 @@
           active-class="active"
           exact
         >
-          <pie-chart/> ផ្ទាំងព័ត៌មាន
+          <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
         </router-link>
 
         <router-link
@@ -24,15 +24,15 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <list/> ភារកិច្ចទាំងអស់
+          <i class="fas fa-list-ul"></i> <span>ភារកិច្ចទាំងអស់</span>
         </router-link>
 
-        <router-link
+        <!-- <router-link
           :to="{ name: 'Pending' }"
           class="reab-nav-link"
           active-class="active"
         >
-          <hourglass/> ការងារកំពុងរង់ចាំ
+          <i class="fas fa-hourglass-half"></i> <span>ការងារកំពុងរង់ចាំ</span>
         </router-link>
 
         <router-link
@@ -40,8 +40,8 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <check-circle/> ភារកិច្ចដែលបានបញ្ចប់
-        </router-link>
+          <i class="fas fa-circle-check"></i> <span>ភារកិច្ចដែលបានបញ្ចប់</span>
+        </router-link> -->
 
         <p class="nav-label">សកម្មភាពទូទៅ</p>
         <a
@@ -50,7 +50,7 @@
           data-bs-toggle="modal"
           data-bs-target="#addTaskModal"
         >
-          <PlusCircle  /> បង្កើតភារកិច្ចថ្មី
+          <PlusCircle :size="18" /> <span>បង្កើតភារកិច្ចថ្មី</span>
         </a>
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>
@@ -59,7 +59,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <user/> ផ្ទាល់ខ្លួន
+          <i class="fas fa-user"></i> <span>ផ្ទាល់ខ្លួន</span>
         </router-link>
 
         <router-link
@@ -67,7 +67,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <clipboard/> ការងារ
+          <i class="fas fa-briefcase"></i> <span>ការងារ</span>
         </router-link>
 
         <router-link
@@ -75,7 +75,7 @@
           class="reab-nav-link"
           active-class="active"
         >
-          <briefcase/> ការសិក្សា
+          <i class="fas fa-graduation-cap"></i> <span>ការសិក្សា</span>
         </router-link>
       </nav>
 
@@ -88,7 +88,7 @@
           <button class="btn btn-primary btn-refresh">ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ</button>
         </div>
         <button class="btn-logout" @click="handleLogout">
-          <graduation-cap ></graduation-cap> ចាកចេញ
+          <i class="fas fa-sign-out-alt me-2"></i> ចាកចេញ
         </button>
       </div>
     </aside>
@@ -99,19 +99,11 @@
 </script>
 
 <style scoped>
-.app-container {
-  display: flex;
+.main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
 }
-
-.main-wrapper {
-  flex: 1;
-}
-
-.chart-wrapper {
-  min-height: 220px;
-  height: 240px;
-}
-
 
 #reab-sidebar {
   width: 280px;
@@ -162,7 +154,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 800;
-  color: #94A3B8;
+  color: #64748b;
   margin: 24px 0 12px 16px;
 }
 
@@ -175,7 +167,7 @@
   text-decoration: none;
   border-radius: 14px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 14px;
   margin-bottom: 4px;
   transition: all 0.3s ease;
   position: relative; /* Required for the indicator bar positioning */

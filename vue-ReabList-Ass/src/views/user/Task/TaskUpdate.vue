@@ -1,5 +1,10 @@
 <template>
-  <BaseModal ref="modalRef" id="editTaskModal" title="កែប្រែភារកិច្ច" maxWidth="700px">
+  <BaseModal
+    ref="modalRef"
+    id="editTaskModal"
+    title="កែប្រែភារកិច្ច"
+    maxWidth="700px"
+  >
     <form @submit.prevent="updateTask">
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
@@ -9,9 +14,8 @@
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
 
-        <!-- ✅ textarea MUST NOT self-close -->
         <textarea
-          v-model.trim="form.notes"
+          v-model.trim="form.content"
           class="input-modern"
           rows="3"
           placeholder="សរសេរព័ត៌មានបន្ថែម..."
@@ -22,12 +26,22 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
-          <input v-model="form.date" type="date" class="input-modern" required />
+          <input
+            v-model="form.date"
+            type="date"
+            class="input-modern"
+            required
+          />
         </div>
 
         <div class="col-md-6">
           <label class="label-modern">ម៉ោង</label>
-          <input v-model="form.time" type="time" class="input-modern" required />
+          <input
+            v-model="form.time"
+            type="time"
+            class="input-modern"
+            required
+          />
         </div>
 
         <div class="col-md-6">
@@ -51,19 +65,17 @@
       <p v-if="error" class="text-danger mt-3 mb-0">{{ error }}</p>
     </form>
 
-    <!-- ✅ footer slot MUST be outside form -->
     <template #footer>
-<div class="update-footer">
-    <button type="button" class="btn-cancel-modern" @click="close">
-      បិទ
-    </button>
+      <div class="update-footer">
+        <button type="button" class="btn-cancel-modern" @click="close">
+          បិទ
+        </button>
 
-    <button type="button" class="btn-done-modern" @click="updateTask">
-      រក្សាទុក
-    </button>
-  </div>
+        <button type="button" class="btn-done-modern" @click="updateTask">
+          រក្សាទុក
+        </button>
+      </div>
     </template>
-    
   </BaseModal>
 </template>
 
@@ -71,6 +83,7 @@
 import { ref, watch } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import api from "@/API/api";
 
 const props = defineProps({
   task: { type: Object, default: null },
@@ -80,6 +93,7 @@ const emit = defineEmits(["updated"]);
 
 const modalRef = ref(null);
 const error = ref("");
+
 
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
@@ -96,66 +110,151 @@ const priorityOptions = [
 const form = ref({
   id: null,
   title: "",
-  notes: "",
+  content: "",
   date: "",
   time: "",
   category: "ការងារ",
   priority: "មធ្យម",
 });
 
+const normalizeDate = (value) => {
+  if (!value) return "";
+
+  // already YYYY-MM-DD
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value))
+    return value;
+
+  // ISO datetime like 2026-02-02T00:00:00.000Z
+  if (typeof value === "string" && value.includes("T")) {
+    const maybe = value.slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(maybe)) return maybe;
+  }
+
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const normalizeTime = (value) => {
+  if (!value) return "";
+
+  // HH:mm:ss -> HH:mm
+  if (typeof value === "string" && /^\d{2}:\d{2}:\d{2}$/.test(value))
+    return value.slice(0, 5);
+
+  // already HH:mm
+  if (typeof value === "string" && /^\d{2}:\d{2}$/.test(value)) return value;
+
+  // ISO datetime -> extract HH:mm
+  if (typeof value === "string" && value.includes("T")) {
+    const d = new Date(value);
+    if (!Number.isNaN(d.getTime())) {
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      return `${hh}:${mm}`;
+    }
+  }
+
+  return "";
+};
+
+const toHHmm = (value) => {
+  if (!value) return "";
+
+  // "HH:mm:ss" -> "HH:mm"
+  if (/^\d{2}:\d{2}:\d{2}$/.test(value)) return value.slice(0, 5);
+
+  // already "HH:mm"
+  if (/^\d{2}:\d{2}$/.test(value)) return value;
+
+  // "hh:mm AM/PM" -> "HH:mm"
+  const m = String(value).match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (m) {
+    let hh = parseInt(m[1], 10);
+    const mm = m[2];
+    const ap = m[3].toUpperCase();
+
+    if (ap === "PM" && hh !== 12) hh += 12;
+    if (ap === "AM" && hh === 12) hh = 0;
+
+    return `${String(hh).padStart(2, "0")}:${mm}`;
+  }
+
+  return "";
+};
+
+
 watch(
   () => props.task,
   (t) => {
     if (!t) return;
 
-    form.value = {
-      id: t.id ?? null,
-      title: t.title ?? "",
-      notes: t.notes ?? "",
-      date: t.date ?? "",
-      time: t.time ?? "",
-      category: t.category ?? "ការងារ",
-      priority: t.priority ?? "មធ្យម",
-    };
+    form.value.id = t.id ?? null;
+    form.value.title = t.title ?? "";
+
+    form.value.content = t.content ?? t.notes ?? "";
+
+    form.value.date = normalizeDate(t.date);
+    form.value.time = normalizeTime(t.time);
+
+    form.value.category = t.category ?? "ការងារ";
+    form.value.priority = t.priority ?? "មធ្យម";
 
     error.value = "";
   },
   { immediate: true }
 );
 
-const updateTask = () => {
+const updateTask = async () => {
   error.value = "";
 
   if (!form.value.title?.trim()) {
     error.value = "សូមបញ្ចូលចំណងជើង";
     return;
   }
+
   if (!form.value.id) {
     error.value = "មិនអាចរក Task ID បានទេ";
     return;
   }
 
-  const key = "reablist_tasks";
-  const list = JSON.parse(localStorage.getItem(key) || "[]");
+  try {
+    const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
+    const categoryMap = { ផ្ទាល់ខ្លួន: "PERSONAL", ការងារ: "WORK", សិក្សា: "SCHOOL" };
 
-  const updatedTask = {
-    ...props.task,
-    ...form.value,
-    updatedAt: new Date().toISOString(),
-  };
+    const body = {
+      title: form.value.title.trim(),
+      content: form.value.content?.trim() || "",
+      date: form.value.date,              // YYYY-MM-DD
+      time: toHHmm(form.value.time),     
+      priority: priorityMap[form.value.priority] || "MEDIUM",
+      category: categoryMap[form.value.category] || "PERSONAL",
+    };
 
-  const newList = list.map((t) => (t.id === form.value.id ? updatedTask : t));
-  localStorage.setItem(key, JSON.stringify(newList));
+    console.log("UPDATE BODY:", body);
 
-  emit("updated", updatedTask);
-  close();
+    await api.put(`/notes/${form.value.id}`, body);
+
+    emit("updated");
+    close();
+  } catch (err) {
+    console.log("UPDATE ERROR:", err.response?.data || err.message);
+    error.value = err.response?.data?.message || "Invalid Input";
+  }
 };
+
 
 const open = () => modalRef.value?.open();
 const close = () => modalRef.value?.close();
 
 defineExpose({ open, close });
+
 </script>
+
 
 <style scoped>
 .input-modern {
@@ -233,7 +332,4 @@ defineExpose({ open, close });
   cursor: not-allowed;
   box-shadow: none;
 }
-
-
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <BaseModal ref="modalRef" id="viewTaskModal" title="ព័ត៌មានលម្អិត" maxWidth="850px">
+  <BaseModal ref="modalRef" id="viewTaskModal" @close="close" title="ព័ត៌មានលម្អិត" maxWidth="850px">
     <div class="view-card-wrapper">
       
       <div class="view-header">
@@ -18,20 +18,24 @@
             <h1 class="task-title-display">{{ task?.title || "Prepare Slides" }}</h1>
             <div class="metadata-row">
               <div class="meta-capsule">
-                <span class="meta-icon">📅</span>
-                {{ task?.date || "—" }}
+                <Calendar class="meta-icon" :size="16" />
+                <span>{{ task?.date || "—" }}</span>
               </div>
               <div class="meta-capsule">
-                <span class="meta-icon">⏰</span>
-                {{ task?.time || "—" }}
+                <Clock class="meta-icon" :size="16" />
+                <span>{{ task?.time || "—" }}</span>
               </div>
             </div>
           </div>
 
           <div class="notes-area">
-            <div class="block-label">កំណត់ចំណាំ</div>
+            <div class="block-label d-flex align-items-center gap-2">
+              <StickyNote :size="14" /> កំណត់ចំណាំ
+            </div>
             <div class="notes-paper">
-              <p v-if="task?.notes?.trim()">{{ task.notes }}</p>
+              <p v-if="((task?.content ?? task?.notes) || '').trim()">
+                {{ (task?.content ?? task?.notes).trim() }}
+              </p>
               <div v-else class="empty-notes">មិនមានកំណត់ចំណាំបន្ថែម...</div>
             </div>
           </div>
@@ -40,15 +44,20 @@
         <div class="view-sidebar">
           <div class="sidebar-block">
             <div class="block-label">ប្រភេទ</div>
-            <div class="category-text">{{ task?.category || "សិក្សា" }}</div>
+            <div class="category-display">
+              <div class="cat-icon-box">
+                <Tag :size="18" />
+              </div>
+              <div class="category-text">{{ task?.category || "សិក្សា" }}</div>
+            </div>
           </div>
 
           <div class="sidebar-block status-block" :class="{ completed: task?.isCompleted }">
             <div class="block-label">ស្ថានភាព</div>
             <div class="status-indicator-wrap">
               <div class="status-icon-box">
-                <svg v-if="task?.isCompleted" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="3" fill="none"><path d="M20 6L9 17L4 12"/></svg>
-                <span v-else class="progress-dot"></span>
+                <CheckCircle v-if="task?.isCompleted" :size="16" stroke-width="3" />
+                <div v-else class="progress-dot"></div>
               </div>
               <span>{{ task?.isCompleted ? "បានបញ្ចប់" : "កំពុងដំណើរការ" }}</span>
             </div>
@@ -58,56 +67,119 @@
     </div>
 
     <template #footer>
-<div class="view-footer">
-    <button type="button" class="btn-cancel-modern" @click="close">បិទ</button>
+      <div class="view-footer">
+        <button type="button" class="btn-cancel-modern" @click="close">បិទ</button>
 
-    <div class="action-buttons">
-      <button type="button" class="btn-edit-modern" @click="editNow">កែប្រែ</button>
+        <div class="action-buttons">
+          <button type="button" class="btn-edit-modern" @click="editNow">
+            <Edit2 :size="16" class="me-2" /> កែប្រែ
+          </button>
 
-      <button
-        type="button"
-        class="btn-done-modern"
-        :disabled="task?.isCompleted"
-        @click="markDone"
-      >
-        {{ task?.isCompleted ? "បញ្ចប់រួចរាល់" : "សម្គាល់ថាបានបញ្ចប់" }}
-      </button>
-    </div>
-  </div>
+          <button
+            type="button"
+            class="btn-done-modern"
+            :disabled="task?.isCompleted"
+            @click="markDone"
+          >
+            <Check v-if="!task?.isCompleted" :size="18" class="me-2" />
+            {{ task?.isCompleted ? "បញ្ចប់រួចរាល់" : "សម្គាល់ថាបានបញ្ចប់" }}
+          </button>
+        </div>
+      </div>
     </template>
   </BaseModal>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
+import { useRoute } from "vue-router"; // Add this
+import { useRouter } from "vue-router"; // Add this for navigation after closing
+import { useNoteStore } from "@/stores/note"; // Add this
 import BaseModal from "@/components/base/BaseModal.vue";
+import { watch } from "vue";
 
-const props = defineProps({
-  task: { type: Object, required: true },
-});
+import { 
+  Calendar, 
+  Clock, 
+  StickyNote, 
+  Tag, 
+  CheckCircle, 
+  Edit2, 
+  Check 
+} from "lucide-vue-next";
+
+// 1. Setup Route and Store
+const route = useRoute();
+const noteStore = useNoteStore();
+const router = useRouter();
+
+// 2. We will use the store's selectedNote instead of props
+const task = computed(() => noteStore.selectedNote);
 
 const emit = defineEmits(["mark-completed", "edit-task"]);
 const modalRef = ref(null);
 
+// 3. Auto-open modal when the page loads
+onMounted(async () => {
+  const taskId = route.params.id;
+  
+  // If notes aren't loaded (e.g. after a refresh), load them first
+  if (noteStore.notes.length === 0) {
+    await noteStore.fetchAllNotes();
+  }
+
+  if (taskId) {
+    await noteStore.openNote(taskId);
+    modalRef.value?.open();
+  }
+});
+
 const open = () => modalRef.value?.open();
-const close = () => modalRef.value?.close();
+
+const close = () => {
+  // 1. Close the UI modal
+  if (modalRef.value) {
+    modalRef.value.close();
+  }
+
+  // 2. Clear the data from the store
+  noteStore.selectedNote = null;
+
+  // 3. Force the URL to change and prevent it from staying on the ID
+  router.replace('/dashboard/tasks').then(() => {
+    console.log("Navigation successful, ID should be gone.");
+  });
+};
 defineExpose({ open, close });
 
 const priorityClass = computed(() => {
-  if (props.task?.priority === "ខ្ពស់") return "high";
-  if (props.task?.priority === "មធ្យម") return "medium";
+  if (task.value?.priority === "ខ្ពស់") return "high";
+  if (task.value?.priority === "មធ្យម") return "medium";
   return "low";
 });
 
 const markDone = () => {
-  emit("mark-completed", props.task);
+  emit("mark-completed", task.value);
   close();
 };
 
 const editNow = () => {
-  emit("edit-task", props.task);
+  emit("edit-task", task.value);
   close();
 };
+
+
+// Watch the route: if the ID disappears, close the modal automatically
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (!newId && modalRef.value) {
+      modalRef.value.close();
+      noteStore.selectedNote = null;
+    }
+  }
+);
+
 </script>
 
 <style scoped>
@@ -138,7 +210,6 @@ const editNow = () => {
   height: 8px;
   background: #0d9488;
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4);
   animation: pulse-ring 1.5s infinite;
 }
 
@@ -183,10 +254,13 @@ const editNow = () => {
 
 .metadata-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .meta-capsule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   padding: 6px 14px;
@@ -196,17 +270,12 @@ const editNow = () => {
   color: #475569;
 }
 
-.notes-area {
-  margin-top: 35px;
+.meta-icon {
+  color: #0d9488;
 }
 
-.section-label {
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #94a3b8;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
+.notes-area {
+  margin-top: 35px;
 }
 
 .notes-paper {
@@ -218,7 +287,6 @@ const editNow = () => {
   font-size: 16px;
   line-height: 1.6;
   color: #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 .empty-notes {
@@ -237,7 +305,6 @@ const editNow = () => {
   background: #f8fafc;
   padding: 20px;
   border-radius: 20px;
-  border: 1px solid transparent;
 }
 
 .block-label {
@@ -246,8 +313,24 @@ const editNow = () => {
   text-transform: uppercase;
   color: #0d9488;
   letter-spacing: 1px;
-  margin-bottom: 6px;
-  display: block;
+  margin-bottom: 8px;
+}
+
+.category-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-icon-box {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #0d9488;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .category-text {
@@ -258,7 +341,7 @@ const editNow = () => {
 
 .status-block.completed {
   background: #f0fdf4;
-  border-color: #bbf7d0;
+  border: 1px solid #bbf7d0;
   color: #166534;
 }
 
@@ -272,11 +355,10 @@ const editNow = () => {
 .status-icon-box {
   width: 24px;
   height: 24px;
-  background: #ffffff;
+  background: white;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .progress-dot {
@@ -286,14 +368,12 @@ const editNow = () => {
   border-radius: 50%;
 }
 
-/* ===== Footer layout ===== */
+/* Footer Actions */
 .view-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   width: 100%;
-  padding-top: 8px;
 }
 
 .action-buttons {
@@ -301,84 +381,51 @@ const editNow = () => {
   gap: 10px;
 }
 
-/* ===== Modern button base ===== */
 .btn-cancel-modern,
 .btn-edit-modern,
 .btn-done-modern {
-  border: none;
-  outline: none;
   border-radius: 20px;
   font-weight: 900;
-  padding: 12px 18px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  padding: 12px 20px;
   cursor: pointer;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
 }
 
-/* ===== Cancel button (soft gray) ===== */
 .btn-cancel-modern {
   background: #f8fafc;
   color: #0f172a;
   border: 2px solid #e2e8f0;
 }
 
-.btn-cancel-modern:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
-}
-
-/* ===== Edit button (outline teal) ===== */
 .btn-edit-modern {
   background: #fff;
   color: #0d9488;
   border: 2px solid rgba(13, 148, 136, 0.25);
 }
 
-.btn-edit-modern:hover {
-  transform: translateY(-1px);
-  border-color: rgba(13, 148, 136, 0.5);
-  box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.45);
-}
-
-/* ===== Done button (gradient like CreateTask) ===== */
 .btn-done-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
   color: #fff;
-  min-width: 220px;
-  box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
-}
-
-.btn-done-modern:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
+  border: none;
+  min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 10px 20px -10px rgba(13, 148, 136, 0.5);
 }
 
 .btn-done-modern:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-/* Responsive for mobile */
-@media (max-width: 576px) {
-  .view-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.me-2 { margin-right: 8px; }
 
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .btn-cancel-modern,
-  .btn-edit-modern,
-  .btn-done-modern {
-    width: 100%;
-  }
-
-  .btn-done-modern {
-    min-width: unset;
-  }
+@media (max-width: 768px) {
+  .view-layout { grid-template-columns: 1fr; }
+  .view-footer { flex-direction: column; gap: 15px; }
+  .action-buttons { width: 100%; flex-direction: column; }
+  .btn-done-modern { min-width: 100%; }
 }
-
 </style>
