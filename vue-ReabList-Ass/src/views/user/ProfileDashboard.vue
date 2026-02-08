@@ -3,7 +3,9 @@
     <!-- Header -->
     <div class="page-header">
       <h1>ព័ត៍មានគណនី</h1>
-      <p class="subtitle">Manage your account Settings and Preferences</p>
+      <p class="subtitle">
+        គ្រប់គ្រងព័ត៌មានផ្ទាល់ខ្លួន និងសុវត្ថិភាពគណនីរបស់អ្នក។
+      </p>
     </div>
 
     <!-- Messages -->
@@ -56,11 +58,11 @@
           <div class="profile-meta">
             <span class="status-badge">
               <i class="fas fa-check-circle"></i>
-              Activated
+              សកម្ម
             </span>
             <span class="role-badge">
               <i class="fas fa-user-tag"></i>
-              USER
+              អ្នកប្រើប្រាស់
             </span>
           </div>
         </div>
@@ -71,7 +73,7 @@
             :disabled="authStore.profileLoading"
           >
             <i class="fas fa-edit"></i>
-            Edit Profile
+            កែប្រែព័ត៍មាន
           </button>
           <button
             class="btn btn-secondary"
@@ -79,7 +81,7 @@
             :disabled="authStore.profileLoading"
           >
             <i class="fas fa-image"></i>
-            Change Image
+            ប្ដូររូបថត
           </button>
         </div>
       </div>
@@ -178,7 +180,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
@@ -186,10 +188,24 @@ import AvatarManager from "@/components/profile/AvatarManager.vue";
 const authStore = useProfileStore();
 const activeModal = ref(null);
 
-const stats = ref({
-  totalTasks: 142,
-  completedTasks: 128,
-  completionRate: 90,
+const tasks = ref([]);
+
+const loadTasks = () => {
+  const list = JSON.parse(localStorage.getItem("reablist_tasks") || "[]");
+  tasks.value = Array.isArray(list) ? list : [];
+};
+
+const stats = computed(() => {
+  const allTasks = tasks.value;
+  const totalTasks = allTasks.length;
+  const completedTasks = allTasks.filter((t) => !!t.isCompleted).length;
+  const completionRate =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  return {
+    totalTasks,
+    completedTasks,
+    completionRate,
+  };
 });
 
 const preferences = ref({
@@ -221,6 +237,7 @@ const savePreferences = () => {
 
 onMounted(async () => {
   await loadProfile();
+  loadTasks();
   const saved = localStorage.getItem("profilePreferences");
   if (saved) {
     preferences.value = JSON.parse(saved);

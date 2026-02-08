@@ -209,6 +209,43 @@ const createNote = async (payload) => {
     }
   };
 
+  // --- MARK NOTE AS COMPLETED ---
+// --- MARK NOTE AS COMPLETED (TOGGLE) ---
+const toggleNoteCompleted = async (id) => {
+  loading.value = true;
+  try {
+    // Call your toggle endpoint
+    const res = await api.put(`/notes/${id}/toggle-complete`);
+    const updated = res.data?.data ?? res.data;
+
+    // Update locally
+    const index = notes.value.findIndex((n) => n.id === id);
+    if (index !== -1) notes.value[index] = {
+      ...updated,
+      priority: toKhPriority(updated.priority),
+      category: toKhCategory(updated.category),
+    };
+
+    // Update selectedNote if open in modal
+    if (selectedNote.value?.id === id) {
+      selectedNote.value = {
+        ...updated,
+        priority: toKhPriority(updated.priority),
+        category: toKhCategory(updated.category),
+      };
+    }
+
+    return updated;
+  } catch (err) {
+    console.error("Toggle complete failed:", err);
+    throw err;
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+
   const closeModal = () => {
     modalOpen.value = false;
     selectedNote.value = null;
@@ -227,6 +264,7 @@ const createNote = async (payload) => {
     all,
     pending,
     completed,
+    toggleNoteCompleted,
     createNote,
     fetchNoteById,
     fetchNotes,

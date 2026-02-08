@@ -141,7 +141,7 @@
         </div>
       </section>
 
-      <!-- Danger Zone: Delete Account -->
+      <!-- Delete Account -->
       <section class="settings-card danger-card">
         <div class="card-header">
           <div class="icon-box red-icon">
@@ -417,7 +417,6 @@
       </div>
     </div>
 
-    <!-- Email Change Request Success Modal -->
     <div
       v-if="showEmailRequestModal"
       class="modal-backdrop"
