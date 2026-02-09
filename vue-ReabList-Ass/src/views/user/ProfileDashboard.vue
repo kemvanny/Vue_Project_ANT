@@ -92,15 +92,15 @@
       <h3 class="section-title">សង្ខេបសកម្មភាព</h3>
       <div class="stats-grid">
         <div class="stat-card stat-card-1">
-          <div class="stat-number">{{ stats.totalTasks }}</div>
+          <div class="stat-number">{{ noteStore.meta?.totalItems || noteStore.notes.length }}</div>
           <div class="stat-label">ការបង្កើតភារកិច្ច</div>
         </div>
         <div class="stat-card stat-card-2">
-          <div class="stat-number">{{ stats.completedTasks }}</div>
+          <div class="stat-number">{{ noteStore.completed.length }}</div>
           <div class="stat-label">បានបញ្ចប់សកម្មភាព</div>
         </div>
         <div class="stat-card stat-card-3">
-          <div class="stat-number">{{ stats.completionRate }}%</div>
+          <div class="stat-number">{{ Math.round((noteStore.completed.length / (noteStore.meta?.totalItems || noteStore.notes.length || 1)) * 100) }}%</div>
           <div class="stat-label">ប្រសិទ្ធិភាព</div>
         </div>
       </div>
@@ -180,10 +180,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import {  onMounted, ref } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
+import { useNoteStore } from "@/stores/note";
+
+const noteStore = useNoteStore();
 
 const authStore = useProfileStore();
 const activeModal = ref(null);
@@ -195,18 +198,7 @@ const loadTasks = () => {
   tasks.value = Array.isArray(list) ? list : [];
 };
 
-const stats = computed(() => {
-  const allTasks = tasks.value;
-  const totalTasks = allTasks.length;
-  const completedTasks = allTasks.filter((t) => !!t.isCompleted).length;
-  const completionRate =
-    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-  return {
-    totalTasks,
-    completedTasks,
-    completionRate,
-  };
-});
+
 
 const preferences = ref({
   emailNotifications: true,
