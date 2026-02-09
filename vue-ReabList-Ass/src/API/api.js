@@ -14,7 +14,6 @@ const api = axios.create({
   },
 });
 
-// REQUEST: add token
 api.interceptors.request.use((config) => {
   const authStore = useAuthStore();
   if (authStore.token) {
@@ -27,7 +26,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// RESPONSE: handle 401
+
 api.interceptors.response.use(
   (response) => {
     console.log(`[API] Response (${response.status}):`, response.data);

@@ -30,7 +30,6 @@
     </button>
 
     <Teleport to="body">
-      <!-- backdrop -->
       <Transition name="dropdown-fade">
         <div
           v-show="dropdownOpen"
@@ -39,7 +38,6 @@
         ></div>
       </Transition>
 
-      <!-- menu -->
       <Transition name="dropdown-slide">
         <div
           v-show="dropdownOpen"
@@ -48,7 +46,6 @@
           @click.stop
         >
           <div class="dropdown-card">
-            <!-- header -->
             <div class="dropdown-header">
               <div class="header-avatar">
                 <img
@@ -65,7 +62,6 @@
               </div>
             </div>
 
-            <!-- actions -->
             <ul class="dropdown-actions">
               <li
                 class="dropdown-action"
@@ -86,7 +82,6 @@
               </li>
             </ul>
 
-            <!-- footer -->
             <div class="dropdown-footer">
               <button class="logout-btn" type="button" @click="openLogoutModal">
                 <i class="bi bi-box-arrow-right"></i>
@@ -98,7 +93,6 @@
       </Transition>
     </Teleport>
 
-    <!-- Logout Confirmation Modal (UNCHANGED LOGIC) -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -119,7 +113,11 @@
             </div>
 
             <div class="modal-foot">
-              <button class="btn-cancel" @click="closeLogoutModal" type="button">
+              <button
+                class="btn-cancel"
+                @click="closeLogoutModal"
+                type="button"
+              >
                 បោះបង់
               </button>
               <button
@@ -214,10 +212,6 @@ const closeLogoutModal = () => {
   if (!isLoggingOut.value) showLogoutModal.value = false;
 };
 
-/**
- * ✅ FIXED: works with <li> click and icons/spans inside
- * because we use currentTarget (the li), not target (child).
- */
 const handleNavigation = (e) => {
   const href = e.currentTarget?.dataset?.route;
   if (href) router.push(href);
@@ -265,13 +259,11 @@ onBeforeUnmount(() => {
 <style scoped>
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css");
 
-/* Optional: hide dropdown when modal open */
 body:has(.modal-backdrop) .dropdown-menu-wrapper {
   pointer-events: none;
   opacity: 0.4;
 }
 
-/* ===== WRAPPER ===== */
 .profile-dropdown-wrapper {
   display: flex;
   align-items: center;
@@ -353,19 +345,16 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   color: #64748b;
 }
 
-/* ===== Backdrop ===== */
 .dropdown-backdrop {
   position: fixed;
   inset: 0;
   z-index: 1000;
 }
 
-/* ===== Menu wrapper ===== */
 .dropdown-menu-wrapper {
   z-index: 1001;
 }
 
-/* ===== GLASS CARD ===== */
 .dropdown-card {
   width: 280px;
   padding: 12px;
@@ -427,7 +416,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   margin-top: 3px;
 }
 
-/* ===== ACTION LIST ===== */
 .dropdown-actions {
   list-style: none;
   margin: 10px 0;
@@ -444,7 +432,9 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   font-weight: 700;
   color: #0f172a;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
 .dropdown-action i {
@@ -457,7 +447,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   transform: translateX(2px);
 }
 
-/* ===== FOOTER ===== */
 .dropdown-footer {
   margin-top: 8px;
   padding-top: 10px;
@@ -486,7 +475,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   box-shadow: 0 10px 22px rgba(239, 68, 68, 0.18);
 }
 
-/* ===== TRANSITIONS ===== */
 .dropdown-fade-enter-active,
 .dropdown-fade-leave-active {
   transition: opacity 0.15s ease;
@@ -499,7 +487,9 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 
 .dropdown-slide-enter-active,
 .dropdown-slide-leave-active {
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .dropdown-slide-enter-from,
@@ -508,10 +498,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   opacity: 0;
 }
 
-/* =========================================================
-   ✅ MODAL UI (THIS IS WHAT YOU WERE MISSING)
-   This fixes: black screen + plain text + no centered modal
-   ========================================================= */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -536,7 +522,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   position: relative;
 }
 
-/* header */
 .modal-head {
   display: flex;
   align-items: center;
@@ -566,7 +551,9 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .close-btn:hover {
@@ -574,7 +561,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   color: #475569;
 }
 
-/* body */
 .modal-body {
   padding: 18px 22px;
   color: #475569;
@@ -586,7 +572,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   margin: 0;
 }
 
-/* footer */
 .modal-foot {
   display: flex;
   justify-content: flex-end;
@@ -634,7 +619,6 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
   cursor: not-allowed;
 }
 
-/* Modal transition */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
