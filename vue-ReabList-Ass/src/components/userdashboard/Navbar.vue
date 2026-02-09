@@ -25,16 +25,13 @@
               class="result-item"
               @click="goToDetail(item.id)"
             >
-              <div class="result-icon">📝</div>
-              <div class="result-info">
-                <p class="result-title">{{ item.title }}</p>
-                <p class="result-note">
-                  {{ item.content || "គ្មានការពិពណ៌នា" }}
-                </p>
+              <div class="result-icon ">
+                <i class="bi bi-search fw-semibold"></i>
               </div>
+              <p class="fw-semibold mb-0">{{ item.title }}</p>
             </div>
           </div>
-          <div v-else class="no-results">រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"</div>
+          <div v-else class="no-results fw-semibold">រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"</div>
         </div>
       </div>
 
@@ -44,7 +41,7 @@
         <button class="mode-toggle">
           <Moon :size="20" />
         </button>
-        
+
         <ProfileDropdown />
       </div>
     </div>
@@ -54,12 +51,10 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useNoteStore } from "@/stores/note";
+import { useNoteStore } from "@/stores/note.js";
 
-// ✅ Added missing imports for icons and components
 import { Search, Moon } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue"; // Ensure this path is correct
-
+import ProfileDropdown from "./ProfileDropdown.vue"; 
 const router = useRouter();
 const noteStore = useNoteStore();
 
@@ -69,7 +64,7 @@ let timeout = null;
 
 onMounted(async () => {
   if (noteStore.all.length === 0) {
-    await noteStore.fetchAllNotes();
+    await noteStore.fetchNotes();
   }
 });
 
@@ -101,11 +96,17 @@ watch(q, (newVal) => {
     showResults.value = true;
   }, 300);
 });
+
 </script>
 
 <style scoped>
 /* (Your existing CSS remains the same) */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+.no-results{
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
 
 .reab-navbar {
   font-family: "Inter", sans-serif;
@@ -220,6 +221,8 @@ watch(q, (newVal) => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

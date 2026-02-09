@@ -15,7 +15,9 @@
       <div class="hero-right">
         <div class="hero-stat">
           <div class="stat-label">សរុប</div>
-          <div class="stat-value">{{ noteStore.meta?.totalItems || noteStore.notes.length }}</div>
+          <div class="stat-value">
+            {{ totalCount }}
+          </div>
         </div>
 
         <div class="hero-stat">
@@ -42,11 +44,12 @@
         <BaseSelect v-model="statusFilter" :options="statusOptions" />
       </div>
     </div>
-    <!-- CONTENT -->
-    <div v-if="loading" class="loading">
+
+    <div v-if="actionLoading" class="action-loading-overlay">
       <div class="loading-dot"></div>
-      <div>កំពុងផ្ទុក...</div>
+      <div>កំពុងដំណើរការ...</div>
     </div>
+
     <div v-else>
       <div v-if="displayTasks.length === 0" class="empty-box">
         <div class="empty-icon">🗂️</div>
@@ -56,7 +59,7 @@
       <div v-else>
         <BaseTaskTable
           title="All Tasks"
-          :tasks="paginatedTasks"
+          :tasks="displayTasks"
           :pageSize="pageSize"
           @update:pageSize="pageSize = $event"
           @view="openView"
@@ -87,6 +90,28 @@
       @cancel="cancelDelete"
     />
 
+    <div v-if="noteStore.meta.totalPages > 1" class="pagination-modern">
+      <button
+        class="page-btn"
+        @click="prevPage"
+        :disabled="!noteStore.meta?.hasPreviousPage"
+      >
+        ← Prev
+      </button>
+
+      <span class="page-info">
+        Page {{ noteStore.meta?.currentPage || 1 }} /
+        {{ noteStore.meta?.totalPages || 1 }}
+      </span>
+
+      <button
+        class="page-btn"
+        @click="nextPage"
+        :disabled="!noteStore.meta?.hasNextPage"
+      >
+        Next →
+      </button>
+    </div>
   </div>
 </template>
 
@@ -96,7 +121,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
 import DeleteConfirmModal from "@/components/Base/DeleteConfirmModal.vue";
-
 
 import { useNoteStore } from "@/stores/note";
 
@@ -128,18 +152,33 @@ const editModalRef = ref(null);
 const showDeleteModal = ref(false);
 const deleteId = ref(null);
 
+const actionLoading = ref(false);
+
+const performAction = async (actionFn) => {
+  actionLoading.value = true;
+
+  // Close modals if open
+  viewModalRef.value?.close();
+  editModalRef.value?.close();
+
+  try {
+    await actionFn();
+  } finally {
+    actionLoading.value = false;
+  }
+};
+
 // load
 onMounted(async () => {
-  await noteStore.fetchAllNotes();
+  await noteStore.fetchNotes();
 });
 
 watch(
   () => noteStore.notes.length,
   () => {
-    currentPage.value = 1; // 🔥 reset to first page
+    currentPage.value = 1;
   }
 );
-
 
 const loading = computed(() => noteStore.loading);
 const tasks = computed(() => noteStore.notes || []);
@@ -163,17 +202,20 @@ const showCategory = (val) => {
   if (v === "SCHOOL" || v === "STUDY" || val === "សិក្សា") return "សិក្សា";
   return val || "ទូទៅ";
 };
-
 const displayTasks = computed(() => {
   let list = [...tasks.value];
 
-  //  newest first
+  // New tasks on top first
   list.sort((a, b) => {
+    if (a.justCreated) return -1;
+    if (b.justCreated) return 1;
+
     const aKey = `${a.date || ""} ${a.time || ""}`.trim();
     const bKey = `${b.date || ""} ${b.time || ""}`.trim();
     return bKey.localeCompare(aKey);
   });
 
+  // Filters
   if (statusFilter.value === "done") list = list.filter((t) => !!t.isCompleted);
   if (statusFilter.value === "pending")
     list = list.filter((t) => !t.isCompleted);
@@ -202,12 +244,20 @@ const paginatedTasks = computed(() => {
   return displayTasks.value.slice(start, start + pageSize.value);
 });
 
-const goPrev = () => {
-  if (currentPage.value > 1) currentPage.value--;
+const prevPage = async () => {
+  if (noteStore.meta.hasPreviousPage) {
+    await noteStore.fetchNotes(noteStore.meta.currentPage - 1);
+  }
 };
 
-const goNext = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++;
+const nextPage = async () => {
+  if (noteStore.meta.hasNextPage) {
+    await noteStore.fetchNotes(noteStore.meta.currentPage + 1);
+  }
+};
+
+const gotoPage = async (page) => {
+  await noteStore.fetchNotes(page);
 };
 
 watch([priorityFilter, categoryFilter, statusFilter], () => {
@@ -220,8 +270,34 @@ const priorityClass = (p) => {
   return "low";
 };
 
+// const createNew = async () => {
+//   actionLoading.value = true;
+//   try {
+//     emit("create-task");
+//     // If you want, wait for modal to close + refetch
+//     await noteStore.fetchNotes(1);
+//   } finally {
+//     actionLoading.value = false;
+//   }
+// };
+
+const createNew = () => {
+  emit("create-task");
+};
+const totalCount = computed(() => noteStore.notes.length);
+
+
+const submit = async () => {
+  await noteStore.createNote(form);
+  emit("created"); // optional
+};
+
+const handleCreated = async () => {
+  // refetch first page after creating a new task
+  await noteStore.fetchNotes(1);
+  currentPage.value = 1; // reset to first page
+};
 // create
-const createNew = () => emit("create-task");
 
 //  OPEN VIEW
 const openView = async (task) => {
@@ -250,7 +326,7 @@ const fromViewToEdit = async (task) => {
 const markCompletedFromView = async (task) => {
   try {
     await api.put(`/notes/${task.id}/toggle-complete`);
-    await noteStore.fetchAllNotes();
+    await noteStore.fetchNotes();
   } catch (err) {
     console.error("toggle failed:", err.response?.data || err.message);
     alert("Toggle complete failed!");
@@ -259,7 +335,7 @@ const markCompletedFromView = async (task) => {
 
 // after update
 const handleUpdated = async () => {
-  await noteStore.fetchAllNotes();
+  await noteStore.fetchNotes();
 };
 
 // delete
@@ -271,15 +347,12 @@ const deleteNote = (id) => {
 
 // confirm delete from modal
 const confirmDelete = async () => {
-  try {
+  await performAction(async () => {
     await api.delete(`/notes/${deleteId.value}`);
-    await noteStore.fetchAllNotes();
-  } catch (err) {
-    console.error("delete failed:", err.response?.data || err.message);
-  } finally {
+    await noteStore.fetchNotes();
     showDeleteModal.value = false;
     deleteId.value = null;
-  }
+  });
 };
 
 // cancel delete
@@ -287,9 +360,6 @@ const cancelDelete = () => {
   showDeleteModal.value = false;
   deleteId.value = null;
 };
-
-
-
 
 // dropdown options
 const priorityOptions = [
@@ -315,13 +385,82 @@ const statusOptions = [
 
 
 <style scoped>
-/* ======= HERO ======= */
+.action-loading-overlay {
+  position: fixed;
+  inset: 0; /* covers full screen */
+  background: rgba(
+    0,
+    0,
+    0,
+    0.3
+  ); /* semi-transparent like your filter overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  animation: bounce 0.6s infinite alternate;
+  margin-bottom: 10px;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-15px);
+  }
+}
 
 /* ===== Modern Card Grid ===== */
 .task-list-modern {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+.pagination-modern {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 25px;
+  font-family: "Poppins", sans-serif;
+}
+
+.page-btn {
+  background-color: #4f46e5; /* REABLIST purple-blue */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px; /* pill shape */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+}
+
+.page-btn:disabled {
+  background-color: #c7c7c7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.page-info {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  min-width: 80px;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {
@@ -641,11 +780,11 @@ const statusOptions = [
 }
 .pill.medium {
   background: #fef3c7;
-  color: #d97706;
+  color: #16a34a;
 }
 .pill.low {
   background: #dcfce7;
-  color: #16a34a;
+  color: #d97706;
 }
 
 .status {

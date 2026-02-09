@@ -180,7 +180,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import {  onMounted, ref } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
@@ -198,18 +198,7 @@ const loadTasks = () => {
   tasks.value = Array.isArray(list) ? list : [];
 };
 
-const stats = computed(() => {
-  const allTasks = tasks.value;
-  const totalTasks = allTasks.length;
-  const completedTasks = allTasks.filter((t) => !!t.isCompleted).length;
-  const completionRate =
-    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-  return {
-    totalTasks,
-    completedTasks,
-    completionRate,
-  };
-});
+
 
 const preferences = ref({
   emailNotifications: true,
