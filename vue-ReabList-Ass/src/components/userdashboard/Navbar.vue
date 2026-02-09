@@ -8,23 +8,14 @@
             <Search v-else :size="18" />
           </span>
 
-          <input
-            v-model="q"
-            class="search-input"
-            type="text"
-            placeholder="ស្វែងរកតាមរយ:ចំណងជើង..."
-            @focus="openDropdown"
-          />
+          <input v-model="q" class="search-input" type="text" placeholder="ស្វែងរកតាមរយ:ចំណងជើង..."
+            @focus="openDropdown" />
         </div>
 
         <div v-if="showResults && q" class="results-dropdown">
           <div v-if="noteStore.searchResults.length">
-            <div
-              v-for="item in noteStore.searchResults"
-              :key="item.id"
-              class="result-item"
-              @click="goToDetail(item.id)"
-            >
+            <div v-for="item in noteStore.searchResults" :key="item.id" class="result-item"
+              @click="goToDetail(item.id)">
               <div class="result-icon ">
                 <i class="bi bi-search fw-semibold"></i>
               </div>
@@ -54,7 +45,7 @@ import { useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note.js";
 
 import { Search, Moon } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue"; 
+import ProfileDropdown from "./ProfileDropdown.vue";
 const router = useRouter();
 const noteStore = useNoteStore();
 
@@ -100,9 +91,9 @@ watch(q, (newVal) => {
 </script>
 
 <style scoped>
-/* (Your existing CSS remains the same) */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-.no-results{
+
+.no-results {
   width: 100%;
   padding: 20px;
   text-align: center;

@@ -8,9 +8,8 @@
 
           <div class="actions">
             <button @click="$emit('cancel')">បោះបង់</button>
-            <button class="danger" @click="$emit('confirm')">
-              លុប
-            </button>
+            <AuthButton :type="'submit'" text="លុប" loadingText="កំពុងលុប..." :loading="loading"
+            variant="danger"  @click="$emit('confirm')" />
           </div>
         </div>
       </div>
@@ -19,10 +18,12 @@
 </template>
 
 <script setup>
+import AuthButton from '../AuthButton.vue';
 defineProps({
   open: Boolean,
   title: String,
   message: String,
+  loading: Boolean,default: false,
 });
 </script>
 
@@ -98,18 +99,6 @@ defineProps({
 
 .actions button:first-child:hover {
   background: #e2e8f0;
-}
-
-/* Delete */
-.actions .danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.35);
-}
-
-.actions .danger:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgba(239, 68, 68, 0.45);
 }
 
 </style>

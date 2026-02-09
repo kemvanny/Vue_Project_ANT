@@ -37,11 +37,6 @@
       </div>
     </div>
     <BaseSkeleton v-if="noteStore.loading" :count="5" />
-    <div v-else-if="actionLoading" class="action-loading-overlay">
-      <div class="loading-dot"></div>
-      <div>កំពុងដំណើរការ...</div>
-    </div>
-
     <div v-else>
       <div v-if="displayTasks.length === 0" class="empty-box">
         <div class="empty-icon">🗂️</div>
@@ -71,7 +66,7 @@
     <TaskUpdate ref="editModalRef" v-if="noteStore.selectedNote" :task="noteStore.selectedNote"
       @updated="handleUpdated" />
     <DeleteConfirmModal :open="showDeleteModal" title="លុបភារកិច្ច?" message="តើអ្នកប្រាកដថាចង់លុបភារកិច្ចនេះមែនទេ?"
-      @confirm="confirmDelete" @cancel="cancelDelete" />
+      :loading="actionLoading" @confirm="confirmDelete" @cancel="cancelDelete" />
   </div>
 </template>
 
@@ -159,7 +154,13 @@ const openView = async (task) => { await noteStore.openNote(task.id); viewModalR
 const openEdit = async (task) => { await noteStore.openNote(task.id); editModalRef.value?.open(); };
 const handleUpdated = async () => { await noteStore.fetchNotes(); };
 const deleteNote = (id) => { deleteId.value = id; showDeleteModal.value = true; };
-const confirmDelete = async () => { await performAction(async () => { await api.delete(`/notes/${deleteId.value}`); await noteStore.fetchNotes(); showDeleteModal.value = false; deleteId.value = null; }); };
+const confirmDelete = async () => {
+  await performAction(async () => {
+    await api.delete(`/notes/${deleteId.value}`);
+    await noteStore.fetchNotes();
+    showDeleteModal.value = false; deleteId.value = null;
+  });
+};
 const cancelDelete = () => { showDeleteModal.value = false; deleteId.value = null; };
 
 const priorityOptions = [{ value: "all", label: "អាទិភាព" }, { value: "ខ្ពស់", label: "ខ្ពស់" }, { value: "មធ្យម", label: "មធ្យម" }, { value: "ទាប", label: "ទាប" }];
@@ -245,7 +246,6 @@ const statusOptions = [{ value: "all", label: "ភារកិច្ច" }, { va
   }
 }
 
-/* ... (Style ផ្សេងទៀតរបស់អ្នករក្សាទុកដដែល) ... */
 .action-loading-overlay {
   position: fixed;
   inset: 0;
