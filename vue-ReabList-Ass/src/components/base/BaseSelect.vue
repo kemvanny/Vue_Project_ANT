@@ -2,12 +2,29 @@
   <div class="select-wrap" ref="wrap">
     <label v-if="label" class="label-modern">{{ label }}</label>
 
-    <button type="button" class="select-trigger" :class="{ open: isOpen }" @click="toggle">
+    <button
+      type="button"
+      class="select-trigger"
+      :class="{ open: isOpen }"
+      @click="toggle"
+    >
       <span class="select-value">
         {{ selectedLabel }}
       </span>
       <span class="chev" :class="{ rotate: isOpen }">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </span>
     </button>
 
@@ -24,7 +41,19 @@
           >
             <span class="option-text">{{ opt.label }}</span>
             <span v-if="opt.value === modelValue" class="check-mark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
             </span>
           </button>
         </div>
@@ -63,23 +92,26 @@ const onClickOutside = (e) => {
 };
 
 onMounted(() => document.addEventListener("mousedown", onClickOutside));
-onBeforeUnmount(() => document.removeEventListener("mousedown", onClickOutside));
+onBeforeUnmount(() =>
+  document.removeEventListener("mousedown", onClickOutside)
+);
 </script>
 
 <style scoped>
 .select-wrap {
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   width: 100%;
 }
 
 .label-modern {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #0d9488;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
   display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #64748b;
-  margin-bottom: 8px;
-  margin-left: 4px;
 }
 
 .select-trigger {
@@ -133,7 +165,8 @@ onBeforeUnmount(() => document.removeEventListener("mousedown", onClickOutside))
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 6px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-scroll {
@@ -152,7 +185,7 @@ onBeforeUnmount(() => document.removeEventListener("mousedown", onClickOutside))
   background: transparent;
   border-radius: 10px;
   cursor: pointer;
-  
+
   font-size: 14px;
   font-weight: 500;
   color: #475569;
@@ -180,12 +213,13 @@ onBeforeUnmount(() => document.removeEventListener("mousedown", onClickOutside))
   align-items: center;
 }
 
-
 /* Animation */
-.pop-enter-active, .pop-leave-active {
+.pop-enter-active,
+.pop-leave-active {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.pop-enter-from, .pop-leave-to {
+.pop-enter-from,
+.pop-leave-to {
   opacity: 0;
   transform: translateY(-8px);
 }

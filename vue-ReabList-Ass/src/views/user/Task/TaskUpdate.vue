@@ -6,14 +6,16 @@
     maxWidth="700px"
   >
     <form @submit.prevent="updateTask">
+      <!-- TITLE -->
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
-        <input v-model.trim="form.title" class="input-modern" required />
+        <input v-model.trim="form.title" class="input-modern" />
+        <p v-if="errors.title" class="error-text">{{ errors.title }}</p>
       </div>
 
+      <!-- CONTENT -->
       <div class="mb-3">
-        <label class="label-modern">កំណត់ចំណាំ</label>
-
+        <label class="label-modern">កំណត់ចំណាំ (optional)</label>
         <textarea
           v-model.trim="form.content"
           class="input-modern"
@@ -24,34 +26,31 @@
       </div>
 
       <div class="row g-3">
+        <!-- DATE -->
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
-          <input
-            v-model="form.date"
-            type="date"
-            class="input-modern"
-            required
-          />
+          <input v-model="form.date" type="date" class="input-modern" />
+          <p v-if="errors.date" class="error-text">{{ errors.date }}</p>
         </div>
 
+        <!-- TIME -->
         <div class="col-md-6">
           <label class="label-modern">ម៉ោង</label>
-          <input
-            v-model="form.time"
-            type="time"
-            class="input-modern"
-            required
-          />
+          <input v-model="form.time" type="time" class="input-modern" />
+          <p v-if="errors.time" class="error-text">{{ errors.time }}</p>
         </div>
 
+        <!-- CATEGORY -->
         <div class="col-md-6">
           <BaseSelect
             label="ប្រភេទ"
             v-model="form.category"
             :options="categoryOptions"
           />
+          <p v-if="errors.category" class="error-text">{{ errors.category }}</p>
         </div>
 
+        <!-- PRIORITY -->
         <div class="col-md-6">
           <BaseSelect
             label="អាទិភាព"
@@ -59,10 +58,9 @@
             :options="priorityOptions"
             :showDots="true"
           />
+          <p v-if="errors.priority" class="error-text">{{ errors.priority }}</p>
         </div>
       </div>
-
-      <p v-if="error" class="text-danger mt-3 mb-0">{{ error }}</p>
     </form>
 
     <template #footer>
@@ -71,29 +69,39 @@
           បិទ
         </button>
 
-        <button type="button" class="btn-done-modern" @click="updateTask">
-          រក្សាទុក
-        </button>
+        <AuthButton
+          text="រក្សាទុក"
+          loading-text="កំពុងរក្សាទុក..."
+          :loading="loading"
+          :disabled="hasErrors"
+          class="btn-done-modern"
+          @click="updateTask"
+        />
       </div>
     </template>
   </BaseModal>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
+import { z } from "zod";
+
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import AuthButton from "@/components/AuthButton.vue";
 import api from "@/API/api";
 
+/* ---------------- PROPS / EMITS ---------------- */
 const props = defineProps({
   task: { type: Object, default: null },
 });
 
 const emit = defineEmits(["updated"]);
 
+/* ---------------- STATE ---------------- */
 const modalRef = ref(null);
-const error = ref("");
-
+const loading = ref(false);
+const errors = ref({});
 
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
@@ -117,146 +125,133 @@ const form = ref({
   priority: "មធ្យម",
 });
 
-const normalizeDate = (value) => {
-  if (!value) return "";
+/* ---------------- ZOD SCHEMA ---------------- */
+const taskSchema = z.object({
+  title: z.string().min(1, "សូមបញ្ចូលចំណងជើង"),
+  date: z.string().min(1, "សូមជ្រើសកាលបរិច្ឆេទ"),
+  time: z.string().min(1, "សូមជ្រើសម៉ោង"),
+  category: z.enum(["ការងារ", "ផ្ទាល់ខ្លួន", "សិក្សា"], {
+    errorMap: () => ({ message: "សូមជ្រើសប្រភេទ" }),
+  }),
+  priority: z.enum(["ខ្ពស់", "មធ្យម", "ទាប"], {
+    errorMap: () => ({ message: "សូមជ្រើសអាទិភាព" }),
+  }),
+});
 
-  // already YYYY-MM-DD
-  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value))
-    return value;
+/* ---------------- REAL-TIME VALIDATION ---------------- */
+const validateField = (field) => {
+  const partial = taskSchema.pick({ [field]: true });
+  const result = partial.safeParse({ [field]: form.value[field] });
 
-  // ISO datetime like 2026-02-02T00:00:00.000Z
-  if (typeof value === "string" && value.includes("T")) {
-    const maybe = value.slice(0, 10);
-    if (/^\d{4}-\d{2}-\d{2}$/.test(maybe)) return maybe;
+  if (!result.success) {
+    errors.value[field] = result.error.issues[0].message;
+  } else {
+    delete errors.value[field];
   }
-
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return "";
-
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
 };
 
-const normalizeTime = (value) => {
-  if (!value) return "";
+watch(
+  () => form.value.title,
+  () => validateField("title")
+);
+watch(
+  () => form.value.date,
+  () => validateField("date")
+);
+watch(
+  () => form.value.time,
+  () => validateField("time")
+);
+watch(
+  () => form.value.category,
+  () => validateField("category")
+);
+watch(
+  () => form.value.priority,
+  () => validateField("priority")
+);
 
-  // HH:mm:ss -> HH:mm
-  if (typeof value === "string" && /^\d{2}:\d{2}:\d{2}$/.test(value))
-    return value.slice(0, 5);
+const hasErrors = computed(() => Object.keys(errors.value).length > 0);
 
-  // already HH:mm
-  if (typeof value === "string" && /^\d{2}:\d{2}$/.test(value)) return value;
+/* ---------------- NORMALIZE HELPERS ---------------- */
+const normalizeDate = (v) => (v ? String(v).slice(0, 10) : "");
+const normalizeTime = (v) => (v ? String(v).slice(0, 5) : "");
 
-  // ISO datetime -> extract HH:mm
-  if (typeof value === "string" && value.includes("T")) {
-    const d = new Date(value);
-    if (!Number.isNaN(d.getTime())) {
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mm = String(d.getMinutes()).padStart(2, "0");
-      return `${hh}:${mm}`;
-    }
-  }
-
-  return "";
-};
-
-const toHHmm = (value) => {
-  if (!value) return "";
-
-  // "HH:mm:ss" -> "HH:mm"
-  if (/^\d{2}:\d{2}:\d{2}$/.test(value)) return value.slice(0, 5);
-
-  // already "HH:mm"
-  if (/^\d{2}:\d{2}$/.test(value)) return value;
-
-  // "hh:mm AM/PM" -> "HH:mm"
-  const m = String(value).match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-  if (m) {
-    let hh = parseInt(m[1], 10);
-    const mm = m[2];
-    const ap = m[3].toUpperCase();
-
-    if (ap === "PM" && hh !== 12) hh += 12;
-    if (ap === "AM" && hh === 12) hh = 0;
-
-    return `${String(hh).padStart(2, "0")}:${mm}`;
-  }
-
-  return "";
-};
-
-
+/* ---------------- WATCH TASK PROP ---------------- */
 watch(
   () => props.task,
   (t) => {
     if (!t) return;
 
-    form.value.id = t.id ?? null;
-    form.value.title = t.title ?? "";
+    form.value = {
+      id: t.id,
+      title: t.title ?? "",
+      content: t.content ?? "",
+      date: normalizeDate(t.date),
+      time: normalizeTime(t.time),
+      category: t.category ?? "ការងារ",
+      priority: t.priority ?? "មធ្យម",
+    };
 
-    form.value.content = t.content ?? t.notes ?? "";
-
-    form.value.date = normalizeDate(t.date);
-    form.value.time = normalizeTime(t.time);
-
-    form.value.category = t.category ?? "ការងារ";
-    form.value.priority = t.priority ?? "មធ្យម";
-
-    error.value = "";
+    errors.value = {};
   },
   { immediate: true }
 );
 
+/* ---------------- SUBMIT ---------------- */
 const updateTask = async () => {
-  error.value = "";
+  loading.value = true;
 
-  if (!form.value.title?.trim()) {
-    error.value = "សូមបញ្ចូលចំណងជើង";
-    return;
-  }
-
-  if (!form.value.id) {
-    error.value = "មិនអាចរក Task ID បានទេ";
+  const result = taskSchema.safeParse(form.value);
+  if (!result.success) {
+    result.error.issues.forEach((i) => {
+      errors.value[i.path[0]] = i.message;
+    });
+    loading.value = false;
     return;
   }
 
   try {
     const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
-    const categoryMap = { ផ្ទាល់ខ្លួន: "PERSONAL", ការងារ: "WORK", សិក្សា: "SCHOOL" };
-
-    const body = {
-      title: form.value.title.trim(),
-      content: form.value.content?.trim() || "",
-      date: form.value.date,              // YYYY-MM-DD
-      time: toHHmm(form.value.time),     
-      priority: priorityMap[form.value.priority] || "MEDIUM",
-      category: categoryMap[form.value.category] || "PERSONAL",
+    const categoryMap = {
+      ការងារ: "WORK",
+      ផ្ទាល់ខ្លួន: "PERSONAL",
+      សិក្សា: "SCHOOL",
     };
 
-    console.log("UPDATE BODY:", body);
-
-    await api.put(`/notes/${form.value.id}`, body);
+    await api.put(`/notes/${form.value.id}`, {
+      title: form.value.title.trim(),
+      content: form.value.content?.trim() || "",
+      date: form.value.date,
+      time: form.value.time,
+      priority: priorityMap[form.value.priority],
+      category: categoryMap[form.value.category],
+    });
 
     emit("updated");
     close();
   } catch (err) {
-    console.log("UPDATE ERROR:", err.response?.data || err.message);
-    error.value = err.response?.data?.message || "Invalid Input";
+    alert(err?.response?.data?.message || "Update failed");
+  } finally {
+    loading.value = false;
   }
 };
 
-
+/* ---------------- MODAL ---------------- */
 const open = () => modalRef.value?.open();
 const close = () => modalRef.value?.close();
 
 defineExpose({ open, close });
-
 </script>
 
 
 <style scoped>
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
 .input-modern {
   width: 100%;
   background: #f8fafc;
@@ -306,30 +301,5 @@ defineExpose({ open, close });
 .btn-cancel-modern:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
-}
-
-/* ===== Save button (gradient like CreateTask) ===== */
-.btn-done-modern {
-  width: 50%;
-  background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  font-weight: 900;
-  padding: 14px 18px;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-  box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
-}
-
-.btn-done-modern:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
-}
-
-.btn-done-modern:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  box-shadow: none;
 }
 </style>
