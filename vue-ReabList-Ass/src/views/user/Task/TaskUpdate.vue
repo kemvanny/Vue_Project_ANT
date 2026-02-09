@@ -71,9 +71,8 @@
           បិទ
         </button>
 
-        <button type="button" class="btn-done-modern" @click="updateTask">
-          រក្សាទុក
-        </button>
+        <AuthButton :type="'submit'" text="រក្សាទុក" loading-text="កំពុងរក្សាទុក..." :loading="loading"
+        class="btn-done-modern " @click="updateTask" />
       </div>
     </template>
   </BaseModal>
@@ -83,6 +82,7 @@
 import { ref, watch } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import AuthButton from "@/components/AuthButton.vue";
 import api from "@/API/api";
 
 const props = defineProps({
@@ -116,6 +116,7 @@ const form = ref({
   category: "ការងារ",
   priority: "មធ្យម",
 });
+let loading = ref(false);
 
 const normalizeDate = (value) => {
   if (!value) return "";
@@ -210,6 +211,7 @@ watch(
 );
 
 const updateTask = async () => {
+  loading.value = true;
   error.value = "";
 
   if (!form.value.title?.trim()) {
@@ -242,6 +244,7 @@ const updateTask = async () => {
     emit("updated");
     close();
   } catch (err) {
+    loading.value = false;
     console.log("UPDATE ERROR:", err.response?.data || err.message);
     error.value = err.response?.data?.message || "Invalid Input";
   }
@@ -308,28 +311,4 @@ defineExpose({ open, close });
   box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
 }
 
-/* ===== Save button (gradient like CreateTask) ===== */
-.btn-done-modern {
-  width: 50%;
-  background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  font-weight: 900;
-  padding: 14px 18px;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-  box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
-}
-
-.btn-done-modern:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
-}
-
-.btn-done-modern:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  box-shadow: none;
-}
 </style>

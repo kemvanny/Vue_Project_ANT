@@ -9,25 +9,15 @@
       <!-- Notes / Content -->
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
-        <textarea
-          v-model.trim="form.content"
-          class="input-modern"
-          rows="3"
-          placeholder="សរសេរព័ត៌មានបន្ថែម..."
-        ></textarea>
+        <textarea v-model.trim="form.content" class="input-modern" rows="3"
+          placeholder="សរសេរព័ត៌មានបន្ថែម..."></textarea>
       </div>
 
       <div class="row g-3">
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
 
-          <input
-            v-model="form.date"
-            type="date"
-            class="input-modern"
-            required
-            :min="today"
-          />
+          <input v-model="form.date" type="date" class="input-modern" required :min="today" />
         </div>
 
         <div class="col-md-6">
@@ -40,16 +30,12 @@
         </div>
 
         <div class="col-md-6">
-          <BaseSelect
-            label="អាទិភាព"
-            v-model="form.priority"
-            :options="priorityOptions"
-            :showDots="true"
-          />
+          <BaseSelect label="អាទិភាព" v-model="form.priority" :options="priorityOptions" :showDots="true" />
         </div>
       </div>
 
-      <button class="btn-submit-modern mt-3">បញ្ជូលភារកិច្ច</button>
+      <AuthButton :type="'submit'" text="បញ្ជូលភារកិច្ច" loading-text="កំពុងបញ្ជូល..." :loading="loading"
+        class="btn-submit-modern mt-3" />
     </form>
   </BaseModal>
 </template>
@@ -61,11 +47,13 @@ import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 import api from "@/API/api";
 import { useNoteStore } from "@/stores/note";
+import AuthButton from "@/components/AuthButton.vue";
 
 const noteStore = useNoteStore();
 
 const router = useRouter();
 const emit = defineEmits(["created"]);
+let loading = ref(false);
 
 const modalRef = ref(null);
 
@@ -104,6 +92,7 @@ const resetForm = () => {
 };
 
 const createTask = async () => {
+  loading.value = true;
   try {
     if (form.value.date && form.value.date < today) {
       alert("មិនអាចជ្រើសរើសកាលបរិច្ឆេទនៅអតីតកាលបានទេ");
@@ -138,6 +127,7 @@ const createTask = async () => {
       await router.push("/dashboard/tasks");
     }
   } catch (err) {
+    loading.value = false;
     console.error("Create Task Error:", err?.response?.data || err.message);
     alert(err?.response?.data?.message || "Create Task failed");
   }
@@ -190,12 +180,14 @@ defineExpose({ open, close });
   font-weight: 700;
   transition: 0.3s;
 }
+
 .input-modern:focus {
   border-color: #0d9488;
   outline: none;
   background: #fff;
   box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
 }
+
 .label-modern {
   font-size: 11px;
   font-weight: 800;
@@ -204,14 +196,5 @@ defineExpose({ open, close });
   letter-spacing: 1px;
   margin-bottom: 6px;
   display: block;
-}
-.btn-submit-modern {
-  background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-  color: #fff;
-  border: none;
-  width: 100%;
-  padding: 18px;
-  border-radius: 20px;
-  font-weight: 800;
 }
 </style>
