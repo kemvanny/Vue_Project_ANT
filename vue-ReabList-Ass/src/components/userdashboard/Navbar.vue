@@ -1,7 +1,12 @@
 <template>
   <nav class="reab-navbar">
     <div class="navbar-container">
-      <div class="search-area">
+      <!-- Left -->
+      <div class="left-area">
+        <button class="hamburger" type="button" @click="toggleSidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+
         <div class="search-box">
           <span class="icon">
             <span v-if="noteStore.loading" class="spinner"></span>
@@ -12,7 +17,7 @@
             v-model="q"
             class="search-input"
             type="text"
-            placeholder="ស្វែងរកតាមរយ:ចំណងជើង..."
+            placeholder="ស្វែងរកតាមរយៈចំណងជើង..."
             @focus="openDropdown"
           />
         </div>
@@ -25,7 +30,9 @@
               class="result-item"
               @click="goToDetail(item.id)"
             >
-              <div class="result-icon">📝</div>
+              <div class="result-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
               <div class="result-info">
                 <p class="result-title">{{ item.title }}</p>
                 <p class="result-note">
@@ -34,41 +41,45 @@
               </div>
             </div>
           </div>
-          <div v-else class="no-results">រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"</div>
+
+          <div v-else class="no-results">
+            រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"
+          </div>
         </div>
       </div>
 
-      <div v-if="showResults" class="overlay" @click="closeDropdown"></div>
-
+      <!-- Right -->
       <div class="actions-area">
         <button class="mode-toggle">
-          <Moon :size="20" />
+          <Moon :size="18" />
         </button>
-        
         <ProfileDropdown />
       </div>
     </div>
+
+    <div v-if="showResults" class="overlay" @click="closeDropdown" />
   </nav>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note";
-
-// ✅ Added missing imports for icons and components
 import { Search, Moon } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue"; // Ensure this path is correct
+import ProfileDropdown from "./ProfileDropdown.vue";
 
 const router = useRouter();
 const noteStore = useNoteStore();
+
+const sidebar = inject("sidebar");
+const toggleSidebar = () => sidebar?.toggleSidebar();
 
 const q = ref("");
 const showResults = ref(false);
 let timeout = null;
 
 onMounted(async () => {
-  if (noteStore.all.length === 0) {
+  if (!noteStore.all.length) {
     await noteStore.fetchAllNotes();
   }
 });
@@ -88,62 +99,71 @@ const goToDetail = (id) => {
   router.push(`/dashboard/tasks/${id}`);
 };
 
-// Debounced Search Logic
-watch(q, (newVal) => {
+watch(q, (val) => {
   clearTimeout(timeout);
-  if (!newVal.trim()) {
+
+  if (!val.trim()) {
     noteStore.clearSearch();
     showResults.value = false;
     return;
   }
+
   timeout = setTimeout(() => {
-    noteStore.searchNotes(newVal);
+    noteStore.searchNotes(val);
     showResults.value = true;
   }, 300);
 });
 </script>
 
 <style scoped>
-/* (Your existing CSS remains the same) */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
+/* Navbar */
 .reab-navbar {
-  font-family: "Inter", sans-serif;
-  height: 85px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #f1f5f9;
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  position: sticky;
+  position: fixed;
   top: 0;
-  width: 100%;
-  z-index: 1000;
+  left: 280px;
+  width: calc(100% - 280px);
+  height: 85px;
+  background: #fff;
+  border-bottom: 1px solid #f1f5f9;
+  z-index: 2000;
 }
 
 .navbar-container {
+  height: 100%;
+  padding: 0 40px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
 }
 
-.search-area {
-  position: relative;
-  flex: 1;
-  max-width: 500px;
-  z-index: 1001;
-}
-
-.search-box {
+/* Left */
+.left-area {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  position: relative;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Search */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 420px;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 999px;
   background: #f8fafc;
   border: 2px solid #e2e8f0;
-  border-radius: 25px;
-  padding: 10px 20px;
-  transition: 0.2s;
 }
 
 .search-input {
@@ -151,8 +171,6 @@ watch(q, (newVal) => {
   border: none;
   outline: none;
   background: transparent;
-  font-weight: 500;
-  color: #1e293b;
   font-size: 15px;
 }
 
@@ -161,54 +179,39 @@ watch(q, (newVal) => {
   top: calc(100% + 10px);
   left: 0;
   right: 0;
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
   max-height: 350px;
   overflow-y: auto;
-  z-index: 1002;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  z-index: 3000;
 }
 
-.result-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  cursor: pointer;
-  border-bottom: 1px solid #f8fafc;
-}
-
-.result-item:hover {
-  background: #f1f5f9;
-}
-
+/* Right */
 .actions-area {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .mode-toggle {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
   cursor: pointer;
 }
 
+/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.01);
-  z-index: 999;
+  z-index: 1500;
 }
 
+/* Spinner */
 .spinner {
   width: 18px;
   height: 18px;
@@ -216,10 +219,54 @@ watch(q, (newVal) => {
   border-top-color: #0d9488;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  display: inline-block;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tablet & Mobile */
+@media (max-width: 900px) {
+  .reab-navbar {
+    left: 0;
+    width: 100%;
+  }
+
+  .hamburger {
+    display: inline-flex;
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .reab-navbar {
+    height: 64px;
+  }
+
+  .navbar-container {
+    padding: 0 12px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+  }
+
+  .search-box {
+    padding: 8px 12px;
+  }
+
+  .search-input {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s ease;
+  }
+
+  .search-box:focus-within .search-input {
+    width: 100%;
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 </style>
