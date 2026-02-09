@@ -76,7 +76,6 @@
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div v-if="showDeleteConfirm" class="modal-overlay">
       <div class="modal-content">
         <h4>ម៉ាថាប់ការលុប</h4>
@@ -352,7 +351,6 @@ const deleteAvatarConfirmed = async () => {
   margin-top: 20px;
 }
 
-/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
