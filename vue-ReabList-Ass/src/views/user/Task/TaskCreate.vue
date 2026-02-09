@@ -21,7 +21,6 @@
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
 
-          <!-- ✅ prevent past date -->
           <input
             v-model="form.date"
             type="date"
@@ -61,13 +60,15 @@ import { ref } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
 import api from "@/API/api";
+import { useNoteStore } from "@/stores/note";
+
+const noteStore = useNoteStore();
 
 const router = useRouter();
 const emit = defineEmits(["created"]);
 
 const modalRef = ref(null);
 
-/** ✅ today date for min */
 const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
 const categoryOptions = [
@@ -104,7 +105,6 @@ const resetForm = () => {
 
 const createTask = async () => {
   try {
-    // ✅ prevent past date (backend-safe validation)
     if (form.value.date && form.value.date < today) {
       alert("មិនអាចជ្រើសរើសកាលបរិច្ឆេទនៅអតីតកាលបានទេ");
       return;
@@ -126,24 +126,23 @@ const createTask = async () => {
       category: categoryMap[form.value.category] || "WORK",
     };
 
-    console.log("[API] POST /notes payload:", payload);
-
-    const res = await api.post("/notes", payload);
-    console.log("Created Note:", res.data);
+    // CREATE VIA STORE (UI UPDATE IMMEDIATELY)
+    await noteStore.createNote(payload);
 
     modalRef.value?.close();
     resetForm();
 
-    emit("created");
+    emit("created"); // optional
 
     if (router.currentRoute.value.path !== "/dashboard/tasks") {
       await router.push("/dashboard/tasks");
     }
   } catch (err) {
-    console.error("❌ Create Task Error:", err?.response?.data || err.message);
+    console.error("Create Task Error:", err?.response?.data || err.message);
     alert(err?.response?.data?.message || "Create Task failed");
   }
 };
+
 
 const open = () => {
   resetForm();

@@ -1,22 +1,21 @@
 <template>
-<div>
+  <div>
+    <TaskView
+      ref="viewRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @close="noteStore.closeModal()"
+      @edit-task="noteStore.openNote(noteStore.selectedNote.id, 'edit')"
+    />
 
-  <TaskView
-    ref="viewRef"
-    v-if="noteStore.selectedNote"
-    :task="noteStore.selectedNote"
-    @close="noteStore.closeModal()"
-    @edit-task="noteStore.openNote(noteStore.selectedNote.id, 'edit')"
-  />
-
-  <TaskUpdate
-    ref="editRef"
-    v-if="noteStore.selectedNote"
-    :task="noteStore.selectedNote"
-    @updated="onUpdated"
-    @close="noteStore.closeModal()"
-  />
-</div>
+    <TaskUpdate
+      ref="editRef"
+      v-if="noteStore.selectedNote"
+      :task="noteStore.selectedNote"
+      @updated="onUpdated"
+      @close="noteStore.closeModal()"
+    />
+  </div>
 </template>
 
 <script setup>
