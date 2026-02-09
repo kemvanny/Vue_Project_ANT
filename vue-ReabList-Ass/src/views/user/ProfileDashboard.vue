@@ -3,7 +3,9 @@
     <!-- Header -->
     <div class="page-header">
       <h1>ព័ត៍មានគណនី</h1>
-      <p class="subtitle">Manage your account Settings and Preferences</p>
+      <p class="subtitle">
+        គ្រប់គ្រងព័ត៌មានផ្ទាល់ខ្លួន និងសុវត្ថិភាពគណនីរបស់អ្នក។
+      </p>
     </div>
 
     <!-- Messages -->
@@ -56,11 +58,11 @@
           <div class="profile-meta">
             <span class="status-badge">
               <i class="fas fa-check-circle"></i>
-              Activated
+              សកម្ម
             </span>
             <span class="role-badge">
               <i class="fas fa-user-tag"></i>
-              USER
+              អ្នកប្រើប្រាស់
             </span>
           </div>
         </div>
@@ -71,7 +73,7 @@
             :disabled="authStore.profileLoading"
           >
             <i class="fas fa-edit"></i>
-            Edit Profile
+            កែប្រែព័ត៍មាន
           </button>
           <button
             class="btn btn-secondary"
@@ -79,7 +81,7 @@
             :disabled="authStore.profileLoading"
           >
             <i class="fas fa-image"></i>
-            Change Image
+            ប្ដូររូបថត
           </button>
         </div>
       </div>
@@ -90,15 +92,15 @@
       <h3 class="section-title">សង្ខេបសកម្មភាព</h3>
       <div class="stats-grid">
         <div class="stat-card stat-card-1">
-          <div class="stat-number">{{ stats.totalTasks }}</div>
+          <div class="stat-number">{{ noteStore.meta?.totalItems || noteStore.notes.length }}</div>
           <div class="stat-label">ការបង្កើតភារកិច្ច</div>
         </div>
         <div class="stat-card stat-card-2">
-          <div class="stat-number">{{ stats.completedTasks }}</div>
+          <div class="stat-number">{{ noteStore.completed.length }}</div>
           <div class="stat-label">បានបញ្ចប់សកម្មភាព</div>
         </div>
         <div class="stat-card stat-card-3">
-          <div class="stat-number">{{ stats.completionRate }}%</div>
+          <div class="stat-number">{{ Math.round((noteStore.completed.length / (noteStore.meta?.totalItems || noteStore.notes.length || 1)) * 100) }}%</div>
           <div class="stat-label">ប្រសិទ្ធិភាព</div>
         </div>
       </div>
@@ -178,19 +180,25 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import {  onMounted, ref } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm.vue";
 import AvatarManager from "@/components/profile/AvatarManager.vue";
+import { useNoteStore } from "@/stores/note";
+
+const noteStore = useNoteStore();
 
 const authStore = useProfileStore();
 const activeModal = ref(null);
 
-const stats = ref({
-  totalTasks: 142,
-  completedTasks: 128,
-  completionRate: 90,
-});
+const tasks = ref([]);
+
+const loadTasks = () => {
+  const list = JSON.parse(localStorage.getItem("reablist_tasks") || "[]");
+  tasks.value = Array.isArray(list) ? list : [];
+};
+
+
 
 const preferences = ref({
   emailNotifications: true,
@@ -221,6 +229,7 @@ const savePreferences = () => {
 
 onMounted(async () => {
   await loadProfile();
+  loadTasks();
   const saved = localStorage.getItem("profilePreferences");
   if (saved) {
     preferences.value = JSON.parse(saved);

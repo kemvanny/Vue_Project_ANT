@@ -7,6 +7,7 @@
           <i class="fas fa-bars"></i>
         </button>
 
+        <!-- Search -->
         <div class="search-box">
           <span class="icon">
             <span v-if="noteStore.loading" class="spinner"></span>
@@ -18,12 +19,12 @@
             class="search-input"
             type="text"
             placeholder="ស្វែងរកតាមរយៈចំណងជើង..."
-            @focus="openDropdown"
           />
         </div>
 
+        <!-- Results -->
         <div v-if="showResults && q" class="results-dropdown">
-          <div v-if="noteStore.searchResults.length">
+          <template v-if="noteStore.searchResults.length">
             <div
               v-for="item in noteStore.searchResults"
               :key="item.id"
@@ -33,6 +34,7 @@
               <div class="result-icon">
                 <i class="fas fa-file-alt"></i>
               </div>
+
               <div class="result-info">
                 <p class="result-title">{{ item.title }}</p>
                 <p class="result-note">
@@ -40,9 +42,9 @@
                 </p>
               </div>
             </div>
-          </div>
+          </template>
 
-          <div v-else class="no-results">
+          <div v-else class="no-results fw-semibold">
             រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"
           </div>
         </div>
@@ -78,15 +80,16 @@ const q = ref("");
 const showResults = ref(false);
 let timeout = null;
 
+/* Load notes once */
 onMounted(async () => {
   if (!noteStore.all.length) {
     await noteStore.fetchAllNotes();
+
+    if (noteStore.all.length === 0) {
+      await noteStore.fetchNotes();
+    }
   }
 });
-
-const openDropdown = () => {
-  if (q.value.trim()) showResults.value = true;
-};
 
 const closeDropdown = () => {
   showResults.value = false;
@@ -99,6 +102,7 @@ const goToDetail = (id) => {
   router.push(`/dashboard/tasks/${id}`);
 };
 
+/* Search debounce */
 watch(q, (val) => {
   clearTimeout(timeout);
 
@@ -116,7 +120,14 @@ watch(q, (val) => {
 </script>
 
 <style scoped>
-/* Navbar */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.no-results {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
 .reab-navbar {
   position: fixed;
   top: 0;
@@ -136,7 +147,6 @@ watch(q, (val) => {
   justify-content: space-between;
 }
 
-/* Left */
 .left-area {
   display: flex;
   align-items: center;
@@ -188,7 +198,6 @@ watch(q, (val) => {
   z-index: 3000;
 }
 
-/* Right */
 .actions-area {
   display: flex;
   align-items: center;
@@ -204,7 +213,6 @@ watch(q, (val) => {
   cursor: pointer;
 }
 
-/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -239,7 +247,6 @@ watch(q, (val) => {
   }
 }
 
-/* Phone */
 @media (max-width: 640px) {
   .reab-navbar {
     height: 64px;

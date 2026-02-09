@@ -41,7 +41,6 @@
         </router-link>
 
         <p class="nav-label">សកម្មភាពទូទៅ</p>
-
         <a
           href="#"
           class="reab-nav-link"
@@ -51,6 +50,12 @@
           <PlusCircle :size="18" />
           <span>បង្កើតភារកិច្ចថ្មី</span>
         </a>
+
+        <div class="reab-nav-link" @click="openCreateTask">
+          <PlusCircle :size="18" />
+          <span>បង្កើតភារកិច្ចថ្មី</span>
+        </div>
+
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>
 
@@ -85,7 +90,9 @@
       <!-- Footer -->
       <div class="mt-auto">
         <div class="status-card">
-          <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+          <div
+            class="d-flex align-items-center justify-content-center gap-2 mb-2"
+          >
             <div class="pulse-status"></div>
             <p class="status-text">កំពុងដំណើរការ</p>
           </div>
@@ -101,6 +108,7 @@
         
       </div>
     </aside>
+    <TaskCreate ref="modalRefs" />
   </div>
 </template>
 
@@ -117,6 +125,16 @@ const closeSidebar = sidebar?.closeSidebar;
 const handleLogout = () => {
   // your logout logic
 };
+
+import { ref } from 'vue'
+import TaskCreate from '@/views/user/Task/TaskCreate.vue'
+
+const modalRefs = ref(null)
+
+const openCreateTask = () => {
+  modalRefs.value?.open()
+}
+
 </script>
 
 <style scoped>

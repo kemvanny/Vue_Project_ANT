@@ -28,9 +28,14 @@ export const useNoteStore = defineStore("noteStore", () => {
   const error = ref(null);
   const modalOpen = ref(false);
   const modalType = ref("view"); // "view" | "edit"
-  const searchResults = ref([]); 
-  const meta = ref({});
+  const searchResults = ref([]);
 
+  const meta = ref({
+    currentPage: 1,
+    totalPages: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
 
   // --- GETTERS ---
   const all = computed(() => notes.value);
@@ -50,30 +55,26 @@ export const useNoteStore = defineStore("noteStore", () => {
     }
   };
 
-  // Helper to fetch content for list view (if API doesn't provide it in list)
-  const fetchNoteContent = async (id) => {
-    try {
-      const res = await api.get(`/notes/${id}`);
-      const detail = res.data?.data ?? res.data;
-      return detail?.content ?? detail?.notes ?? "";
-    } catch {
-      return "";
-    }
-  };
-
-const fetchAllNotes = async () => {
+  const fetchNotes = async (page = 1, perPage = 9) => {
   loading.value = true;
   try {
-    console.log("🚀 fetchAllNotes CALLED");
-
-    const res = await api.get("/notes");
-    console.log("📦 RAW API RESPONSE:", res.data);
+    const res = await api.get("/notes", {
+      params: {
+        _page: page,
+        _per_page: perPage,
+        sortBy: "updatedAt",
+        sortDir: "DESC",
+      },
+    });
 
     const payload = res.data?.data || res.data;
-    console.log("📦 PAYLOAD:", payload);
 
-    // ✅ handle paginated response
-    meta.value = payload.meta || {};
+    meta.value = payload.meta || {
+      currentPage: page,
+      totalPages: 1,
+      hasPreviousPage: false,
+      hasNextPage: false,
+    };
 
     const list = Array.isArray(payload?.items)
       ? payload.items
@@ -83,17 +84,92 @@ const fetchAllNotes = async () => {
       ? payload
       : [];
 
-    console.log("✅ FINAL NOTES LIST:", list);
-
-    notes.value = list;
+    notes.value = list.map((n) => ({
+      ...n,
+      priority: toKhPriority(n.priority),
+      category: toKhCategory(n.category),
+    }));
   } catch (err) {
-    console.error("❌ fetchAllNotes failed:", err);
+    console.error("fetchNotes failed:", err);
   } finally {
     loading.value = false;
   }
 };
 
-  // Search Logic
+/// --- CREATE NOTE ---
+const createNote = async (payload) => {
+  loading.value = true;
+  try {
+    const res = await api.post("/notes", payload);
+    const created = res.data?.data ?? res.data;
+
+    const khNote = {
+      ...created,
+      priority: toKhPriority(created.priority),
+      category: toKhCategory(created.category),
+      justCreated: true,
+    };
+
+    notes.value.unshift(khNote);
+
+    return khNote;
+  } catch (err) {
+    console.error("Create note failed:", err);
+    throw err;
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+  // --- UPDATE NOTE ---
+  const updateNote = async (id, payload) => {
+    loading.value = true;
+    try {
+      const res = await api.put(`/notes/${id}`, payload);
+      const updated = res.data?.data ?? res.data;
+
+      const khNote = {
+        ...updated,
+        priority: toKhPriority(updated.priority),
+        category: toKhCategory(updated.category),
+      };
+
+      // Update the note locally
+      const index = notes.value.findIndex((n) => n.id === id);
+      if (index !== -1) notes.value[index] = khNote;
+
+      // If selected note is open in modal, update it too
+      if (selectedNote.value?.id === id) selectedNote.value = khNote;
+
+      return khNote;
+    } catch (err) {
+      console.error("Update note failed:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // --- DELETE NOTE ---
+  const deleteNote = async (id) => {
+    loading.value = true;
+    try {
+      await api.delete(`/notes/${id}`);
+      // Remove locally
+      notes.value = notes.value.filter((n) => n.id !== id);
+
+      // Close modal if deleted note is open
+      if (selectedNote.value?.id === id) closeModal();
+    } catch (err) {
+      console.error("Delete note failed:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // --- SEARCH ---
   const searchNotes = (keyword) => {
     if (!keyword || keyword.trim() === "") {
       searchResults.value = [];
@@ -105,12 +181,11 @@ const fetchAllNotes = async () => {
       return title.includes(q);
     });
   };
-
   const clearSearch = () => {
     searchResults.value = [];
   };
 
-  // Open note for Modal
+  // --- MODAL ---
   const openNote = async (id, type = "view") => {
     loading.value = true;
     modalType.value = type;
@@ -134,13 +209,49 @@ const fetchAllNotes = async () => {
     }
   };
 
+  // --- MARK NOTE AS COMPLETED ---
+// --- MARK NOTE AS COMPLETED (TOGGLE) ---
+const toggleNoteCompleted = async (id) => {
+  loading.value = true;
+  try {
+    // Call your toggle endpoint
+    const res = await api.put(`/notes/${id}/toggle-complete`);
+    const updated = res.data?.data ?? res.data;
+
+    // Update locally
+    const index = notes.value.findIndex((n) => n.id === id);
+    if (index !== -1) notes.value[index] = {
+      ...updated,
+      priority: toKhPriority(updated.priority),
+      category: toKhCategory(updated.category),
+    };
+
+    // Update selectedNote if open in modal
+    if (selectedNote.value?.id === id) {
+      selectedNote.value = {
+        ...updated,
+        priority: toKhPriority(updated.priority),
+        category: toKhCategory(updated.category),
+      };
+    }
+
+    return updated;
+  } catch (err) {
+    console.error("Toggle complete failed:", err);
+    throw err;
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+
   const closeModal = () => {
     modalOpen.value = false;
     selectedNote.value = null;
   };
 
-  // --- RETURN ---
-  // Ensure all these are returned so Components can access them
+  // --- RETURN STATE & ACTIONS ---
   return {
     notes,
     selectedNote,
@@ -149,11 +260,16 @@ const fetchAllNotes = async () => {
     modalOpen,
     modalType,
     searchResults,
+    meta,
     all,
     pending,
     completed,
+    toggleNoteCompleted,
+    createNote,
     fetchNoteById,
-    fetchAllNotes,
+    fetchNotes,
+    updateNote,
+    deleteNote,
     searchNotes,
     clearSearch,
     openNote,

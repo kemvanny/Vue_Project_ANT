@@ -144,12 +144,12 @@ const close = () => {
 
   // 2. Clear the data from the store
   noteStore.selectedNote = null;
-
-  // 3. Force the URL to change and prevent it from staying on the ID
-  router.replace('/dashboard/tasks').then(() => {
-    console.log("Navigation successful, ID should be gone.");
-  });
+  // 3. Navigate back to the main tasks page (optional, but keeps URL clean)
+  if (route.params.id) {
+    router.push({ name: "all-tasks" });
+  }
 };
+
 defineExpose({ open, close });
 
 const priorityClass = computed(() => {
@@ -158,10 +158,12 @@ const priorityClass = computed(() => {
   return "low";
 });
 
-const markDone = () => {
-  emit("mark-completed", task.value);
-  close();
+const markDone = async () => {
+  if (!task.value) return;
+  task.value.isCompleted = true; // reactive
+  noteStore.toggleNoteCompleted(task.value.id);
 };
+
 
 const editNow = () => {
   emit("edit-task", task.value);
