@@ -110,7 +110,7 @@
         
       </div>
     </aside>
-<TaskCreate ref="taskCreateRef" />
+    <TaskCreate ref="taskCreateRef" />
   </div>
 </template>
 
