@@ -215,7 +215,7 @@ const confirmEmailChange = async () => {
           name: "ProfileSetting",
           query: { emailChanged: "success" },
         });
-      }, 3000);
+      }, 1000);
     } else {
       verificationError.value =
         profileStore.profileError || "ការផ្ទៀងផ្ទាត់បានបរាជ័យ។";
