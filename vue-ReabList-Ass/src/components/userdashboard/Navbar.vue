@@ -136,7 +136,8 @@ watch(q, (val) => {
   height: 85px;
   background: #fff;
   border-bottom: 1px solid #f1f5f9;
-  z-index: 2000;
+  z-index: 4;
+  margin-bottom: 10px;
 }
 
 .navbar-container {

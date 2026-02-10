@@ -507,6 +507,7 @@ const statusOptions = [
   gap: 18px;
   margin-bottom: 16px;
   box-shadow: 0 3px 5px rgba(131, 160, 157, 0.255);
+  margin-top: 1.2rem;
 }
 
 .hero-left {

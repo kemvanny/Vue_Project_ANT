@@ -10,11 +10,13 @@
     <!-- Sidebar -->
     <aside id="reab-sidebar" :class="{ open: isSidebarOpen }">
       <!-- Logo -->
-      <div class="logo-section">
-        <div class="logo-box">
-          <i class="fas fa-check-double"></i>
+      <div class="logo-sticky">
+        <div class="logo-section">
+          <div class="logo-box">
+            <i class="fas fa-check-double"></i>
+          </div>
+          <span class="logo-text">ReabList</span>
         </div>
-        <span class="logo-text">ReabList</span>
       </div>
 
       <!-- Navigation -->
@@ -41,7 +43,7 @@
         </router-link>
 
         <p class="nav-label">សកម្មភាពទូទៅ</p>
-        <a
+        <!-- <a
           href="#"
           class="reab-nav-link"
           data-bs-toggle="modal"
@@ -49,7 +51,7 @@
         >
           <PlusCircle :size="18" />
           <span>បង្កើតភារកិច្ចថ្មី</span>
-        </a>
+        </a> -->
 
         <div class="reab-nav-link" @click="openCreateTask">
           <PlusCircle :size="18" />
@@ -108,34 +110,44 @@
         
       </div>
     </aside>
-    <TaskCreate ref="modalRefs" />
+<TaskCreate ref="taskCreateRef" />
   </div>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, ref } from "vue";
+import { useRouter } from "vue-router";
+import api from "@/API/api";
+import { useAuthStore } from "@/stores/authentication";
 import { PlusCircle } from "lucide-vue-next";
+import TaskCreate from "@/views/user/Task/TaskCreate.vue"; // <-- adjust path
 
-/* Sidebar state from layout */
 const sidebar = inject("sidebar");
-
 const isSidebarOpen = sidebar?.isSidebarOpen;
 const closeSidebar = sidebar?.closeSidebar;
 
-const handleLogout = () => {
-  // your logout logic
-};
+const router = useRouter();
+const authStore = useAuthStore();
 
-import { ref } from 'vue'
-import TaskCreate from '@/views/user/Task/TaskCreate.vue'
-
-const modalRefs = ref(null)
+const taskCreateRef = ref(null);
 
 const openCreateTask = () => {
-  modalRefs.value?.open()
-}
+  closeSidebar?.();
+  taskCreateRef.value?.open(); // ✅ this will call defineExpose({ open })
+};
 
+const handleLogout = async () => {
+  try {
+    await api.post("/auth/logout");
+  } catch (err) {
+    console.error("Logout error:", err);
+  } finally {
+    authStore.logout();
+    router.push("/login");
+  }
+};
 </script>
+
 
 <style scoped>
 #reab-sidebar {
@@ -151,7 +163,7 @@ const openCreateTask = () => {
   display: flex;
   flex-direction: column;
 
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffffe6;
   backdrop-filter: blur(20px);
   border-right: 1px solid rgba(226, 232, 240, 0.8);
 
@@ -191,6 +203,14 @@ const openCreateTask = () => {
 }
 
 /* Logo */
+.logo-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  /* backdrop-filter: blur(20px); */
+}
+
 .logo-section {
   display: flex;
   align-items: center;
