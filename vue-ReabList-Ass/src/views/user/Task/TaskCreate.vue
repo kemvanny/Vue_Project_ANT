@@ -1,5 +1,5 @@
 <template>
-  <BaseModal ref="modalRef" id="addTaskModal" title="បង្កើតភារកិច្ចថ្មី" maxWidth="700px">
+  <BaseModal ref="modalRef" id="addTaskModal" title="បង្កើតភារកិច្ចថ្មី" maxWidth="700px" @close="close">
     <form @submit.prevent="createTask">
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
