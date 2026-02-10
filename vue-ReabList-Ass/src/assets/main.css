@@ -73,6 +73,7 @@ body {
   padding: 28px;
 }
 
+
 /* Animated Background Styles login */
 .animation-area {
   position: absolute;
@@ -373,6 +374,7 @@ body {
 .animate-entrance {
   animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 
 @keyframes popIn {
   from {

@@ -286,7 +286,7 @@ const calendarData = computed(() => {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 22px;
+  margin: 16px 0;
   box-shadow: 0 22px 45px -35px rgba(13, 148, 136, 0.45);
 }
 
@@ -497,4 +497,76 @@ const calendarData = computed(() => {
     grid-column: span 1;
   }
 }
+/* ================= HERO LEFT RESPONSIVE ================= */
+@media (max-width: 640px) {
+  .hero-wrap {
+    flex-direction: column;
+    text-align: center;
+    padding: 18px;
+  }
+
+  .hero-left {
+    width: 100%;
+    align-items: center;
+  }
+
+  .brand-pill {
+    margin: 0 auto 8px;
+  }
+
+  .hero-title {
+    font-size: 22px;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .hero-sub {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  .hero-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-hero {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+    border-radius: 16px;
+  }
+}
+/* ================= HERO RIGHT RESPONSIVE ================= */
+@media (max-width: 640px) {
+  .hero-right {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-right .d-flex.flex-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-metric {
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+  }
+}
+
+
 </style>
