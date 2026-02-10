@@ -35,7 +35,7 @@
           <div class="data-row">
             <span class="data-label">កាលបរិច្ឆេទចូលរួម</span>
             <span class="data-value">{{
-              formatDate(profileStore.profile?.created_at)
+              formatDate(profileStore.profile?.registeredAt)
             }}</span>
           </div>
         </div>

@@ -157,7 +157,7 @@
         <div class="text-center mb-5" data-fade-up>
           <h2 class="display-6 fw-800">
             ជួបជាមួយ
-            <span style="color: var(--primary)">អ្នកមានចក្ខុវិស័យរបស់យើង</span>
+            <span style="color: var(--primary)">សមាជិកក្រុមរបស់យើង</span>
           </h2>
           <p class="text-muted">អ្នកជំនាញនៅពីក្រោយបទពិសោធន៍ ReabList ។</p>
         </div>

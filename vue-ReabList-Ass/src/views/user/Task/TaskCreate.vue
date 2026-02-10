@@ -153,6 +153,7 @@ const validateForm = () => {
     errors.value.title = "សូមបញ្ចូលចំណងជើង";
   }
 
+
   if (!form.content || !form.content.trim()) {
     errors.value.content = "សូមបញ្ចូលពណ៌នា";
   }

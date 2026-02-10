@@ -71,8 +71,14 @@
           បិទ
         </button>
 
-        <AuthButton :type="'submit'" text="រក្សាទុក" loading-text="កំពុងរក្សាទុក..." :loading="loading"
-        class="btn-done-modern " @click="updateTask" />
+        <AuthButton
+          :type="'submit'"
+          text="រក្សាទុក"
+          loading-text="កំពុងរក្សាទុក..."
+          :loading="loading"
+          class="btn-done-modern"
+          @click="updateTask"
+        />
       </div>
     </template>
   </BaseModal>
@@ -93,7 +99,6 @@ const emit = defineEmits(["updated"]);
 
 const modalRef = ref(null);
 const error = ref("");
-
 
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
@@ -188,7 +193,6 @@ const toHHmm = (value) => {
   return "";
 };
 
-
 watch(
   () => props.task,
   (t) => {
@@ -226,13 +230,17 @@ const updateTask = async () => {
 
   try {
     const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
-    const categoryMap = { ផ្ទាល់ខ្លួន: "PERSONAL", ការងារ: "WORK", សិក្សា: "SCHOOL" };
+    const categoryMap = {
+      ផ្ទាល់ខ្លួន: "PERSONAL",
+      ការងារ: "WORK",
+      សិក្សា: "SCHOOL",
+    };
 
     const body = {
       title: form.value.title.trim(),
       content: form.value.content?.trim() || "",
-      date: form.value.date,              // YYYY-MM-DD
-      time: toHHmm(form.value.time),     
+      date: form.value.date, // YYYY-MM-DD
+      time: toHHmm(form.value.time),
       priority: priorityMap[form.value.priority] || "MEDIUM",
       category: categoryMap[form.value.category] || "PERSONAL",
     };
@@ -252,12 +260,10 @@ const updateTask = async () => {
   }
 };
 
-
 const open = () => modalRef.value?.open();
 const close = () => modalRef.value?.close();
 
 defineExpose({ open, close });
-
 </script>
 
 
@@ -312,5 +318,4 @@ defineExpose({ open, close });
   transform: translateY(-1px);
   box-shadow: 0 14px 28px -18px rgba(15, 23, 42, 0.18);
 }
-
 </style>
