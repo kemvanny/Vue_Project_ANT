@@ -1,6 +1,5 @@
 <template>
   <div class="view-content">
-    <!-- HERO HEADER -->
     <div class="category-hero">
       <div class="hero-left">
         <div class="brand-pill">
@@ -39,7 +38,6 @@
       </div>
     </div>
 
-    <!-- TOOLBAR -->
     <div class="toolbar">
       <div class="chips">
         <button class="chip" :class="{ active: filter === 'all' }" @click="filter = 'all'">
@@ -54,14 +52,9 @@
       </div>
     </div>
 
-    <!-- CONTENT -->
-    <div v-if="loading" class="loading">
-      <div class="loading-dot"></div>
-      <div>កំពុងផ្ទុក...</div>
-    </div>
+    <BaseSkeleton v-if="loading" :count="4" />
 
     <div v-else>
-      <!-- Empty state -->
       <div v-if="displayTasks.length === 0" class="empty-box">
         <div class="empty-icon">🗂️</div>
         <h3 class="empty-title">មិនមានភារកិច្ចសម្រាប់បង្ហាញទេ</h3>
@@ -74,41 +67,17 @@
         </button>
       </div>
 
-      <!-- ✅ Use same UI as AllTasks -->
       <div v-else>
-        <BaseTaskTable
-          title="Category Tasks"
-          :tasks="displayTasks"
-          :pageSize="pageSize"
-          @update:pageSize="pageSize = $event"
-          @view="openView"
-          @edit="openEdit"
-          @delete="deleteNote"
-        />
+        <BaseTaskTable title="Category Tasks" :tasks="displayTasks" :pageSize="pageSize"
+          @update:pageSize="pageSize = $event" @view="openView" @edit="openEdit" @delete="deleteNote" />
       </div>
     </div>
 
-    <!-- MODALS -->
-    <TaskView
-      ref="viewModalRef"
-      v-if="noteStore.selectedNote"
-      :task="noteStore.selectedNote"
-      @edit-task="openEdit"
-    />
-
-    <TaskUpdate
-      ref="editModalRef"
-      v-if="noteStore.selectedNote"
-      :task="noteStore.selectedNote"
-      @updated="handleUpdated"
-    />
-    <DeleteConfirmModal
-      :open="showDeleteModal"
-      title="លុបភារកិច្ច?"
-      message="តើអ្នកប្រាកដថាចង់លុបភារកិច្ចនេះមែនទេ?"
-      @confirm="confirmDelete"
-      @cancel="cancelDelete"
-    />
+    <TaskView ref="viewModalRef" v-if="noteStore.selectedNote" :task="noteStore.selectedNote" @edit-task="openEdit" />
+    <TaskUpdate ref="editModalRef" v-if="noteStore.selectedNote" :task="noteStore.selectedNote"
+      @updated="handleUpdated" />
+    <DeleteConfirmModal :open="showDeleteModal" title="លុបភារកិច្ច?" message="តើអ្នកប្រាកដថាចង់លុបភារកិច្ចនេះមែនទេ?"
+      @confirm="confirmDelete" @cancel="cancelDelete" />
 
   </div>
 </template>
@@ -118,13 +87,13 @@ import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
+// ✅ Import Component ថ្មី
+import BaseSkeleton from "@/components/base/BaseSkeleton.vue";
 import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
-import DeleteConfirmModal from "@/components/Base/DeleteConfirmModal.vue";
+import DeleteConfirmModal from "@/components/base/DeleteConfirmModal.vue";
 
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
-
-
 import { useNoteStore } from "@/stores/note";
 
 const route = useRoute();
@@ -133,23 +102,16 @@ const emit = defineEmits(["create-task"]);
 
 const filter = ref("all");
 const pageSize = ref(8);
-
-// delete modal state
 const showDeleteModal = ref(false);
 const deleteId = ref(null);
-
-// modal refs
 const viewModalRef = ref(null);
 const editModalRef = ref(null);
 
-// normalize category
 const normalizeCategory = (val) => {
   const v = String(val || "").trim().toLowerCase();
-
   if (["personal", "ផ្ទាល់ខ្លួន"].includes(v)) return "personal";
   if (["work", "ការងារ"].includes(v)) return "work";
   if (["study", "school", "សិក្សា"].includes(v)) return "study";
-
   return v;
 };
 
@@ -175,55 +137,26 @@ const filteredTasks = computed(() => {
   );
 });
 
-const completedCount = computed(() =>
-  filteredTasks.value.filter((t) => !!t.isCompleted).length
-);
-const inProgressCount = computed(() =>
-  filteredTasks.value.filter((t) => !t.isCompleted).length
-);
+const completedCount = computed(() => filteredTasks.value.filter((t) => !!t.isCompleted).length);
+const inProgressCount = computed(() => filteredTasks.value.filter((t) => !t.isCompleted).length);
 
 const displayTasks = computed(() => {
   let list = [...filteredTasks.value];
-
-  // filter chip
   if (filter.value === "progress") list = list.filter((t) => !t.isCompleted);
   if (filter.value === "done") list = list.filter((t) => !!t.isCompleted);
-
-  // newest first
   list.sort((a, b) => {
     const aKey = `${a.date || ""} ${a.time || ""}`.trim();
     const bKey = `${b.date || ""} ${b.time || ""}`.trim();
     return bKey.localeCompare(aKey);
   });
-
   return list;
 });
 
-// create
 const createNew = () => emit("create-task");
-
-// view
-const openView = async (task) => {
-  await noteStore.openNote(task.id);
-  viewModalRef.value?.open();
-};
-
-// edit
-const openEdit = async (task) => {
-  await noteStore.openNote(task.id);
-  editModalRef.value?.open();
-};
-
-// after update
-const handleUpdated = async () => {
-  await noteStore.fetchAllNotes();
-};
-
-// delete
-const deleteNote = (id) => {
-  deleteId.value = id;
-  showDeleteModal.value = true;
-};
+const openView = async (task) => { await noteStore.openNote(task.id); viewModalRef.value?.open(); };
+const openEdit = async (task) => { await noteStore.openNote(task.id); editModalRef.value?.open(); };
+const handleUpdated = async () => { await noteStore.fetchAllNotes(); };
+const deleteNote = (id) => { deleteId.value = id; showDeleteModal.value = true; };
 
 const confirmDelete = async () => {
   try {
@@ -237,13 +170,8 @@ const confirmDelete = async () => {
   }
 };
 
-const cancelDelete = () => {
-  showDeleteModal.value = false;
-  deleteId.value = null;
-};
+const cancelDelete = () => { showDeleteModal.value = false; deleteId.value = null; };
 
-
-// reset chip when route changes
 watch(categoryParam, async () => {
   filter.value = "all";
   if (!noteStore.notes.length) await noteStore.fetchAllNotes();
@@ -251,7 +179,6 @@ watch(categoryParam, async () => {
 </script>
 
 <style scoped>
-/* ======= HERO (same style as AllTasks) ======= */
 .category-hero {
   background: linear-gradient(135deg, rgba(13, 148, 136, 0.12), rgba(6, 182, 212, 0.1));
   border: 1px solid rgba(13, 148, 136, 0.18);
@@ -264,14 +191,16 @@ watch(categoryParam, async () => {
   box-shadow: 0 22px 45px -35px rgba(13, 148, 136, 0.45);
 }
 
-.hero-left { min-width: 0; }
+.hero-left {
+  min-width: 0;
+}
 
 .brand-pill {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(13,148,136,0.16);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(13, 148, 136, 0.16);
   padding: 8px 14px;
   border-radius: 999px;
   margin-bottom: 10px;
@@ -283,14 +212,23 @@ watch(categoryParam, async () => {
   height: 8px;
   background: #0d9488;
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.35);
   animation: pulse-ring 1.6s infinite;
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6); }
-  70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 12px rgba(13, 148, 136, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+  }
 }
 
 .brand-name {
@@ -306,7 +244,10 @@ watch(categoryParam, async () => {
   margin: 0 0 6px;
   line-height: 1.2;
 }
-.hero-accent { color: #0d9488; }
+
+.hero-accent {
+  color: #0d9488;
+}
 
 .hero-sub {
   margin: 0;
@@ -323,8 +264,8 @@ watch(categoryParam, async () => {
 }
 
 .hero-stat {
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(226,232,240,0.9);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 18px;
   padding: 10px 12px;
   text-align: center;
@@ -351,7 +292,6 @@ watch(categoryParam, async () => {
   padding: 14px 16px;
 }
 
-/* ======= TOOLBAR chips ======= */
 .toolbar {
   display: flex;
   gap: 12px;
@@ -361,7 +301,11 @@ watch(categoryParam, async () => {
   flex-wrap: wrap;
 }
 
-.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
 .chip {
   border: 2px solid rgba(13, 148, 136, 0.18);
@@ -371,40 +315,20 @@ watch(categoryParam, async () => {
   font-weight: 900;
   font-size: 12px;
   cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  transition: transform .18s ease;
 }
+
 .chip:hover {
   transform: translateY(-1px);
   box-shadow: 0 18px 34px -28px rgba(13, 148, 136, 0.35);
 }
+
 .chip.active {
   border-color: rgba(13, 148, 136, 0.55);
   background: rgba(13, 148, 136, 0.08);
   color: #0d9488;
 }
 
-/* loading */
-.loading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #64748b;
-  font-weight: 800;
-  margin-top: 10px;
-}
-.loading-dot {
-  width: 10px;
-  height: 10px;
-  background: #0d9488;
-  border-radius: 50%;
-  animation: bounce 0.9s infinite alternate;
-}
-@keyframes bounce {
-  from { transform: translateY(0); opacity: 0.6; }
-  to { transform: translateY(-6px); opacity: 1; }
-}
-
-/* empty */
 .empty-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -413,12 +337,29 @@ watch(categoryParam, async () => {
   text-align: center;
   box-shadow: 0 22px 45px -35px rgba(2, 132, 199, 0.25);
 }
-.empty-icon { font-size: 44px; margin-bottom: 10px; }
-.empty-title { font-weight: 900; color: #0f172a; margin: 0 0 8px; }
-.empty-sub { color: #64748b; font-weight: 700; margin: 0 0 16px; }
-.empty-btn { width: auto; padding: 14px 26px; }
 
-/* button same as AllTasks */
+.empty-icon {
+  font-size: 44px;
+  margin-bottom: 10px;
+}
+
+.empty-title {
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.empty-sub {
+  color: #64748b;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.empty-btn {
+  width: auto;
+  padding: 14px 26px;
+}
+
 .btn-submit-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
   color: #fff;
@@ -427,25 +368,25 @@ watch(categoryParam, async () => {
   padding: 18px;
   border-radius: 20px;
   font-weight: 800;
-  transition: transform .18s ease, box-shadow .18s ease;
+  cursor: pointer;
   box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.5);
 }
-.btn-submit-modern:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 34px -18px rgba(13, 148, 136, 0.65);
+
+@media (max-width: 1100px) {
+  .category-hero {
+    flex-direction: column;
+  }
 }
 
-/* responsive hero */
-@media (max-width: 1100px) {
-  .category-hero { flex-direction: column; }
-}
 @media (max-width: 680px) {
-  .hero-right { grid-template-columns: 1fr; }
+  .hero-right {
+    grid-template-columns: 1fr;
+  }
+
   .hero-stat {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: left;
   }
 }
 </style>

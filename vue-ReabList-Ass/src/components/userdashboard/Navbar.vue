@@ -13,13 +13,13 @@
             <span v-if="noteStore.loading" class="spinner"></span>
             <Search v-else :size="18" />
           </span>
-
           <input
             v-model="q"
             class="search-input"
             type="text"
             placeholder="ស្វែងរកតាមរយៈចំណងជើង..."
           />
+
         </div>
 
         <!-- Results -->
@@ -48,6 +48,7 @@
             រកមិនឃើញលទ្ធផលសម្រាប់ "{{ q }}"
           </div>
         </div>
+
       </div>
 
       <!-- Right -->
@@ -69,7 +70,6 @@ import { useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note";
 import { Search, Moon } from "lucide-vue-next";
 import ProfileDropdown from "./ProfileDropdown.vue";
-
 const router = useRouter();
 const noteStore = useNoteStore();
 
