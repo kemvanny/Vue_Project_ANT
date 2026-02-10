@@ -247,6 +247,8 @@ const updateTask = async () => {
     loading.value = false;
     console.log("UPDATE ERROR:", err.response?.data || err.message);
     error.value = err.response?.data?.message || "Invalid Input";
+  } finally {
+    loading.value = false;
   }
 };
 

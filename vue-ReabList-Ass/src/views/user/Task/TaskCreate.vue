@@ -130,6 +130,8 @@ const createTask = async () => {
     loading.value = false;
     console.error("Create Task Error:", err?.response?.data || err.message);
     alert(err?.response?.data?.message || "Create Task failed");
+  } finally {
+    loading.value = false;
   }
 };
 

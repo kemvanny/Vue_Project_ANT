@@ -1,58 +1,30 @@
 <template>
   <div class="profile-dropdown-wrapper" v-if="profileData">
-    <button
-      class="profile-trigger"
-      @click="toggleDropdown"
-      :aria-expanded="dropdownOpen"
-      type="button"
-    >
+    <button class="profile-trigger" @click="toggleDropdown" :aria-expanded="dropdownOpen" type="button">
       <div class="user-details">
         <p class="user-display-name">{{ profileData.fullname }}</p>
         <p class="user-display-role">{{ profileData.role?.name }}</p>
       </div>
 
       <div class="user-avatar-circle">
-        <img
-          v-if="profileData.avatar"
-          :src="profileData.avatar"
-          :alt="profileData.fullname"
-          class="avatar-image"
-        />
+        <img v-if="profileData.avatar" :src="profileData.avatar" :alt="profileData.fullname" class="avatar-image" />
         <span v-else>{{ getInitials(profileData.fullname) }}</span>
       </div>
 
-      <ChevronDown
-        :size="18"
-        class="dropdown-chevron"
-        stroke-width="2.5"
-        :class="{ 'chevron-open': dropdownOpen }"
-      />
+      <ChevronDown :size="18" class="dropdown-chevron" stroke-width="2.5" :class="{ 'chevron-open': dropdownOpen }" />
     </button>
 
     <Teleport to="body">
       <Transition name="dropdown-fade">
-        <div
-          v-show="dropdownOpen"
-          class="dropdown-backdrop"
-          @click="closeDropdown"
-        ></div>
+        <div v-show="dropdownOpen" class="dropdown-backdrop" @click="closeDropdown"></div>
       </Transition>
 
       <Transition name="dropdown-slide">
-        <div
-          v-show="dropdownOpen"
-          class="dropdown-menu-wrapper"
-          :style="dropdownPosition"
-          @click.stop
-        >
+        <div v-show="dropdownOpen" class="dropdown-menu-wrapper" :style="dropdownPosition" @click.stop>
           <div class="dropdown-card">
             <div class="dropdown-header">
               <div class="header-avatar">
-                <img
-                  v-if="profileData.avatar"
-                  :src="profileData.avatar"
-                  :alt="profileData.fullname"
-                />
+                <img v-if="profileData.avatar" :src="profileData.avatar" :alt="profileData.fullname" />
                 <span v-else>{{ getInitials(profileData.fullname) }}</span>
               </div>
 
@@ -63,20 +35,12 @@
             </div>
 
             <ul class="dropdown-actions">
-              <li
-                class="dropdown-action"
-                data-route="/profile"
-                @click="handleNavigation"
-              >
+              <li class="dropdown-action" data-route="/profile" @click="handleNavigation">
                 <i class="bi bi-person"></i>
                 <span>ព័ត៌មានគណនី</span>
               </li>
 
-              <li
-                class="dropdown-action"
-                data-route="/profile/setting"
-                @click="handleNavigation"
-              >
+              <li class="dropdown-action" data-route="/profile/setting" @click="handleNavigation">
                 <i class="bi bi-gear"></i>
                 <span>ការកំណត់</span>
               </li>
@@ -95,11 +59,7 @@
 
     <Teleport to="body">
       <Transition name="fade">
-        <div
-          v-if="showLogoutModal"
-          class="modal-backdrop"
-          @click.self="closeLogoutModal"
-        >
+        <div v-if="showLogoutModal" class="modal-backdrop" @click.self="closeLogoutModal">
           <div class="modal-card" @click.stop>
             <div class="modal-head">
               <h3>ចាកចេញ?</h3>
@@ -112,21 +72,13 @@
               <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
             </div>
 
-            <div class="modal-foot">
-              <button
-                class="btn-cancel"
-                @click="closeLogoutModal"
-                type="button"
-              >
+            <div class="modal-foot d-flex justify-content-end a;lign-items-center">
+              <button class="btn-cancel" @click="closeLogoutModal" type="button">
                 បោះបង់
               </button>
-              <button
-                class="btn-confirm-logout"
-                @click="handleLogout"
-                :disabled="isLoggingOut"
-                type="button"
-              >
-                {{ isLoggingOut ? "កំពុងដំណើរការ..." : "បាទ/ចាស! ចាកចេញ" }}
+              <button class="btn-confirm-logout" @click="handleLogout" :disabled="isLoggingOut" type="button">
+                <i class="bi bi-box-arrow-right fw-bold"></i>
+                {{ isLoggingOut ? "កំពុងចាកចេញ..." : "ចាកចេញ" }}
               </button>
             </div>
           </div>
@@ -511,8 +463,8 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 }
 
 .modal-card {
-  width: 92%;
-  max-width: 720px;
+  width: 90%;
+  max-width: 480px;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 25px 80px rgba(15, 23, 42, 0.28);
@@ -580,7 +532,8 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 }
 
 .btn-cancel {
-  min-width: 180px;
+  width: 120px;
+  min-width: auto;
   height: 48px;
   border-radius: 12px;
   border: 1.5px solid #e2e8f0;
@@ -597,7 +550,8 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 }
 
 .btn-confirm-logout {
-  min-width: 220px;
+  width: 140px;
+  min-width: auto;
   height: 48px;
   border-radius: 12px;
   border: none;
@@ -623,6 +577,7 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

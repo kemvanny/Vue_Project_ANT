@@ -1,7 +1,6 @@
 <template>
-  <BaseModal ref="modalRef" id="viewTaskModal" @close="close" title="ព័ត៌មានលម្អិត" maxWidth="850px">
+  <BaseModal ref="modalRef" id="viewTaskModal" @close="closeModal" title="ព័ត៌មានលម្អិត" maxWidth="850px">
     <div class="view-card-wrapper">
-      
       <div class="view-header">
         <div class="brand-pill">
           <div class="pulse-dot"></div>
@@ -68,19 +67,14 @@
 
     <template #footer>
       <div class="view-footer">
-        <button type="button" class="btn-cancel-modern" @click="close">បិទ</button>
+        <button type="button" class="btn-cancel-modern" @click="closeModal">បិទ</button>
 
         <div class="action-buttons">
           <button type="button" class="btn-edit-modern" @click="editNow">
             <Edit2 :size="16" class="me-2" /> កែប្រែ
           </button>
 
-          <button
-            type="button"
-            class="btn-done-modern"
-            :disabled="task?.isCompleted"
-            @click="markDone"
-          >
+          <button type="button" class="btn-done-modern" :disabled="task?.isCompleted" @click="markDone">
             <Check v-if="!task?.isCompleted" :size="18" class="me-2" />
             {{ task?.isCompleted ? "បញ្ចប់រួចរាល់" : "សម្គាល់ថាបានបញ្ចប់" }}
           </button>
@@ -91,43 +85,28 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue";
-import { useRoute } from "vue-router"; // Add this
-import { useRouter } from "vue-router"; // Add this for navigation after closing
-import { useNoteStore } from "@/stores/note"; // Add this
+import { computed, ref, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useNoteStore } from "@/stores/note";
 import BaseModal from "@/components/base/BaseModal.vue";
-import { watch } from "vue";
 
-import { 
-  Calendar, 
-  Clock, 
-  StickyNote, 
-  Tag, 
-  CheckCircle, 
-  Edit2, 
-  Check 
+import {
+  Calendar, Clock, StickyNote, Tag, CheckCircle, Edit2, Check
 } from "lucide-vue-next";
 
-// 1. Setup Route and Store
 const route = useRoute();
 const noteStore = useNoteStore();
 const router = useRouter();
 
-// 2. We will use the store's selectedNote instead of props
 const task = computed(() => noteStore.selectedNote);
-
 const emit = defineEmits(["mark-completed", "edit-task"]);
 const modalRef = ref(null);
 
-// 3. Auto-open modal when the page loads
 onMounted(async () => {
   const taskId = route.params.id;
-  
-  // If notes aren't loaded (e.g. after a refresh), load them first
   if (noteStore.notes.length === 0) {
     await noteStore.fetchAllNotes();
   }
-
   if (taskId) {
     await noteStore.openNote(taskId);
     modalRef.value?.open();
@@ -136,21 +115,18 @@ onMounted(async () => {
 
 const open = () => modalRef.value?.open();
 
-const close = () => {
-  // 1. Close the UI modal
+const closeModal = () => {
   if (modalRef.value) {
     modalRef.value.close();
   }
-
-  // 2. Clear the data from the store
   noteStore.selectedNote = null;
-  // 3. Navigate back to the main tasks page (optional, but keeps URL clean)
+
   if (route.params.id) {
-    router.push({ name: "all-tasks" });
+    router.push('/dashboard/tasks');
   }
 };
 
-defineExpose({ open, close });
+defineExpose({ open, close: closeModal });
 
 const priorityClass = computed(() => {
   if (task.value?.priority === "ខ្ពស់") return "high";
@@ -160,18 +136,15 @@ const priorityClass = computed(() => {
 
 const markDone = async () => {
   if (!task.value) return;
-  task.value.isCompleted = true; // reactive
+  task.value.isCompleted = true;
   noteStore.toggleNoteCompleted(task.value.id);
 };
-
 
 const editNow = () => {
   emit("edit-task", task.value);
   close();
 };
 
-
-// Watch the route: if the ID disappears, close the modal automatically
 watch(
   () => route.params.id,
   (newId) => {
@@ -181,16 +154,19 @@ watch(
     }
   }
 );
-
 </script>
 
 <style scoped>
+
+:deep(.modal-backdrop) {
+  z-index: 999999 !important;
+}
+
 .view-card-wrapper {
   padding: 5px;
   color: #1e293b;
 }
 
-/* Header */
 .view-header {
   display: flex;
   justify-content: space-between;
@@ -216,9 +192,20 @@ watch(
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+  }
 }
 
 .brand-name {
@@ -234,18 +221,28 @@ watch(
   padding: 6px 14px;
   border-radius: 10px;
 }
-.priority-tag.high { background: #fee2e2; color: #dc2626; }
-.priority-tag.medium { background: #fef3c7; color: #d97706; }
-.priority-tag.low { background: #dcfce7; color: #16a34a; }
 
-/* Layout */
+.priority-tag.high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.priority-tag.medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.priority-tag.low {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
 .view-layout {
   display: grid;
   grid-template-columns: 1fr 260px;
   gap: 30px;
 }
 
-/* Main Content */
 .task-title-display {
   font-size: 32px;
   font-weight: 900;
@@ -296,7 +293,6 @@ watch(
   font-style: italic;
 }
 
-/* Sidebar */
 .view-sidebar {
   display: flex;
   flex-direction: column;
@@ -332,7 +328,7 @@ watch(
   display: grid;
   place-items: center;
   color: #0d9488;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .category-text {
@@ -370,7 +366,6 @@ watch(
   border-radius: 50%;
 }
 
-/* Footer Actions */
 .view-footer {
   display: flex;
   align-items: center;
@@ -422,12 +417,27 @@ watch(
   box-shadow: none;
 }
 
-.me-2 { margin-right: 8px; }
+.me-2 {
+  margin-right: 8px;
+}
 
 @media (max-width: 768px) {
-  .view-layout { grid-template-columns: 1fr; }
-  .view-footer { flex-direction: column; gap: 15px; }
-  .action-buttons { width: 100%; flex-direction: column; }
-  .btn-done-modern { min-width: 100%; }
+  .view-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .view-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn-done-modern {
+    min-width: 100%;
+  }
 }
 </style>
