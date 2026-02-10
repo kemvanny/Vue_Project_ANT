@@ -1,5 +1,11 @@
 <template>
-  <BaseModal ref="modalRef" id="addTaskModal" title="បង្កើតភារកិច្ចថ្មី" maxWidth="700px" @close="close">
+  <BaseModal
+    ref="modalRef"
+    id="addTaskModal"
+    title="បង្កើតភារកិច្ចថ្មី"
+    maxWidth="700px"
+    @close="close"
+  >
     <form @submit.prevent="createTask">
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
@@ -9,34 +15,86 @@
       <!-- Notes / Content -->
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
-        <textarea v-model.trim="form.content" class="input-modern" rows="3"
-          placeholder="សរសេរព័ត៌មានបន្ថែម..."></textarea>
+        <textarea
+          v-model.trim="form.content"
+          class="input-modern"
+          rows="3"
+          placeholder="សរសេរព័ត៌មានបន្ថែម..."
+        ></textarea>
       </div>
 
       <div class="row g-3">
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
 
-          <input v-model="form.date" type="date" class="input-modern" required :min="today" />
+          <input
+            v-model="form.date"
+            type="date"
+            class="input-modern"
+            required
+            :min="today"
+          />
         </div>
 
         <div class="col-md-6">
           <label class="label-modern">ម៉ោង</label>
-          <input v-model="form.time" type="time" class="input-modern" required />
+          <input
+            v-model="form.time"
+            type="time"
+            class="input-modern"
+            required
+          />
         </div>
 
         <div class="col-md-6">
-          <BaseSelect label="ប្រភេទ" v-model="form.category" :options="categoryOptions" />
+          <BaseSelect
+            label="ប្រភេទ"
+            v-model="form.category"
+            :options="categoryOptions"
+          />
         </div>
 
         <div class="col-md-6">
-          <BaseSelect label="អាទិភាព" v-model="form.priority" :options="priorityOptions" :showDots="true" />
+          <BaseSelect
+            label="អាទិភាព"
+            v-model="form.priority"
+            :options="priorityOptions"
+            :showDots="true"
+          />
         </div>
       </div>
 
-      <AuthButton :type="'submit'" text="បញ្ជូលភារកិច្ច" loading-text="កំពុងបញ្ជូល..." :loading="loading"
-        class="btn-submit-modern mt-3" />
+      <AuthButton
+        :type="'submit'"
+        text="បញ្ជូលភារកិច្ច"
+        loading-text="កំពុងបញ្ជូល..."
+        :loading="loading"
+        class="btn-submit-modern mt-3"
+      />
     </form>
+  </BaseModal>
+  <BaseModal
+    ref="alertModalRef"
+    id="alertModal"
+    maxWidth="420px"
+    :showHeader="false"
+    @close="closeAlert"
+  >
+    <div class="modern-alert">
+      <!-- ICON -->
+      <div class="alert-icon">⚠️</div>
+
+      <!-- TITLE -->
+      <h3 class="alert-title">មានបញ្ហា</h3>
+
+      <!-- MESSAGE -->
+      <p class="alert-message">
+        {{ alertMessage }}
+      </p>
+
+      <!-- ACTION -->
+      <button class="alert-btn" @click="closeAlert">យល់ព្រម</button>
+    </div>
   </BaseModal>
 </template>
 
@@ -58,6 +116,18 @@ let loading = ref(false);
 const modalRef = ref(null);
 
 const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+const alertModalRef = ref(null);
+const alertMessage = ref("");
+
+const showAlert = (message) => {
+  alertMessage.value = message;
+  alertModalRef.value?.open();
+};
+
+const closeAlert = () => {
+  alertModalRef.value?.close();
+};
 
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
@@ -129,12 +199,11 @@ const createTask = async () => {
   } catch (err) {
     loading.value = false;
     console.error("Create Task Error:", err?.response?.data || err.message);
-    alert(err?.response?.data?.message || "Create Task failed");
+    showAlert(err?.response?.data?.message || "បង្កើតភារកិច្ចមិនជោគជ័យ");
   } finally {
     loading.value = false;
   }
 };
-
 
 const open = () => {
   resetForm();
@@ -145,14 +214,12 @@ const close = () => {
   modalRef.value?.close();
 };
 
-
 const validateForm = () => {
   errors.value = {};
 
   if (!form.title || !form.title.trim()) {
     errors.value.title = "សូមបញ្ចូលចំណងជើង";
   }
-
 
   if (!form.content || !form.content.trim()) {
     errors.value.content = "សូមបញ្ចូលពណ៌នា";
@@ -169,11 +236,62 @@ const validateForm = () => {
   return Object.keys(errors.value).length === 0;
 };
 
-
 defineExpose({ open, close });
 </script>
 
 <style scoped>
+.modern-alert {
+  text-align: center;
+  padding: 30px 26px 26px;
+}
+
+.alert-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f43f5e, #fb7185);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 16px 30px -12px rgba(244, 63, 94, 0.6);
+}
+
+.alert-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.alert-message {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.alert-btn {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 14px;
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  color: white;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.alert-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -18px rgba(13, 148, 136, 0.6);
+}
+
 .input-modern {
   width: 100%;
   background: #f8fafc;
