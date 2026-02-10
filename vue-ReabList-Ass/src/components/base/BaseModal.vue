@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="modal fade modal-glass"
-    :id="id"
-    ref="modalEl"
-    tabindex="-1"
-    aria-hidden="true"
-  >
+  <div class="modal fade modal-glass" :id="id" ref="modalEl" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" :style="{ maxWidth }">
       <div class="modal-content modal-content-modern">
         <!-- HEADER -->
@@ -22,7 +16,7 @@
               </slot>
             </div>
 
-            <button type="button" class="btn-close btn-close-modern" @click="close"></button>
+            <button type="button" class=" btn-close btn-close-modern" @click="$emit('close')"></button>
           </div>
         </div>
 
@@ -48,6 +42,7 @@ const props = defineProps({
   id: { type: String, required: true },
   title: { type: String, default: "" },
   maxWidth: { type: String, default: "650px" },
+  closeModal: { type: Boolean, default: true },
 });
 
 const modalEl = ref(null);
@@ -144,9 +139,11 @@ defineExpose({ open, close });
   0% {
     box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
   }
