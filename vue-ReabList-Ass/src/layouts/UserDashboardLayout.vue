@@ -125,8 +125,7 @@ const onTaskUpdated = (task) => {
 /* Content spacing */
 .content-padding {
   min-height: 100vh;
-  padding: 18px;
-  padding-top: 85px;
+  padding:6px 18px;
 }
 
 /* ================= MOBILE ================= */
@@ -137,7 +136,6 @@ const onTaskUpdated = (task) => {
   }
 
   .content-padding {
-    padding: 14px;
     padding-top: 64px;
   }
 }
