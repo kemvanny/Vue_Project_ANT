@@ -53,10 +53,10 @@
           <span>បង្កើតភារកិច្ចថ្មី</span>
         </a> -->
 
-        <div class="reab-nav-link" @click="openCreateTask">
+        <a href="#" class="reab-nav-link" @click="openCreateTask">
           <PlusCircle :size="18" />
           <span>បង្កើតភារកិច្ចថ្មី</span>
-        </div>
+        </a>
 
 
         <p class="nav-label">ប្រភេទភារកិច្ច</p>

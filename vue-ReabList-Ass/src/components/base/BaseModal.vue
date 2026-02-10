@@ -1,49 +1,37 @@
 <template>
-  <teleport to="body">
-    <div
-      class="modal fade modal-glass"
-      :id="id"
-      ref="modalEl"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" :style="{ maxWidth }">
-        <div class="modal-content modal-content-modern">
-          <!-- HEADER -->
-          <div class="modal-header-modern">
-            <div class="header-row">
-              <div class="header-left">
-                <div class="d-flex align-items-center gap-2 mb-1">
-                  <span class="pulse-dot-active"></span>
-                  <span class="label-modern m-0">ReabList</span>
-                </div>
-
-                <slot name="title">
-                  <h2 class="fw-800 mb-0">{{ title }}</h2>
-                </slot>
+  <div class="modal fade modal-glass" :id="id" ref="modalEl" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" :style="{ maxWidth }">
+      <div class="modal-content modal-content-modern">
+        <!-- HEADER -->
+        <div class="modal-header-modern">
+          <div class="header-row">
+            <div class="header-left">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="pulse-dot-active"></span>
+                <span class="label-modern m-0">ReabList</span>
               </div>
 
-              <button
-                type="button"
-                class="btn-close btn-close-modern"
-                @click="close"
-              ></button>
+              <slot name="title">
+                <h2 class="fw-800 mb-0">{{ title }}</h2>
+              </slot>
             </div>
-          </div>
 
-          <!-- BODY -->
-          <div class="modal-body modal-body-modern">
-            <slot />
+            <button type="button" class=" btn-close btn-close-modern" @click="$emit('close')"></button>
           </div>
+        </div>
 
-          <!-- FOOTER -->
-          <div v-if="$slots.footer" class="pt-3">
-            <slot name="footer" />
-          </div>
+        <!-- BODY -->
+        <div class="modal-body modal-body-modern">
+          <slot />
+        </div>
+
+        <!-- FOOTER -->
+        <div v-if="$slots.footer" class="pt-3">
+          <slot name="footer" />
         </div>
       </div>
     </div>
-  </teleport>
+  </div>
 </template>
 
 <script setup>
@@ -54,6 +42,7 @@ const props = defineProps({
   id: { type: String, required: true },
   title: { type: String, default: "" },
   maxWidth: { type: String, default: "650px" },
+  closeModal: { type: Boolean, default: true },
 });
 
 const modalEl = ref(null);
@@ -150,9 +139,11 @@ defineExpose({ open, close });
   0% {
     box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
   }
