@@ -4,6 +4,7 @@
     id="editTaskModal"
     title="កែប្រែភារកិច្ច"
     maxWidth="700px"
+    @close="close"
   >
     <form @submit.prevent="updateTask">
       <div class="mb-3">
