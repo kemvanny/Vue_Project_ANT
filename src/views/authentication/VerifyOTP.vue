@@ -23,7 +23,7 @@
           <div class="glow-circle" :style="parallaxStyle(-10)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="https://cdn3d.iconscout.com/3d/free/thumb/free-security-shield-4392262-3640417.png"
+              src="../../assets/images/verifyOTP.png"
               alt="OTP Security"
               class="img-fluid mb-4 floating-3d"
               :style="parallaxStyle(15)"
