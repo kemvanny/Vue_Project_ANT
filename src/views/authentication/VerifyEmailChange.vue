@@ -57,7 +57,7 @@
                 <strong>{{ newEmail }}</strong>
               </p>
               <div class="alert alert-success">
-                <i class="fas fa-info-circle"></i>
+                <i class="fas fa-info"></i>
                 អ្នកអាចប្រើអ៊ីមែលថ្មីនេះដើម្បីចូលទៅកាន់គណនីរបស់អ្នកឥឡូវនេះ។
               </div>
               <p class="text-muted small mb-4">កំពុងបញ្ជូនអ្នកទៅការកំណត់...</p>
@@ -65,11 +65,13 @@
                 text="ទៅកាន់ការកំណត់"
                 @click="redirectToSettings"
                 class="mt-3"
+                :loading="profileStore.profileLoading"
+                :disabled="profileStore.profileLoading"
               />
             </div>
 
             <!-- Error State -->
-            <!-- <div v-else-if="verificationError" class="text-center stagger-1">
+            <div v-else-if="verificationError" class="text-center stagger-1">
               <div class="error-icon mb-4">
                 <i class="fas fa-times-circle"></i>
               </div>
@@ -86,7 +88,7 @@
                 <i class="bi bi-arrow-left"></i>
                 ត្រឡប់ទៅការកំណត់
               </router-link>
-            </div> -->
+            </div>
 
             <!-- Loading/Verifying State -->
             <div v-else-if="isVerifying" class="text-center">
@@ -145,10 +147,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
+import { useAuthStore } from "@/stores/authentication";
 import { useRouter, useRoute } from "vue-router";
 import AuthButton from "@/components/AuthButton.vue";
 
 const profileStore = useProfileStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -158,7 +162,6 @@ const isVerifying = ref(false);
 const verificationSuccess = ref(false);
 const verificationError = ref(null);
 
-// --- PARALLAX LOGIC ---
 const mouseX = ref(0);
 const mouseY = ref(0);
 
@@ -168,27 +171,19 @@ const parallaxStyle = (intensity) => {
   return { transform: `translate(${x}px, ${y}px)` };
 };
 
-onMounted(() => {
+onMounted(async () => {
   token.value = route.query.token;
   newEmail.value = route.query.email || "អ៊ីមែលថ្មី";
 
   if (!token.value) {
-    verificationError.value = "តំណភ្ជាប់មិនត្រឹមត្រូវ។ សូមព្យាយាមម្តងទៀត។";
+    verificationError.value = "តំណភ្ជាប់ផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ។";
     setTimeout(() => {
       router.push("/profile/setting");
     }, 3000);
+    return;
   }
 
-  const handleMouseMove = (e) => {
-    mouseX.value = (e.clientX / window.innerWidth - 0.5) * 20;
-    mouseY.value = (e.clientY / window.innerHeight - 0.5) * 20;
-  };
-
-  window.addEventListener("mousemove", handleMouseMove);
-
-  return () => {
-    window.removeEventListener("mousemove", handleMouseMove);
-  };
+  await confirmEmailChange();
 });
 
 const confirmEmailChange = async () => {
@@ -215,7 +210,7 @@ const confirmEmailChange = async () => {
           name: "ProfileSetting",
           query: { emailChanged: "success" },
         });
-      }, 1000);
+      }, 3000);
     } else {
       verificationError.value =
         profileStore.profileError || "ការផ្ទៀងផ្ទាត់បានបរាជ័យ។";
@@ -444,19 +439,19 @@ const redirectToSettings = () => {
 }
 
 .stagger-1 {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 3s ease-out;
 }
 
 .stagger-2 {
-  animation: fadeInUp 0.6s ease-out 0.1s both;
+  animation: fadeInUp 3s ease-out 1s both;
 }
 
 .stagger-3 {
-  animation: fadeInUp 0.6s ease-out 0.2s both;
+  animation: fadeInUp 3s ease-out 1s both;
 }
 
 .stagger-4 {
-  animation: fadeInUp 0.6s ease-out 0.3s both;
+  animation: fadeInUp 3s ease-out 1s both;
 }
 
 @keyframes fadeInUp {

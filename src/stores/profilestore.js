@@ -153,7 +153,6 @@ export const useProfileStore = defineStore("profile", () => {
       });
 
       if (response.status === 200 || response.status === 201) {
-        profileSuccess.value = "ពាក្យសម្ងាត់បានផ្លាស់ប្តូរបានជោគជ័យ!";
         return true;
       }
 
@@ -206,10 +205,6 @@ export const useProfileStore = defineStore("profile", () => {
       });
 
       if (res.status === 201 || res.data?.success) {
-        profileSuccess.value =
-          "លេខកូដផ្ទៀងផ្ទាត់ត្រូវបានផ្ញើទៅ " +
-          newEmail +
-          " រួចហើយ។ សូមពិនិត្យប្រអប់ទទួល (និង Spam)។";
         return true;
       }
       return false;
