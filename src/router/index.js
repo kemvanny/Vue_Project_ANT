@@ -85,6 +85,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/verify-change-email",
+      name: "VerifyEmailChange",
+      component: () => import("@/views/authentication/VerifyEmailChange.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
       path: "/dashboard",
       component: UserDashboardLayout,
       meta: { requiresAuth: true },
@@ -112,7 +118,7 @@ const router = createRouter({
         {
           path: "createTask",
           name: "createTask",
-          component: createTask
+          component: createTask,
         },
         {
           path: "category/:name",
@@ -121,9 +127,9 @@ const router = createRouter({
           props: true,
         },
         {
-          path: '/dashboard/tasks/:id', // Make sure this has the :id at the end
-          name: 'task-detail',
-          component: () => import('../views/user/Task/TaskView.vue') // Verify this file exists!
+          path: "/dashboard/tasks/:id", // Make sure this has the :id at the end
+          name: "task-detail",
+          component: () => import("../views/user/Task/TaskView.vue"), // Verify this file exists!
         },
 
         {
@@ -138,13 +144,7 @@ const router = createRouter({
           component: () => import("@/components/profile/AccountSettings.vue"),
           meta: { requiresAuth: true },
         },
-        {
-          path: "/verify-change-email",
-          name: "VerifyEmailChange",
-          component: () =>
-            import("@/views/authentication/VerifyEmailChange.vue"),
-          meta: { requiresAuth: true },
-        },
+
         // {
         //   path: "/profile/changepasswordform",
         //   name: "ChangePasswordForm",
