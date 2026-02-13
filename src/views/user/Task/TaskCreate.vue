@@ -1,4 +1,5 @@
 <template>
+  <!-- ================= ADD TASK MODAL ================= -->
   <BaseModal
     ref="modalRef"
     id="addTaskModal"
@@ -7,63 +8,94 @@
     @close="close"
   >
     <form @submit.prevent="createTask">
+      
+      <!-- TITLE -->
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
-        <input v-model.trim="form.title" class="input-modern" required />
+        <input
+          v-model.trim="form.title"
+          @blur="touched.title = true"
+          :class="['input-modern', { 'input-error': errors.title }]"
+        />
+        <small v-if="errors.title" class="error-text">
+          {{ errors.title }}
+        </small>
       </div>
 
-      <!-- Notes / Content -->
+      <!-- CONTENT -->
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
         <textarea
           v-model.trim="form.content"
-          class="input-modern"
           rows="3"
+          @blur="touched.content = true"
+          :class="['input-modern', { 'input-error': errors.content }]"
           placeholder="សរសេរព័ត៌មានបន្ថែម..."
         ></textarea>
+        <small v-if="errors.content" class="error-text">
+          {{ errors.content }}
+        </small>
       </div>
 
       <div class="row g-3">
+        <!-- DATE -->
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
-
           <input
             v-model="form.date"
             type="date"
-            class="input-modern"
-            required
             :min="today"
+            @blur="touched.date = true"
+            :class="['input-modern', { 'input-error': errors.date }]"
           />
+          <small v-if="errors.date" class="error-text">
+            {{ errors.date }}
+          </small>
         </div>
 
+        <!-- TIME -->
         <div class="col-md-6">
           <label class="label-modern">ម៉ោង</label>
           <input
             v-model="form.time"
             type="time"
-            class="input-modern"
-            required
+            @blur="touched.time = true"
+            :class="['input-modern', { 'input-error': errors.time }]"
           />
+          <small v-if="errors.time" class="error-text">
+            {{ errors.time }}
+          </small>
         </div>
 
+        <!-- CATEGORY -->
         <div class="col-md-6">
           <BaseSelect
             label="ប្រភេទ"
             v-model="form.category"
             :options="categoryOptions"
+            @blur="touched.category = true"
           />
+          <small v-if="errors.category" class="error-text">
+            {{ errors.category }}
+          </small>
         </div>
 
+        <!-- PRIORITY -->
         <div class="col-md-6">
           <BaseSelect
             label="អាទិភាព"
             v-model="form.priority"
             :options="priorityOptions"
             :showDots="true"
+            @blur="touched.priority = true"
           />
+          <small v-if="errors.priority" class="error-text">
+            {{ errors.priority }}
+          </small>
         </div>
       </div>
 
+      <!-- SUBMIT BUTTON -->
       <AuthButton
         :type="'submit'"
         text="បញ្ជូលភារកិច្ច"
@@ -73,6 +105,8 @@
       />
     </form>
   </BaseModal>
+
+  <!-- ================= ALERT MODAL ================= -->
   <BaseModal
     ref="alertModalRef"
     id="alertModal"
@@ -81,54 +115,54 @@
     @close="closeAlert"
   >
     <div class="modern-alert">
-      <!-- ICON -->
       <div class="alert-icon">⚠️</div>
-
-      <!-- TITLE -->
       <h3 class="alert-title">មានបញ្ហា</h3>
-
-      <!-- MESSAGE -->
-      <p class="alert-message">
-        {{ alertMessage }}
-      </p>
-
-      <!-- ACTION -->
+      <p class="alert-message">{{ alertMessage }}</p>
       <button class="alert-btn" @click="closeAlert">យល់ព្រម</button>
     </div>
   </BaseModal>
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
-import api from "@/API/api";
-import { useNoteStore } from "@/stores/note";
 import AuthButton from "@/components/AuthButton.vue";
-
-const noteStore = useNoteStore();
+import { useNoteStore } from "@/stores/note";
 
 const router = useRouter();
+const noteStore = useNoteStore();
 const emit = defineEmits(["created"]);
-let loading = ref(false);
 
 const modalRef = ref(null);
-
-const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-
 const alertModalRef = ref(null);
-const alertMessage = ref("");
+const loading = ref(false);
 
-const showAlert = (message) => {
-  alertMessage.value = message;
-  alertModalRef.value?.open();
-};
+const today = new Date().toISOString().slice(0, 10);
 
-const closeAlert = () => {
-  alertModalRef.value?.close();
-};
+/* ================= FORM ================= */
+const form = ref({
+  title: "",
+  content: "",
+  date: "",
+  time: "",
+  category: "ការងារ",
+  priority: "មធ្យម",
+});
 
+/* ================= ERRORS ================= */
+const errors = ref({});
+const touched = ref({
+  title: false,
+  content: false,
+  date: false,
+  time: false,
+  category: false,
+  priority: false,
+});
+
+/* ================= OPTIONS ================= */
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },
@@ -141,34 +175,80 @@ const priorityOptions = [
   { value: "ទាប", label: "ទាប" },
 ];
 
-const form = ref({
-  title: "",
-  content: "",
-  date: "",
-  time: "",
-  category: "ការងារ",
-  priority: "មធ្យម",
-});
+const alertMessage = ref("");
 
-const resetForm = () => {
-  form.value = {
-    title: "",
-    content: "",
-    date: "",
-    time: "",
-    category: "ការងារ",
-    priority: "មធ្យម",
-  };
+const showAlert = (message) => {
+  alertMessage.value = message;
+  alertModalRef.value?.open();
 };
 
-const createTask = async () => {
-  loading.value = true;
-  try {
-    if (form.value.date && form.value.date < today) {
-      alert("មិនអាចជ្រើសរើសកាលបរិច្ឆេទនៅអតីតកាលបានទេ");
-      return;
-    }
+const closeAlert = () => {
+  alertModalRef.value?.close();
+};
 
+/* ================= VALIDATION ================= */
+const validateField = (field, value) => {
+  switch (field) {
+    case "title":
+      if (!value.trim()) return "សូមបញ្ចូលចំណងជើង";
+      if (value.length < 3) return "ចំណងជើងត្រូវមានយ៉ាងតិច 3 អក្សរ";
+      return "";
+
+    case "content":
+      if (!value.trim()) return "សូមបញ្ចូលពណ៌នា";
+      return "";
+
+    case "date":
+      if (!value) return "សូមជ្រើសកាលបរិច្ឆេទ";
+      if (value < today) return "មិនអាចជ្រើសអតីតកាលបានទេ";
+      return "";
+
+    case "time":
+      if (!value) return "សូមជ្រើសម៉ោង";
+      return "";
+
+    case "category":
+      if (!value) return "សូមជ្រើសប្រភេទ";
+      return "";
+
+    case "priority":
+      if (!value) return "សូមជ្រើសអាទិភាព";
+      return "";
+
+    default:
+      return "";
+  }
+};
+
+/* ================= REAL-TIME AFTER TOUCH ================= */
+watch(
+  () => form.value,
+  (val) => {
+    Object.keys(val).forEach((field) => {
+      if (touched.value[field]) {
+        errors.value[field] = validateField(field, val[field]);
+      }
+    });
+  },
+  { deep: true }
+);
+
+/* ================= CREATE TASK ================= */
+const createTask = async () => {
+  Object.keys(form.value).forEach((field) => {
+    touched.value[field] = true;
+    errors.value[field] = validateField(field, form.value[field]);
+  });
+
+  const hasError = Object.values(errors.value).some((e) => e);
+  if (hasError) {
+    showAlert("សូមបំពេញព័ត៌មានឲ្យបានត្រឹមត្រូវ");
+    return;
+  }
+
+  loading.value = true;
+
+  try {
     const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
     const categoryMap = {
       ផ្ទាល់ខ្លួន: "PERSONAL",
@@ -185,24 +265,42 @@ const createTask = async () => {
       category: categoryMap[form.value.category] || "WORK",
     };
 
-    // CREATE VIA STORE (UI UPDATE IMMEDIATELY)
     await noteStore.createNote(payload);
 
     modalRef.value?.close();
+    emit("created");
     resetForm();
-
-    emit("created"); // optional
 
     if (router.currentRoute.value.path !== "/dashboard/tasks") {
       await router.push("/dashboard/tasks");
     }
   } catch (err) {
-    loading.value = false;
-    console.error("Create Task Error:", err?.response?.data || err.message);
     showAlert(err?.response?.data?.message || "បង្កើតភារកិច្ចមិនជោគជ័យ");
   } finally {
     loading.value = false;
   }
+};
+
+/* ================= RESET ================= */
+const resetForm = () => {
+  form.value = {
+    title: "",
+    content: "",
+    date: "",
+    time: "",
+    category: "ការងារ",
+    priority: "មធ្យម",
+  };
+
+  errors.value = {};
+  touched.value = {
+    title: false,
+    content: false,
+    date: false,
+    time: false,
+    category: false,
+    priority: false,
+  };
 };
 
 const open = () => {
@@ -214,32 +312,21 @@ const close = () => {
   modalRef.value?.close();
 };
 
-const validateForm = () => {
-  errors.value = {};
-
-  if (!form.title || !form.title.trim()) {
-    errors.value.title = "សូមបញ្ចូលចំណងជើង";
-  }
-
-  if (!form.content || !form.content.trim()) {
-    errors.value.content = "សូមបញ្ចូលពណ៌នា";
-  }
-
-  if (!form.category) {
-    errors.value.category = "សូមជ្រើសប្រភេទ";
-  }
-
-  if (!form.priority) {
-    errors.value.priority = "សូមជ្រើសអាទិភាព";
-  }
-
-  return Object.keys(errors.value).length === 0;
-};
-
 defineExpose({ open, close });
 </script>
 
 <style scoped>
+.input-error {
+  border: 1px solid #ff4d4f !important;
+  background: #fff1f0;
+}
+
+.error-text {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
 .modern-alert {
   text-align: center;
   padding: 30px 26px 26px;

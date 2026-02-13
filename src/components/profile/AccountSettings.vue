@@ -41,6 +41,61 @@
         </div>
       </section>
 
+      <!-- Telegram Disconnect Section -->
+      <section class="settings-card">
+        <div class="card-header">
+          <div class="icon-box"><i class="bi bi-telegram"></i></div>
+          <div>
+            <h3>ផ្ដាច់ការភ្ជាប់ Telegram</h3>
+            <p>ការភ្ជាប់នេះអនុញ្ញាតឱ្យអ្នកទទួលរំលឹកភារកិច្ចតាម Telegram Bot។</p>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="text-muted mb-4">
+            អ្នកអាចផ្ដាច់ការភ្ជាប់ Telegram Bot នេះនៅពេលណាក៏បាន។
+            ការផ្ដាច់នេះនឹងបញ្ឈប់ការទទួលរំលឹកពី Telegram។
+          </p>
+          <button
+            class="btn btn-danger"
+            @click="showTelegramConfirmModal = true"
+          >
+            <i class="fas fa-unlink"></i> ផ្ដាច់ Telegram
+          </button>
+        </div>
+      </section>
+
+      <!-- Telegram Confirmation Modal -->
+      <div
+        v-if="showTelegramConfirmModal"
+        class="modal-backdrop"
+        @click.self="showTelegramConfirmModal = false"
+      >
+        <div class="modal-card">
+          <div class="modal-head">
+            <h3>បញ្ជាក់ការផ្ដាច់ Telegram</h3>
+            <button class="close-btn" @click="showTelegramConfirmModal = false">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>តើអ្នកពិតជាចង់ផ្ដាច់ការភ្ជាប់ Telegram Bot របស់អ្នកឬទេ?</p>
+          </div>
+          <div class="modal-foot">
+            <button class="btn-ghost" @click="showTelegramConfirmModal = false">
+              បោះបង់
+            </button>
+            <button
+              class="btn-danger"
+              @click="confirmDisconnectTelegram"
+              :disabled="telegramLoading"
+            >
+              {{ telegramLoading ? "កំពុងផ្ដាច់..." : "ផ្ដាច់ Telegram" }}
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Change Email Section -->
       <section class="settings-card">
         <div class="card-header">
@@ -596,6 +651,36 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-if="showTelegramConfirmModal"
+      class="modal-backdrop"
+      @click.self="showTelegramConfirmModal = false"
+    >
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3>បញ្ជាក់ការផ្ដាច់ Telegram</h3>
+          <button class="close-btn" @click="showTelegramConfirmModal = false">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>តើអ្នកពិតជាចង់ផ្ដាច់ការភ្ជាប់ Telegram Bot របស់អ្នកឬទេ?</p>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" @click="showTelegramConfirmModal = false">
+            បោះបង់
+          </button>
+          <button
+            class="btn-danger"
+            @click="confirmDisconnectTelegram"
+            :disabled="telegramLoading"
+          >
+            {{ telegramLoading ? "កំពុងផ្ដាច់..." : "ផ្ដាច់ Telegram" }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -603,6 +688,7 @@
 import { ref, onMounted } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import { useRoute, useRouter } from "vue-router";
+import api from "@/API/api";
 
 const profileStore = useProfileStore();
 const route = useRoute();
@@ -633,6 +719,37 @@ const showConfirmPassword = ref(false);
 const deleteConfirmEmail = ref("");
 const deleteConfirmPassword = ref("");
 const showDeletePassword = ref(false);
+const showTelegramConfirmModal = ref(false);
+const telegramLoading = ref(false);
+
+const showTelegramModal = () => {
+  showTelegramConfirmModal.value = true;
+};
+
+const confirmDisconnectTelegram = async () => {
+  try {
+    telegramLoading.value = true;
+    showTelegramConfirmModal.value = false;
+
+    // Call the API
+    await api.post("/users/telegram-unlink");
+
+    profileStore.profileSuccess = "Telegram disconnected successfully!";
+
+    setTimeout(() => {
+      profileStore.profileSuccess = null;
+    }, 3000);
+  } catch (error) {
+    profileStore.profileError =
+      error?.response?.data?.message || "Failed to disconnect Telegram";
+
+    setTimeout(() => {
+      profileStore.profileError = null;
+    }, 3000);
+  } finally {
+    telegramLoading.value = false;
+  }
+};
 
 const settings = ref({
   emailNotifications: true,
@@ -673,7 +790,7 @@ const submitChangeEmail = async () => {
 
   const success = profileStore.changeEmail(
     newEmail.value,
-    emailChangePassword.value,
+    emailChangePassword.value
   );
 
   if (success) {
@@ -714,7 +831,7 @@ const submitChangePassword = async () => {
   const success = await profileStore.changePassword(
     passwordForm.value.currentPassword,
     passwordForm.value.newPassword,
-    passwordForm.value.confirmPassword,
+    passwordForm.value.confirmPassword
   );
 
   if (success) {
@@ -751,7 +868,7 @@ const confirmDeleteAccount = async () => {
 
   const success = await profileStore.deleteAccount(
     deleteConfirmEmail.value,
-    deleteConfirmPassword.value,
+    deleteConfirmPassword.value
   );
 
   if (success) {
@@ -782,6 +899,42 @@ onMounted(async () => {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.telegram-section {
+  margin-top: 40px;
+}
+
+.telegram-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e4e7ff;
+}
+
+.telegram-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.telegram-icon {
+  font-size: 36px;
+  color: #229ed9;
+}
+
+.telegram-title {
+  font-weight: 600;
+  margin: 0;
+}
+
+.telegram-desc {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
 }
 
 .settings-container {
