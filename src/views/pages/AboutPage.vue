@@ -6,16 +6,15 @@
       <div class="container">
         <div class="row align-items-center g-5">
           <div class="col-lg-6 text-center text-lg-start" data-fade-up>
-            <div class="pill-tag">ការគ្រប់គ្រងភារកិច្ចដោយប្រើ AI</div>
+            <div class="pill-tag">ជំនួយការគ្រប់គ្រងភារកិច្ចឆ្លាតវៃ</div>
             <h1 class="hero-title fw-bold">
-              ធ្វើការឱ្យលឿនដូច
-              <span style="color: var(--primary)">ការគិត</span>
+              រៀបចំផែនការឱ្យរហ័ស
+              <span style="color: var(--primary)">ដូចការគិតរបស់អ្នក</span>
             </h1>
             <p class="lead text-muted mb-5">
-              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន
-              ដែលត្រូវបានរចនាឡើងសម្រាប់អ្នកបង្កើត
-              និងអ្នកដែលចង់សម្រេចបានលទ្ធផលខ្ពស់។
-              ប្រែក្លាយភាពច្របូកច្របល់ទៅជាភាពច្បាស់លាស់ដោយគ្រាន់តែចុចតែម្តង។
+              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន ដែលត្រូវបានរចនាឡើងដើម្បីជួយអ្នក
+              ប្រែក្លាយភាពស្មុគស្មាញ ឱ្យទៅជាភាពច្បាស់លាស់ និងមានរបៀបរៀបរយបំផុត
+              ដោយគ្រាន់តែចុចតែម្តង
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
               <router-link to="/login" class="btn-modern">ចាប់ផ្តើមឥឡូវនេះ</router-link>
@@ -36,7 +35,7 @@
                     <i class="bi bi-check2-circle"></i>
                   </div>
                   <div>
-                    <h6 class="mb-0 fw-bold">ភារកិច្ចបានបញ្ចប់</h6>
+                    <h6 class="mb-0 fw-bold">ភារកិច្ចសម្រេចបាន</h6>
                     <small class="text-muted">ការរចនា Landing Page</small>
                   </div>
                 </div>
@@ -52,45 +51,46 @@
         <div class="row justify-content-center text-center mb-5" data-fade-up>
           <div class="col-lg-8">
             <h2 class="display-5 mb-3">
-              ហេតុអ្វីអ្នកគួរជ្រើសរើស
-              <span style="color: var(--primary)">ReabList?</span>
+              ចក្ខុវិស័យរបស់យើង
+              <span style="color: var(--primary)">ReabList</span>
             </h2>
             <p class="text-muted fs-5">
-              អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីបញ្ចេញផលិតផលបានលឿនជាងមុន
-              និងគ្រប់គ្រងជីវិតរបស់អ្នកឱ្យកាន់តែប្រសើរ។
+              យើងចង់ឃើញមនុស្សគ្រប់រូបអាចគ្រប់គ្រងពេលវេលា និងជីវិតរបស់ពួកគេបានយ៉ាងល្អបំផុត។
+              ReabList ត្រូវបានបង្កើតឡើងដើម្បីក្លាយជា "ខួរក្បាលទីពីរ" ដែលជួយអ្នកចងចាំរាល់កិច្ចការសំខាន់ៗ
             </p>
           </div>
         </div>
         <div class="row g-4">
           <div class="col-md-4" data-fade-up>
             <div class="benefit-card">
-              <div class="benefit-icon"><i class="bi bi-cpu"></i></div>
-              <h4>AI ដែលឆ្លាតវៃ</h4>
+              <div class="benefit-icon"><i class="bi bi-bullseye"></i></div>
+              <h4>បេសកកម្មចម្បង</h4>
               <p class="text-muted">
-                ការចាត់ថ្នាក់ដ៏ឆ្លាតវៃ
-                និងការណែនាំអំពីអាទិភាពដោយប្រើគំរូភាសាកម្រិតខ្ពស់។
+                បេសកកម្មរបស់យើងគឺកាត់បន្ថយភាពស្មុគស្មាញក្នុងជីវិតប្រចាំថ្ងៃ
+                តាមរយៈការផ្ដល់ជូននូវឧបករណ៍គ្រប់គ្រងកិច្ចការដ៏សាមញ្ញ
+                តែមានប្រសិទ្ធភាពខ្ពស់ និងអាចប្រើប្រាស់បានគ្រប់ពេលវេលា គ្រប់ទីកន្លែង
               </p>
             </div>
           </div>
           <div class="col-md-4" data-fade-up>
             <div class="benefit-card">
               <div class="benefit-icon">
-                <i class="bi bi-lightning-charge"></i>
+                <i class="bi bi-award"></i>
               </div>
-              <h4>ធ្វើសមកាលកម្មភ្លាមៗ</h4>
+              <h4>ការប្ដេជ្ញាចិត្តចំពោះអ្នក</h4>
               <p class="text-muted">
-                ការធ្វើបច្ចុប្បន្នភាពដោយរលូនរវាងទូរស័ព្ទ កុំព្យូទ័រ និងគេហទំព័រ
-                ដោយគ្មានភាពរអាក់រអួល។
+                យើងបន្តអភិវឌ្ឍ ReabList ដោយផ្ដោតលើសុវត្ថិភាព ឯកជនភាព និងបទពិសោធន៍ប្រើប្រាស់ដ៏រលូនបំផុត
+                ដើម្បីជួយអ្នកសម្រេចបាននូវរាល់គោលដៅធំៗក្នុងជីវិត ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
               </p>
             </div>
           </div>
           <div class="col-md-4" data-fade-up>
             <div class="benefit-card">
-              <div class="benefit-icon"><i class="bi bi-shield-lock"></i></div>
-              <h4>សុវត្ថិភាព & ឯកជនភាព</h4>
+              <div class="benefit-icon"><i class="bi bi-graph-up-arrow"></i></div>
+              <h4>លទ្ធផលជាចម្បង</h4>
               <p class="text-muted">
-                ការអ៊ិនគ្រីប (End-to-end encryption) សម្រាប់ភារកិច្ចរបស់អ្នក។
-                យើងឱ្យតម្លៃលើឯកជនភាពរបស់អ្នកដូចដែលអ្នកឱ្យតម្លៃ។
+                គោលដៅចុងក្រោយរបស់យើង គឺចង់ឃើញអ្នកប្រើប្រាស់សម្រេចបាននូវកិច្ចការកាន់តែច្រើន ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
+                និងមានភាពតានតឹងតិចបំផុតក្នុងជីវិតប្រចាំថ្ងៃ
               </p>
             </div>
           </div>
@@ -102,12 +102,12 @@
       <div class="container">
         <div class="row justify-content-center text-center mb-5" data-fade-up>
           <div class="col-lg-8">
-            <div class="pill-tag">ដំណើរការ</div>
+            <div class="pill-tag">ដំណើរការដ៏សាមញ្ញ</div>
             <h2 class="display-5 mb-3">
-              ការចាប់ផ្តើមគឺ <span style="color: var(--primary)">ងាយស្រួល</span>
+              ចាប់ផ្ដើមក្នុងរយៈពេល <span style="color: var(--primary)">តែប៉ុន្មានវិនាទី</span>
             </h2>
             <p class="text-muted fs-5">
-              ផ្លាស់ប្តូរពីភាពរញ៉េរញ៉ៃទៅជាភាពច្បាស់លាស់ក្នុងបីជំហានងាយៗ។
+              ផ្លាស់ប្តូរទម្លាប់ការងាររបស់អ្នកឱ្យកាន់តែមានប្រសិទ្ធភាព តាមរយៈ ៣ ជំហានងាយៗ
             </p>
           </div>
         </div>
@@ -117,10 +117,10 @@
               <div class="connector-line"></div>
               <div class="step-badge">01</div>
               <span class="step-visual"></span>
-              <h4 class="fw-bold">បង្កើតគណនី</h4>
+              <h4 class="fw-bold">បង្កើតគណនីប្រើប្រាស់</h4>
               <p class="text-muted">
-                ចុះឈ្មោះក្នុងរយៈពេលប៉ុន្មានវិនាទីជាមួយ Google ឬ Magic Link។
-                មិនមានភាពស្មុគស្មាញ គ្រាន់តែមានភារកិច្ចរបស់អ្នកកំពុងរង់ចាំ។
+                ចុះឈ្មោះភ្លាមៗតាមរយៈ Gmail គ្មានទម្រង់បែបបទស្មុគស្មាញ 
+            រង់ចាំតែអ្នកចូលទៅរៀបចំផែនការជោគជ័យប៉ុណ្ណោះ
               </p>
             </div>
           </div>
@@ -129,11 +129,10 @@
               <div class="connector-line"></div>
               <div class="step-badge">02</div>
               <span class="step-visual"></span>
-              <h4 class="fw-bold">កត់ត្រាអ្វីៗគ្រប់យ៉ាង</h4>
+              <h4 class="fw-bold">រៀបចំបញ្ជីកិច្ចការ</h4>
               <p class="text-muted">
-                វាយបញ្ចូល ឬនិយាយពីគំនិតរបស់អ្នក។ AI របស់នឹងធ្វើការដាក់ស្លាក
-                កំណត់អាទិភាព
-                និងចាត់ថ្នាក់ទិន្នន័យរបស់អ្នកដោយស្វ័យប្រវត្តិភ្លាមៗ។
+               បញ្ចូលរាល់កិច្ចការដែលអ្នកត្រូវធ្វើ។ អ្នកអាចចាត់ថ្នាក់ បែងចែកប្រភេទ 
+            និងកំណត់កម្រិតអាទិភាពបានយ៉ាងឆាប់រហ័ស និងមានរបៀបរៀបរយ
               </p>
             </div>
           </div>
@@ -141,10 +140,10 @@
             <div class="step-card">
               <div class="step-badge">03</div>
               <span class="step-visual"></span>
-              <h4 class="fw-bold">សម្រេចបានកាន់តែច្រើន</h4>
+              <h4 class="fw-bold">សម្រេចគោលដៅ</h4>
               <p class="text-muted">
-                ផ្តោតលើអ្វីដែលសំខាន់។ ReabList នឹងដោះស្រាយការរៀបចំ
-                ដើម្បីឱ្យអ្នកអាចប្រើប្រាស់ថាមពលរបស់អ្នកក្នុងការបំពេញការងារ។
+                ផ្ដោតអារម្មណ៍ទាំងស្រុងលើការងារដែលនៅចំពោះមុខ។ ReabList នឹងជួយរៀបចំ 
+            និងរំលឹកអ្នក ដើម្បីឱ្យអ្នកប្រើប្រាស់ថាមពលចំគោលដៅបំផុត។
               </p>
             </div>
           </div>
@@ -159,7 +158,7 @@
             ជួបជាមួយ
             <span style="color: var(--primary)">សមាជិកក្រុមរបស់យើង</span>
           </h2>
-          <p class="text-muted">អ្នកជំនាញនៅពីក្រោយបទពិសោធន៍ ReabList ។</p>
+          <p class="text-muted">អ្នកជំនាញនៅពីក្រោយការបង្កើតបទពិសោធន៍ដ៏អស្ចារ្យរបស់ ReabList</p>
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -167,10 +166,10 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=a" class="team-img" alt="Alex" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">Project Leader & Frontend</span>
               <h4 class="fw-bold mb-1">Kem Vanny</h4>
               <p class="text-muted small">
-                អ្នកដឹកនាំក្រុម​ ReabList
+                អ្នកដឹកនាំគម្រោង និងទទួលបន្ទុកផ្នែករចនារចនាសម្ព័ន្ធប្រព័ន្ធ
               </p>
             </div>
           </div>
@@ -179,10 +178,10 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=b" class="team-img" alt="Jordan" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Hean Liza</h4>
               <p class="text-muted small">
-                សមាជិកផ្នែក UX/UI និង Frontend Development។
+                ឯកទេសខាងរចនាចំណុចប្រទាក់អ្នកប្រើប្រាស់ និងអភិវឌ្ឍផ្នែកខាងមុខ
               </p>
             </div>
           </div>
@@ -191,10 +190,10 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=c" class="team-img" alt="Sarah" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Tel Sophannara</h4>
               <p class="text-muted small">
-               សមាជិកផ្នែក UX/UI និង Frontend Development។
+                ផ្តោតលើការបង្កើតបទពិសោធន៍អ្នកប្រើប្រាស់ឱ្យកាន់តែរលូន និងទាក់ទាញ
               </p>
             </div>
           </div>
@@ -203,10 +202,10 @@
               <div class="team-img-wrapper">
                 <img :src="socheata" class="team-img" alt="Michael" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Vit Socheata</h4>
               <p class="text-muted small">
-                សមាជិកផ្នែក UX/UI និង Frontend Development
+                ចូលរួមក្នុងការអភិវឌ្ឍ និងកែលម្អគុណភាពនៃការបង្ហាញលើគេហទំព័រ
               </p>
             </div>
           </div>
@@ -215,9 +214,9 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=e" class="team-img" alt="Emily" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Limchhen Revotey</h4>
-              <p class="text-muted small">សមាជិកផ្នែក UX/UI និង Frontend Development</p>
+              <p class="text-muted small">អ្នកជំនាញក្នុងការបម្លែងការរចនាទៅជាកូដដែលដំណើរការបានយ៉ាងល្អ</p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -225,9 +224,9 @@
               <div class="team-img-wrapper">
                 <img src="https://i.pravatar.cc/150?u=f" class="team-img" alt="David" />
               </div>
-              <span class="team-role">Frontend & UX/UI</span>
+              <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Him Sophearith</h4>
-              <p class="text-muted small">សមាជិកផ្នែក UX/UI និង Frontend Development</p>
+              <p class="text-muted small">ទទួលបន្ទុកលើការត្រួតពិនិត្យ និងអភិវឌ្ឍមុខងារឱ្យមានភាពត្រឹមត្រូវខ្ពស់</p>
             </div>
           </div>
         </div>
@@ -241,9 +240,10 @@
             <div class="pill-tag">សេចក្តីថ្លែងអំណរគុណ</div>
             <h2 class="display-5 mb-3">សេចក្តីថ្លែងអំណរគុណចំពោះ</h2>
             <p class="text-muted fs-5">
-             <span style="color: #0d9488;font-weight: bold;"> ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
-              និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT</span> ព្រមទាំងលោកគ្រូ <span style="color: #0d9488;font-weight: bold;">ជិន
-              សុវណ្ណមិនា </span>និងអ្នកគ្រូ  <span style="color: #0d9488;font-weight: bold;">យឹម ស្រីយ៉ឺ</span> ។
+              <span style="color: #0d9488;font-weight: bold;"> ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
+                និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT</span> ព្រមទាំងលោកគ្រូ <span
+                style="color: #0d9488;font-weight: bold;">ជិន
+                សុវណ្ណមិនា </span>និងអ្នកគ្រូ <span style="color: #0d9488;font-weight: bold;">យឹម ស្រីយ៉ឺ</span> ។
               ក្រុមរបស់យើងមានអារម្មណ៍សោមនស្សរីករាយយ៉ាងខ្លាំងដែលទទួលបានអាហារូបករណ៍លើជំនាញការអភិវឌ្ឍន៍គេហទំព័រនេះ។
               អាហារូបករណ៍នេះពិតជាបានជួយសម្រាលបន្ទុកហិរញ្ញវត្ថុសម្រាប់ការសិក្សាដល់ក្រុមយើងខ្ញុំទាំងអស់គ្នា។
               ក្រោមការណែនាំពីលោកគ្រូអ្នកគ្រូ
@@ -553,14 +553,12 @@ template {
 /* thanksyou */
 
 .thank-you {
-padding: 120px;
+  padding: 120px;
   position: relative;
-  background: linear-gradient(
-    120deg,
-    #bddee8,
-    #b7e9eacf,
-    #f0bdd9
-  );
+  background: linear-gradient(120deg,
+      #bddee8,
+      #b7e9eacf,
+      #f0bdd9);
   background-size: 400% 400%;
   animation: gradientMove 15s ease infinite;
   overflow: hidden;
@@ -570,9 +568,11 @@ padding: 120px;
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }

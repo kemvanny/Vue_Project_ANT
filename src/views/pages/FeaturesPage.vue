@@ -7,57 +7,54 @@
         <div class="row align-items-center">
           <div class="col-lg-6">
             <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
-              style="font-size: 11px">ផ្ទាំងគ្រប់គ្រងសារពើភ័ណ្ឌកម្រិតខ្ពស់</span>
+              style="font-size: 11px">ជំនួយការរៀបចំកិច្ចការឆ្លាតវៃ</span>
             <h1 class="fw-bold display-3 mb-5 mt-3">
-              <span>លំហូរការងាររបស់អ្នក</span><br />
-              <span style="color: var(--primary);">បានសម្របសម្រួលយ៉ាងល្អ</span>
+              <span>រៀបចំជីវិតរបស់អ្នក</span><br />
+              <span style="color: var(--primary);">ឱ្យមានសណ្តាប់ធ្នាប់បំផុត</span>
             </h1>
             <p class="lead mb-5 fw-500 text-muted col-lg-11 lh-2">
-              ប្រព័ន្ធគ្រប់គ្រងសារពើភ័ណ្ឌនិងភារកិច្ចដ៏ទំនើបសម្រាប់អ្នកប្រើប្រាស់កម្រិតខ្ពស់។
-              គ្រប់គ្រងការបញ្ចូលស្តុកយ៉ាងងាយស្រួល
-              ជាមួយនឹងការជូនដំណឹងស្វ័យប្រវត្តិរយៈពេល ១០ នាទីតាម Telegram, ភស្តុតាង SKU ដែលអាចមើលឃើញ,
-              និងការត្រួតពិនិត្យដំណើរការជាក់ស្តែង។
+              បង្វែរភាពស្មុគស្មាញឱ្យទៅជាភាពងាយស្រួល។ ReabList ជួយអ្នកតាមដានរាល់ភារកិច្ច បង្កើតទម្លាប់ល្អៗ និងរំលឹកអ្នករាល់កិច្ចការសំខាន់ៗតាមរយៈ Telegram មុនពេលដល់កំណត់
             </p>
 
             <div class="d-flex gap-3">
               <a href="#" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
-                style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចូលទៅកាន់បញ្ជី</a>
+                style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចាប់ផ្ដើមឥឡូវនេះ</a>
               <button class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25">
-                មើលឯកសារណែនាំ
+                របៀបប្រើប្រាស់
               </button>
             </div>
           </div>
           <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
             <div class="floating-container">
               <div class="floating-node node-1">
-                <i class="fas fa-barcode"></i> SKU:Verified (បានផ្ទៀងផ្ទាត់)
+                <i class="fas fa-barcode"></i> អាទិភាពខ្ពស់
               </div>
               <div class="floating-node node-2">
-                <i class="fas fa-exclamation-triangle"></i> ការជូនដំណឹងស្តុក
+                <i class="fas fa-exclamation-triangle"></i> រំលឹក៖ ១០ នាទីមុន
               </div>
               <div class="floating-node node-3">
-                <i class="fas fa-check-circle"></i> ត្រៀមធ្វើសមកាលកម្ម
+                <i class="fas fa-check-circle"></i> សម្រេចបាន ៨៥%
               </div>
 
               <div class="floating-mockup">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div class="fw-800 text-dark">បញ្ជីប្រចាំថ្ងៃ</div>
+                  <div class="fw-800 text-dark">កិច្ចការប្រចាំថ្ងៃ</div>
                   <i class="fas fa-calendar-alt text-muted"></i>
                 </div>
 
                 <div class="mockup-item">
                   <div class="check-box"></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">រាប់សារឡើងវិញនៅច្រក ៤</div>
-                    <div class="x-small text-muted">SKU: HD-400 • ២ នាទីមុន</div>
+                    <div class="fw-700 small">រៀនភាសាចិន (Lesson 1)</div>
+                    <div class="x-small text-muted">ការសិក្សា • ២ នាទីមុន</div>
                   </div>
                 </div>
 
                 <div class="mockup-item active">
                   <div class="check-box"><i class="fas fa-check"></i></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">ធ្វើសវនកម្មបាច់ B-101</div>
-                    <div class="x-small text-muted">ការជូនដំណឹង Telegram បានផ្ញើ</div>
+                    <div class="fw-700 small">ផ្ញើរបាយការណ៍គម្រោង</div>
+                    <div class="x-small text-muted">Telegram បានរំលឹក</div>
                   </div>
                   <span class="badge rounded-pill bg-danger x-small">P1</span>
                 </div>
@@ -65,15 +62,15 @@
                 <div class="mockup-item">
                   <div class="check-box"></div>
                   <div class="flex-grow-1">
-                    <div class="fw-700 small">ការផ្ទៀងផ្ទាត់ស្លាកសញ្ញា</div>
+                    <div class="fw-700 small">ហាត់ប្រាណពេលល្ងាច</div>
                     <div class="x-small text-muted">
-                      ភ្ជាប់ភស្តុតាង (រូបភាព)
+                      ភ្ជាប់រូបភាពភស្តុតាង
                     </div>
                   </div>
                 </div>
 
                 <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
-                  <div class="x-small fw-800 text-primary">បញ្ចប់ ៨៥%</div>
+                  <div class="x-small fw-800 text-primary">បញ្ចប់បាន ៨៥%</div>
                   <div class="d-flex">
                     <div style="
                         width: 25px;
@@ -111,38 +108,38 @@
         <div class="col-lg-8">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-barcode"></i></div>
-            <h3 class="fw-800 mb-3">ការចុះឈ្មោះទិន្នន័យប្រកបដោយវិជ្ជាជីវៈ</h3>
+            <h3 class="fw-800 mb-3">ការគ្រប់គ្រងកិច្ចការកម្រិតខ្ពស់</h3>
             <p class="text-muted fw-500 mb-4">
-              ReabList អនុវត្តទិន្នន័យដែលមានរចនាសម្ព័ន្ធសម្រាប់រាល់ការផ្លាស់ប្តូរសារពើភ័ណ្ឌ
-              ជាមួយនឹងទិន្នន័យមេតាឧស្សាហកម្មពេញលេញ៖
+              ReabList អនុវត្តការចាត់ចែងកិច្ចការដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់ 
+              ជួយអ្នករៀបចំគម្រោងជីវិតប្រកបដោយវិជ្ជាជីវៈ៖
             </p>
 
             <div class="row g-3">
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">គ្រោងការណ៍តម្រូវ</span>
+                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">រៀបចំតាមប្រភេទ</span>
                   <div class="d-flex flex-column gap-3 small fw-700 text-muted">
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i> SKU
-                      សម្គាល់ & ព័ត៌មានលម្អិត
+                      កំណត់ចំណងជើង & ខ្លឹមសារ
                     </div>
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i>
-                      កាលបរិច្ឆេទផុតកំណត់ & មកដល់
+                      កាលបរិច្ឆេទ & ពេលវេលា
                     </div>
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i>
-                      ចំណាត់ថ្នាក់អាទិភាព (P1-P5)
+                      កម្រិតអាទិភាព (P1-P5)
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">វដ្តជីវិតនៃការចុះឈ្មោះ</span>
+                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">វដ្តជីវិតនៃកិច្ចការ</span>
                   <p class="x-small text-muted mb-0">
-                    អនុវត្តប្រតិបត្តិការ CRUD តាមពេលវេលាជាក់ស្តែង។ មើលធាតុបញ្ចូលបញ្ជីរបស់អ្នកជាមុន
-                    ដូចដែលវានឹងបង្ហាញនៅក្នុងប្រព័ន្ធ មុនពេលរក្សាទុកកំណត់ត្រា។
+                    គ្រប់គ្រងរាល់សកម្មភាព (Create, Read, Update, Delete) ក្នុងពេលជាក់ស្តែង។ 
+                    អ្នកអាចមើលឃើញវឌ្ឍនភាពការងារភ្លាមៗមុនពេលសម្រេចចិត្តរក្សាទុក ឬលុបចោលកិច្ចការ
                   </p>
                 </div>
               </div>
@@ -155,17 +152,17 @@
             <div class="icon-circle" style="background: #0088cc; color: white">
               <i class="fab fa-telegram"></i>
             </div>
-            <h4 class="fw-800">ការជូនដំណឹង ១០ នាទីមុន</h4>
+            <h4 class="fw-800">រំលឹកទុកជាមុន ១០ នាទី</h4>
             <p class="text-muted small">
-              ធ្វើសមកាលកម្មក្រុមរបស់អ្នក។ ទទួលបានការជូនដំណឹងតាម Telegram យ៉ាងជាក់លាក់ **១០
-              នាទីមុន** ពេលដល់កាលកំណត់សវនកម្មសារពើភ័ណ្ឌ។
+              ធ្កុំឱ្យរំលងរាល់ការណាត់ជួបសំខាន់។ ទទួលបានការជូនដំណឹងតាម Telegram យ៉ាងជាក់លាក់ 
+              **១០ នាទីមុន** ពេលដល់កាលកំណត់នៃកិច្ចការរបស់អ្នក។
             </p>
 
             <div class="alert-bubble shadow-sm">
               <i class="fab fa-telegram-plane fs-4"></i>
               <div>
-                <p class="mb-0 fw-800 x-small">REAB_ALERTS_BOT</p>
-                <p class="mb-0 small">ការជូនដំណឹង: សវនកម្មបាច់ B-101 ក្នុងរយៈពេល ១០ នាទី</p>
+                <p class="mb-0 fw-800 x-small">REABLIST_ALERTS_BOT</p>
+                <p class="mb-0 small">រំលឹក៖ កិច្ចការ "ផ្ញើរបាយការណ៍" ក្នុងរយៈពេល ១០ នាទី</p>
               </div>
             </div>
           </div>
@@ -174,14 +171,14 @@
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-camera"></i></div>
-            <h4 class="fw-800">មជ្ឈមណ្ឌលភស្តុតាងរូបភាព</h4>
+            <h4 class="fw-800">ភស្តុតាងនៃការសម្រេច</h4>
             <p class="text-muted small">
-              ភ្ជាប់ភស្តុតាងរូបភាពទៅនឹងកំណត់ត្រាស្តុករបស់អ្នក។ ធ្វើឯកសារអំពីការរាប់ដែលបានបញ្ចប់
-              ឬទំនិញខូចខាតដោយផ្ទាល់នៅលើធាតុបញ្ចូល។
+              រក្សាទុកជោគជ័យតូចៗរបស់អ្នកជាមួយរូបភាព។ ភ្ជាប់ភស្តុតាងភ្លាមៗទៅកាន់កិច្ចការនីមួយៗ 
+      ដើម្បីតាមដានរាល់សកម្មភាពដែលអ្នកបានបញ្ចប់។
             </p>
             <div class="mt-4 p-4 border border-dashed rounded-4 text-center bg-light">
               <i class="fas fa-cloud-upload-alt text-muted mb-2 fs-3"></i>
-              <p class="x-small text-muted fw-800 mb-0">ទម្លាក់រូបភាព SKU/ស្លាកសញ្ញា</p>
+              <p class="x-small text-muted fw-800 mb-0">ចុចដើម្បីបន្ថែមរូបភាព</p>
             </div>
           </div>
         </div>
@@ -189,14 +186,14 @@
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-chart-pie"></i></div>
-            <h4 class="fw-800">សវនកម្មដំណើរការ</h4>
+            <h4 class="fw-800">វាស់ស្ទង់ផលិតភាព</h4>
             <p class="text-muted small">
-              តាមដានវឌ្ឍនភាពជាក់ស្តែងនៃការសម្របសម្រួលបាច់។ ត្រួតពិនិត្យអត្រាជោគជ័យ
-              នៃការត្រួតពិនិត្យ SKU ដែលកំពុងរង់ចាំធៀបនឹងដែលបានដោះស្រាយ។
+              តាមដានវឌ្ឍនភាពនៃការបញ្ចប់កិច្ចការរបស់អ្នកក្នុងពេលជាក់ស្តែង។ វិភាគមើលថាតើអ្នកបាន 
+      សម្រេចលទ្ធផលបានកម្រិតណា ធៀបនឹងផែនការដែលអ្នកបានកំណត់ទុក
             </p>
             <div class="progress-hud">
               <div class="d-flex justify-content-between x-small fw-800 mb-1">
-                <span>អត្រាជោគជ័យ</span>
+                <span>អត្រាសម្រេចលទ្ធផល</span>
                 <span class="text-primary">៨៥%</span>
               </div>
               <div class="bar-container">
@@ -209,10 +206,10 @@
         <div class="col-lg-4">
           <div class="bento-card">
             <div class="icon-circle"><i class="fas fa-user-shield"></i></div>
-            <h4 class="fw-800">ការគ្រប់គ្រងអត្តសញ្ញាណ</h4>
+            <h4 class="fw-800">គ្រប់គ្រងគណនីផ្ទាល់ខ្លួន</h4>
             <p class="text-muted small">
-              គ្រប់គ្រងតួនាទីប្រតិបត្តិការ និងសិទ្ធិ។ ធ្វើបច្ចុប្បន្នភាពរូបភាពប្រវត្តិរូប
-              និងសោសុវត្ថិភាពដើម្បីការពារទិន្នន័យបញ្ជីរបស់អ្នក។
+             រៀបចំព័ត៌មានផ្ទាល់ខ្លួន និងរូបភាពប្រវត្តិរូបរបស់អ្នកយ៉ាងងាយស្រួល។ 
+      ធានាថាទិន្នន័យនៃបញ្ជីកិច្ចការរបស់អ្នក ត្រូវបានរក្សាទុកដោយសុវត្ថិភាព និងឯកជនភាពបំផុត
             </p>
           </div>
         </div>
@@ -222,13 +219,12 @@
     <section class="container mb-5 pb-5">
       <div class="cta-box text-center shadow-lg">
         <div style="position: relative; z-index: 10">
-          <h2 class="display-5 fw-800 mb-4">គ្រប់គ្រងបញ្ជីរបស់អ្នកឱ្យស្ទាត់ជំនាញ</h2>
+          <h2 class="display-5 fw-800 mb-4">ចាប់ផ្ដើមរៀបចំជីវិតឱ្យមានរបៀបរៀបរយ</h2>
           <p class="lead text-muted mb-5 col-lg-6 mx-auto">
-            លើកកម្ពស់ការគ្រប់គ្រងសារពើភ័ណ្ឌរបស់អ្នកជាមួយនឹងការតាមដានដែលមានភាពត្រឹមត្រូវខ្ពស់។
-            ចាប់ផ្តើមចុះបញ្ជីដំបូងរបស់អ្នកនៅថ្ងៃនេះ។
+            កុំទុកឱ្យកិច្ចការសំខាន់ៗរំលងហួសទៅឱ្យសោះ។ បង្កើនផលិតភាពរបស់អ្នក និងសម្រេចគោលដៅប្រចាំថ្ងៃជាមួយ ReabList ចាប់ពីថ្ងៃនេះតទៅ
           </p>
           <router-link to="/login" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
-            style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចូលទៅកាន់ការប្រើប្រាស់ប្រព័ន្ធ</router-link>
+            style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចាប់ផ្ដើមប្រើប្រាស់ដោយឥតគិតថ្លៃ</router-link>
         </div>
       </div>
     </section>

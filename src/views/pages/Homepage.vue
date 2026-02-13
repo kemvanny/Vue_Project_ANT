@@ -15,79 +15,49 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-6">
-              <span class="hero-badge">បង្កើនប្រសិទ្ធភាពរបស់អ្នក</span>
+              <span class="hero-badge">រៀបចំជីវិតឱ្យមានរបៀបរៀបរយ</span>
               <h1 class="fw-bold mb-4">
-                រៀបចំកិច្ចការ<br /><span style="color: var(--primary)"
-                  >សម្រួលជីវិតរបស់អ្នក។</span
-                >
+                គ្រប់គ្រងរាល់កិច្ចការ<br /><span style="color: var(--primary)">ដោយភាពជឿជាក់</span>
               </h1>
               <p class="text-body mb-5">
-                កម្មវិធីបញ្ជីកិច្ចការដែលសាមញ្ញ និងមានថាមពល
-                រចនាឡើងដើម្បីជួយអ្នកឱ្យផ្ដោតអារម្មណ៍ រៀបចំផែនការ
-                និងសម្រេចគោលដៅរបស់អ្នកជារៀងរាល់ថ្ងៃ។
+                ឈប់ខ្វាយខ្វល់ពីរឿងដែលត្រូវធ្វើច្រើនលើសលប់។ ReabList ជួយអ្នករៀបចំផែនការ បែងចែកអាទិភាព
+                និងសម្រេចគោលដៅធំៗរបស់អ្នកតាមរយៈជំហានតូចៗជារៀងរាល់ថ្ងៃ
               </p>
               <div class="btn-group-wrap d-flex flex-wrap gap-3 mb-5">
-                <router-link
-                  :to="{ name: 'login' }"
-                  class="btn btn-signup-modern py-3 px-5 fs-5"
-                  >ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</router-link
-                >
+                <router-link :to="{ name: 'login' }"
+                  class="btn btn-signup-modern py-3 px-5 fs-5">ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</router-link>
               </div>
               <div class="d-flex align-items-center gap-3 reveal">
                 <div class="d-flex">
-                  <img
-                    src="https://i.pravatar.cc/40?img=1"
-                    class="rounded-circle border border-white"
-                    style="margin-right: -10px"
-                  />
-                  <img
-                    src="https://i.pravatar.cc/40?img=2"
-                    class="rounded-circle border border-white"
-                    style="margin-right: -10px"
-                  />
-                  <img
-                    src="https://i.pravatar.cc/40?img=3"
-                    class="rounded-circle border border-white"
-                  />
+                  <img src="https://i.pravatar.cc/40?img=1" class="rounded-circle border border-white"
+                    style="margin-right: -10px" />
+                  <img src="https://i.pravatar.cc/40?img=2" class="rounded-circle border border-white"
+                    style="margin-right: -10px" />
+                  <img src="https://i.pravatar.cc/40?img=3" class="rounded-circle border border-white" />
                 </div>
-                <span class="small fw-semibold text-muted"
-                  >ចូលរួមជាមួយអ្នកប្រើប្រាស់ជាង ១ម៉ឺននាក់</span
-                >
+                <span class="small fw-semibold text-muted">ចូលរួមជាមួយអ្នកប្រើប្រាស់ជាង ១ម៉ឺននាក់</span>
               </div>
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
               <div class="floating-img-wrap">
-                <img
-                  src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=800"
-                  alt="ផលិតភាព"
-                  class="img-fluid floating-img"
-                />
-                <div
-                  class="stats-card position-absolute bottom-0 start-0 m-4 shadow-lg d-none d-sm-block"
-                  style="width: 280px; transform: translateY(30%)"
-                >
+                <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=800"
+                  alt="ផលិតភាព" class="img-fluid floating-img" />
+                <div class="stats-card position-absolute bottom-0 start-0 m-4 shadow-lg d-none d-sm-block"
+                  style="width: 280px; transform: translateY(30%)">
                   <div class="d-flex justify-content-between mb-3">
                     <span class="fw-bold">កិច្ចការប្រចាំថ្ងៃ</span>
-                    <span class="fw-bold" style="color: var(--accent)"
-                      >92%</span
-                    >
+                    <span class="fw-bold" style="color: var(--accent)">92%</span>
                   </div>
-                  <div
-                    class="progress"
-                    style="
+                  <div class="progress" style="
                       height: 8px;
                       background: rgba(255, 255, 255, 0.1);
                       border-radius: 10px;
-                    "
-                  >
-                    <div
-                      class="progress-bar"
-                      style="
+                    ">
+                    <div class="progress-bar" style="
                         width: 92%;
                         background-color: var(--accent);
                         border-radius: 10px;
-                      "
-                    ></div>
+                      "></div>
                   </div>
                   <p class="small mt-3 mb-0 opacity-75">
                     អ្នកជិតសម្រេចគោលដៅប្រចាំថ្ងៃហើយ! បន្តព្យាយាមទៀត។
@@ -102,18 +72,16 @@
       <section class="py-5 my-5">
         <div class="container">
           <div class="text-center mb-5 pb-3 reveal">
-            <h2 class="display-5 mb-4 fw-semibold text-feeling">រចនាឡើងដើម្បីការផ្ដោតអារម្មណ៍</h2>
+            <h2 class="display-5 mb-4 fw-semibold text-feeling">សាមញ្ញ តែមានប្រសិទ្ធភាព</h2>
             <p class="mx-auto" style="max-width: 600px">
-              អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីរៀបចំផែនការប្រចាំថ្ងៃ—សាមញ្ញ
-              រហ័ស និងមានប្រសិទ្ធភាព។ ឈប់ខ្វល់ខ្វាយ ចាប់ផ្ដើមសម្រេចជោគជ័យ។
+              រាល់មុខងារទាំងអស់របស់ ReabList ត្រូវបានសម្រិតសម្រាំងដើម្បីជួយអ្នកកាត់បន្ថយភាពស្មុគស្មាញ
+              បង្កើនការផ្ដោតអារម្មណ៍ និងផ្តល់ឱ្យអ្នកនូវ "ខួរក្បាលទីពីរ" សម្រាប់គ្រប់គ្រងកិច្ចការរបស់អ្នក
             </p>
           </div>
           <div class="row g-4">
             <div class="col-md-4 reveal" style="transition-delay: 0.1s">
               <div class="feature-card">
-                <div
-                  class="icon-box"
-                  style="
+                <div class="icon-box" style="
                     width: 56px;
                     height: 56px;
                     background: var(--primary-light);
@@ -123,22 +91,18 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  "
-                >
+                  ">
                   <zap />
                 </div>
-                <h4 class="title-feeling">ផ្ដោតលើអាទិភាពខ្ពស់</h4>
+                <h4 class="title-feeling">ផ្ដោតលើអ្វីដែលសំខាន់</h4>
                 <p>
-                  ផ្ដោតលើគម្រោងដែលមានឥទ្ធិពលខ្លាំង។ ពិនិត្យមើលកាលបរិច្ឆេទកំណត់
-                  និងបែងចែកពេលវេលាឱ្យមានប្រសិទ្ធភាព។
+                  បែងចែកកិច្ចការសំខាន់ៗឱ្យបានច្បាស់លាស់ ដើម្បីផ្ដោតកម្លាំងចំគោលដៅ និងបង្កើនលទ្ធផលការងារ
                 </p>
               </div>
             </div>
             <div class="col-md-4 reveal" style="transition-delay: 0.2s">
               <div class="feature-card">
-                <div
-                  class="icon-box"
-                  style="
+                <div class="icon-box" style="
                     width: 56px;
                     height: 56px;
                     background: #fff7ed;
@@ -148,22 +112,18 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  "
-                >
+                  ">
                   <repeat />
                 </div>
-                <h4 class="title-feeling">ទម្លាប់ប្រចាំថ្ងៃ</h4>
+                <h4 class="title-feeling">សាងទម្លាប់ល្អជារៀងរាល់ថ្ងៃ</h4>
                 <p>
-                  រក្សាភាពស្ថិតស្ថេរតាមរយៈការតាមដានទម្លាប់ប្រចាំថ្ងៃ។
-                  ជោគជ័យតូចតាចនាំទៅរកសមិទ្ធផលធំធេងក្នុងរយៈពេលវែង។
+                  តាមដានវឌ្ឍនភាពជារៀងរាល់ថ្ងៃ ដើម្បីកសាងទម្លាប់ដែលនាំអ្នកទៅរកភាពជោគជ័យយូរអង្វែង
                 </p>
               </div>
             </div>
             <div class="col-md-4 reveal" style="transition-delay: 0.3s">
               <div class="feature-card">
-                <div
-                  class="icon-box"
-                  style="
+                <div class="icon-box" style="
                     width: 56px;
                     height: 56px;
                     background: #f0fdf4;
@@ -173,15 +133,12 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  "
-                >
+                  ">
                   <users />
                 </div>
-                <h4 class="title-feeling">កិច្ចសហការឆ្លាតវៃ</h4>
+                <h4 class="title-feeling">នៅក្បែរអ្នកគ្រប់ពេលវេលា</h4>
                 <p>
-                  ចែករំលែកបញ្ជីជាមួយក្រុមការងារ ឬក្រុមគ្រួសាររបស់អ្នក។
-                  ធ្វើការឱ្យស៊ីចង្វាក់គ្នា
-                  និងបញ្ចប់គម្រោងជាមួយគ្នាក្នុងពេលជាក់ស្តែង។
+                  ចូលប្រើទិន្នន័យរបស់អ្នកបានគ្រប់ពេល មិនថាលើទូរស័ព្ទ ឬកុំព្យូទ័រ ដោយសុវត្ថិភាព និងរហ័ស
                 </p>
               </div>
             </div>
@@ -195,47 +152,45 @@
             <div class="col-lg-5 mb-5 mb-lg-0 reveal-left">
               <h2 class="display-4 mb-4">
                 ហេតុអ្វី ReabList ជា
-                <span style="color: var(--primary)">ជម្រើសដ៏ត្រឹមត្រូវ</span>
+                <span style="color: var(--primary)">ដៃគូដ៏ល្អបំផុត?</span>
               </h2>
               <p class="mb-5">
-                យើងបានលុបចោលភាពស្មុគស្មាញនៃកម្មវិធីគ្រប់គ្រងបែបបុរាណ
-                ដើម្បីផ្តល់ជូនអ្នកនូវ បរិយាកាសការងារដែលស្អាត និងគ្មានការរំខាន។
+                យើងជឿថា កម្មវិធីល្អគឺជាកម្មវិធីដែលមិនត្រូវការការរៀនច្រើន។ ReabList រចនាឡើងដើម្បីឱ្យអ្នក "បើកភ្លាម
+                ប្រើបានភ្លាម"
+                ដោយផ្ដោតលើភាពសាមញ្ញ និងប្រសិទ្ធភាព។
               </p>
 
               <div class="benefit-item">
                 <shield-check class="text-primary" />
                 <div>
-                  <h6 class="mb-1 fw-bold">សុវត្ថិភាព និងឯកជនភាព</h6>
+                  <h6 class="mb-1 fw-bold">សុវត្ថិភាពខ្ពស់</h6>
                   <p class="small mb-0">
-                    ទិន្នន័យរបស់អ្នកត្រូវបានការពារ និងរក្សាការសម្ងាត់ជាមួយយើង។
+                    រាល់ទិន្នន័យ និងគម្រោងផ្ទាល់ខ្លួនរបស់អ្នក ត្រូវបានការពារដោយការសម្ងាត់បំផុត
                   </p>
                 </div>
               </div>
               <div class="benefit-item">
                 <smartphone class="text-primary" />
                 <div>
-                  <h6 class="mb-1 fw-bold">Cloud Sync</h6>
+                  <h6 class="mb-1 fw-bold">ភ្ជាប់ទំនាក់ទំនងគ្រប់ឧបករណ៍</h6>
                   <p class="small mb-0">
-                    ចូលប្រើកិច្ចការរបស់អ្នកពីឧបករណ៍ណាមួយ នៅគ្រប់ទីកន្លែង។
+                    Sync ទិន្នន័យដោយស្វ័យប្រវត្តិ ឱ្យអ្នកធ្វើការបានគ្រប់ទីកន្លែង និងគ្រប់ពេលវេលា
                   </p>
                 </div>
               </div>
               <div class="benefit-item">
                 <smile class="text-primary" />
                 <div>
-                  <h6 class="mb-1 fw-bold">ងាយស្រួលប្រើប្រាស់</h6>
+                  <h6 class="mb-1 fw-bold">បទពិសោធន៍ដ៏សាមញ្ញ</h6>
                   <p class="small mb-0">
-                    មិនចាំបាច់រៀនច្រើន។ ចាប់ផ្ដើមបង្កើនផលិតភាពភ្លាមៗ។
+                    រចនាបទបែប Minimalist ងាយស្រួលយល់ និងងាយស្រួលប្រើ ចាប់ផ្ដើមបានភ្លាមៗ
                   </p>
                 </div>
               </div>
             </div>
             <div class="col-lg-7 text-center reveal-right">
-              <img
-                src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?auto=format&fit=crop&q=80&w=800"
-                alt="គំរូកម្មវិធី"
-                class="img-fluid rounded-4 shadow-lg"
-              />
+              <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?auto=format&fit=crop&q=80&w=800"
+                alt="គំរូកម្មវិធី" class="img-fluid rounded-4 shadow-lg" />
             </div>
           </div>
         </div>
@@ -246,33 +201,26 @@
           <div class="row align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0 reveal-left">
               <h2 class="display-5 fw-bold mb-4">
-                ReabList ជាអ្នកនាំផ្លូវ<br />
-                <span style="color: var(--accent)">កិច្ចការ</span>
-                ប្រចាំថ្ងៃរបស់អ្នក
+                រៀបចំថ្ងៃថ្មីជាមួយ<br />
+                <span style="color: var(--accent)">ផែនការ</span>
+                ដ៏ច្បាស់លាស់
               </h2>
               <p class="lead text-muted mb-5">
-                ReabList
-                ត្រូវបានបង្កើតឡើងដើម្បីជួយមនុស្សឱ្យសម្រួលដល់ការងារប្រចាំថ្ងៃរបស់ពួកគេ
-                កាត់បន្ថយភាពតានតឹង
-                និងសម្រេចគោលដៅតាមរយៈការគ្រប់គ្រងកិច្ចការដ៏សាមញ្ញ។
+                ReabList មិនមែនគ្រាន់តែជាបញ្ជីកិច្ចការធម្មតានោះទេ តែវាជាជំនួយការឆ្លាតវៃដែលជួយអ្នក
+                កាត់បន្ថយភាពតានតឹងពីការងារ និងបង្វែររាល់ក្ដីស្រមៃឱ្យទៅជាលទ្ធផលពិតប្រាកដ
               </p>
 
-              <div
-                class="p-4 border-start border-4 border-teal rounded-3"
-                style="background: var(--primary-light)"
-              >
+              <div class="p-4 border-start border-4 border-teal rounded-3" style="background: var(--primary-light)">
                 <p class="m-0 fst-italic">
-                  "បេសកកម្មរបស់យើងគឺជួយបុគ្គលម្នាក់ៗឱ្យមានសណ្តាប់ធ្នាប់
-                  សម្រេចបាននូវគោលដៅ និងធ្វើឱ្យរាល់ថ្ងៃកាន់តែមានផលិតភាព។"
+                  "បេសកកម្មរបស់យើងគឺជួយឱ្យរាល់ថ្ងៃរបស់អ្នកមានសណ្ដាប់ធ្នាប់ និងពោរពេញដោយផលិតភាព
+                  ដើម្បីសម្រេចរាល់គោលដៅដែលអ្នកប្រាថ្នា"
                 </p>
               </div>
             </div>
 
             <div class="col-lg-6 ps-lg-5 reveal-right">
               <div class="about-img-stack">
-                <div
-                  class="floating-badge"
-                  style="
+                <div class="floating-badge" style="
                     position: absolute;
                     top: 15%;
                     left: -20px;
@@ -286,21 +234,14 @@
                     align-items: center;
                     gap: 10px;
                     animation: float 4s infinite;
-                  "
-                >
+                  ">
                   <trending-up />
-                  <span class="fw-bold">បង្កើនផលិតភាព</span>
+                  <span class="fw-bold">ជោគជ័យគ្រប់ជំហាន</span>
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80"
-                  class="img-main ms-auto"
-                  alt="កន្លែងធ្វើការ"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
-                  class="img-sub"
-                  alt="ការបង្ហាញកម្មវិធី"
-                />
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80"
+                  class="img-main ms-auto" alt="កន្លែងធ្វើការ" />
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+                  class="img-sub" alt="ការបង្ហាញកម្មវិធី" />
               </div>
             </div>
           </div>
@@ -342,28 +283,26 @@ onBeforeUnmount(() => {
 
 
 <style scoped>
-.text-feeling{
+.text-feeling {
   color: #333333;
 }
+
 .title-feeling {
   color: var(--primary);
   margin-bottom: 1.3rem;
   font-weight: 600;
 }
+
 .hero {
   position: relative;
   overflow: hidden;
   padding: 200px 0 120px;
-  background: radial-gradient(
-      1200px circle at 10% 10%,
+  background: radial-gradient(1200px circle at 10% 10%,
       rgba(109, 213, 250, 0.3),
-      transparent 40%
-    ),
-    radial-gradient(
-      1000px circle at 90% 20%,
+      transparent 40%),
+    radial-gradient(1000px circle at 90% 20%,
       rgba(137, 247, 254, 0.35),
-      transparent 45%
-    ),
+      transparent 45%),
     linear-gradient(135deg, #f8feff 0%, #eafaff 50%, #f6fbff 100%);
 }
 
@@ -449,9 +388,11 @@ onBeforeUnmount(() => {
   0% {
     transform: translate(0, 0) scale(1);
   }
+
   50% {
     transform: translate(30px, -40px) scale(1.06);
   }
+
   100% {
     transform: translate(0, 0) scale(1);
   }
@@ -462,11 +403,9 @@ onBeforeUnmount(() => {
   content: "";
   position: absolute;
   inset: -20px;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--primary) 35%, transparent),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      color-mix(in srgb, var(--primary) 35%, transparent),
+      transparent 70%);
   filter: blur(40px);
   z-index: -1;
 }
@@ -476,6 +415,7 @@ template {
   background-color: white;
   overflow-x: hidden;
 }
+
 /* Hero */
 /* .hero {
   padding: 200px 0 120px;
@@ -519,6 +459,7 @@ template {
   position: relative;
   animation: float 6s ease-in-out infinite;
 }
+
 .btn-signup-modern {
   background: linear-gradient(135deg, #14b8a6, #0d9488);
   color: white !important;
@@ -549,9 +490,11 @@ template {
   0% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-20px);
   }
+
   100% {
     transform: translateY(0px);
   }
@@ -561,9 +504,11 @@ template {
   0% {
     transform: translateY(0px) translateX(0px);
   }
+
   50% {
     transform: translateY(-15px) translateX(10px);
   }
+
   100% {
     transform: translateY(0px) translateX(0px);
   }
@@ -574,6 +519,7 @@ template {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -656,27 +602,33 @@ template {
 .border-teal {
   border-color: var(--primary) !important;
 }
+
 @media (max-width: 991px) {
   .hero {
     padding: 160px 0 60px;
     text-align: center;
   }
+
   .hero p {
     margin: 0 auto 2.5rem;
   }
+
   .benefits-section {
     margin: 0;
     border-radius: 0;
     padding: 60px 0;
   }
+
   .about-img-stack {
     height: 400px;
     margin-top: 3rem;
   }
+
   .nav-modern {
     padding: 10px 16px;
     border-radius: 20px;
   }
+
   .navbar-collapse {
     background: white;
     margin-top: 15px;
