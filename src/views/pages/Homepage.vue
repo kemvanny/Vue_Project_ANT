@@ -17,7 +17,7 @@
             <div class="col-lg-6">
               <span class="hero-badge">បង្កើនប្រសិទ្ធភាពរបស់អ្នក</span>
               <h1 class="fw-bold mb-4">
-                រៀបចំកិច្ចការ។<br /><span style="color: var(--primary)"
+                រៀបចំកិច្ចការ<br /><span style="color: var(--primary)"
                   >សម្រួលជីវិតរបស់អ្នក។</span
                 >
               </h1>
@@ -27,15 +27,11 @@
                 និងសម្រេចគោលដៅរបស់អ្នកជារៀងរាល់ថ្ងៃ។
               </p>
               <div class="btn-group-wrap d-flex flex-wrap gap-3 mb-5">
-                <a href="#" class="btn btn-signup-modern py-3 px-5 fs-5"
-                  >ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</a
+                <router-link
+                  :to="{ name: 'login' }"
+                  class="btn btn-signup-modern py-3 px-5 fs-5"
+                  >ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</router-link
                 >
-                <a
-                  href="#"
-                  class="btn btn-outline-dark rounded-pill py-3 px-4 d-flex align-items-center gap-2"
-                >
-                  <play-circle /> មើលរបៀបដំណើរការ
-                </a>
               </div>
               <div class="d-flex align-items-center gap-3 reveal">
                 <div class="d-flex">
@@ -106,7 +102,7 @@
       <section class="py-5 my-5">
         <div class="container">
           <div class="text-center mb-5 pb-3 reveal">
-            <h2 class="display-5 mb-3">រចនាឡើងដើម្បីការផ្ដោតអារម្មណ៍</h2>
+            <h2 class="display-5 mb-4 fw-semibold text-feeling">រចនាឡើងដើម្បីការផ្ដោតអារម្មណ៍</h2>
             <p class="mx-auto" style="max-width: 600px">
               អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីរៀបចំផែនការប្រចាំថ្ងៃ—សាមញ្ញ
               រហ័ស និងមានប្រសិទ្ធភាព។ ឈប់ខ្វល់ខ្វាយ ចាប់ផ្ដើមសម្រេចជោគជ័យ។
@@ -131,7 +127,7 @@
                 >
                   <zap />
                 </div>
-                <h4>ផ្ដោតលើអាទិភាពខ្ពស់</h4>
+                <h4 class="title-feeling">ផ្ដោតលើអាទិភាពខ្ពស់</h4>
                 <p>
                   ផ្ដោតលើគម្រោងដែលមានឥទ្ធិពលខ្លាំង។ ពិនិត្យមើលកាលបរិច្ឆេទកំណត់
                   និងបែងចែកពេលវេលាឱ្យមានប្រសិទ្ធភាព។
@@ -156,7 +152,7 @@
                 >
                   <repeat />
                 </div>
-                <h4>ទម្លាប់ប្រចាំថ្ងៃ</h4>
+                <h4 class="title-feeling">ទម្លាប់ប្រចាំថ្ងៃ</h4>
                 <p>
                   រក្សាភាពស្ថិតស្ថេរតាមរយៈការតាមដានទម្លាប់ប្រចាំថ្ងៃ។
                   ជោគជ័យតូចតាចនាំទៅរកសមិទ្ធផលធំធេងក្នុងរយៈពេលវែង។
@@ -181,7 +177,7 @@
                 >
                   <users />
                 </div>
-                <h4>កិច្ចសហការឆ្លាតវៃ</h4>
+                <h4 class="title-feeling">កិច្ចសហការឆ្លាតវៃ</h4>
                 <p>
                   ចែករំលែកបញ្ជីជាមួយក្រុមការងារ ឬក្រុមគ្រួសាររបស់អ្នក។
                   ធ្វើការឱ្យស៊ីចង្វាក់គ្នា
@@ -346,6 +342,14 @@ onBeforeUnmount(() => {
 
 
 <style scoped>
+.text-feeling{
+  color: #333333;
+}
+.title-feeling {
+  color: var(--primary);
+  margin-bottom: 1.3rem;
+  font-weight: 600;
+}
 .hero {
   position: relative;
   overflow: hidden;
@@ -516,7 +520,7 @@ template {
   animation: float 6s ease-in-out infinite;
 }
 .btn-signup-modern {
-  background: var(--primary);
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
   color: white !important;
   border: none;
   padding: 10px 24px;
@@ -584,6 +588,7 @@ template {
   background: white;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
+  box-shadow: 1px 5px 8px rgba(240, 240, 240, 0.795);
 }
 
 .feature-card:hover {

@@ -21,7 +21,7 @@
 
             <div class="d-flex gap-3">
               <a href="#" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
-                style="background: var(--primary)">ចូលទៅកាន់បញ្ជី</a>
+                style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចូលទៅកាន់បញ្ជី</a>
               <button class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25">
                 មើលឯកសារណែនាំ
               </button>
@@ -228,7 +228,7 @@
             ចាប់ផ្តើមចុះបញ្ជីដំបូងរបស់អ្នកនៅថ្ងៃនេះ។
           </p>
           <router-link to="/login" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
-            style="background: var(--primary)">ចូលទៅកាន់ការប្រើប្រាស់ប្រព័ន្ធ</router-link>
+            style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចូលទៅកាន់ការប្រើប្រាស់ប្រព័ន្ធ</router-link>
         </div>
       </div>
     </section>
