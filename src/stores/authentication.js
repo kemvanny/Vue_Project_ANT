@@ -144,7 +144,6 @@ export const useAuthStore = defineStore("auth", () => {
         return true;
       }
     } catch (err) {
-      console.log("Registration error:", err.response?.data);
       error.value =
         translateError(err.response?.data?.message) ||
         translateError(err.response?.data?.error) ||
@@ -180,9 +179,6 @@ export const useAuthStore = defineStore("auth", () => {
       const response = await api.post("/auth/login", payload);
       const data = response.data;
 
-      console.log("Login response:", data);
-      console.log("Full response data:", data.data);
-
       if (data.result || data.success || response.status === 200) {
         // Extract token from data.data object
         const tokenData = data.data;
@@ -192,9 +188,6 @@ export const useAuthStore = defineStore("auth", () => {
           tokenData?.access_token ||
           data.token ||
           data.access_token;
-
-        console.log("Token from data.data:", tokenData?.token);
-        console.log("Token value set to:", token.value);
 
         // Store only token in localStorage for security
         if (token.value) {

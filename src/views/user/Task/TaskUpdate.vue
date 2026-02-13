@@ -7,63 +7,91 @@
     @close="close"
   >
     <form @submit.prevent="updateTask">
+      
+      <!-- TITLE -->
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
-        <input v-model.trim="form.title" class="input-modern" required />
+        <input
+          v-model.trim="form.title"
+          @blur="touched.title = true"
+          :class="['input-modern', { 'input-error': errors.title }]"
+        />
+        <small v-if="errors.title" class="error-text">
+          {{ errors.title }}
+        </small>
       </div>
 
+      <!-- CONTENT -->
       <div class="mb-3">
         <label class="label-modern">កំណត់ចំណាំ</label>
-
         <textarea
           v-model.trim="form.content"
-          class="input-modern"
           rows="3"
-          placeholder="សរសេរព័ត៌មានបន្ថែម..."
           style="resize: none"
+          @blur="touched.content = true"
+          :class="['input-modern', { 'input-error': errors.content }]"
         ></textarea>
+        <small v-if="errors.content" class="error-text">
+          {{ errors.content }}
+        </small>
       </div>
 
       <div class="row g-3">
+        <!-- DATE -->
         <div class="col-md-6">
           <label class="label-modern">កាលបរិច្ឆេទ</label>
           <input
             v-model="form.date"
             type="date"
-            class="input-modern"
-            required
+            @blur="touched.date = true"
+            :class="['input-modern', { 'input-error': errors.date }]"
           />
+          <small v-if="errors.date" class="error-text">
+            {{ errors.date }}
+          </small>
         </div>
 
+        <!-- TIME -->
         <div class="col-md-6">
           <label class="label-modern">ម៉ោង</label>
           <input
             v-model="form.time"
             type="time"
-            class="input-modern"
-            required
+            @blur="touched.time = true"
+            :class="['input-modern', { 'input-error': errors.time }]"
           />
+          <small v-if="errors.time" class="error-text">
+            {{ errors.time }}
+          </small>
         </div>
 
+        <!-- CATEGORY -->
         <div class="col-md-6">
           <BaseSelect
             label="ប្រភេទ"
             v-model="form.category"
             :options="categoryOptions"
+            @blur="touched.category = true"
           />
+          <small v-if="errors.category" class="error-text">
+            {{ errors.category }}
+          </small>
         </div>
 
+        <!-- PRIORITY -->
         <div class="col-md-6">
           <BaseSelect
             label="អាទិភាព"
             v-model="form.priority"
             :options="priorityOptions"
             :showDots="true"
+            @blur="touched.priority = true"
           />
+          <small v-if="errors.priority" class="error-text">
+            {{ errors.priority }}
+          </small>
         </div>
       </div>
-
-      <p v-if="error" class="text-danger mt-3 mb-0">{{ error }}</p>
     </form>
 
     <template #footer>
@@ -99,8 +127,31 @@ const props = defineProps({
 const emit = defineEmits(["updated"]);
 
 const modalRef = ref(null);
-const error = ref("");
+const loading = ref(false);
 
+/* ================= FORM ================= */
+const form = ref({
+  id: null,
+  title: "",
+  content: "",
+  date: "",
+  time: "",
+  category: "ការងារ",
+  priority: "មធ្យម",
+});
+
+/* ================= ERRORS ================= */
+const errors = ref({});
+const touched = ref({
+  title: false,
+  content: false,
+  date: false,
+  time: false,
+  category: false,
+  priority: false,
+});
+
+/* ================= OPTIONS ================= */
 const categoryOptions = [
   { value: "ការងារ", label: "ការងារ" },
   { value: "ផ្ទាល់ខ្លួន", label: "ផ្ទាល់ខ្លួន" },
@@ -113,121 +164,85 @@ const priorityOptions = [
   { value: "ទាប", label: "ទាប" },
 ];
 
-const form = ref({
-  id: null,
-  title: "",
-  content: "",
-  date: "",
-  time: "",
-  category: "ការងារ",
-  priority: "មធ្យម",
-});
-let loading = ref(false);
+/* ================= VALIDATION ================= */
+const validateField = (field, value) => {
+  switch (field) {
+    case "title":
+      if (!value.trim()) return "សូមបញ្ចូលចំណងជើង";
+      if (value.length < 3) return "ចំណងជើងត្រូវមានយ៉ាងតិច 3 អក្សរ";
+      return "";
 
-const normalizeDate = (value) => {
-  if (!value) return "";
+    case "content":
+      if (!value.trim()) return "សូមបញ្ចូលពណ៌នា";
+      return "";
 
-  // already YYYY-MM-DD
-  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value))
-    return value;
+    case "date":
+      if (!value) return "សូមជ្រើសកាលបរិច្ឆេទ";
+      return "";
 
-  // ISO datetime like 2026-02-02T00:00:00.000Z
-  if (typeof value === "string" && value.includes("T")) {
-    const maybe = value.slice(0, 10);
-    if (/^\d{4}-\d{2}-\d{2}$/.test(maybe)) return maybe;
+    case "time":
+      if (!value) return "សូមជ្រើសម៉ោង";
+      return "";
+
+    case "category":
+      if (!value) return "សូមជ្រើសប្រភេទ";
+      return "";
+
+    case "priority":
+      if (!value) return "សូមជ្រើសអាទិភាព";
+      return "";
+
+    default:
+      return "";
   }
-
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return "";
-
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
 };
 
-const normalizeTime = (value) => {
-  if (!value) return "";
+/* ================= WATCH REAL-TIME ================= */
+watch(
+  () => form.value,
+  (val) => {
+    Object.keys(val).forEach((field) => {
+      if (touched.value[field]) {
+        errors.value[field] = validateField(field, val[field]);
+      }
+    });
+  },
+  { deep: true }
+);
 
-  // HH:mm:ss -> HH:mm
-  if (typeof value === "string" && /^\d{2}:\d{2}:\d{2}$/.test(value))
-    return value.slice(0, 5);
-
-  // already HH:mm
-  if (typeof value === "string" && /^\d{2}:\d{2}$/.test(value)) return value;
-
-  // ISO datetime -> extract HH:mm
-  if (typeof value === "string" && value.includes("T")) {
-    const d = new Date(value);
-    if (!Number.isNaN(d.getTime())) {
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mm = String(d.getMinutes()).padStart(2, "0");
-      return `${hh}:${mm}`;
-    }
-  }
-
-  return "";
-};
-
-const toHHmm = (value) => {
-  if (!value) return "";
-
-  // "HH:mm:ss" -> "HH:mm"
-  if (/^\d{2}:\d{2}:\d{2}$/.test(value)) return value.slice(0, 5);
-
-  // already "HH:mm"
-  if (/^\d{2}:\d{2}$/.test(value)) return value;
-
-  // "hh:mm AM/PM" -> "HH:mm"
-  const m = String(value).match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-  if (m) {
-    let hh = parseInt(m[1], 10);
-    const mm = m[2];
-    const ap = m[3].toUpperCase();
-
-    if (ap === "PM" && hh !== 12) hh += 12;
-    if (ap === "AM" && hh === 12) hh = 0;
-
-    return `${String(hh).padStart(2, "0")}:${mm}`;
-  }
-
-  return "";
-};
-
+/* ================= LOAD TASK ================= */
 watch(
   () => props.task,
   (t) => {
     if (!t) return;
 
-    form.value.id = t.id ?? null;
-    form.value.title = t.title ?? "";
+    form.value = {
+      id: t.id ?? null,
+      title: t.title ?? "",
+      content: t.content ?? "",
+      date: t.date ?? "",
+      time: t.time ?? "",
+      category: t.category ?? "ការងារ",
+      priority: t.priority ?? "មធ្យម",
+    };
 
-    form.value.content = t.content ?? t.notes ?? "";
-
-    form.value.date = normalizeDate(t.date);
-    form.value.time = normalizeTime(t.time);
-
-    form.value.category = t.category ?? "ការងារ";
-    form.value.priority = t.priority ?? "មធ្យម";
-
-    error.value = "";
+    errors.value = {};
+    Object.keys(touched.value).forEach((k) => (touched.value[k] = false));
   },
   { immediate: true }
 );
 
+/* ================= UPDATE TASK ================= */
 const updateTask = async () => {
+  Object.keys(form.value).forEach((field) => {
+    touched.value[field] = true;
+    errors.value[field] = validateField(field, form.value[field]);
+  });
+
+  const hasError = Object.values(errors.value).some((e) => e);
+  if (hasError) return;
+
   loading.value = true;
-  error.value = "";
-
-  if (!form.value.title?.trim()) {
-    error.value = "សូមបញ្ចូលចំណងជើង";
-    return;
-  }
-
-  if (!form.value.id) {
-    error.value = "មិនអាចរក Task ID បានទេ";
-    return;
-  }
 
   try {
     const priorityMap = { ខ្ពស់: "HIGH", មធ្យម: "MEDIUM", ទាប: "LOW" };
@@ -239,23 +254,19 @@ const updateTask = async () => {
 
     const body = {
       title: form.value.title.trim(),
-      content: form.value.content?.trim() || "",
-      date: form.value.date, // YYYY-MM-DD
-      time: toHHmm(form.value.time),
+      content: form.value.content.trim(),
+      date: form.value.date,
+      time: form.value.time,
       priority: priorityMap[form.value.priority] || "MEDIUM",
-      category: categoryMap[form.value.category] || "PERSONAL",
+      category: categoryMap[form.value.category] || "WORK",
     };
-
-    console.log("UPDATE BODY:", body);
 
     await api.put(`/notes/${form.value.id}`, body);
 
     emit("updated");
     close();
   } catch (err) {
-    loading.value = false;
-    console.log("UPDATE ERROR:", err.response?.data || err.message);
-    error.value = err.response?.data?.message || "Invalid Input";
+    console.log(err);
   } finally {
     loading.value = false;
   }
@@ -269,6 +280,17 @@ defineExpose({ open, close });
 
 
 <style scoped>
+.input-error {
+  border: 1px solid #ff4d4f !important;
+  background: #fff1f0;
+}
+
+.error-text {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
 .input-modern {
   width: 100%;
   background: #f8fafc;

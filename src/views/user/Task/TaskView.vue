@@ -1,5 +1,11 @@
 <template>
-  <BaseModal ref="modalRef" id="viewTaskModal" @close="closeModal" title="ព័ត៌មានលម្អិត" maxWidth="850px">
+  <BaseModal
+    ref="modalRef"
+    id="viewTaskModal"
+    @close="closeModal"
+    title="ព័ត៌មានលម្អិត"
+    maxWidth="850px"
+  >
     <div class="view-card-wrapper">
       <div class="view-header">
         <div class="brand-pill">
@@ -14,8 +20,11 @@
       <div class="view-layout">
         <div class="view-main">
           <div class="title-container">
-            <h1 class="task-title-display">{{ task?.title || "Prepare Slides" }}</h1>
+            <h1 class="task-title-display">
+              {{ task?.title || "Prepare Slides" }}
+            </h1>
             <div class="metadata-row">
+              <p class="mb-0 mt-1">Due on :</p>
               <div class="meta-capsule">
                 <Calendar class="meta-icon" :size="16" />
                 <span>{{ task?.date || "—" }}</span>
@@ -51,14 +60,47 @@
             </div>
           </div>
 
-          <div class="sidebar-block status-block" :class="{ completed: task?.isCompleted }">
+          <div
+            class="sidebar-block status-block"
+            :class="{ completed: task?.isCompleted }"
+          >
             <div class="block-label">ស្ថានភាព</div>
             <div class="status-indicator-wrap">
               <div class="status-icon-box">
-                <CheckCircle v-if="task?.isCompleted" :size="16" stroke-width="3" />
+                <CheckCircle
+                  v-if="task?.isCompleted"
+                  :size="16"
+                  stroke-width="3"
+                />
                 <div v-else class="progress-dot"></div>
               </div>
-              <span>{{ task?.isCompleted ? "បានបញ្ចប់" : "កំពុងដំណើរការ" }}</span>
+              <span>{{
+                task?.isCompleted ? "បានបញ្ចប់" : "កំពុងដំណើរការ"
+              }}</span>
+            </div>
+          </div>
+
+          <!-- create at -->
+          <div
+            class="sidebar-block status-block"
+            :class="{ completed: task?.isCompleted }"
+          >
+            <div class="block-label">បានបង្កើតនៅ</div>
+            <div class="status-indicator-wrap">
+              <div class="status-icon-box">
+                <Calendar :size="16" style="color: #0d9488;"/>
+              </div>
+              <span>
+                {{
+                  task?.createdAt
+                    ? new Date(task.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    : "—"
+                }}</span
+              >
             </div>
           </div>
         </div>
@@ -67,14 +109,21 @@
 
     <template #footer>
       <div class="view-footer">
-        <button type="button" class="btn-cancel-modern" @click="closeModal">បិទ</button>
+        <button type="button" class="btn-cancel-modern" @click="closeModal">
+          បិទ
+        </button>
 
         <div class="action-buttons">
           <button type="button" class="btn-edit-modern" @click="editNow">
             <Edit2 :size="16" class="me-2" /> កែប្រែ
           </button>
 
-          <button type="button" class="btn-done-modern" :disabled="task?.isCompleted" @click="markDone">
+          <button
+            type="button"
+            class="btn-done-modern"
+            :disabled="task?.isCompleted"
+            @click="markDone"
+          >
             <Check v-if="!task?.isCompleted" :size="18" class="me-2" />
             {{ task?.isCompleted ? "បញ្ចប់រួចរាល់" : "សម្គាល់ថាបានបញ្ចប់" }}
           </button>
@@ -91,7 +140,13 @@ import { useNoteStore } from "@/stores/note";
 import BaseModal from "@/components/base/BaseModal.vue";
 
 import {
-  Calendar, Clock, StickyNote, Tag, CheckCircle, Edit2, Check
+  Calendar,
+  Clock,
+  StickyNote,
+  Tag,
+  CheckCircle,
+  Edit2,
+  Check,
 } from "lucide-vue-next";
 
 const route = useRoute();
@@ -105,7 +160,7 @@ const modalRef = ref(null);
 onMounted(async () => {
   const taskId = route.params.id;
   if (noteStore.notes.length === 0) {
-    await noteStore.fetchAllNotes();
+    await noteStore.fetchNotes();
   }
   if (taskId) {
     await noteStore.openNote(taskId);
@@ -122,7 +177,7 @@ const closeModal = () => {
   noteStore.selectedNote = null;
 
   if (route.params.id) {
-    router.push('/dashboard/tasks');
+    router.push("/dashboard/tasks");
   }
 };
 
@@ -157,7 +212,6 @@ watch(
 </script>
 
 <style scoped>
-
 :deep(.modal-backdrop) {
   z-index: 999999 !important;
 }
@@ -306,7 +360,7 @@ watch(
 }
 
 .block-label {
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 800;
   text-transform: uppercase;
   color: #0d9488;
