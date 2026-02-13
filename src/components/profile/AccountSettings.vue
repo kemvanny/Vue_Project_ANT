@@ -58,7 +58,7 @@
             </button>
           </div>
 
-          <div v-else class="text-center py-6">
+          <div v-else class="text-center py-6 pending-state">
             <i class="fas fa-envelope-open-text fa-3x text-primary mb-4"></i>
             <h4>សូមពិនិត្យប្រអប់ទទួល</h4>
             <p>
@@ -671,7 +671,7 @@ const submitChangeEmail = async () => {
     return;
   }
 
-  const success = await profileStore.changeEmail(
+  const success = profileStore.changeEmail(
     newEmail.value,
     emailChangePassword.value,
   );
@@ -1424,6 +1424,92 @@ input:checked + .slider:before {
 
 .fa-3x {
   font-size: 48px;
+}
+
+.pending-state {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #0ea5e9;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.pending-state::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.pending-state i {
+  animation: bounce 2s infinite;
+  color: #0ea5e9;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.pending-state h4 {
+  color: #0c4a6e;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.pending-state p {
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.pending-state .text-muted {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.pending-state .btn-ghost {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: #0ea5e9;
+  color: #0ea5e9;
+  transition: all 0.3s ease;
+}
+
+.pending-state .btn-ghost:hover {
+  background: #0ea5e9;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 @media (max-width: 768px) {
