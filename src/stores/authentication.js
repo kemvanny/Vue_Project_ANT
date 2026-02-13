@@ -42,7 +42,9 @@ export const useAuthStore = defineStore("auth", () => {
     const translations = {
       "Invalid email or password.": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
       "Invalid email or password": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
-      "Email already exists": "អ៊ីមែលនេះមានរួចហើយ។",
+      "Email already exists": "អ៊ីមែលនេះត្រូវបានប្រើរួចហើយ។",
+      "Email is already in use.": "អ៊ីមែលនេះត្រូវបានប្រើរួចហើយ។",
+      "Email is already in use": "អ៊ីមែលនេះត្រូវបានប្រើរួចហើយ។",
       "Email not found": "រកមិនឃើញអ៊ីមែលនេះទេ។",
       "Invalid email": "អ៊ីមែលមិនត្រឹមត្រូវ។",
       "Password is too weak": "ពាក្យសម្ងាត់ខ្សោយពេក។",
@@ -144,7 +146,9 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err) {
       console.log("Registration error:", err.response?.data);
       error.value =
-        err.response?.data?.message ||
+        translateError(err.response?.data?.message) ||
+        translateError(err.response?.data?.error) ||
+        translateError(err.response?.data?.errors?.email?.[0]) ||
         "ការចុះឈ្មោះបានបរាជ័យ។ សូមព្យាយាមម្តងទៀត";
       return false;
     } finally {
