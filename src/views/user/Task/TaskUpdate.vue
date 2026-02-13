@@ -7,7 +7,6 @@
     @close="close"
   >
     <form @submit.prevent="updateTask">
-      
       <!-- TITLE -->
       <div class="mb-3">
         <label class="label-modern">ចំណងជើង Task</label>
@@ -252,11 +251,12 @@ const updateTask = async () => {
       សិក្សា: "SCHOOL",
     };
 
+    const formattedTime = form.value.time.split(":").slice(0, 2).join(":");
     const body = {
       title: form.value.title.trim(),
       content: form.value.content.trim(),
       date: form.value.date,
-      time: form.value.time,
+      time: formattedTime, // ensure HH:mm
       priority: priorityMap[form.value.priority] || "MEDIUM",
       category: categoryMap[form.value.category] || "WORK",
     };
