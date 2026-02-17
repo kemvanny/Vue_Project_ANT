@@ -7,10 +7,10 @@
         <!-- Brand -->
         <a href="#" class="brand-area">
           <div class="brand-logo">
-            <i class="bi bi-check-lg"></i>
+           <i class="bi bi-check2-circle"></i>
           </div>
           <span class="brand-name">
-            <span class="brand-color">Reab</span>List
+            <span class="brand-color">Reab</span><span class="brand-last-color">List</span>
           </span>
         </a>
 
@@ -118,6 +118,11 @@ const menuOpen = ref(false)
   align-items: center;
   justify-content: center;
 }
+.brand-last-color{
+  color: rgb(15, 69, 69);
+  /* space from one text to one text */
+  letter-spacing: 1px;
+}
 
 /* ================================
    Responsive Behavior
@@ -171,12 +176,14 @@ const menuOpen = ref(false)
 .brand-area {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   text-decoration: none;
   padding-left: 12px;
+  margin-left: -10px;
 }
 .brand-color{
   color: var(--primary);
+  letter-spacing: 1px;
 }
 
 .brand-logo {
@@ -190,7 +197,7 @@ const menuOpen = ref(false)
   color: white;
   font-size: 1.4rem;
   box-shadow:
-    0 10px 25px rgba(13, 148, 136, 0.55),
+    0 1px 2px rgba(13, 148, 136, 0.55),
     inset 0 0 0 1px rgba(255, 255, 255, 0.3);
   transition: transform 0.35s ease;
 }

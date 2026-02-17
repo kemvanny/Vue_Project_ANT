@@ -29,9 +29,9 @@
       <div v-if="showResults" class="overlay" @click="closeDropdown"></div>
 
       <div class="actions-area">
-        <button class="mode-toggle">
+        <!-- <button class="mode-toggle">
           <Moon :size="20" />
-        </button>
+        </button> -->
 
         <ProfileDropdown />
       </div>
