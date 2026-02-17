@@ -23,7 +23,7 @@
           <div class="glow-circle" :style="parallaxStyle(-10)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="../../assets/images/verifyOTP.png"
+              :src="VerifyOTPImage"
               alt="OTP Security"
               class="img-fluid mb-4 floating-3d"
               :style="parallaxStyle(15)"
@@ -141,6 +141,7 @@ import { ref, watch, onMounted, nextTick } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import AuthButton from "../../components/AuthButton.vue";
+import VerifyOTPImage from "@/assets/images/auth/verifyOTP.png";
 
 const auth = useAuthStore();
 const router = useRouter();

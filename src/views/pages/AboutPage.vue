@@ -25,7 +25,7 @@
           </div>
           <div class="col-lg-6" data-fade-up>
             <div class="hero-img-container">
-              <img src="https://images.unsplash.com/photo-1540350394557-8d14678e7f91?auto=format&fit=crop&q=80&w=1200"
+              <img :src="BookImage"
                 class="hero-main-img" alt="Dashboard Preview" />
               <div
                 class="position-absolute bottom-0 start-0 translate-middle-y bg-white p-3 rounded-4 shadow-lg d-none d-md-block floating-badge"
@@ -164,7 +164,7 @@
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=a" class="team-img" alt="Alex" />
+                <img :src="vanny" class="team-img" alt="Alex" />
               </div>
               <span class="team-role">Project Leader & Frontend</span>
               <h4 class="fw-bold mb-1">Kem Vanny</h4>
@@ -176,9 +176,9 @@
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=b" class="team-img" alt="Jordan" />
+                <img :src="liza" class="team-img" alt="Jordan" />
               </div>
-              <span class="team-role">UI/UX & Frontend</span>
+              <span class="team-role">Frontend</span>
               <h4 class="fw-bold mb-1">Hean Liza</h4>
               <p class="text-muted small">
                 ឯកទេសខាងរចនាចំណុចប្រទាក់អ្នកប្រើប្រាស់ និងអភិវឌ្ឍផ្នែកខាងមុខ
@@ -188,9 +188,9 @@
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=c" class="team-img" alt="Sarah" />
+                <img :src="Nara" class="team-img" alt="Sarah" />
               </div>
-              <span class="team-role">UI/UX & Frontend</span>
+              <span class="team-role">Frontend</span>
               <h4 class="fw-bold mb-1">Tel Sophannara</h4>
               <p class="text-muted small">
                 ផ្តោតលើការបង្កើតបទពិសោធន៍អ្នកប្រើប្រាស់ឱ្យកាន់តែរលូន និងទាក់ទាញ
@@ -212,7 +212,7 @@
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=e" class="team-img" alt="Emily" />
+                <img :src="votey" class="team-img" alt="Emily" />
               </div>
               <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Limchhen Revotey</h4>
@@ -222,7 +222,7 @@
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
-                <img src="https://i.pravatar.cc/150?u=f" class="team-img" alt="David" />
+                <img :src="sophearith" class="team-img" alt="David" />
               </div>
               <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Him Sophearith</h4>
@@ -282,10 +282,16 @@
 <script setup>
 import Footer from "@/components/UserPages/Footer.vue";
 import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
-import logo from "@/assets/images/Logo_MPTC.png";
-import logo1 from "@/assets/images/ANT logo HD.png";
-import logo2 from "@/assets/images/CBRD Fund Logo Final.png";
-import socheata from "@/assets/images/socheata.JPEG";
+import logo from "@/assets/images/scholarship/Logo_MPTC.png";
+import logo1 from "@/assets/images/scholarship/ANT logo HD.png";
+import logo2 from "@/assets/images/scholarship/CBRD Fund Logo Final.png";
+import BookImage from "@/assets/images/homepage/book.png";
+import socheata from "@/assets/images/team/socheata.jpg";
+import sophearith from "@/assets/images/team/sophearith.jpg";
+import votey from "@/assets/images/team/votey.png";
+import liza from "@/assets/images/team/liza.jpg";
+import vanny from "@/assets/images/team/vanny.jpg";
+import Nara from "@/assets/images/team/Tel Sophannara.png";
 </script>
 
 <style scoped>

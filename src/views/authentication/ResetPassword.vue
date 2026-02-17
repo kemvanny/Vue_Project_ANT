@@ -23,7 +23,7 @@
           <div class="glow-circle" :style="parallaxStyle(-10)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="../../assets/images/resetpassword (3).png"
+              :src="ResetPasswordImage"
               alt="Security 3D"
               class="img-fluid mb-4 floating-3d"
               :style="parallaxStyle(15)"
@@ -124,6 +124,7 @@ import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
 import AuthInput from "../../components/AuthInput.vue";
 import AuthButton from "../../components/AuthButton.vue";
+import ResetPasswordImage from "@/assets/images/auth/resetpassword.png";
 
 const route = useRoute();
 const router = useRouter();

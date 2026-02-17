@@ -17,47 +17,77 @@
             <div class="col-lg-6">
               <span class="hero-badge">រៀបចំជីវិតឱ្យមានរបៀបរៀបរយ</span>
               <h1 class="fw-bold mb-4">
-                គ្រប់គ្រងរាល់កិច្ចការ<br /><span style="color: var(--primary)">ដោយភាពជឿជាក់</span>
+                គ្រប់គ្រងរាល់កិច្ចការ<br /><span style="color: var(--primary)"
+                  >ដោយភាពជឿជាក់</span
+                >
               </h1>
               <p class="text-body mb-5">
-                ឈប់ខ្វាយខ្វល់ពីរឿងដែលត្រូវធ្វើច្រើនលើសលប់។ ReabList ជួយអ្នករៀបចំផែនការ បែងចែកអាទិភាព
+                ឈប់ខ្វាយខ្វល់ពីរឿងដែលត្រូវធ្វើច្រើនលើសលប់។ ReabList
+                ជួយអ្នករៀបចំផែនការ បែងចែកអាទិភាព
                 និងសម្រេចគោលដៅធំៗរបស់អ្នកតាមរយៈជំហានតូចៗជារៀងរាល់ថ្ងៃ
               </p>
               <div class="btn-group-wrap d-flex flex-wrap gap-3 mb-5">
-                <router-link :to="{ name: 'login' }"
-                  class="btn btn-signup-modern py-3 px-5 fs-5">ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</router-link>
+                <router-link
+                  :to="{ name: 'login' }"
+                  class="btn btn-signup-modern py-3 px-5 fs-5"
+                  >ចាប់ផ្តើមប្រើដោយឥតគិតថ្លៃ</router-link
+                >
               </div>
               <div class="d-flex align-items-center gap-3 reveal">
                 <div class="d-flex">
-                  <img src="https://i.pravatar.cc/40?img=1" class="rounded-circle border border-white"
-                    style="margin-right: -10px" />
-                  <img src="https://i.pravatar.cc/40?img=2" class="rounded-circle border border-white"
-                    style="margin-right: -10px" />
-                  <img src="https://i.pravatar.cc/40?img=3" class="rounded-circle border border-white" />
+                  <img
+                    src="https://i.pravatar.cc/40?img=1"
+                    class="rounded-circle border border-white"
+                    style="margin-right: -10px"
+                  />
+                  <img
+                    src="https://i.pravatar.cc/40?img=2"
+                    class="rounded-circle border border-white"
+                    style="margin-right: -10px"
+                  />
+                  <img
+                    src="https://i.pravatar.cc/40?img=3"
+                    class="rounded-circle border border-white"
+                  />
                 </div>
-                <span class="small fw-semibold text-muted">ចូលរួមជាមួយអ្នកប្រើប្រាស់ជាង ១ម៉ឺននាក់</span>
+                <span class="small fw-semibold text-muted"
+                  >ចូលរួមជាមួយអ្នកប្រើប្រាស់ជាង ១ម៉ឺននាក់</span
+                >
               </div>
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
               <div class="floating-img-wrap">
-                <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=800"
-                  alt="ផលិតភាព" class="img-fluid floating-img" />
-                <div class="stats-card position-absolute bottom-0 start-0 m-4 shadow-lg d-none d-sm-block"
-                  style="width: 280px; transform: translateY(30%)">
+                <img
+                  :src="BannerImage"
+                  alt="ផលិតភាព"
+                  class="img-fluid floating-img"
+                />
+                <div
+                  class="stats-card position-absolute bottom-0 start-0 m-4 shadow-lg d-none d-sm-block"
+                  style="width: 280px; transform: translateY(30%)"
+                >
                   <div class="d-flex justify-content-between mb-3">
                     <span class="fw-bold">កិច្ចការប្រចាំថ្ងៃ</span>
-                    <span class="fw-bold" style="color: var(--accent)">92%</span>
+                    <span class="fw-bold" style="color: var(--accent)"
+                      >92%</span
+                    >
                   </div>
-                  <div class="progress" style="
+                  <div
+                    class="progress"
+                    style="
                       height: 8px;
                       background: rgba(255, 255, 255, 0.1);
                       border-radius: 10px;
-                    ">
-                    <div class="progress-bar" style="
+                    "
+                  >
+                    <div
+                      class="progress-bar"
+                      style="
                         width: 92%;
                         background-color: var(--accent);
                         border-radius: 10px;
-                      "></div>
+                      "
+                    ></div>
                   </div>
                   <p class="small mt-3 mb-0 opacity-75">
                     អ្នកជិតសម្រេចគោលដៅប្រចាំថ្ងៃហើយ! បន្តព្យាយាមទៀត។
@@ -72,16 +102,22 @@
       <section class="py-5 my-5">
         <div class="container">
           <div class="text-center mb-5 pb-3 reveal">
-            <h2 class="display-5 mb-4 fw-semibold text-feeling">សាមញ្ញ តែមានប្រសិទ្ធភាព</h2>
+            <h2 class="display-5 mb-4 fw-semibold text-feeling">
+              សាមញ្ញ តែមានប្រសិទ្ធភាព
+            </h2>
             <p class="mx-auto" style="max-width: 600px">
-              រាល់មុខងារទាំងអស់របស់ ReabList ត្រូវបានសម្រិតសម្រាំងដើម្បីជួយអ្នកកាត់បន្ថយភាពស្មុគស្មាញ
-              បង្កើនការផ្ដោតអារម្មណ៍ និងផ្តល់ឱ្យអ្នកនូវ "ខួរក្បាលទីពីរ" សម្រាប់គ្រប់គ្រងកិច្ចការរបស់អ្នក
+              រាល់មុខងារទាំងអស់របស់ ReabList
+              ត្រូវបានសម្រិតសម្រាំងដើម្បីជួយអ្នកកាត់បន្ថយភាពស្មុគស្មាញ
+              បង្កើនការផ្ដោតអារម្មណ៍ និងផ្តល់ឱ្យអ្នកនូវ "ខួរក្បាលទីពីរ"
+              សម្រាប់គ្រប់គ្រងកិច្ចការរបស់អ្នក
             </p>
           </div>
           <div class="row g-4">
             <div class="col-md-4 reveal" style="transition-delay: 0.1s">
               <div class="feature-card">
-                <div class="icon-box" style="
+                <div
+                  class="icon-box"
+                  style="
                     width: 56px;
                     height: 56px;
                     background: var(--primary-light);
@@ -91,18 +127,22 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  ">
+                  "
+                >
                   <zap />
                 </div>
                 <h4 class="title-feeling">ផ្ដោតលើអ្វីដែលសំខាន់</h4>
                 <p>
-                  បែងចែកកិច្ចការសំខាន់ៗឱ្យបានច្បាស់លាស់ ដើម្បីផ្ដោតកម្លាំងចំគោលដៅ និងបង្កើនលទ្ធផលការងារ
+                  បែងចែកកិច្ចការសំខាន់ៗឱ្យបានច្បាស់លាស់
+                  ដើម្បីផ្ដោតកម្លាំងចំគោលដៅ និងបង្កើនលទ្ធផលការងារ
                 </p>
               </div>
             </div>
             <div class="col-md-4 reveal" style="transition-delay: 0.2s">
               <div class="feature-card">
-                <div class="icon-box" style="
+                <div
+                  class="icon-box"
+                  style="
                     width: 56px;
                     height: 56px;
                     background: #fff7ed;
@@ -112,18 +152,22 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  ">
+                  "
+                >
                   <repeat />
                 </div>
                 <h4 class="title-feeling">សាងទម្លាប់ល្អជារៀងរាល់ថ្ងៃ</h4>
                 <p>
-                  តាមដានវឌ្ឍនភាពជារៀងរាល់ថ្ងៃ ដើម្បីកសាងទម្លាប់ដែលនាំអ្នកទៅរកភាពជោគជ័យយូរអង្វែង
+                  តាមដានវឌ្ឍនភាពជារៀងរាល់ថ្ងៃ
+                  ដើម្បីកសាងទម្លាប់ដែលនាំអ្នកទៅរកភាពជោគជ័យយូរអង្វែង
                 </p>
               </div>
             </div>
             <div class="col-md-4 reveal" style="transition-delay: 0.3s">
               <div class="feature-card">
-                <div class="icon-box" style="
+                <div
+                  class="icon-box"
+                  style="
                     width: 56px;
                     height: 56px;
                     background: #f0fdf4;
@@ -133,12 +177,14 @@
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                  ">
+                  "
+                >
                   <users />
                 </div>
                 <h4 class="title-feeling">នៅក្បែរអ្នកគ្រប់ពេលវេលា</h4>
                 <p>
-                  ចូលប្រើទិន្នន័យរបស់អ្នកបានគ្រប់ពេល មិនថាលើទូរស័ព្ទ ឬកុំព្យូទ័រ ដោយសុវត្ថិភាព និងរហ័ស
+                  ចូលប្រើទិន្នន័យរបស់អ្នកបានគ្រប់ពេល មិនថាលើទូរស័ព្ទ ឬកុំព្យូទ័រ
+                  ដោយសុវត្ថិភាព និងរហ័ស
                 </p>
               </div>
             </div>
@@ -155,8 +201,8 @@
                 <span style="color: var(--primary)">ដៃគូដ៏ល្អបំផុត?</span>
               </h2>
               <p class="mb-5">
-                យើងជឿថា កម្មវិធីល្អគឺជាកម្មវិធីដែលមិនត្រូវការការរៀនច្រើន។ ReabList រចនាឡើងដើម្បីឱ្យអ្នក "បើកភ្លាម
-                ប្រើបានភ្លាម"
+                យើងជឿថា កម្មវិធីល្អគឺជាកម្មវិធីដែលមិនត្រូវការការរៀនច្រើន។
+                ReabList រចនាឡើងដើម្បីឱ្យអ្នក "បើកភ្លាម ប្រើបានភ្លាម"
                 ដោយផ្ដោតលើភាពសាមញ្ញ និងប្រសិទ្ធភាព។
               </p>
 
@@ -165,7 +211,8 @@
                 <div>
                   <h6 class="mb-1 fw-bold">សុវត្ថិភាពខ្ពស់</h6>
                   <p class="small mb-0">
-                    រាល់ទិន្នន័យ និងគម្រោងផ្ទាល់ខ្លួនរបស់អ្នក ត្រូវបានការពារដោយការសម្ងាត់បំផុត
+                    រាល់ទិន្នន័យ និងគម្រោងផ្ទាល់ខ្លួនរបស់អ្នក
+                    ត្រូវបានការពារដោយការសម្ងាត់បំផុត
                   </p>
                 </div>
               </div>
@@ -174,7 +221,8 @@
                 <div>
                   <h6 class="mb-1 fw-bold">ភ្ជាប់ទំនាក់ទំនងគ្រប់ឧបករណ៍</h6>
                   <p class="small mb-0">
-                    Sync ទិន្នន័យដោយស្វ័យប្រវត្តិ ឱ្យអ្នកធ្វើការបានគ្រប់ទីកន្លែង និងគ្រប់ពេលវេលា
+                    Sync ទិន្នន័យដោយស្វ័យប្រវត្តិ ឱ្យអ្នកធ្វើការបានគ្រប់ទីកន្លែង
+                    និងគ្រប់ពេលវេលា
                   </p>
                 </div>
               </div>
@@ -183,14 +231,18 @@
                 <div>
                   <h6 class="mb-1 fw-bold">បទពិសោធន៍ដ៏សាមញ្ញ</h6>
                   <p class="small mb-0">
-                    រចនាបទបែប Minimalist ងាយស្រួលយល់ និងងាយស្រួលប្រើ ចាប់ផ្ដើមបានភ្លាមៗ
+                    រចនាបទបែប Minimalist ងាយស្រួលយល់ និងងាយស្រួលប្រើ
+                    ចាប់ផ្ដើមបានភ្លាមៗ
                   </p>
                 </div>
               </div>
             </div>
             <div class="col-lg-7 text-center reveal-right">
-              <img src="https://images.unsplash.com/photo-1542626991-cbc4e32524cc?auto=format&fit=crop&q=80&w=800"
-                alt="គំរូកម្មវិធី" class="img-fluid rounded-4 shadow-lg" />
+              <img
+                :src="WhyChooseUsImage"
+                alt="គំរូកម្មវិធី"
+                class="img-fluid rounded-4 shadow-lg"
+              />
             </div>
           </div>
         </div>
@@ -206,21 +258,27 @@
                 ដ៏ច្បាស់លាស់
               </h2>
               <p class="lead text-muted mb-5">
-                ReabList មិនមែនគ្រាន់តែជាបញ្ជីកិច្ចការធម្មតានោះទេ តែវាជាជំនួយការឆ្លាតវៃដែលជួយអ្នក
-                កាត់បន្ថយភាពតានតឹងពីការងារ និងបង្វែររាល់ក្ដីស្រមៃឱ្យទៅជាលទ្ធផលពិតប្រាកដ
+                ReabList មិនមែនគ្រាន់តែជាបញ្ជីកិច្ចការធម្មតានោះទេ
+                តែវាជាជំនួយការឆ្លាតវៃដែលជួយអ្នក កាត់បន្ថយភាពតានតឹងពីការងារ
+                និងបង្វែររាល់ក្ដីស្រមៃឱ្យទៅជាលទ្ធផលពិតប្រាកដ
               </p>
 
-              <div class="p-4 border-start border-4 border-teal rounded-3" style="background: var(--primary-light)">
+              <div
+                class="p-4 border-start border-4 border-teal rounded-3"
+                style="background: var(--primary-light)"
+              >
                 <p class="m-0 fst-italic">
-                  "បេសកកម្មរបស់យើងគឺជួយឱ្យរាល់ថ្ងៃរបស់អ្នកមានសណ្ដាប់ធ្នាប់ និងពោរពេញដោយផលិតភាព
-                  ដើម្បីសម្រេចរាល់គោលដៅដែលអ្នកប្រាថ្នា"
+                  "បេសកកម្មរបស់យើងគឺជួយឱ្យរាល់ថ្ងៃរបស់អ្នកមានសណ្ដាប់ធ្នាប់
+                  និងពោរពេញដោយផលិតភាព ដើម្បីសម្រេចរាល់គោលដៅដែលអ្នកប្រាថ្នា"
                 </p>
               </div>
             </div>
 
             <div class="col-lg-6 ps-lg-5 reveal-right">
               <div class="about-img-stack">
-                <div class="floating-badge" style="
+                <div
+                  class="floating-badge"
+                  style="
                     position: absolute;
                     top: 15%;
                     left: -20px;
@@ -234,14 +292,21 @@
                     align-items: center;
                     gap: 10px;
                     animation: float 4s infinite;
-                  ">
+                  "
+                >
                   <trending-up />
                   <span class="fw-bold">ជោគជ័យគ្រប់ជំហាន</span>
                 </div>
-                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80"
-                  class="img-main ms-auto" alt="កន្លែងធ្វើការ" />
-                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
-                  class="img-sub" alt="ការបង្ហាញកម្មវិធី" />
+                <img
+                  :src="TableImage"
+                  class="img-main ms-auto"
+                  alt="កន្លែងធ្វើការ"
+                />
+                <img
+                  :src="PhoneImage"
+                  class="img-sub"
+                  alt="ការបង្ហាញកម្មវិធី"
+                />
               </div>
             </div>
           </div>
@@ -258,7 +323,10 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 import Footer from "@/components/UserPages/Footer.vue";
 
 import { onMounted, onBeforeUnmount, ref } from "vue";
-
+import BannerImage from "@/assets/images/homepage/banner.png";
+import WhyChooseUsImage from "@/assets/images/homepage/whychooseus.png";
+import PhoneImage from "@/assets/images/homepage/phone.png";
+import TableImage from "@/assets/images/homepage/table_img.png";
 const heroBg = ref(null);
 let handler = null;
 
@@ -281,7 +349,6 @@ onBeforeUnmount(() => {
 });
 </script>
 
-
 <style scoped>
 .text-feeling {
   color: #333333;
@@ -297,12 +364,17 @@ onBeforeUnmount(() => {
   position: relative;
   overflow: hidden;
   padding: 200px 0 120px;
-  background: radial-gradient(1200px circle at 10% 10%,
+  background:
+    radial-gradient(
+      1200px circle at 10% 10%,
       rgba(109, 213, 250, 0.3),
-      transparent 40%),
-    radial-gradient(1000px circle at 90% 20%,
+      transparent 40%
+    ),
+    radial-gradient(
+      1000px circle at 90% 20%,
       rgba(137, 247, 254, 0.35),
-      transparent 45%),
+      transparent 45%
+    ),
     linear-gradient(135deg, #f8feff 0%, #eafaff 50%, #f6fbff 100%);
 }
 
@@ -403,9 +475,11 @@ onBeforeUnmount(() => {
   content: "";
   position: absolute;
   inset: -20px;
-  background: radial-gradient(circle,
-      color-mix(in srgb, var(--primary) 35%, transparent),
-      transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 35%, transparent),
+    transparent 70%
+  );
   filter: blur(40px);
   z-index: -1;
 }

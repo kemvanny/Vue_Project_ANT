@@ -24,7 +24,7 @@
           <div class="glow-circle" :style="parallaxStyle(-0.02)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="https://cdni.iconscout.com/illustration/premium/thumb/forgot-password-5795916-4841573.png"
+              :src="ForgotPasswordImage"
               alt="Forgot Password Illustration"
               class="img-fluid mb-4 floating-3d"
               style="
@@ -144,6 +144,7 @@ import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
 import AuthInput from "../../components/AuthInput.vue";
 import AuthButton from "../../components/AuthButton.vue";
+import ForgotPasswordImage from "@/assets/images/auth/forget_password.png";
 
 const router = useRouter();
 const authStore = useAuthStore();
