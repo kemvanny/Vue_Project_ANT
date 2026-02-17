@@ -11,7 +11,7 @@
       
       <!-- TITLE -->
       <div class="mb-3">
-        <label class="label-modern">ចំណងជើង Task</label>
+        <label class="label-modern">ចំណងជើង</label>
         <input
           v-model.trim="form.title"
           @blur="touched.title = true"

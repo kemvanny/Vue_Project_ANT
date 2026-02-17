@@ -12,10 +12,14 @@
       <!-- Logo -->
       <div class="logo-sticky">
         <div class="logo-section">
-          <div class="logo-box">
-            <i class="fas fa-check-double"></i>
+          <a href="#" class="brand-area">
+          <div class="brand-logo">
+           <i class="bi bi-check2-circle"></i>
           </div>
-          <span class="logo-text">ReabList</span>
+          <span class="brand-name">
+            <span class="brand-color">Reab</span><span class="brand-last-color">List</span>
+          </span>
+        </a>
         </div>
       </div>
 
@@ -30,7 +34,7 @@
           exact
         >
           <i class="fas fa-chart-pie"></i>
-          <span>Dashboard</span>
+          <span>ផ្ទាំងគ្រប់គ្រង</span>
         </router-link>
 
         <router-link
@@ -91,7 +95,7 @@
 
       <!-- Footer -->
       <div class="mt-auto">
-        <div class="status-card">
+        <!-- <div class="status-card">
           <div
             class="d-flex align-items-center justify-content-center gap-2 mb-2"
           >
@@ -101,9 +105,9 @@
           <button class="btn btn-primary btn-refresh">
             ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ
           </button>
-        </div>
+        </div> -->
 
-        <button class="btn-logout" @click="handleLogout">
+        <button class="btn-logout" @click="openLogoutModal">
           <i class="fas fa-sign-out-alt me-2"></i>
           ចាកចេញ
         </button>
@@ -111,6 +115,35 @@
       </div>
     </aside>
     <TaskCreate ref="taskCreateRef" />
+
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="showLogoutModal" class="modal-backdrop" @click.self="closeLogoutModal">
+          <div class="modal-card" @click.stop>
+            <div class="modal-head">
+              <h3>ចាកចេញ?</h3>
+              <button @click="closeLogoutModal" class="close-btn" type="button">
+                &times;
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <p>តើអ្នកប្រាកដថាចង់ចាកចេញពីគណនីរបស់អ្នកដែរឬទេ?</p>
+            </div>
+
+            <div class="modal-foot d-flex justify-content-end a;lign-items-center">
+              <button class="btn-cancel" @click="closeLogoutModal" type="button">
+                បោះបង់
+              </button>
+              <button class="btn-confirm-logout" @click="handleLogout" :disabled="isLoggingOut" type="button">
+                <i class="bi bi-box-arrow-right fw-bold"></i>
+                {{ isLoggingOut ? "កំពុងចាកចេញ..." : "ចាកចេញ" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -130,6 +163,9 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const taskCreateRef = ref(null);
+const showLogoutModal = ref(false);
+const isLoggingOut = ref(false);
+const triggerRect = ref(null);
 
 const openCreateTask = () => {
   closeSidebar?.();
@@ -137,19 +173,212 @@ const openCreateTask = () => {
 };
 
 const handleLogout = async () => {
+  if (isLoggingOut.value) return;
+
+  isLoggingOut.value = true;
   try {
     await api.post("/auth/logout");
   } catch (err) {
     console.error("Logout error:", err);
   } finally {
     authStore.logout();
+    showLogoutModal.value = false;
+    isLoggingOut.value = false;
     router.push("/login");
   }
+};
+const openLogoutModal = () => {
+  showLogoutModal.value = true;
+};
+
+const closeLogoutModal = () => {
+  if (!isLoggingOut.value) showLogoutModal.value = false;
 };
 </script>
 
 
 <style scoped>
+
+body:has(.modal-backdrop) .dropdown-menu-wrapper {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000 !important;
+  padding: 18px;
+}
+.brand-last-color{
+  color: rgb(15, 69, 69);
+  /* space from one text to one text */
+  letter-spacing: 1px;
+}
+.modal-card {
+  width: 90%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 25px 80px rgba(15, 23, 42, 0.28);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  z-index: 3001 !important;
+  position: relative;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-head h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #b91c1c;
+  letter-spacing: -0.2px;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-size: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.modal-body {
+  padding: 18px 22px;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.modal-body p {
+  margin: 0;
+}
+
+.modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 18px 22px 22px;
+}
+
+.btn-cancel {
+  width: 120px;
+  min-width: auto;
+  height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.btn-confirm-logout {
+  width: 140px;
+  min-width: auto;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.25);
+}
+
+.btn-confirm-logout:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 35px rgba(239, 68, 68, 0.32);
+}
+
+.btn-confirm-logout:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding-left: 12px;
+  margin-left: -10px;
+}
+.brand-color{
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.brand-logo {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(145deg, #14b8a6, #0d9488);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+  box-shadow:
+    0 1px 2px rgba(13, 148, 136, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.35s ease;
+}
+
+.brand-area:hover .brand-logo {
+  transform: scale(1.1);
+}
+
+.brand-name {
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
 #reab-sidebar {
   position: fixed;
   top: 0;
@@ -207,7 +436,6 @@ const handleLogout = async () => {
   position: sticky;
   top: 0;
   z-index: 20;
-
   /* backdrop-filter: blur(20px); */
 }
 
@@ -215,7 +443,7 @@ const handleLogout = async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 48px;
+  margin-bottom: 30px;
   padding-left: 8px;
 }
 
@@ -256,7 +484,7 @@ const handleLogout = async () => {
   padding: 12px 16px;
   margin-bottom: 4px;
 
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-decoration: none;
 

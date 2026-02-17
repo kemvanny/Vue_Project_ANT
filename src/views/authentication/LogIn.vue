@@ -89,7 +89,7 @@
               <div
                 class="d-flex justify-content-between align-items-center mb-4 small stagger-4"
               >
-                <div class="form-check">
+                <!-- <div class="form-check">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -101,7 +101,8 @@
                     for="rememberMe"
                     >ចងចាំខ្ញុំ</label
                   >
-                </div>
+                </div> -->
+                <div></div>
                 <router-link
                   to="/forget-password"
                   class="text-decoration-none text-teal fw-bold link-effect"
