@@ -23,7 +23,7 @@
           <div class="glow-circle" :style="parallaxStyle(-10)"></div>
           <div class="z-2 text-center content-wrapper">
             <img
-              src="https://cdn3d.iconscout.com/3d/free/thumb/free-notebook-3814125-3187506.png"
+              :src="RegisterImage"
               alt="Sign Up 3D"
               class="img-fluid mb-4 floating-3d"
               :style="parallaxStyle(15)"
@@ -155,6 +155,7 @@ import { useRouter } from "vue-router";
 import { z } from "zod";
 import AuthButton from "../../components/AuthButton.vue";
 import AuthInput from "../../components/AuthInput.vue";
+import RegisterImage from "@/assets/images/auth/regiter.png";
 
 const auth = useAuthStore();
 const router = useRouter();

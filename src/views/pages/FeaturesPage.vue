@@ -6,20 +6,33 @@
       <div class="container hero-content">
         <div class="row align-items-center">
           <div class="col-lg-6">
-            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
-              style="font-size: 11px">ជំនួយការរៀបចំកិច្ចការឆ្លាតវៃ</span>
+            <span
+              class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-4 py-2 rounded-pill fw-800 uppercase tracking-widest mb-4"
+              style="font-size: 11px"
+              >ជំនួយការរៀបចំកិច្ចការឆ្លាតវៃ</span
+            >
             <h1 class="fw-bold display-3 mb-5 mt-3">
               <span>រៀបចំជីវិតរបស់អ្នក</span><br />
-              <span style="color: var(--primary);">ឱ្យមានសណ្តាប់ធ្នាប់បំផុត</span>
+              <span style="color: var(--primary)"
+                >ឱ្យមានសណ្តាប់ធ្នាប់បំផុត</span
+              >
             </h1>
             <p class="lead mb-5 fw-500 text-muted col-lg-11 lh-2">
-              បង្វែរភាពស្មុគស្មាញឱ្យទៅជាភាពងាយស្រួល។ ReabList ជួយអ្នកតាមដានរាល់ភារកិច្ច បង្កើតទម្លាប់ល្អៗ និងរំលឹកអ្នករាល់កិច្ចការសំខាន់ៗតាមរយៈ Telegram មុនពេលដល់កំណត់
+              បង្វែរភាពស្មុគស្មាញឱ្យទៅជាភាពងាយស្រួល។ ReabList
+              ជួយអ្នកតាមដានរាល់ភារកិច្ច បង្កើតទម្លាប់ល្អៗ
+              និងរំលឹកអ្នករាល់កិច្ចការសំខាន់ៗតាមរយៈ Telegram មុនពេលដល់កំណត់
             </p>
 
             <div class="d-flex gap-3">
-              <a href="#" class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
-                style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចាប់ផ្ដើមឥឡូវនេះ</a>
-              <button class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25">
+              <a
+                href="#"
+                class="btn btn-primary rounded-4 px-5 py-3 fw-800 border-0 shadow-lg"
+                style="background: linear-gradient(135deg, #14b8a6, #0d9488)"
+                >ចាប់ផ្ដើមឥឡូវនេះ</a
+              >
+              <button
+                class="btn btn-outline-dark rounded-4 px-5 py-3 fw-800 border-opacity-25"
+              >
                 របៀបប្រើប្រាស់
               </button>
             </div>
@@ -37,7 +50,9 @@
               </div>
 
               <div class="floating-mockup">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4"
+                >
                   <div class="fw-800 text-dark">កិច្ចការប្រចាំថ្ងៃ</div>
                   <i class="fas fa-calendar-alt text-muted"></i>
                 </div>
@@ -63,24 +78,27 @@
                   <div class="check-box"></div>
                   <div class="flex-grow-1">
                     <div class="fw-700 small">ហាត់ប្រាណពេលល្ងាច</div>
-                    <div class="x-small text-muted">
-                      ភ្ជាប់រូបភាពភស្តុតាង
-                    </div>
+                    <div class="x-small text-muted">ភ្ជាប់រូបភាពភស្តុតាង</div>
                   </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+                <div
+                  class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center"
+                >
                   <div class="x-small fw-800 text-primary">បញ្ចប់បាន ៨៥%</div>
                   <div class="d-flex">
-                    <div style="
+                    <div
+                      style="
                         width: 25px;
                         height: 25px;
                         background: #e2e8f0;
                         border-radius: 50%;
                         border: 2px solid white;
                         margin-right: -10px;
-                      "></div>
-                    <div style="
+                      "
+                    ></div>
+                    <div
+                      style="
                         width: 25px;
                         height: 25px;
                         background: var(--primary);
@@ -91,7 +109,8 @@
                         justify-content: center;
                         color: white;
                         font-size: 8px;
-                      ">
+                      "
+                    >
                       +3
                     </div>
                   </div>
@@ -110,14 +129,17 @@
             <div class="icon-circle"><i class="fas fa-barcode"></i></div>
             <h3 class="fw-800 mb-3">ការគ្រប់គ្រងកិច្ចការកម្រិតខ្ពស់</h3>
             <p class="text-muted fw-500 mb-4">
-              ReabList អនុវត្តការចាត់ចែងកិច្ចការដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់ 
+              ReabList អនុវត្តការចាត់ចែងកិច្ចការដែលមានរចនាសម្ព័ន្ធច្បាស់លាស់
               ជួយអ្នករៀបចំគម្រោងជីវិតប្រកបដោយវិជ្ជាជីវៈ៖
             </p>
 
             <div class="row g-3">
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">រៀបចំតាមប្រភេទ</span>
+                  <span
+                    class="x-small fw-800 text-primary uppercase d-block mb-3"
+                    >រៀបចំតាមប្រភេទ</span
+                  >
                   <div class="d-flex flex-column gap-3 small fw-700 text-muted">
                     <div>
                       <i class="fas fa-check-circle text-primary me-2"></i> SKU
@@ -136,10 +158,15 @@
               </div>
               <div class="col-md-6">
                 <div class="p-4 bg-light rounded-4 h-100">
-                  <span class="x-small fw-800 text-primary uppercase d-block mb-3">វដ្តជីវិតនៃកិច្ចការ</span>
+                  <span
+                    class="x-small fw-800 text-primary uppercase d-block mb-3"
+                    >វដ្តជីវិតនៃកិច្ចការ</span
+                  >
                   <p class="x-small text-muted mb-0">
-                    គ្រប់គ្រងរាល់សកម្មភាព (Create, Read, Update, Delete) ក្នុងពេលជាក់ស្តែង។ 
-                    អ្នកអាចមើលឃើញវឌ្ឍនភាពការងារភ្លាមៗមុនពេលសម្រេចចិត្តរក្សាទុក ឬលុបចោលកិច្ចការ
+                    គ្រប់គ្រងរាល់សកម្មភាព (Create, Read, Update, Delete)
+                    ក្នុងពេលជាក់ស្តែង។
+                    អ្នកអាចមើលឃើញវឌ្ឍនភាពការងារភ្លាមៗមុនពេលសម្រេចចិត្តរក្សាទុក
+                    ឬលុបចោលកិច្ចការ
                   </p>
                 </div>
               </div>
@@ -148,21 +175,26 @@
         </div>
 
         <div class="col-lg-4">
-          <div class="bento-card" style="background: #f0f9ff; border-color: #bae6fd">
+          <div
+            class="bento-card"
+            style="background: #f0f9ff; border-color: #bae6fd"
+          >
             <div class="icon-circle" style="background: #0088cc; color: white">
               <i class="fab fa-telegram"></i>
             </div>
             <h4 class="fw-800">រំលឹកទុកជាមុន ១០ នាទី</h4>
             <p class="text-muted small">
-              ធ្កុំឱ្យរំលងរាល់ការណាត់ជួបសំខាន់។ ទទួលបានការជូនដំណឹងតាម Telegram យ៉ាងជាក់លាក់ 
-              **១០ នាទីមុន** ពេលដល់កាលកំណត់នៃកិច្ចការរបស់អ្នក។
+              ធ្កុំឱ្យរំលងរាល់ការណាត់ជួបសំខាន់។ ទទួលបានការជូនដំណឹងតាម Telegram
+              យ៉ាងជាក់លាក់ **១០ នាទីមុន** ពេលដល់កាលកំណត់នៃកិច្ចការរបស់អ្នក។
             </p>
 
             <div class="alert-bubble shadow-sm">
               <i class="fab fa-telegram-plane fs-4"></i>
               <div>
                 <p class="mb-0 fw-800 x-small">REABLIST_ALERTS_BOT</p>
-                <p class="mb-0 small">រំលឹក៖ កិច្ចការ "ផ្ញើរបាយការណ៍" ក្នុងរយៈពេល ១០ នាទី</p>
+                <p class="mb-0 small">
+                  រំលឹក៖ កិច្ចការ "ផ្ញើរបាយការណ៍" ក្នុងរយៈពេល ១០ នាទី
+                </p>
               </div>
             </div>
           </div>
@@ -173,12 +205,17 @@
             <div class="icon-circle"><i class="fas fa-camera"></i></div>
             <h4 class="fw-800">ភស្តុតាងនៃការសម្រេច</h4>
             <p class="text-muted small">
-              រក្សាទុកជោគជ័យតូចៗរបស់អ្នកជាមួយរូបភាព។ ភ្ជាប់ភស្តុតាងភ្លាមៗទៅកាន់កិច្ចការនីមួយៗ 
-      ដើម្បីតាមដានរាល់សកម្មភាពដែលអ្នកបានបញ្ចប់។
+              រក្សាទុកជោគជ័យតូចៗរបស់អ្នកជាមួយរូបភាព។
+              ភ្ជាប់ភស្តុតាងភ្លាមៗទៅកាន់កិច្ចការនីមួយៗ
+              ដើម្បីតាមដានរាល់សកម្មភាពដែលអ្នកបានបញ្ចប់។
             </p>
-            <div class="mt-4 p-4 border border-dashed rounded-4 text-center bg-light">
+            <div
+              class="mt-4 p-4 border border-dashed rounded-4 text-center bg-light"
+            >
               <i class="fas fa-cloud-upload-alt text-muted mb-2 fs-3"></i>
-              <p class="x-small text-muted fw-800 mb-0">ចុចដើម្បីបន្ថែមរូបភាព</p>
+              <p class="x-small text-muted fw-800 mb-0">
+                ចុចដើម្បីបន្ថែមរូបភាព
+              </p>
             </div>
           </div>
         </div>
@@ -188,8 +225,9 @@
             <div class="icon-circle"><i class="fas fa-chart-pie"></i></div>
             <h4 class="fw-800">វាស់ស្ទង់ផលិតភាព</h4>
             <p class="text-muted small">
-              តាមដានវឌ្ឍនភាពនៃការបញ្ចប់កិច្ចការរបស់អ្នកក្នុងពេលជាក់ស្តែង។ វិភាគមើលថាតើអ្នកបាន 
-      សម្រេចលទ្ធផលបានកម្រិតណា ធៀបនឹងផែនការដែលអ្នកបានកំណត់ទុក
+              តាមដានវឌ្ឍនភាពនៃការបញ្ចប់កិច្ចការរបស់អ្នកក្នុងពេលជាក់ស្តែង។
+              វិភាគមើលថាតើអ្នកបាន សម្រេចលទ្ធផលបានកម្រិតណា
+              ធៀបនឹងផែនការដែលអ្នកបានកំណត់ទុក
             </p>
             <div class="progress-hud">
               <div class="d-flex justify-content-between x-small fw-800 mb-1">
@@ -208,8 +246,9 @@
             <div class="icon-circle"><i class="fas fa-user-shield"></i></div>
             <h4 class="fw-800">គ្រប់គ្រងគណនីផ្ទាល់ខ្លួន</h4>
             <p class="text-muted small">
-             រៀបចំព័ត៌មានផ្ទាល់ខ្លួន និងរូបភាពប្រវត្តិរូបរបស់អ្នកយ៉ាងងាយស្រួល។ 
-      ធានាថាទិន្នន័យនៃបញ្ជីកិច្ចការរបស់អ្នក ត្រូវបានរក្សាទុកដោយសុវត្ថិភាព និងឯកជនភាពបំផុត
+              រៀបចំព័ត៌មានផ្ទាល់ខ្លួន និងរូបភាពប្រវត្តិរូបរបស់អ្នកយ៉ាងងាយស្រួល។
+              ធានាថាទិន្នន័យនៃបញ្ជីកិច្ចការរបស់អ្នក
+              ត្រូវបានរក្សាទុកដោយសុវត្ថិភាព និងឯកជនភាពបំផុត
             </p>
           </div>
         </div>
@@ -219,12 +258,19 @@
     <section class="container mb-5 pb-5">
       <div class="cta-box text-center shadow-lg">
         <div style="position: relative; z-index: 10">
-          <h2 class="display-5 fw-800 mb-4">ចាប់ផ្ដើមរៀបចំជីវិតឱ្យមានរបៀបរៀបរយ</h2>
+          <h2 class="display-5 fw-800 mb-4">
+            ចាប់ផ្ដើមរៀបចំជីវិតឱ្យមានរបៀបរៀបរយ
+          </h2>
           <p class="lead text-muted mb-5 col-lg-6 mx-auto">
-            កុំទុកឱ្យកិច្ចការសំខាន់ៗរំលងហួសទៅឱ្យសោះ។ បង្កើនផលិតភាពរបស់អ្នក និងសម្រេចគោលដៅប្រចាំថ្ងៃជាមួយ ReabList ចាប់ពីថ្ងៃនេះតទៅ
+            កុំទុកឱ្យកិច្ចការសំខាន់ៗរំលងហួសទៅឱ្យសោះ។ បង្កើនផលិតភាពរបស់អ្នក
+            និងសម្រេចគោលដៅប្រចាំថ្ងៃជាមួយ ReabList ចាប់ពីថ្ងៃនេះតទៅ
           </p>
-          <router-link to="/login" class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
-            style="background: linear-gradient(135deg, #14b8a6, #0d9488);">ចាប់ផ្ដើមប្រើប្រាស់ដោយឥតគិតថ្លៃ</router-link>
+          <router-link
+            to="/login"
+            class="btn btn-primary rounded-pill px-5 py-3 fw-800 border-0 shadow-lg"
+            style="background: linear-gradient(135deg, #14b8a6, #0d9488)"
+            >ចាប់ផ្ដើមប្រើប្រាស់ដោយឥតគិតថ្លៃ</router-link
+          >
         </div>
       </div>
     </section>
@@ -233,14 +279,13 @@
   </div>
 </template>
 
-
 <script setup>
 import Footer from "@/components/UserPages/Footer.vue";
 import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 </script>
 
 <style scoped>
-.lh-2{
+.lh-2 {
   line-height: 1.8;
 }
 .pill-tag {
@@ -256,9 +301,11 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 /* --- Refined Banner Style --- */
 .hero-banner {
   position: relative;
-  background: radial-gradient(circle at 20% 50%,
-      #f0fdfa 0%,
-      var(--primary-light) 100%);
+  background: radial-gradient(
+    circle at 20% 50%,
+    #f0fdfa 0%,
+    var(--primary-light) 100%
+  );
   min-height: 95vh;
   display: flex;
   align-items: center;
@@ -286,7 +333,8 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   top: 0;
   width: 45%;
   height: 100%;
-  background: url("https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop") center/cover no-repeat;
+  background: url("https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop")
+    center/cover no-repeat;
   z-index: 1;
   mask-image: linear-gradient(to right, transparent, black 40%);
   -webkit-mask-image: linear-gradient(to right, transparent, black 40%);
@@ -299,9 +347,11 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
   top: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right,
-      var(--primary-light) 0%,
-      rgba(236, 254, 255, 0) 60%);
+  background: linear-gradient(
+    to right,
+    var(--primary-light) 0%,
+    rgba(236, 254, 255, 0) 60%
+  );
   z-index: 2;
 }
 
@@ -369,7 +419,6 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 }
 
 @keyframes floatMain {
-
   0%,
   100% {
     transform: rotateY(-15deg) rotateX(5deg) translateY(0);
@@ -381,7 +430,6 @@ import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
 }
 
 @keyframes floatNode {
-
   0%,
   100% {
     transform: translateY(0) translateX(0);
