@@ -36,7 +36,6 @@
                 filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
               "
             />
-
             <h3 class="fw-bold tracking-wide mb-2 text-shadow">
               កម្មវិធីគ្រប់គ្រងការងារ
             </h3>
@@ -76,6 +75,7 @@
                 :error="errors.password"
                 class="stagger-3"
               />
+
               <transition name="shake">
                 <div
                   v-if="auth.error"
@@ -132,6 +132,33 @@
         </div>
       </div>
     </div>
+
+    <!-- ── DEACTIVATED ACCOUNT MODAL ─────────────────────────── -->
+    <transition name="modal-fade">
+      <div
+        v-if="auth.showDeactivatedModal"
+        class="modal-overlay"
+        @click.self="auth.showDeactivatedModal = false"
+      >
+        <div class="deactivated-modal">
+          <div class="modal-icon-wrap">
+            <i class="bi bi-shield-lock-fill modal-icon"></i>
+          </div>
+          <h5 class="modal-title-text">គណនីត្រូវបានបិទ</h5>
+          <p class="modal-body-text">
+            គណនីរបស់អ្នកត្រូវបានបិទដំណើរការដោយអ្នកគ្រប់គ្រង។<br />
+            សូមទាក់ទងអ្នកគ្រប់គ្រងសម្រាប់ព័ត៌មានបន្ថែម។
+          </p>
+          <button
+            class="modal-close-btn"
+            @click="auth.showDeactivatedModal = false"
+          >
+            យល់ព្រម
+          </button>
+        </div>
+      </div>
+    </transition>
+    <!-- ────────────────────────────────────────────────────────── -->
   </div>
 </template>
 
@@ -151,6 +178,7 @@ const mouseY = ref(0);
 
 const form = reactive({ email: "", password: "", rememberMe: false });
 const errors = reactive({ email: "", password: "" });
+
 const loginSchema = z.object({
   email: z
     .string()
@@ -161,7 +189,14 @@ const loginSchema = z.object({
 
 onMounted(() => {
   auth.clearMessages();
+  auth.showDeactivatedModal = false;
+  const savedEmail = localStorage.getItem("rememberedEmail");
+  if (savedEmail) {
+    form.email = savedEmail;
+    form.rememberMe = true;
+  }
 });
+
 const parallaxStyle = (intensity) => {
   const x = mouseX.value * intensity;
   const y = mouseY.value * intensity;
@@ -248,5 +283,99 @@ const handleLogin = async () => {
   .home-text {
     display: none;
   }
+}
+
+/* ── Deactivated Modal ───────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.deactivated-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: modal-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.modal-icon {
+  font-size: 2rem;
+  color: #dc2626;
+}
+
+.modal-title-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.modal-body-text {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+}
+
+.modal-close-btn {
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.6rem 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.35);
+}
+
+.modal-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.45);
+}
+
+/* ── Modal transition ────────────────────────────────────────── */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
 }
 </style>

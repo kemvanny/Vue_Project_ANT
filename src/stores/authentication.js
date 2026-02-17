@@ -4,7 +4,13 @@ import api from "@/API/api";
 
 export const useAuthStore = defineStore("auth", () => {
   // ── State
-  const token = ref(localStorage.getItem("token") || null);
+  const getStoredToken = () => {
+    return (
+      localStorage.getItem("token") || sessionStorage.getItem("token") || null
+    );
+  };
+
+  const token = ref(getStoredToken());
   const user = ref(null);
 
   const email = ref("");
@@ -26,8 +32,14 @@ export const useAuthStore = defineStore("auth", () => {
   const error = ref(null);
   const successMessage = ref(null);
 
+  const showDeactivatedModal = ref(false);
+
   if (token.value) {
     api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
+    rememberMe.value = !!localStorage.getItem("token");
+    if (localStorage.getItem("rememberedEmail")) {
+      email.value = localStorage.getItem("rememberedEmail");
+    }
   }
 
   const clearMessages = () => {
@@ -35,7 +47,6 @@ export const useAuthStore = defineStore("auth", () => {
     successMessage.value = null;
   };
 
-  // Function to translate common English error messages to Khmer
   const translateError = (message) => {
     if (!message) return message;
 
@@ -55,6 +66,9 @@ export const useAuthStore = defineStore("auth", () => {
       "Invalid OTP": "លេខកូដផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ។",
       "Server error": "មានបញ្ហាជាមួយម៉ាស៊ីនបម្រើ។",
       "Network error": "មានបញ្ហាបណ្តាញ។",
+      "Account is deactivated.": "គណនីរបស់អ្នកត្រូវបានបិទដំណើរការ។",
+      "Account deactivated": "គណនីរបស់អ្នកត្រូវបានបិទដំណើរការ។",
+      "User is deactivated": "គណនីរបស់អ្នកត្រូវបានបិទដំណើរការ។",
     };
 
     return translations[message] || message;
@@ -159,8 +173,8 @@ export const useAuthStore = defineStore("auth", () => {
     if (!canLogin.value) return false;
     loading.value = true;
     clearMessages();
+    showDeactivatedModal.value = false;
 
-    // Prevent admin access with specific credentials
     if (
       email.value.trim() === "antadmin.tdl@gmail.com" &&
       password.value === "AntAdmin@!99"
@@ -180,35 +194,55 @@ export const useAuthStore = defineStore("auth", () => {
       const data = response.data;
 
       if (data.result || data.success || response.status === 200) {
-        // Extract token from data.data object
         const tokenData = data.data;
-        user.value = tokenData?.user || tokenData;
-        token.value =
+        const loggedInUser = tokenData?.user || tokenData;
+        const receivedToken =
           tokenData?.token ||
           tokenData?.access_token ||
           data.token ||
           data.access_token;
 
-        // Store only token in localStorage for security
-        if (token.value) {
-          localStorage.setItem("token", token.value);
-          console.log(
-            "Token saved to localStorage:",
-            localStorage.getItem("token"),
-          );
+        if (loggedInUser?.status === "DEACTIVATED") {
+          showDeactivatedModal.value = true;
+          loading.value = false;
+          return false;
+        }
+        // ─────────────────────────────────────────────────────────
 
-          api.defaults.headers.common.Authorization = `Bearer ${token.value}`;
-          successMessage.value = "ចូលបានជោគជ័យ!";
-          return true;
-        } else {
+        if (!receivedToken) {
           error.value = "No token received from server";
           return false;
         }
+
+        user.value = loggedInUser;
+        token.value = receivedToken;
+
+        if (rememberMe.value) {
+          localStorage.setItem("token", receivedToken);
+          localStorage.setItem("rememberedEmail", email.value);
+        } else {
+          sessionStorage.setItem("token", receivedToken);
+          localStorage.removeItem("rememberedEmail");
+        }
+
+        api.defaults.headers.common.Authorization = `Bearer ${receivedToken}`;
+        successMessage.value = "ចូលបានជោគជ័យ!";
+        return true;
       }
     } catch (err) {
+      const serverMessage = err.response?.data?.message;
+      if (
+        err.response?.status === 403 ||
+        serverMessage === "Account is deactivated." ||
+        serverMessage === "Account deactivated" ||
+        serverMessage === "User is deactivated"
+      ) {
+        showDeactivatedModal.value = true;
+        return false;
+      }
+
       error.value =
-        translateError(err.response?.data?.message) ||
-        "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
+        translateError(serverMessage) || "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
       return false;
     } finally {
       loading.value = false;
@@ -219,6 +253,8 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = null;
     user.value = null;
     localStorage.removeItem("token");
+    localStorage.removeItem("rememberedEmail");
+    sessionStorage.removeItem("token");
     delete api.defaults.headers.common.Authorization;
     clearMessages();
   };
@@ -286,7 +322,6 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     clearMessages();
 
-    // Define payload outside try/catch so it's accessible everywhere
     const emailToUse = (
       emailAddress ||
       resetEmail.value ||
@@ -295,12 +330,7 @@ export const useAuthStore = defineStore("auth", () => {
     const payload = { email: emailToUse };
 
     try {
-      // Make sure this is the correct URL from your Postman
       const response = await api.post("/auth/forget-password", payload);
-
-      // LOG THIS: If you don't see this in console, the code jumped to 'catch'
-      console.log("API Response:", response);
-      console.log("Response data:", response.data);
 
       if (
         response.data?.success ||
@@ -308,17 +338,14 @@ export const useAuthStore = defineStore("auth", () => {
         response.status === 200
       ) {
         resetEmail.value = payload.email;
-        return true; // <--- CRITICAL: Your component needs this to show the modal
+        return true;
       }
 
       return false;
     } catch (err) {
-      console.error("Store Error Catch:", err);
-
-      // If the error says 'Already verified', we still want to show the modal
       if (err.response?.data?.details === "Email already verified.") {
         resetEmail.value = payload.email;
-        return true; // <--- CRITICAL: Triggers modal even on this specific error
+        return true;
       }
 
       error.value =
@@ -334,17 +361,8 @@ export const useAuthStore = defineStore("auth", () => {
     const tokenFromUrl = route.params.token || route.query.token;
     const emailFromUrl = route.query.email;
 
-    if (tokenFromUrl) {
-      otpCode.value = tokenFromUrl;
-    }
-    if (emailFromUrl) {
-      resetEmail.value = emailFromUrl;
-    }
-
-    console.log("Captured reset data:", {
-      token: otpCode.value,
-      email: resetEmail.value,
-    });
+    if (tokenFromUrl) otpCode.value = tokenFromUrl;
+    if (emailFromUrl) resetEmail.value = emailFromUrl;
   };
 
   const resetPassword = async () => {
@@ -363,10 +381,7 @@ export const useAuthStore = defineStore("auth", () => {
         newPassword: newPassword.value,
       };
 
-      console.log("Sending reset payload:", payload);
-
       const response = await api.post("/auth/reset-password", payload);
-      console.log(response);
 
       if (response.data?.success || response.status === 200) {
         successMessage.value =
@@ -378,12 +393,9 @@ export const useAuthStore = defineStore("auth", () => {
         delete api.defaults.headers.common.Authorization;
 
         resetForgotPasswordForm();
-
         return true;
       }
     } catch (err) {
-      console.error("RESET ERROR:", err.response?.data);
-
       error.value =
         translateError(err.response?.data?.message) ||
         translateError(err.response?.data?.error) ||
@@ -410,6 +422,7 @@ export const useAuthStore = defineStore("auth", () => {
     loading,
     error,
     successMessage,
+    showDeactivatedModal,
     resetEmail,
     newPassword,
     confirmNewPassword,
