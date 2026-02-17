@@ -239,7 +239,7 @@
           <div class="col-lg-8">
             <div class="pill-tag">សេចក្តីថ្លែងអំណរគុណ</div>
             <h2 class="display-5 mb-3">សេចក្តីថ្លែងអំណរគុណចំពោះ</h2>
-            <p class="text-muted fs-5">
+            <p class="text-muted fs-5 text-des">
               <span style="color: #0d9488;font-weight: bold;"> ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
                 និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT</span> ព្រមទាំងលោកគ្រូ <span
                 style="color: #0d9488;font-weight: bold;">ជិន
@@ -295,6 +295,14 @@ import Nara from "@/assets/images/team/Tel Sophannara.png";
 </script>
 
 <style scoped>
+.text-des {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: justify;
+  line-height: 38px;
+  margin-top: 5%;
+
+}
 template {
   font-family: "Inter", sans-serif;
   color: var(--text-dark);
