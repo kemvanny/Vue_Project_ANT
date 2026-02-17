@@ -1,238 +1,362 @@
 <template>
-  <div>
-    <!-- NEW MODERN FOOTER SECTION -->
-    <div class="container mt-5">
-      <div class="footer-cta reveal">
-        <div class="row align-items-center">
-          <div class="col-lg-7">
-            <h2 class="display-5 fw-bold mb-3 text-white">
-              Master your daily flow.
-            </h2>
-            <p class="lead opacity-75 mb-4 mb-lg-0">
-              Join 10,000+ users who simplified their task and inventory
-              management today.
-            </p>
-          </div>
-          <div class="col-lg-5 text-lg-end">
-            <a
-              href="#"
-              class="btn btn-light rounded-pill px-5 py-3 fw-bold fs-5 shadow-sm"
-              style="color: var(--primary)"
-              >Get Started Now</a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
+  <footer class="pro-footer-bg">
+    <!-- Animated Background Shapes -->
+    <div class="bg-shape circle"></div>
+    <div class="bg-shape circle-small"></div>
+    <div class="bg-shape star"></div>
+    <div class="bg-shape sticker"></div>
+    <div class="bg-shape pulse"></div>
 
-    <footer class="footer">
-      <div class="container">
-        <div class="row g-5">
-          <!-- Brand Info -->
-          <div class="col-lg-4">
-            <a class="brand-modern text-white mb-4" href="#">
-              <div class="brand-symbol">✓</div>
-              <span class="text-white">ReabList</span>
+    <div class="container">
+      <div class="row g-5">
+        <!-- Brand Section -->
+        <div class="col-lg-4">
+          <div class="footer-brand">
+            <a href="#" class="brand-area">
             </a>
-            <p class="mb-4 pe-lg-5">
-              Building the future of productivity. We help teams and individuals
-              track what matters most, from daily habits to complex inventories.
-            </p>
-            <div class="d-flex gap-3">
-              <a href="#" class="social-circle"
-                ><twitter size="18"/></a>
-              <a href="#" class="social-circle"
-                ><instagram size="18"/></a>
-              <a href="#" class="social-circle"
-                ><linkedin size="18"/></a>
-              <a href="#" class="social-circle"
-                ><github size="18"/>
+          <div class="brand-logo">
+           <i class="bi bi-check2-circle"></i>
+          </div>
+          <span class="brand-name">
+            <span class="brand-color">Reab</span><span class="brand-last-color">List</span>
+          </span>
+          </div>
+
+          <p class="footer-description">
+            ប្រព័ន្ធគ្រប់គ្រង To-Do List ទំនើប ដែលជួយអ្នករៀបចំកិច្ចការ
+            កំណត់ថ្ងៃផុតកំណត់ និងទទួលការជូនដំណឹងមុនពេលដល់កំណត់។
+          </p>
+
+          <!-- <a href="/features" class="btn-footer">ចាប់ផ្តើមឥឡូវនេះ</a> -->
+
+          <div class="footer-social mt-4">
+            <!-- <a href="#">Facebook</a>
+            <a href="#">Telegram</a>
+            <a href="#">GitHub</a> -->
+            <div class="footer-social mt-4">
+              <a href="#" class="social-link">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+                  alt="Facebook"
+                  class="social-icon"
+                />
+                Facebook
+              </a>
+              <a href="#" class="social-link">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
+                  alt="Telegram"
+                  class="social-icon"
+                />
+                Telegram
+              </a>
+              <a href="#" class="social-link">
+                <img
+                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg"
+                  alt="GitHub"
+                  class="social-icon"
+                />
+                GitHub
               </a>
             </div>
           </div>
-
-          <!-- Links Column 1 -->
-          <div class="col-6 col-md-3 col-lg-2">
-            <h5 class="footer-title">Platform</h5>
-            <a href="#" class="footer-link">Daily View</a>
-            <a href="#" class="footer-link">Integrations</a>
-            <a href="#" class="footer-link">Templates</a>
-            <a href="#" class="footer-link">Desktop App</a>
-            <a href="#" class="footer-link">Pricing</a>
-          </div>
-
-          <!-- Links Column 2 -->
-          <div class="col-6 col-md-3 col-lg-2">
-            <h5 class="footer-title">Resources</h5>
-            <a href="#" class="footer-link">Documentation</a>
-            <a href="#" class="footer-link">Help Center</a>
-            <a href="#" class="footer-link">Community</a>
-            <a href="#" class="footer-link">API Reference</a>
-            <a href="#" class="footer-link">System Status</a>
-          </div>
-
-          <!-- Newsletter -->
-          <div class="col-lg-4">
-            <h5 class="footer-title">Stay Updated</h5>
-            <p class="small mb-4">
-              Get weekly productivity hacks and inventory management tips
-              directly to your inbox.
-            </p>
-            <form class="newsletter-form">
-              <input
-                type="email"
-                class="newsletter-input"
-                placeholder="Email address"
-              />
-              <button type="submit" class="newsletter-btn">Subscribe</button>
-            </form>
-            <p class="small opacity-50 mt-3">
-              We respect your privacy. No spam, ever.
-            </p>
-          </div>
         </div>
 
-        <!-- Bottom Bar -->
-        <div class="footer-bottom">
-          <div class="row align-items-center">
-            <div class="col-md-6 mb-3 mb-md-0">
-              <p class="small mb-0">
-                &copy; 2024 ReabList Inc. All rights reserved. Designed for
-                focus.
-              </p>
-            </div>
-            <div class="col-md-6 text-md-end">
-              <div class="d-flex justify-content-md-end gap-4">
-                <a href="#" class="footer-link small mb-0">Privacy</a>
-                <a href="#" class="footer-link small mb-0">Terms</a>
-                <a href="#" class="footer-link small mb-0">Cookies</a>
-              </div>
-            </div>
-          </div>
+        <!-- Pages -->
+        <div class="col-6 col-md-2">
+          <h5 class="footer-heading">ទំព័រ</h5>
+          <a href="/" class="footer-link">ទំព័រដើម</a>
+          <a href="/features" class="footer-link">មុខងារ</a>
+          <a href="/about" class="footer-link">អំពីយើង</a>
+        </div>
+
+        <!-- Features -->
+        <div class="col-6 col-md-3">
+          <h5 class="footer-heading">មុខងារ​សំខាន់ៗ</h5>
+          <a href="#" class="footer-link">បង្កើតកិច្ចការ</a>
+          <a href="#" class="footer-link">កំណត់ថ្ងៃផុតកំណត់</a>
+          <a href="#" class="footer-link">ការជូនដំណឹង</a>
+          <a href="#" class="footer-link">សម្គាល់ថាបានបញ្ចប់</a>
+        </div>
+
+        <!-- Contact -->
+        <div class="col-md-3">
+          <h5 class="footer-heading">ទំនាក់ទំនង</h5>
+          <p class="footer-contact">
+            អ៊ីមែល៖ support@reablist.com <br />
+            ទីតាំង៖ ភ្នំពេញ, កម្ពុជា
+          </p>
+          <a href="/features" class="btn-footer mt-4">ចាប់ផ្តើមឥឡូវនេះ</a>
         </div>
       </div>
-    </footer>
-  </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom text-center">
+        <p>© 2026 ReabList. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+      </div>
+    </div>
+  </footer>
 </template>
 
+
 <style scoped>
-/* --- NEW MODERN FOOTER STYLE --- */
-.footer-cta {
-  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-  border-radius: 40px;
-  padding: 60px;
-  margin-bottom: -100px;
-  position: relative;
-  z-index: 5;
-  box-shadow: 0 30px 60px rgba(19, 112, 127, 0.3);
-  color: white;
+.brand-last-color{
+  color: rgb(15, 69, 69);
+  /* space from one text to one text */
+  letter-spacing: 1px;
 }
-
-footer {
-  background: #0f172a;
-  padding: 180px 0 60px;
-  color: #94a3b8;
-}
-
-.footer-title {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.5px;
-}
-
-.footer-link {
-  color: #94a3b8;
+.brand-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
-  transition: all 0.3s ease;
-  display: block;
-  margin-bottom: 0.8rem;
-  font-size: 0.95rem;
+  padding-left: 12px;
+  margin-left: -10px;
+}
+.brand-color {
+  color: var(--primary);
+  letter-spacing: 1px;
 }
 
-.footer-link:hover {
-  color: var(--accent);
-  transform: translateX(5px);
-}
-
-.social-circle {
-  width: 42px;
-  height: 42px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
+.brand-logo {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(145deg, #14b8a6, #0d9488);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  text-decoration: none;
+  font-size: 1.4rem;
+  box-shadow: 0 1px 2px rgba(13, 148, 136, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: transform 0.35s ease;
 }
 
-.social-circle:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: translateY(-5px) scale(1.1);
-  color: white;
+.brand-area:hover .brand-logo {
+  transform: scale(1.1);
 }
 
-.newsletter-form {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px;
-  border-radius: 20px;
+.brand-name {
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
+.footer-social {
   display: flex;
-  transition: border-color 0.3s;
+  gap: 15px;
 }
 
-.newsletter-form:focus-within {
-  border-color: var(--primary);
-}
-
-.newsletter-input {
-  background: transparent;
-  border: none;
-  color: white;
-  padding: 0 15px;
-  flex-grow: 1;
-  outline: none;
-  font-size: 0.9rem;
-}
-
-.newsletter-btn {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 15px;
-  font-weight: 700;
-  font-size: 0.85rem;
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 1rem;
   transition: 0.3s;
 }
 
-.newsletter-btn:hover {
-  background: var(--primary-hover);
+.social-link:hover {
+  color: white;
 }
 
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 80px;
-  padding-top: 40px;
+.social-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1); /* white icons for dark background */
+  transition: transform 0.3s;
 }
-.brand-modern {
+
+.social-link:hover .social-icon {
+  transform: scale(1.1);
+}
+
+.pro-footer-bg {
+  position: relative;
+  color: #fff;
+  padding: 140px 0 60px;
+  overflow: hidden;
+  font-family: "Noto Sans Khmer", sans-serif;
+  font-size: 1.15rem;
+
+  /* Background image like the example */
+  background-image: url("https://y-digital.co.za/assets/hero-bg-Vb3pPujg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* subtle parallax */
+}
+/* Modern Footer Typography */
+.footer-description {
+  margin: 15px 0 30px;
+  line-height: 1.9;
+  max-width: 380px;
+  font-size: 1.125rem; /* slightly smaller, easier to read */
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85); /* softer white */
+  letter-spacing: 0.2px;
+}
+
+.footer-heading {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 18px;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase; /* modern uppercase style */
+}
+
+.footer-link {
+  display: block;
+  color: rgba(255, 255, 255, 0.7); /* softer white */
+  text-decoration: none;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #14b8a6; /* accent color */
+  transform: translateX(6px); /* smooth hover effect */
+  letter-spacing: 0.5px;
+}
+
+.footer-contact {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+}
+
+.footer-bottom p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.5px;
+}
+
+
+/* Overlay for better contrast */
+.pro-footer-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7); /* dark overlay for readability */
+  z-index: 1;
+}
+
+/* Place everything above overlay */
+.pro-footer-bg .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Background Shapes */
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  background: #1491a2;
+  top: 10%;
+  left: 5%;
+  animation: float 6s ease-in-out infinite;
+}
+.circle-small {
+  width: 80px;
+  height: 80px;
+  background: #0f5c69;
+  top: 60%;
+  left: 15%;
+  animation: float 5s ease-in-out infinite alternate;
+}
+.star {
+  width: 35px;
+  height: 35px;
+  background: yellow;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  top: 75%;
+  left: 85%;
+  animation: rotate 12s linear infinite;
+}
+.sticker {
+  width: 60px;
+  height: 60px;
+  background: #f59e0b;
+  top: 20%;
+  left: 80%;
+  clip-path: polygon(50% 0%, 100% 25%, 80% 100%, 20% 100%, 0% 25%);
+  animation: float 7s ease-in-out infinite alternate;
+}
+.pulse {
+  width: 90px;
+  height: 90px;
+  background: #0f5c69;
+  top: 50%;
+  left: 50%;
+  animation: pulse 5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* Brand & text styling (same as before, bigger fonts) */
+.footer-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text-main) !important;
-  font-weight: 800;
-  font-size: 1.5rem;
-  text-decoration: none;
+  gap: 12px;
+  margin-bottom: 20px;
 }
-
-.brand-symbol {
-  width: 38px;
-  height: 38px;
+.brand-icon {
+  width: 50px;
+  height: 50px;
   border-radius: 12px;
   background: linear-gradient(135deg, #1491a2, #0f5c69);
   display: flex;
@@ -240,30 +364,94 @@ footer {
   justify-content: center;
   color: white;
   font-weight: 900;
-  font-size: 18px;
-  box-shadow: 0 8px 20px rgba(19, 112, 127, 0.25);
+  font-size: 22px;
+}
+.brand-name {
+  color: white;
+  font-weight: 900;
+  margin: 0;
+  font-size: 2rem;
+}
+.footer-description {
+  margin: 15px 0 25px;
+  line-height: 1.8;
+  max-width: 400px;
+  font-size: 1.2rem;
+}
+.footer-heading {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+.footer-link {
+  display: block;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: 0.3s ease;
+  font-size: 1.05rem;
+}
+.footer-link:hover {
+  color: #1491a2;
+  transform: translateX(5px);
+}
+
+/* Buttons */
+.btn-footer {
+  display: inline-block;
+  background: linear-gradient(135deg, #1491a2, #0f5c69);
+  color: white;
+  font-weight: 700;
+  padding: 14px 35px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-footer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(20, 145, 162, 0.5);
+}
+.btn-footer-small {
+  display: inline-block;
+  background: #f59e0b;
+  color: white;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  text-decoration: none;
   transition: 0.3s;
 }
-
-.brand-modern:hover .brand-symbol {
-  transform: rotate(-8deg) scale(1.05);
+.btn-footer-small:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(245, 158, 11, 0.5);
 }
 
-@media (max-width: 991px) {
-  .hero {
-    padding: 160px 0 60px;
-    text-align: center;
-  }
-  .footer-cta {
-    border-radius: 0;
-    margin-bottom: 0;
-    padding: 40px 20px;
-  }
-  footer {
-    padding: 60px 0;
-  }
-  .newsletter-form {
-    margin-top: 20px;
-  }
+/* Social */
+.footer-social a {
+  display: inline-block;
+  margin-right: 15px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+.footer-social a:hover {
+  color: white;
+}
+
+/* Divider & bottom */
+.footer-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 50px 0 25px;
+}
+.footer-bottom {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 </style>
