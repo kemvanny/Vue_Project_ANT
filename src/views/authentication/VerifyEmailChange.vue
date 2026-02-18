@@ -149,7 +149,7 @@ import { ref, onMounted } from "vue";
 import { useProfileStore } from "@/stores/profilestore";
 import { useAuthStore } from "@/stores/authentication";
 import { useRouter, useRoute } from "vue-router";
-import AuthButton from "@/components/AuthButton.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 
 const profileStore = useProfileStore();
 const authStore = useAuthStore();

@@ -153,8 +153,8 @@ import { reactive, ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
-import AuthButton from "../../components/AuthButton.vue";
-import AuthInput from "../../components/AuthInput.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
+import AuthInput from "@/components/ui/AuthInput.vue";
 import RegisterImage from "@/assets/images/auth/regiter.png";
 
 const auth = useAuthStore();

@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import AuthButton from '../AuthButton.vue';
+import AuthButton from '@/components/ui/AuthButton.vue';
 defineProps({
   open: Boolean,
   title: String,

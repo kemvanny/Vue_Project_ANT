@@ -75,7 +75,7 @@
 
               <AuthButton
                 type="submit"
-                :text="'ផ្ញើតំណភ្ជាប់កំណត់ឡើងវិញ'"
+                :text="'បញ្ជាក់អ៊ីមែល ដើម្បីបន្តប្រើប្រាស់'"
                 :loading-text="'កំពុងផ្ញើ...'"
                 :loading="authStore.loading"
                 :disabled="authStore.loading || !authStore.resetEmail.trim()"
@@ -139,8 +139,8 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authentication";
 import { z } from "zod";
-import AuthInput from "../../components/AuthInput.vue";
-import AuthButton from "../../components/AuthButton.vue";
+import AuthInput from "@/components/ui/AuthInput.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 import ForgotPasswordImage from "@/assets/images/auth/forget_password.png";
 
 const router = useRouter();

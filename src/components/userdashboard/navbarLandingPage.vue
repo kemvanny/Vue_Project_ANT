@@ -5,14 +5,14 @@
       <nav class="nav-modern">
 
         <!-- Brand -->
-        <a href="#" class="brand-area">
+        <router-link to="/" class="brand-area">
           <div class="brand-logo">
            <i class="bi bi-check2-circle"></i>
           </div>
           <span class="brand-name">
             <span class="brand-color">Reab</span><span class="brand-last-color">List</span>
           </span>
-        </a>
+        </router-link>
 
         <!-- Desktop Links -->
         <div class="nav-links-pill desktop-only">
@@ -90,21 +90,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 
+import { ref } from 'vue'
 const menuOpen = ref(false)
+
 </script>
 
-
-
 <style scoped>
-/* ================================
-   Glass Navbar (Filter Only)
-================================ */
 
-/* ================================
-   Hamburger
-================================ */
 .hamburger {
   display: none;
   background: rgba(13, 148, 136, 0.15);

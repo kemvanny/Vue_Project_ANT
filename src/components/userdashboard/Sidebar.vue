@@ -147,7 +147,7 @@ import { useRouter } from "vue-router";
 import api from "@/API/api";
 import { useAuthStore } from "@/stores/authentication";
 import { PlusCircle } from "lucide-vue-next";
-import TaskCreate from "@/views/user/Task/TaskCreate.vue";
+import TaskCreate from "@/views/user/Task/TaskCreate.vue"; // <-- adjust path
 import { useSidebar } from "@/composable/Usesidebar";
 
 // ── Sidebar state — same singleton as Navbar ─────────────────────
@@ -165,15 +165,8 @@ const handleNavClick = () => {
 };
 
 const openCreateTask = () => {
-  closeSidebar();
-  taskCreateRef.value?.open();
-};
-
-const openLogoutModal = () => {
-  showLogoutModal.value = true;
-};
-const closeLogoutModal = () => {
-  if (!isLoggingOut.value) showLogoutModal.value = false;
+  closeSidebar?.();
+  taskCreateRef.value?.open(); // ✅ this will call defineExpose({ open })
 };
 
 const handleLogout = async () => {

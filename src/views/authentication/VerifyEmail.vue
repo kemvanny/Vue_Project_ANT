@@ -136,7 +136,7 @@ import { ref, reactive, onMounted } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
-import AuthButton from "../../components/AuthButton.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 import VerifyEmailImage from "@/assets/images/auth/verifyEmail.png";
 
 const auth = useAuthStore();

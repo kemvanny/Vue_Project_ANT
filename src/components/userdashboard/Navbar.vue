@@ -79,17 +79,14 @@
 import { ref, watch, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note.js";
-import { Search, X } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue";
 import { useSidebar } from "@/composable/Usesidebar";
-
+import { Search, Moon } from "lucide-vue-next";
+import ProfileDropdown from "../../components/profile/ProfileDropdown.vue";
 const router = useRouter();
 const noteStore = useNoteStore();
 
-// ── Sidebar ──────────────────────────────────────────────────────
 const { isSidebarOpen, toggleSidebar } = useSidebar();
 
-// ── Search ───────────────────────────────────────────────────────
 const q = ref("");
 const showResults = ref(false);
 const mobileSearchOpen = ref(false);

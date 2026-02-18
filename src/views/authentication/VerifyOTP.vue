@@ -140,7 +140,7 @@
 import { ref, watch, onMounted, nextTick } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
-import AuthButton from "../../components/AuthButton.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 import VerifyOTPImage from "@/assets/images/auth/verifyOTP.png";
 
 const auth = useAuthStore();
