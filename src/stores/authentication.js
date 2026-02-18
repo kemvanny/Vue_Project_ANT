@@ -284,8 +284,8 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const verifyEmail = async () => {
-    if (otpCode.value.length !== 8 || !/^\d{8}$/.test(otpCode.value)) {
-      error.value = "សូមបញ្ចូលលេខកូដ 8 ខ្ទង់ដែលមានសុពលភាព។";
+    if (otpCode.value.length !== 6 || !/^\d{6}$/.test(otpCode.value)) {
+      error.value = "សូមបញ្ចូលលេខកូដ 6 ខ្ទង់ដែលមានសុពលភាព។";
       return false;
     }
 
