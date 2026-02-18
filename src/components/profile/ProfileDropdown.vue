@@ -582,4 +582,16 @@ body:has(.modal-backdrop) .dropdown-menu-wrapper {
 .fade-leave-to {
   opacity: 0;
 }
+
+@media (max-width: 575px) {
+  .modal-card {
+    width: 100%;
+  }
+  .user-display-name{
+    display: none;
+  }
+  .user-display-role{
+    display: none;
+  }
+}
 </style>

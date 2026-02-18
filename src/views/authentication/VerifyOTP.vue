@@ -146,7 +146,6 @@ import VerifyOTPImage from "@/assets/images/auth/verifyOTP.png";
 const auth = useAuthStore();
 const router = useRouter();
 
-// --- PARALLAX LOGIC ---
 const mouseX = ref(0);
 const mouseY = ref(0);
 
@@ -248,6 +247,98 @@ const handleVerify = async () => {
 </script>
 
 <style scoped>
+/* ── Base page wrapper — always full viewport, always centered ── */
+.page-wrapper {
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box;
+}
+
+/* ── Tablet (576px – 991px) ───────────────────────────────────── */
+@media (max-width: 991px) {
+  .page-wrapper {
+    padding: 1.5rem 1rem;
+    overflow-x: hidden;
+  }
+
+  .animation-area,
+  .box-area {
+    display: none !important;
+  }
+
+  .shape,
+  .shape-1,
+  .shape-2 {
+    display: none !important;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 1.25rem !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+}
+
+/* ── Mobile (≤ 575px) ─────────────────────────────────────────── */
+@media (max-width: 575px) {
+  .page-wrapper {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1.5rem 1.25rem !important;
+  }
+
+  .mb-4 h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .mb-4 p {
+    font-size: 0.875rem !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.875rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 1.25rem !important;
+  }
+
+  .small {
+    font-size: 0.8rem !important;
+  }
+
+  /* Smaller OTP boxes on mobile */
+  .otp-box {
+    height: 52px !important;
+    font-size: 1.4rem !important;
+    max-width: 42px !important;
+    border-radius: 10px !important;
+  }
+
+  .otp-container {
+    gap: 6px !important;
+  }
+}
+
+/* ── OTP input styles ────────────────────────────────────────── */
 .otp-container {
   display: flex;
   justify-content: space-between;
@@ -281,17 +372,5 @@ const handleVerify = async () => {
 .otp-box.filled {
   background: #e0f2f1;
   border-color: #80cbc4;
-}
-
-@media (max-width: 500px) {
-  .otp-box {
-    height: 55px;
-    font-size: 1.5rem;
-    max-width: 45px;
-  }
-
-  .otp-container {
-    gap: 5px;
-  }
 }
 </style>
