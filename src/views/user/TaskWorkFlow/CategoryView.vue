@@ -86,11 +86,9 @@
 import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
-// ✅ Import Component ថ្មី
-import BaseSkeleton from "@/components/base/BaseSkeleton.vue";
-import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
-import DeleteConfirmModal from "@/components/base/DeleteConfirmModal.vue";
+import BaseSkeleton from "@/components/ui/BaseSkeleton.vue";
+import BaseTaskTable from "@/components/ui/BaseTaskTable.vue";
+import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal.vue";
 
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";

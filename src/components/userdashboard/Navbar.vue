@@ -45,7 +45,7 @@ import { useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note.js";
 
 import { Search, Moon } from "lucide-vue-next";
-import ProfileDropdown from "./ProfileDropdown.vue";
+import ProfileDropdown from "../profile/ProfileDropdown.vue";
 const router = useRouter();
 const noteStore = useNoteStore();
 

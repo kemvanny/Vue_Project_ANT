@@ -81,14 +81,11 @@
           </div>
 
           <!-- create at -->
-          <div
-            class="sidebar-block status-block"
-            :class="{ completed: task?.isCompleted }"
-          >
+          <div class="sidebar-block status-block">
             <div class="block-label">បានបង្កើតនៅ</div>
             <div class="status-indicator-wrap">
               <div class="status-icon-box">
-                <Calendar :size="16" style="color: #0d9488;"/>
+                <Calendar :size="16" style="color: #0d9488" />
               </div>
               <span>
                 {{
@@ -113,19 +110,20 @@
           បិទ
         </button>
 
+        <!-- Footer buttons -->
         <div class="action-buttons">
-          <button type="button" class="btn-edit-modern" @click="editNow">
+          <button
+            type="button"
+            class="btn-edit-modern"
+            :disabled="task?.isCompleted"
+            @click="editNow"
+          >
             <Edit2 :size="16" class="me-2" /> កែប្រែ
           </button>
 
-          <button
-            type="button"
-            class="btn-done-modern"
-            :disabled="task?.isCompleted"
-            @click="markDone"
-          >
+          <button type="button" class="btn-done-modern" @click="toggleComplete">
             <Check v-if="!task?.isCompleted" :size="18" class="me-2" />
-            {{ task?.isCompleted ? "បញ្ចប់រួចរាល់" : "សម្គាល់ថាបានបញ្ចប់" }}
+            {{ task?.isCompleted ? "មិនបានបញ្ចប់" : "សម្គាល់ថាបានបញ្ចប់" }}
           </button>
         </div>
       </div>
@@ -137,7 +135,7 @@
 import { computed, ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note";
-import BaseModal from "@/components/base/BaseModal.vue";
+import BaseModal from "@/components/ui/BaseModal.vue";
 
 import {
   Calendar,
@@ -194,6 +192,13 @@ const markDone = async () => {
   task.value.isCompleted = true;
   noteStore.toggleNoteCompleted(task.value.id);
 };
+// Script setup
+const toggleComplete = async () => {
+  if (!task.value) return;
+  task.value.isCompleted = !task.value.isCompleted; // toggle
+  noteStore.toggleNoteCompleted(task.value.id, task.value.isCompleted);
+};
+
 
 const editNow = () => {
   emit("edit-task", task.value);

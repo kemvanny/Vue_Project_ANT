@@ -10,19 +10,20 @@ import ForgetPassword from "@/views/authentication/ForgetPassword.vue";
 import ResetPassword from "@/views/authentication/ResetPassword.vue";
 
 // Page Views
-import Homepage from "@/views/pages/Homepage.vue";
-import AboutUs from "@/views/pages/AboutPage.vue";
-import FeaturesPage from "@/views/pages/FeaturesPage.vue";
+import Homepage from "@/views/pages/landing/Homepage.vue";
+import AboutUs from "@/views/pages/landing/AboutPage.vue";
+import FeaturesPage from "@/views/pages/landing/FeaturesPage.vue";
+import NotFount from "@/views/pages/notfound/NotFound.vue";
 
 // Layout
 import UserDashboardLayout from "@/layouts/UserDashboardLayout.vue";
 
 // Dashboard Views
-import AllTasks from "@/views/user/AllTasks.vue";
-import UserDashboard from "@/views/user/UserDashboard.vue";
-import Pending from "@/views/user/PendingTasks.vue";
-import Complete from "@/views/user/CompletedTasks.vue";
-import ProfileDashboard from "@/views/user/ProfileDashboard.vue";
+import AllTasks from "@/views/user/TaskWorkFlow/AllTasks.vue";
+import UserDashboard from "@/views/user/TaskWorkFlow/UserDashboard.vue";
+import Pending from "@/views/user/TaskWorkFlow/PendingTasks.vue";
+import Complete from "@/views/user/TaskWorkFlow/CompletedTasks.vue";
+import ProfileDashboard from "@/views/user/TaskWorkFlow/ProfileDashboard.vue";
 import createTask from "@/views/user/Task/TaskCreate.vue";
 
 const router = createRouter({
@@ -123,7 +124,7 @@ const router = createRouter({
         {
           path: "category/:name",
           name: "Category",
-          component: () => import("@/views/user/CategoryView.vue"),
+          component: () => import("@/views/user/TaskWorkFlow/CategoryView.vue"),
           props: true,
         },
         {
@@ -154,6 +155,7 @@ const router = createRouter({
         // },
       ],
     },
+    { path: "/:catchAll(.*)", component: NotFount },
   ],
 });
 

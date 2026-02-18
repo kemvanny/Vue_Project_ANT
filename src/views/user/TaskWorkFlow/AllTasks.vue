@@ -50,13 +50,13 @@
 
         <div v-if="noteStore.meta.totalPages > 1" class="pagination-modern">
           <button class="page-btn" @click="prevPage" :disabled="!noteStore.meta?.hasPreviousPage">
-            ← Prev
+            ← ថយក្រោយ
           </button>
           <span class="page-info">
             Page {{ noteStore.meta?.currentPage || 1 }} / {{ noteStore.meta?.totalPages || 1 }}
           </span>
           <button class="page-btn" @click="nextPage" :disabled="!noteStore.meta?.hasNextPage">
-            Next →
+            បន្ទាប់ →
           </button>
         </div>
       </div>
@@ -73,13 +73,13 @@
 <script setup>
 import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
-import BaseSelect from "@/components/base/BaseSelect.vue";
-import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
-import DeleteConfirmModal from "@/components/base/DeleteConfirmModal.vue";
+import BaseSelect from "@/components/ui/BaseSelect.vue";
+import BaseTaskTable from "@/components/ui/BaseTaskTable.vue";
+import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal.vue";
 import { useNoteStore } from "@/stores/note";
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
-import BaseSkeleton from "@/components/base/BaseSkeleton.vue";
+import BaseSkeleton from "@/components/ui/BaseSkeleton.vue";
 
 const props = defineProps({
   title: { type: String, default: "ភារកិច្ចទាំងអស់" },

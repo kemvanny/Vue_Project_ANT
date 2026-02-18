@@ -4,6 +4,11 @@
 
     <main class="hero-section">
       <div class="container">
+        <!-- Hero Decorative Shapes -->
+        <div class="hero-decor hero-circle"></div>
+        <div class="hero-decor hero-line"></div>
+        <div class="hero-decor hero-triangle"></div>
+        <div class="hero-decor hero-pulse"></div>
         <div class="row align-items-center g-5">
           <div class="col-lg-6 text-center text-lg-start" data-fade-up>
             <div class="pill-tag">ជំនួយការគ្រប់គ្រងភារកិច្ចឆ្លាតវៃ</div>
@@ -12,26 +17,39 @@
               <span style="color: var(--primary)">ដូចការគិតរបស់អ្នក</span>
             </h1>
             <p class="lead text-muted mb-5">
-              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន ដែលត្រូវបានរចនាឡើងដើម្បីជួយអ្នក
-              ប្រែក្លាយភាពស្មុគស្មាញ ឱ្យទៅជាភាពច្បាស់លាស់ និងមានរបៀបរៀបរយបំផុត
-              ដោយគ្រាន់តែចុចតែម្តង
+              ReabList គឺជាអ្នកគ្រប់គ្រងភារកិច្ចដ៏រលូន
+              ដែលត្រូវបានរចនាឡើងដើម្បីជួយអ្នក ប្រែក្លាយភាពស្មុគស្មាញ
+              ឱ្យទៅជាភាពច្បាស់លាស់ និងមានរបៀបរៀបរយបំផុត ដោយគ្រាន់តែចុចតែម្តង
             </p>
-            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-              <router-link to="/login" class="btn-modern">ចាប់ផ្តើមឥឡូវនេះ</router-link>
-              <button class="btn btn-link nav-link-modern d-flex align-items-center justify-content-center gap-2">
+            <div
+              class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start"
+            >
+              <router-link to="/login" class="btn-modern"
+                >ចាប់ផ្តើមឥឡូវនេះ</router-link
+              >
+              <button
+                class="btn btn-link nav-link-modern d-flex align-items-center justify-content-center gap-2"
+              >
                 <i class="bi bi-play-circle fs-4"></i> ទស្សនាការបង្ហាញ
               </button>
             </div>
           </div>
           <div class="col-lg-6" data-fade-up>
             <div class="hero-img-container">
-              <img :src="BookImage"
-                class="hero-main-img" alt="Dashboard Preview" />
+              <img
+                :src="BookImage"
+                class="hero-main-img"
+                alt="Dashboard Preview"
+              />
               <div
                 class="position-absolute bottom-0 start-0 translate-middle-y bg-white p-3 rounded-4 shadow-lg d-none d-md-block floating-badge"
-                style="margin-left: -20px">
+                style="margin-left: -20px"
+              >
                 <div class="d-flex align-items-center gap-3">
-                  <div class="benefit-icon m-0" style="width: 40px; height: 40px">
+                  <div
+                    class="benefit-icon m-0"
+                    style="width: 40px; height: 40px"
+                  >
                     <i class="bi bi-check2-circle"></i>
                   </div>
                   <div>
@@ -55,8 +73,10 @@
               <span style="color: var(--primary)">ReabList</span>
             </h2>
             <p class="text-muted fs-5">
-              យើងចង់ឃើញមនុស្សគ្រប់រូបអាចគ្រប់គ្រងពេលវេលា និងជីវិតរបស់ពួកគេបានយ៉ាងល្អបំផុត។
-              ReabList ត្រូវបានបង្កើតឡើងដើម្បីក្លាយជា "ខួរក្បាលទីពីរ" ដែលជួយអ្នកចងចាំរាល់កិច្ចការសំខាន់ៗ
+              យើងចង់ឃើញមនុស្សគ្រប់រូបអាចគ្រប់គ្រងពេលវេលា
+              និងជីវិតរបស់ពួកគេបានយ៉ាងល្អបំផុត។ ReabList
+              ត្រូវបានបង្កើតឡើងដើម្បីក្លាយជា "ខួរក្បាលទីពីរ"
+              ដែលជួយអ្នកចងចាំរាល់កិច្ចការសំខាន់ៗ
             </p>
           </div>
         </div>
@@ -68,7 +88,8 @@
               <p class="text-muted">
                 បេសកកម្មរបស់យើងគឺកាត់បន្ថយភាពស្មុគស្មាញក្នុងជីវិតប្រចាំថ្ងៃ
                 តាមរយៈការផ្ដល់ជូននូវឧបករណ៍គ្រប់គ្រងកិច្ចការដ៏សាមញ្ញ
-                តែមានប្រសិទ្ធភាពខ្ពស់ និងអាចប្រើប្រាស់បានគ្រប់ពេលវេលា គ្រប់ទីកន្លែង
+                តែមានប្រសិទ្ធភាពខ្ពស់ និងអាចប្រើប្រាស់បានគ្រប់ពេលវេលា
+                គ្រប់ទីកន្លែង
               </p>
             </div>
           </div>
@@ -79,17 +100,23 @@
               </div>
               <h4>ការប្ដេជ្ញាចិត្តចំពោះអ្នក</h4>
               <p class="text-muted">
-                យើងបន្តអភិវឌ្ឍ ReabList ដោយផ្ដោតលើសុវត្ថិភាព ឯកជនភាព និងបទពិសោធន៍ប្រើប្រាស់ដ៏រលូនបំផុត
-                ដើម្បីជួយអ្នកសម្រេចបាននូវរាល់គោលដៅធំៗក្នុងជីវិត ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
+                យើងបន្តអភិវឌ្ឍ ReabList ដោយផ្ដោតលើសុវត្ថិភាព ឯកជនភាព
+                និងបទពិសោធន៍ប្រើប្រាស់ដ៏រលូនបំផុត
+                ដើម្បីជួយអ្នកសម្រេចបាននូវរាល់គោលដៅធំៗក្នុងជីវិត
+                ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
               </p>
             </div>
           </div>
           <div class="col-md-4" data-fade-up>
             <div class="benefit-card">
-              <div class="benefit-icon"><i class="bi bi-graph-up-arrow"></i></div>
+              <div class="benefit-icon">
+                <i class="bi bi-graph-up-arrow"></i>
+              </div>
               <h4>លទ្ធផលជាចម្បង</h4>
               <p class="text-muted">
-                គោលដៅចុងក្រោយរបស់យើង គឺចង់ឃើញអ្នកប្រើប្រាស់សម្រេចបាននូវកិច្ចការកាន់តែច្រើន ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
+                គោលដៅចុងក្រោយរបស់យើង
+                គឺចង់ឃើញអ្នកប្រើប្រាស់សម្រេចបាននូវកិច្ចការកាន់តែច្រើន
+                ដោយប្រើប្រាស់ពេលវេលាតិចជាងមុន
                 និងមានភាពតានតឹងតិចបំផុតក្នុងជីវិតប្រចាំថ្ងៃ
               </p>
             </div>
@@ -104,10 +131,12 @@
           <div class="col-lg-8">
             <div class="pill-tag">ដំណើរការដ៏សាមញ្ញ</div>
             <h2 class="display-5 mb-3">
-              ចាប់ផ្ដើមក្នុងរយៈពេល <span style="color: var(--primary)">តែប៉ុន្មានវិនាទី</span>
+              ចាប់ផ្ដើមក្នុងរយៈពេល
+              <span style="color: var(--primary)">តែប៉ុន្មានវិនាទី</span>
             </h2>
             <p class="text-muted fs-5">
-              ផ្លាស់ប្តូរទម្លាប់ការងាររបស់អ្នកឱ្យកាន់តែមានប្រសិទ្ធភាព តាមរយៈ ៣ ជំហានងាយៗ
+              ផ្លាស់ប្តូរទម្លាប់ការងាររបស់អ្នកឱ្យកាន់តែមានប្រសិទ្ធភាព តាមរយៈ ៣
+              ជំហានងាយៗ
             </p>
           </div>
         </div>
@@ -119,8 +148,8 @@
               <span class="step-visual"></span>
               <h4 class="fw-bold">បង្កើតគណនីប្រើប្រាស់</h4>
               <p class="text-muted">
-                ចុះឈ្មោះភ្លាមៗតាមរយៈ Gmail គ្មានទម្រង់បែបបទស្មុគស្មាញ 
-            រង់ចាំតែអ្នកចូលទៅរៀបចំផែនការជោគជ័យប៉ុណ្ណោះ
+                ចុះឈ្មោះភ្លាមៗតាមរយៈ Gmail គ្មានទម្រង់បែបបទស្មុគស្មាញ
+                រង់ចាំតែអ្នកចូលទៅរៀបចំផែនការជោគជ័យប៉ុណ្ណោះ
               </p>
             </div>
           </div>
@@ -131,8 +160,9 @@
               <span class="step-visual"></span>
               <h4 class="fw-bold">រៀបចំបញ្ជីកិច្ចការ</h4>
               <p class="text-muted">
-               បញ្ចូលរាល់កិច្ចការដែលអ្នកត្រូវធ្វើ។ អ្នកអាចចាត់ថ្នាក់ បែងចែកប្រភេទ 
-            និងកំណត់កម្រិតអាទិភាពបានយ៉ាងឆាប់រហ័ស និងមានរបៀបរៀបរយ
+                បញ្ចូលរាល់កិច្ចការដែលអ្នកត្រូវធ្វើ។ អ្នកអាចចាត់ថ្នាក់
+                បែងចែកប្រភេទ និងកំណត់កម្រិតអាទិភាពបានយ៉ាងឆាប់រហ័ស
+                និងមានរបៀបរៀបរយ
               </p>
             </div>
           </div>
@@ -142,8 +172,9 @@
               <span class="step-visual"></span>
               <h4 class="fw-bold">សម្រេចគោលដៅ</h4>
               <p class="text-muted">
-                ផ្ដោតអារម្មណ៍ទាំងស្រុងលើការងារដែលនៅចំពោះមុខ។ ReabList នឹងជួយរៀបចំ 
-            និងរំលឹកអ្នក ដើម្បីឱ្យអ្នកប្រើប្រាស់ថាមពលចំគោលដៅបំផុត។
+                ផ្ដោតអារម្មណ៍ទាំងស្រុងលើការងារដែលនៅចំពោះមុខ។ ReabList
+                នឹងជួយរៀបចំ និងរំលឹកអ្នក
+                ដើម្បីឱ្យអ្នកប្រើប្រាស់ថាមពលចំគោលដៅបំផុត។
               </p>
             </div>
           </div>
@@ -158,7 +189,9 @@
             ជួបជាមួយ
             <span style="color: var(--primary)">សមាជិកក្រុមរបស់យើង</span>
           </h2>
-          <p class="text-muted">អ្នកជំនាញនៅពីក្រោយការបង្កើតបទពិសោធន៍ដ៏អស្ចារ្យរបស់ ReabList</p>
+          <p class="text-muted">
+            អ្នកជំនាញនៅពីក្រោយការបង្កើតបទពិសោធន៍ដ៏អស្ចារ្យរបស់ ReabList
+          </p>
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -216,7 +249,9 @@
               </div>
               <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Limchhen Revotey</h4>
-              <p class="text-muted small">អ្នកជំនាញក្នុងការបម្លែងការរចនាទៅជាកូដដែលដំណើរការបានយ៉ាងល្អ</p>
+              <p class="text-muted small">
+                អ្នកជំនាញក្នុងការបម្លែងការរចនាទៅជាកូដដែលដំណើរការបានយ៉ាងល្អ
+              </p>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -226,7 +261,10 @@
               </div>
               <span class="team-role">UI/UX & Frontend</span>
               <h4 class="fw-bold mb-1">Him Sophearith</h4>
-              <p class="text-muted small">ទទួលបន្ទុកលើការត្រួតពិនិត្យ និងអភិវឌ្ឍមុខងារឱ្យមានភាពត្រឹមត្រូវខ្ពស់</p>
+              <p class="text-muted small">
+                ទទួលបន្ទុកលើការត្រួតពិនិត្យ
+                និងអភិវឌ្ឍមុខងារឱ្យមានភាពត្រឹមត្រូវខ្ពស់
+              </p>
             </div>
           </div>
         </div>
@@ -240,10 +278,16 @@
             <div class="pill-tag">សេចក្តីថ្លែងអំណរគុណ</div>
             <h2 class="display-5 mb-3">សេចក្តីថ្លែងអំណរគុណចំពោះ</h2>
             <p class="text-muted fs-5 text-des">
-              <span style="color: #0d9488;font-weight: bold;"> ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
-                និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT</span> ព្រមទាំងលោកគ្រូ <span
-                style="color: #0d9488;font-weight: bold;">ជិន
-                សុវណ្ណមិនា </span>និងអ្នកគ្រូ <span style="color: #0d9488;font-weight: bold;">យឹម ស្រីយ៉ឺ</span> ។
+              <span style="color: #0d9488; font-weight: bold">
+                ក្រសួងប្រៃសណីយ៍និងទូរគមនាគមន៍ មូលនិធិ ស.អ.
+                និងថ្នាក់បណ្តុះបណ្តាលបច្ចេកវិទ្យាអាន ANT</span
+              >
+              ព្រមទាំងលោកគ្រូ
+              <span style="color: #0d9488; font-weight: bold"
+                >ជិន សុវណ្ណមិនា </span
+              >និងអ្នកគ្រូ
+              <span style="color: #0d9488; font-weight: bold">យឹម ស្រីយ៉ឺ</span>
+              ។
               ក្រុមរបស់យើងមានអារម្មណ៍សោមនស្សរីករាយយ៉ាងខ្លាំងដែលទទួលបានអាហារូបករណ៍លើជំនាញការអភិវឌ្ឍន៍គេហទំព័រនេះ។
               អាហារូបករណ៍នេះពិតជាបានជួយសម្រាលបន្ទុកហិរញ្ញវត្ថុសម្រាប់ការសិក្សាដល់ក្រុមយើងខ្ញុំទាំងអស់គ្នា។
               ក្រោមការណែនាំពីលោកគ្រូអ្នកគ្រូ
@@ -280,8 +324,8 @@
 </template>
 
 <script setup>
-import Footer from "@/components/UserPages/Footer.vue";
-import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
+import Footer from "@/components/userdashboard/Footer.vue";
+import NavbarLandingPage from "@/components/userdashboard/navbarLandingPage.vue";
 import logo from "@/assets/images/scholarship/Logo_MPTC.png";
 import logo1 from "@/assets/images/scholarship/ANT logo HD.png";
 import logo2 from "@/assets/images/scholarship/CBRD Fund Logo Final.png";
@@ -301,7 +345,6 @@ import Nara from "@/assets/images/team/Tel Sophannara.png";
   text-align-last: justify;
   line-height: 38px;
   margin-top: 5%;
-
 }
 template {
   font-family: "Inter", sans-serif;
@@ -346,15 +389,106 @@ template {
 }
 
 /* ===== HERO ===== */
+.hero-decor {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* Circle Shape */
+.hero-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  top: 10%;
+  left: 15%;
+  animation: float 8s ease-in-out infinite alternate;
+}
+
+/* Line Shape */
+.hero-line {
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, #14b8a6, #0d9488);
+  top: 40%;
+  right: 10%;
+  border-radius: 2px;
+  animation: moveLine 6s ease-in-out infinite alternate;
+}
+
+/* Triangle Shape */
+.hero-triangle {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  bottom: 15%;
+  left: 25%;
+  animation: float 7s ease-in-out infinite alternate-reverse;
+}
+
+/* Pulse / Glowing Circle */
+.hero-pulse {
+  width: 100px;
+  height: 100px;
+  background: rgba(20, 184, 166, 0.25);
+  border-radius: 50%;
+  top: 60%;
+  right: 30%;
+  animation: pulse 5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(15deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes moveLine {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-30px) rotate(10deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.5;
+  }
+}
+
 .hero-section {
   padding: 180px 0 100px;
-  background:
-    radial-gradient(circle at 90% 10%,
+  background: radial-gradient(
+      circle at 90% 10%,
       rgba(19, 112, 127, 0.1) 0%,
-      transparent 40%),
-    radial-gradient(circle at 10% 90%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
       rgba(30, 159, 179, 0.05) 0%,
-      transparent 40%);
+      transparent 40%
+    );
 }
 
 .hero-title {
@@ -388,7 +522,6 @@ template {
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -400,7 +533,6 @@ template {
 }
 
 @keyframes floatBadge {
-
   0%,
   100% {
     transform: translateY(0);
@@ -497,11 +629,13 @@ template {
   left: 100%;
   width: 100%;
   height: 2px;
-  background: repeating-linear-gradient(to right,
-      var(--primary) 0,
-      var(--primary) 10px,
-      transparent 10px,
-      transparent 20px);
+  background: repeating-linear-gradient(
+    to right,
+    var(--primary) 0,
+    var(--primary) 10px,
+    transparent 10px,
+    transparent 20px
+  );
   opacity: 0.15;
   z-index: 0;
   display: none;
@@ -569,10 +703,7 @@ template {
 .thank-you {
   padding: 120px;
   position: relative;
-  background: linear-gradient(120deg,
-      #bddee8,
-      #b7e9eacf,
-      #f0bdd9);
+  background: linear-gradient(120deg, #bddee8, #b7e9eacf, #f0bdd9);
   background-size: 400% 400%;
   animation: gradientMove 15s ease infinite;
   overflow: hidden;

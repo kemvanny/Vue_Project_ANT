@@ -89,7 +89,7 @@
               <div
                 class="d-flex justify-content-between align-items-center mb-4 small stagger-4"
               >
-                <!-- <div class="form-check">
+                <div class="form-check">
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -101,7 +101,7 @@
                     for="rememberMe"
                     >ចងចាំខ្ញុំ</label
                   >
-                </div> -->
+                </div>
                 <div></div>
                 <router-link
                   to="/forget-password"
@@ -168,8 +168,8 @@ import { reactive, ref, onMounted } from "vue";
 import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
-import AuthInput from "@/components/AuthInput.vue";
-import AuthButton from "@/components/AuthButton.vue";
+import AuthInput from "@/components/ui/AuthInput.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 import LoginImage from "@/assets/images/auth/login.png";
 
 const auth = useAuthStore();
@@ -185,7 +185,7 @@ const loginSchema = z.object({
     .string()
     .min(1, "សូមបញ្ចូលអ៊ីមែលរបស់អ្នក")
     .email("ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវ"),
-  password: z.string().min(6, "ពាក្យសម្ងាត់ត្រូវមានយ៉ាងតិច ៦ ខ្ទង់"),
+  password: z.string().min(6, "ពាក្យសម្ងាត់ត្រូវមានយ៉ាងតិច ៨ ខ្ទង់"),
 });
 
 onMounted(() => {

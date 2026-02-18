@@ -153,7 +153,7 @@ import { useRouter } from "vue-router";
 import api from "@/API/api";
 import { useAuthStore } from "@/stores/authentication";
 import { PlusCircle } from "lucide-vue-next";
-import TaskCreate from "@/views/user/Task/TaskCreate.vue"; // <-- adjust path
+import TaskCreate from "@/views/user/Task/TaskCreate.vue"; 
 
 const sidebar = inject("sidebar");
 const isSidebarOpen = sidebar?.isSidebarOpen;
@@ -169,7 +169,7 @@ const triggerRect = ref(null);
 
 const openCreateTask = () => {
   closeSidebar?.();
-  taskCreateRef.value?.open(); // ✅ this will call defineExpose({ open })
+  taskCreateRef.value?.open();
 };
 
 const handleLogout = async () => {
