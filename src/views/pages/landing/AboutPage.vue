@@ -195,17 +195,45 @@
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-md-6 col-lg-4" data-fade-up>
-            <div class="team-card">
+            <div class="team-card text-center">
               <div class="team-img-wrapper">
-                <img :src="vanny" class="team-img" alt="Alex" />
+                <img :src="vanny" class="team-img" alt="Kem Vanny" />
               </div>
+
               <span class="team-role">Project Leader & Frontend</span>
               <h4 class="fw-bold mb-1">Kem Vanny</h4>
+
               <p class="text-muted small">
                 អ្នកដឹកនាំគម្រោង និងទទួលបន្ទុកផ្នែករចនារចនាសម្ព័ន្ធប្រព័ន្ធ
               </p>
+
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/Vanny_Kem"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://www.facebook.com/share/1CHRhLasWe/?mibextid=wwXIfr"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://www.instagram.com/alexcer_vn?igsh=Z253OHFiaHNyNzY1&utm_source=qr"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
+
           <div class="col-md-6 col-lg-4" data-fade-up>
             <div class="team-card">
               <div class="team-img-wrapper">
@@ -216,6 +244,30 @@
               <p class="text-muted small">
                 ឯកទេសខាងរចនាចំណុចប្រទាក់អ្នកប្រើប្រាស់ និងអភិវឌ្ឍផ្នែកខាងមុខ
               </p>
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://facebook.com/yourprofile"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -228,6 +280,30 @@
               <p class="text-muted small">
                 ផ្តោតលើការបង្កើតបទពិសោធន៍អ្នកប្រើប្រាស់ឱ្យកាន់តែរលូន និងទាក់ទាញ
               </p>
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://facebook.com/yourprofile"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -240,6 +316,30 @@
               <p class="text-muted small">
                 ចូលរួមក្នុងការអភិវឌ្ឍ និងកែលម្អគុណភាពនៃការបង្ហាញលើគេហទំព័រ
               </p>
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://facebook.com/yourprofile"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -252,6 +352,30 @@
               <p class="text-muted small">
                 អ្នកជំនាញក្នុងការបម្លែងការរចនាទៅជាកូដដែលដំណើរការបានយ៉ាងល្អ
               </p>
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://facebook.com/yourprofile"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" data-fade-up>
@@ -265,6 +389,30 @@
                 ទទួលបន្ទុកលើការត្រួតពិនិត្យ
                 និងអភិវឌ្ឍមុខងារឱ្យមានភាពត្រឹមត្រូវខ្ពស់
               </p>
+              <!-- Social Links -->
+              <div class="team-social mt-3">
+                <a
+                  href="https://t.me/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  href="https://facebook.com/yourprofile"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  href="https://github.com/yourusername"
+                  target="_blank"
+                  class="social-icon"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -339,6 +487,33 @@ import Nara from "@/assets/images/team/Tel Sophannara.png";
 </script>
 
 <style scoped>
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6f9;
+  border-radius: 50%;
+  font-size: 18px;
+  color: #0f766e; /* teal */
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: #0f766e;
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.3);
+}
+
 .text-des {
   text-align: justify;
   text-justify: inter-word;
@@ -661,12 +836,12 @@ template {
   border: 1px solid #f1f5f9;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   height: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  box-shadow: 0px 10px 50px rgba(42, 42, 42, 0.02) !important;
 }
 
 .team-card:hover {
   border-color: var(--primary);
-  box-shadow: 0 25px 50px rgba(19, 112, 127, 0.12);
+  box-shadow: 0px 25px 50px rgba(19, 112, 127, 0.12);
   transform: translateY(-10px);
 }
 
