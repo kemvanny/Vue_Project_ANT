@@ -319,14 +319,14 @@
               <!-- Social Links -->
               <div class="team-social mt-3">
                 <a
-                  href="https://t.me/yourusername"
+                  href="https://t.me/socheatavit"
                   target="_blank"
                   class="social-icon"
                 >
                   <i class="bi bi-telegram"></i>
                 </a>
                 <a
-                  href="https://facebook.com/yourprofile"
+                  href="https://www.facebook.com/share/1BzRnmvp6o/?mibextid=wwXIfr"
                   target="_blank"
                   class="social-icon"
                 >
@@ -369,7 +369,7 @@
                   <i class="bi bi-facebook"></i>
                 </a>
                 <a
-                  href="https://github.com/yourusername"
+                  href="https://www.instagram.com/revoteytey?igsh=M2V5MGlsaW9iN3Ni&utm_source=qr"
                   target="_blank"
                   class="social-icon"
                 >
@@ -392,14 +392,14 @@
               <!-- Social Links -->
               <div class="team-social mt-3">
                 <a
-                  href="https://t.me/yourusername"
+                  href=""
                   target="_blank"
                   class="social-icon"
                 >
                   <i class="bi bi-telegram"></i>
                 </a>
                 <a
-                  href="https://facebook.com/yourprofile"
+                  href="https://www.facebook.com/share/1CL8sgAS5L/?mibextid=wwXIfr"
                   target="_blank"
                   class="social-icon"
                 >
