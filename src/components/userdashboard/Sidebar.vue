@@ -92,6 +92,7 @@
           ចាកចេញ
         </button>
       </div>
+      
     </aside>
 
     <TaskCreate ref="taskCreateRef" />
@@ -165,6 +166,9 @@ const handleNavClick = () => {
 const openCreateTask = () => {
   closeSidebar?.();
   taskCreateRef.value?.open(); 
+};
+const openLogoutModal = () => {
+  showLogoutModal.value = true;
 };
 
 const handleLogout = async () => {
