@@ -130,6 +130,10 @@ export const useProfileStore = defineStore("profile", () => {
         profileError.value = "សូមបំពេញព័ត៌មានទាំងអស់។";
         return false;
       }
+      if (currentPassword != currentPassword.trim()) {
+        profileError.value = "ពាក្យសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ។";
+        return false;
+      }
 
       if (newPassword !== confirmPassword) {
         profileError.value = "ពាក្យសម្ងាត់ថ្មីមិនត្រូវគ្នា។";
@@ -159,7 +163,14 @@ export const useProfileStore = defineStore("profile", () => {
       return false;
     } catch (err) {
       const errorMessage = err.response?.data?.message;
-      if (errorMessage === "Invalid email or password") {
+      if (
+        errorMessage === "Invalid Input" ||
+        errorMessage === "Invalid input" ||
+        errorMessage === "invalid input"
+      ) {
+        profileError.value =
+          "ពាក្យសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ។ សូមព្យាយាមម្តងទៀត។";
+      } else if (errorMessage === "Invalid email or password") {
         profileError.value = "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។";
       } else if (errorMessage === "Password is too weak") {
         profileError.value = "ពាក្យសម្ងាត់ខ្សោយពេក។";

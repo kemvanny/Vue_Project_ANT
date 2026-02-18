@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="page-wrapper d-flex align-items-center justify-content-center min-vh-100"
-  >
+  <div class="page-wrapper d-flex align-items-center justify-content-center">
     <div class="gradient-bg"></div>
     <router-link to="/" class="btn-home-floating shadow-lg animate-entrance">
       <i class="bi bi-house-door-fill icon-color"></i>
@@ -226,6 +224,130 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+.page-wrapper {
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .page-wrapper {
+    padding: 1.5rem 1rem;
+    overflow-x: hidden;
+  }
+
+  .animation-area,
+  .box-area {
+    display: none !important;
+  }
+
+  .shape,
+  .shape-1,
+  .shape-2 {
+    display: none !important;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 1.25rem !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .page-wrapper {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1.5rem 1.25rem !important;
+  }
+
+  /* Headings */
+  .mb-5 h2 {
+    font-size: 1.4rem !important;
+  }
+
+  .mb-5 p {
+    font-size: 0.875rem !important;
+  }
+
+  /* Spacing */
+  .mb-5 {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.875rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 1.25rem !important;
+  }
+
+  /* Input labels */
+  .modern-input-group label {
+    font-size: 0.875rem !important;
+  }
+
+  /* Input fields */
+  .input-group-lg > input {
+    font-size: 0.95rem !important;
+    padding: 0.625rem 0.875rem !important;
+  }
+
+  /* Submit button */
+  .auth-button {
+    padding: 0.625rem 1rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Small text */
+  .small {
+    font-size: 0.8rem !important;
+  }
+
+  /* Deactivated modal */
+  .deactivated-modal {
+    padding: 1.5rem 1.25rem;
+    margin: 0.75rem;
+  }
+
+  .modal-icon-wrap {
+    width: 60px;
+    height: 60px;
+  }
+
+  .modal-icon {
+    font-size: 1.5rem;
+  }
+
+  .modal-title-text {
+    font-size: 1.1rem;
+  }
+
+  .modal-body-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* ── Home button (floating top-left) ─────────────────────────── */
 .btn-home-floating {
   position: fixed;
   top: 25px;
@@ -281,6 +403,7 @@ const handleLogin = async () => {
     left: 15px;
     padding: 10px;
   }
+
   .home-text {
     display: none;
   }
