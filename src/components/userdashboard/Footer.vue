@@ -34,7 +34,7 @@
             <a href="#">Telegram</a>
             <a href="#">GitHub</a> -->
             <div class="footer-social mt-4">
-              <a href="#" class="social-link">
+              <a href="https://www.facebook.com/share/1CHRhLasWe/?mibextid=wwXIfr" class="social-link">
                 <img
                   src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
                   alt="Facebook"
@@ -42,7 +42,7 @@
                 />
                 Facebook
               </a>
-              <a href="#" class="social-link">
+              <a href="https://t.me/Vanny_Kem" class="social-link">
                 <img
                   src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
                   alt="Telegram"
@@ -50,7 +50,7 @@
                 />
                 Telegram
               </a>
-              <a href="#" class="social-link">
+              <a href="https://github.com/VannyKem" class="social-link">
                 <img
                   src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg"
                   alt="GitHub"
@@ -86,7 +86,7 @@
             អ៊ីមែល៖ support@reablist.com <br />
             ទីតាំង៖ ភ្នំពេញ, កម្ពុជា
           </p>
-          <a href="/features" class="btn-footer mt-4">ចាប់ផ្តើមឥឡូវនេះ</a>
+          <router-link to="/login" class="btn-footer mt-4">ចាប់ផ្តើមឥឡូវនេះ</router-link>
         </div>
       </div>
 
