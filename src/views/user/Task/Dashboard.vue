@@ -2,18 +2,14 @@
 import { ref, computed } from 'vue';
 import Navbar from '@/components/layout/Navbar.vue';
 
-// 1. Your raw list of tasks from API
 const tasks = ref([]); 
 
-// 2. The search string sent from Navbar
 const searchFilter = ref('');
 
-// 3. Logic to receive the search string
 const handleSearchUpdate = (val) => {
   searchFilter.value = val.toLowerCase();
 };
 
-// 4. THE MAGIC: This filtered list updates automatically
 const filteredTasks = computed(() => {
   if (!searchFilter.value) return tasks.value;
   

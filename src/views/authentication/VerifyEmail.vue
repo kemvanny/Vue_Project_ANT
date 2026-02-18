@@ -137,7 +137,7 @@ import { useAuthStore } from "../../stores/authentication";
 import { useRouter } from "vue-router";
 import { z } from "zod";
 import AuthButton from "@/components/ui/AuthButton.vue";
-import VerifyEmailImage from "@/assets/images/auth/verifyEmail.png";
+import VerifyEmailImage from "@/assets/images/verifyEmail.png";
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -195,7 +195,6 @@ const handleSendCode = async () => {
 </script>
 
 <style scoped>
-/* ── Base page wrapper — always full viewport, always centered ── */
 .page-wrapper {
   min-height: 100vh;
   min-height: 100svh;
@@ -206,7 +205,6 @@ const handleSendCode = async () => {
   box-sizing: border-box;
 }
 
-/* ── Tablet (576px – 991px) ───────────────────────────────────── */
 @media (max-width: 991px) {
   .page-wrapper {
     padding: 1.5rem 1rem;

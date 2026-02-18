@@ -73,7 +73,7 @@
         <p class="empty-sub">ភារកិច្ចទាំងអស់បានបញ្ចប់រួចរាល់ 🎉</p>
       </div>
 
-      <!-- ✅ Same UI as AllTasks -->
+      <!-- Same UI as AllTasks -->
       <div v-else>
         <BaseTaskTable
           :tasks="displayTasks"
@@ -161,7 +161,7 @@ const showCategory = (val) => {
   return val || "ទូទៅ";
 };
 
-// 🔥 base list = pending only
+// base list = pending only
 const filteredTasks = computed(() => noteStore.pending || []);
 
 // filter locally

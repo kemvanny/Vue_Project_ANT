@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- Overlay — tap to close on mobile ──────────────────────── -->
     <Transition name="overlay-fade">
       <div v-if="isSidebarOpen" class="sidebar-overlay" @click="closeSidebar" />
     </Transition>
 
-    <!-- Sidebar ─────────────────────────────────────────────────── -->
     <aside id="reab-sidebar" :class="{ open: isSidebarOpen }">
       <!-- Logo -->
       <div class="logo-sticky">
@@ -166,7 +164,7 @@ const handleNavClick = () => {
 
 const openCreateTask = () => {
   closeSidebar?.();
-  taskCreateRef.value?.open(); // ✅ this will call defineExpose({ open })
+  taskCreateRef.value?.open(); 
 };
 
 const handleLogout = async () => {

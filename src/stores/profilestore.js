@@ -243,11 +243,7 @@ export const useProfileStore = defineStore("profile", () => {
     clearMessages();
 
     try {
-      // if (!token) {
-      //   profileError.value = "តំណផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ។";
-      //   return false;
-      // }
-
+     
       const payload = newEmail ? { token, newEmail } : { token };
       const res = await api.post("/auth/verify-change-email", payload);
 

@@ -56,12 +56,10 @@ export const useTaskStore = defineStore("taskStore", () => {
 
   };
 
-  // មុខងារសម្អាតការ Search
   const clearSearch = () => {
     searchResults.value = [];
   };
 
-  // បោះ variables និង functions ចេញទៅក្រៅដើម្បីអាចប្រើបានក្នុង Components
   return {
     tasks,
     searchResults,
