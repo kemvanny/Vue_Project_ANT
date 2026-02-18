@@ -50,13 +50,13 @@
 
         <div v-if="noteStore.meta.totalPages > 1" class="pagination-modern">
           <button class="page-btn" @click="prevPage" :disabled="!noteStore.meta?.hasPreviousPage">
-            ← Prev
+            ← ថយក្រោយ
           </button>
           <span class="page-info">
             Page {{ noteStore.meta?.currentPage || 1 }} / {{ noteStore.meta?.totalPages || 1 }}
           </span>
           <button class="page-btn" @click="nextPage" :disabled="!noteStore.meta?.hasNextPage">
-            Next →
+            បន្ទាប់ →
           </button>
         </div>
       </div>

@@ -734,7 +734,7 @@ const confirmDisconnectTelegram = async () => {
     // Call the API
     await api.post("/users/telegram-unlink");
 
-    profileStore.profileSuccess = "Telegram disconnected successfully!";
+    profileStore.profileSuccess = "Telegram ត្រូវបានផ្ដាច់ចេញដោយជោគជ័យ!";
 
     setTimeout(() => {
       profileStore.profileSuccess = null;

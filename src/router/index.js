@@ -13,6 +13,7 @@ import ResetPassword from "@/views/authentication/ResetPassword.vue";
 import Homepage from "@/views/pages/Homepage.vue";
 import AboutUs from "@/views/pages/AboutPage.vue";
 import FeaturesPage from "@/views/pages/FeaturesPage.vue";
+import NotFount from "@/views/pages/notfound/NotFound.vue";
 
 // Layout
 import UserDashboardLayout from "@/layouts/UserDashboardLayout.vue";
@@ -154,6 +155,7 @@ const router = createRouter({
         // },
       ],
     },
+    { path: "/:catchAll(.*)", component: NotFount },
   ],
 });
 

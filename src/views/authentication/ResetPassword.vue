@@ -95,7 +95,7 @@
 
               <AuthButton
                 type="submit"
-                :text="'ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់'"
+                :text="'ផ្លាស់ប្តូរពាក្យសម្ងាត់'"
                 :loadingText="'កំពុងផ្លាស់ប្តូរ...'"
                 :loading="authStore.loading"
                 :disabled="authStore.loading"
