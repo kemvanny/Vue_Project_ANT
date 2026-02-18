@@ -27,12 +27,8 @@
             កំណត់ថ្ងៃផុតកំណត់ និងទទួលការជូនដំណឹងមុនពេលដល់កំណត់។
           </p>
 
-          <!-- <a href="/features" class="btn-footer">ចាប់ផ្តើមឥឡូវនេះ</a> -->
-
           <div class="footer-social mt-4">
-            <!-- <a href="#">Facebook</a>
-            <a href="#">Telegram</a>
-            <a href="#">GitHub</a> -->
+           
             <div class="footer-social mt-4">
               <a href="https://www.facebook.com/share/1CHRhLasWe/?mibextid=wwXIfr" class="social-link">
                 <img

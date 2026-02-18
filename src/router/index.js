@@ -97,22 +97,22 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "", // localhost:5173/
+          path: "", 
           name: "Dashboard",
           component: UserDashboard,
         },
         {
-          path: "tasks", // localhost:5173/tasks
+          path: "tasks", 
           name: "AllTasks",
           component: AllTasks,
         },
         {
-          path: "pending", // localhost:5173/pending
+          path: "pending", 
           name: "Pending",
           component: Pending,
         },
         {
-          path: "completed", // localhost:5173/completed
+          path: "completed",
           name: "Completed",
           component: Complete,
         },
@@ -128,9 +128,9 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "/dashboard/tasks/:id", // Make sure this has the :id at the end
+          path: "/dashboard/tasks/:id", 
           name: "task-detail",
-          component: () => import("../views/user/Task/TaskView.vue"), // Verify this file exists!
+          component: () => import("../views/user/Task/TaskView.vue"), 
         },
 
         {
@@ -145,14 +145,6 @@ const router = createRouter({
           component: () => import("@/components/profile/AccountSettings.vue"),
           meta: { requiresAuth: true },
         },
-
-        // {
-        //   path: "/profile/changepasswordform",
-        //   name: "ChangePasswordForm",
-        //   component: () =>
-        //     import("@/components/profile/ChangePasswordForm.vue"),
-        //   meta: { requiresAuth: true },
-        // },
       ],
     },
     { path: "/:catchAll(.*)", component: NotFount },
