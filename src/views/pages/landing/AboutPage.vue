@@ -483,7 +483,7 @@ import sophearith from "@/assets/images/team/sophearith.jpg";
 import votey from "@/assets/images/team/votey.png";
 import liza from "@/assets/images/team/liza.JPG";
 import vanny from "@/assets/images/team/vanny.JPG";
-import Nara from "@/assets/images/team/Tel_Sophannara.png";
+import Nara from "@/assets/images/team/Tel_sophannara.png";
 </script>
 
 <style scoped>
