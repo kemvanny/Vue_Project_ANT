@@ -130,6 +130,10 @@ export const useProfileStore = defineStore("profile", () => {
         profileError.value = "សូមបំពេញព័ត៌មានទាំងអស់។";
         return false;
       }
+      if (currentPassword != currentPassword.trim()) {
+        profileError.value = "ពាក្យសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ។";
+        return false;
+      }
 
       if (newPassword !== confirmPassword) {
         profileError.value = "ពាក្យសម្ងាត់ថ្មីមិនត្រូវគ្នា។";

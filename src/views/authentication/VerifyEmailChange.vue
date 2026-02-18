@@ -199,7 +199,6 @@ const confirmEmailChange = async () => {
 
     if (success) {
       verificationSuccess.value = true;
-
       verificationError.value = null;
 
       setTimeout(async () => {
@@ -234,21 +233,106 @@ const redirectToSettings = () => {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
+/* ── Base page wrapper — always full viewport, always centered ── */
 .page-wrapper {
   font-family: "Inter", "Kantumruy Pro", sans-serif;
-  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
   min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 
+/* ── Tablet (576px – 991px) ───────────────────────────────────── */
+@media (max-width: 991px) {
+  .page-wrapper {
+    padding: 1.5rem 1rem;
+    overflow-x: hidden;
+  }
+
+  .animation-area,
+  .box-area {
+    display: none !important;
+  }
+
+  .shape,
+  .shape-1,
+  .shape-2 {
+    display: none !important;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 1.25rem !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+}
+
+/* ── Mobile (≤ 575px) ─────────────────────────────────────────── */
+@media (max-width: 575px) {
+  .page-wrapper {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1.5rem 1.25rem !important;
+  }
+
+  .mb-4 h2 {
+    font-size: 1.4rem !important;
+  }
+
+  .mb-4 p {
+    font-size: 0.875rem !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.875rem !important;
+  }
+
+  .mt-4 {
+    margin-top: 1rem !important;
+  }
+
+  .small {
+    font-size: 0.8rem !important;
+  }
+
+  .success-icon,
+  .error-icon {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .success-icon i,
+  .error-icon i {
+    font-size: 32px !important;
+  }
+}
+
+/* ── Original styles kept intact ─────────────────────────────── */
 .gradient-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c); */
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
   z-index: -2;
@@ -301,7 +385,6 @@ const redirectToSettings = () => {
   height: 80px;
   animation-delay: 0s;
 }
-
 .box-area li:nth-child(2) {
   left: 12%;
   width: 30px;
@@ -309,14 +392,12 @@ const redirectToSettings = () => {
   animation-delay: 1.5s;
   animation-duration: 10s;
 }
-
 .box-area li:nth-child(3) {
   left: 70%;
   width: 100px;
   height: 100px;
   animation-delay: 5.5s;
 }
-
 .box-area li:nth-child(4) {
   left: 42%;
   width: 150px;
@@ -324,14 +405,12 @@ const redirectToSettings = () => {
   animation-delay: 0s;
   animation-duration: 15s;
 }
-
 .box-area li:nth-child(5) {
   left: 65%;
   width: 40px;
   height: 40px;
   animation-delay: 0s;
 }
-
 .box-area li:nth-child(6) {
   left: 15%;
   width: 110px;
@@ -363,7 +442,6 @@ const redirectToSettings = () => {
   top: -150px;
   right: -150px;
 }
-
 .shape-2 {
   width: 200px;
   height: 200px;
@@ -429,11 +507,9 @@ const redirectToSettings = () => {
   position: relative;
   z-index: 2;
 }
-
 .text-shadow {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
-
 .tracking-wide {
   letter-spacing: 0.025em;
 }
@@ -441,15 +517,12 @@ const redirectToSettings = () => {
 .stagger-1 {
   animation: fadeInUp 3s ease-out;
 }
-
 .stagger-2 {
   animation: fadeInUp 3s ease-out 1s both;
 }
-
 .stagger-3 {
   animation: fadeInUp 3s ease-out 1s both;
 }
-
 .stagger-4 {
   animation: fadeInUp 3s ease-out 1s both;
 }
@@ -468,11 +541,9 @@ const redirectToSettings = () => {
 .text-teal {
   color: #14b8a6 !important;
 }
-
 .text-danger {
   color: #dc2626 !important;
 }
-
 .bg-gradient-teal {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
 }
@@ -506,27 +577,22 @@ const redirectToSettings = () => {
   color: #0369a1;
   border-left-color: #0ea5e9;
 }
-
 .alert-info i {
   color: #0ea5e9;
 }
-
 .alert-success {
   background: #f0fdf4;
   color: #15803d;
   border-left-color: #22c55e;
 }
-
 .alert-success i {
   color: #22c55e;
 }
-
 .alert-error {
   background: #fef2f2;
   color: #991b1b;
   border-left-color: #ef4444;
 }
-
 .alert-error i {
   color: #ef4444;
 }
@@ -628,11 +694,9 @@ const redirectToSettings = () => {
   transition: all 0.3s ease;
   position: relative;
 }
-
 .link-effect:hover {
   transform: translateX(-2px);
 }
-
 .link-effect::after {
   content: "";
   position: absolute;
@@ -643,68 +707,7 @@ const redirectToSettings = () => {
   background: #14b8a6;
   transition: width 0.3s ease;
 }
-
 .link-effect:hover::after {
   width: 100%;
-}
-
-.d-flex {
-  display: flex !important;
-}
-
-.align-items-center {
-  align-items: center !important;
-}
-
-.justify-content-center {
-  justify-content: center !important;
-}
-
-.min-vh-100 {
-  min-height: 100vh !important;
-}
-
-.text-center {
-  text-align: center !important;
-}
-
-.mb-3 {
-  margin-bottom: 1rem !important;
-}
-
-.mb-4 {
-  margin-bottom: 1.5rem !important;
-}
-
-.mt-4 {
-  margin-top: 1.5rem !important;
-}
-
-@media (max-width: 768px) {
-  .page-wrapper {
-    padding: 20px;
-  }
-
-  .card {
-    margin: 0;
-  }
-
-  .col-lg-5 {
-    display: none !important;
-  }
-
-  .col-lg-7 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .card-body {
-    padding: 30px 20px;
-  }
-
-  .shape-1,
-  .shape-2 {
-    display: none;
-  }
 }
 </style>

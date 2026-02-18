@@ -59,7 +59,7 @@
                 >អ៊ីមែលដែលបានចុះឈ្មោះ</label
               >
 
-              <div class="d-flex gap-2 align-items-start">
+              <div class="d-flex gap-2 align-items-start flex-wrap-mobile">
                 <div class="flex-grow-1">
                   <div class="input-group input-group-lg">
                     <span class="input-group-text bg-teal-light border-teal">
@@ -82,7 +82,7 @@
 
                 <button
                   type="button"
-                  class="btn btn-outline-primary btn-lg px-4"
+                  class="btn btn-outline-primary btn-lg px-4 edit-btn"
                   :class="
                     isEditing ? 'btn-outline-success' : 'btn-outline-primary'
                   "
@@ -143,7 +143,6 @@ const auth = useAuthStore();
 const router = useRouter();
 const isEditing = ref(false);
 
-// --- PARALLAX LOGIC ---
 const mouseX = ref(0);
 const mouseY = ref(0);
 
@@ -196,6 +195,96 @@ const handleSendCode = async () => {
 </script>
 
 <style scoped>
+/* ── Base page wrapper — always full viewport, always centered ── */
+.page-wrapper {
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box;
+}
+
+/* ── Tablet (576px – 991px) ───────────────────────────────────── */
+@media (max-width: 991px) {
+  .page-wrapper {
+    padding: 1.5rem 1rem;
+    overflow-x: hidden;
+  }
+
+  .animation-area,
+  .box-area {
+    display: none !important;
+  }
+
+  .shape,
+  .shape-1,
+  .shape-2 {
+    display: none !important;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 1.25rem !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+}
+
+/* ── Mobile (≤ 575px) ─────────────────────────────────────────── */
+@media (max-width: 575px) {
+  .page-wrapper {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1.5rem 1.25rem !important;
+  }
+
+  .mb-4 h2 {
+    font-size: 1.4rem !important;
+  }
+
+  .mb-4 p {
+    font-size: 0.875rem !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.875rem !important;
+  }
+
+  .mt-4 {
+    margin-top: 1rem !important;
+  }
+
+  .small {
+    font-size: 0.8rem !important;
+  }
+
+  /* Stack email input and edit button on mobile */
+  .flex-wrap-mobile {
+    flex-wrap: wrap !important;
+  }
+
+  .edit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+/* ── Input styles ────────────────────────────────────────────── */
 .text-teal {
   color: #2d6a7a;
 }
