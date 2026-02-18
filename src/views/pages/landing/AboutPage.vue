@@ -478,12 +478,12 @@ import logo from "@/assets/images/scholarship/Logo_MPTC.png";
 import logo1 from "@/assets/images/scholarship/ANT logo HD.png";
 import logo2 from "@/assets/images/scholarship/CBRD Fund Logo Final.png";
 import BookImage from "@/assets/images/homepage/book.png";
-import socheata from "@/assets/images/socheata.jpg";
-import sophearith from "@/assets/images/sophearith.jpg";
-import votey from "@/assets/images/votey.png";
-import liza from "@/assets/images/liza.jpg";
-import vanny from "@/assets/images/vanny.jpg";
-import Nara from "@/assets/images/Tel Sophannara.png";
+import socheata from "@/assets/images/team/socheata.JPG";
+import sophearith from "@/assets/images/team/sophearith.jpg";
+import votey from "@/assets/images/team/votey.png";
+import liza from "@/assets/images/team/liza.JPG";
+import vanny from "@/assets/images/team/vanny.JPG";
+import Nara from "@/assets/images/team/Tel Sophannara.png";
 </script>
 
 <style scoped>
