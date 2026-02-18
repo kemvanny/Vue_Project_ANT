@@ -135,7 +135,7 @@
 import { computed, ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useNoteStore } from "@/stores/note";
-import BaseModal from "@/components/base/BaseModal.vue";
+import BaseModal from "@/components/ui/BaseModal.vue";
 
 import {
   Calendar,

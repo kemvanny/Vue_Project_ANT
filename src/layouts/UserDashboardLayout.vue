@@ -45,7 +45,7 @@ import Navbar from "@/components/userdashboard/Navbar.vue";
 import TaskCreate from "@/views/user/Task/TaskCreate.vue";
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
-import TelegramConnectBot from "@/components/TelegramConnectBot.vue";
+import TelegramConnectBot from "@/views/pages/TelegramService/TelegramConnectBot.vue";
 
 const noteStore = useNoteStore();
 

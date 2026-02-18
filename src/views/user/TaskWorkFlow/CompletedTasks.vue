@@ -8,8 +8,8 @@
           <span class="brand-name">REABLIST</span>
         </div>
 
-        <h1 class="hero-title">ភារកិច្ចមិនទាន់បញ្ចប់</h1>
-        <p class="hero-sub">បញ្ជីភារកិច្ចដែលនៅសល់ (Pending)</p>
+        <h1 class="hero-title">ភារកិច្ចដែលបានបញ្ចប់</h1>
+        <p class="hero-sub">បញ្ជីភារកិច្ចដែលបានសម្គាល់ថាបញ្ចប់រួចរាល់</p>
       </div>
 
       <div class="hero-right">
@@ -69,8 +69,8 @@
           </svg>
         </div>
 
-        <h3 class="empty-title">មិនមានភារកិច្ច Pending ទេ</h3>
-        <p class="empty-sub">ភារកិច្ចទាំងអស់បានបញ្ចប់រួចរាល់ 🎉</p>
+        <h3 class="empty-title">មិនមានភារកិច្ចបានបញ្ចប់ទេ</h3>
+        <p class="empty-sub">ភារកិច្ចនៅតែ Pending ឬមិនទាន់បាន Toggle Completed</p>
       </div>
 
       <!-- ✅ Same UI as AllTasks -->
@@ -107,14 +107,11 @@
 <script setup>
 import api from "@/API/api";
 import { computed, onMounted, ref, watch } from "vue";
-
-import BaseSelect from "@/components/base/BaseSelect.vue";
-import BaseTaskTable from "@/components/base/BaseTaskTable.vue";
-
-import { useNoteStore } from "@/stores/note";
-
+import BaseSelect from "@/components/ui/BaseSelect.vue";
+import BaseTaskTable from "@/components/ui/BaseTaskTable.vue";
 import TaskView from "@/views/user/Task/TaskView.vue";
 import TaskUpdate from "@/views/user/Task/TaskUpdate.vue";
+import { useNoteStore } from "@/stores/note";
 
 const emit = defineEmits(["create-task"]);
 
@@ -141,6 +138,7 @@ onMounted(async () => {
 
 const loading = computed(() => noteStore.loading);
 
+// counts
 const completedCount = computed(() => noteStore.completed.length);
 const pendingCount = computed(() => noteStore.pending.length);
 
@@ -161,8 +159,8 @@ const showCategory = (val) => {
   return val || "ទូទៅ";
 };
 
-// 🔥 base list = pending only
-const filteredTasks = computed(() => noteStore.pending || []);
+// 🔥 base list = completed only
+const filteredTasks = computed(() => noteStore.completed || []);
 
 // filter locally
 const displayTasks = computed(() => {
@@ -242,10 +240,7 @@ const categoryOptions = [
 </script>
 
 <style scoped>
-/* =========================
-   Same style like AllTasks
-========================= */
-
+/* ======= HERO ======= */
 .category-hero {
   background: linear-gradient(
     135deg,
@@ -359,7 +354,7 @@ const categoryOptions = [
   padding: 14px 16px;
 }
 
-/* toolbar */
+/* ======= TOOLBAR ======= */
 .toolbar {
   display: flex;
   gap: 12px;
@@ -383,7 +378,7 @@ const categoryOptions = [
   }
 }
 
-/* loading */
+/* ======= LOADING ======= */
 .loading {
   display: flex;
   align-items: center;
@@ -410,7 +405,7 @@ const categoryOptions = [
   }
 }
 
-/* empty */
+/* ======= EMPTY ======= */
 .empty-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -419,7 +414,6 @@ const categoryOptions = [
   text-align: center;
   box-shadow: 0 22px 45px -35px rgba(2, 132, 199, 0.25);
 }
-
 .empty-icon {
   width: 72px;
   height: 72px;
@@ -431,7 +425,6 @@ const categoryOptions = [
   border: 1px solid rgba(13, 148, 136, 0.18);
   color: #0d9488;
 }
-
 .empty-title {
   font-weight: 900;
   color: #0f172a;
@@ -443,7 +436,7 @@ const categoryOptions = [
   margin: 0;
 }
 
-/* button */
+/* Button match CreateTask */
 .btn-submit-modern {
   background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
   color: #fff;

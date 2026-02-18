@@ -324,8 +324,8 @@
 </template>
 
 <script setup>
-import Footer from "@/components/UserPages/Footer.vue";
-import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
+import Footer from "@/components/userdashboard/Footer.vue";
+import NavbarLandingPage from "@/components/userdashboard/navbarLandingPage.vue";
 import logo from "@/assets/images/scholarship/Logo_MPTC.png";
 import logo1 from "@/assets/images/scholarship/ANT logo HD.png";
 import logo2 from "@/assets/images/scholarship/CBRD Fund Logo Final.png";

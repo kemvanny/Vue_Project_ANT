@@ -126,9 +126,9 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import BaseModal from "@/components/base/BaseModal.vue";
-import BaseSelect from "@/components/base/BaseSelect.vue";
-import AuthButton from "@/components/AuthButton.vue";
+import BaseModal from "@/components/ui/BaseModal.vue";
+import BaseSelect from "@/components/ui/BaseSelect.vue";
+import AuthButton from "@/components/ui/AuthButton.vue";
 import { useNoteStore } from "@/stores/note";
 
 const router = useRouter();

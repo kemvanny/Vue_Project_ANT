@@ -90,21 +90,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 
+import { ref } from 'vue'
 const menuOpen = ref(false)
+
 </script>
 
-
-
 <style scoped>
-/* ================================
-   Glass Navbar (Filter Only)
-================================ */
 
-/* ================================
-   Hamburger
-================================ */
 .hamburger {
   display: none;
   background: rgba(13, 148, 136, 0.15);

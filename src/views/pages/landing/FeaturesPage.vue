@@ -280,8 +280,8 @@
 </template>
 
 <script setup>
-import Footer from "@/components/UserPages/Footer.vue";
-import NavbarLandingPage from "@/components/UserPages/navbarLandingPage.vue";
+import Footer from "@/components/userdashboard/Footer.vue";
+import NavbarLandingPage from "@/components/userdashboard/navbarLandingPage.vue";
 </script>
 
 <style scoped>
